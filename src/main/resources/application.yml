@@ -1,0 +1,4 @@
+spring:
+    main:
+        banner-mode: off    # 关闭启动 Banner
+        lazy-initialization: false    # 关闭延迟初始化
