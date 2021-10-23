@@ -1,5 +1,14 @@
 # 当前文件仅用于演示 application-dev.yml 和 application-prod.yml 的文件格式
 
+spring:
+    # Redis 配置
+    redis:
+        host: xxxxxxxxxxxx
+        database: 0
+        port: 6379
+        password: xxxxxxxxxxxx
+        connect-timeout: 1000
+
 # 微信小程序服务端配置
 weixin:
     appid: xxxxxxxxxxxx

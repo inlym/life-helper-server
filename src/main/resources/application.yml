@@ -1,6 +1,12 @@
 spring:
     profiles:
-        active: dev    # 启用的环境，目前包含 dev 和 prod
+        # 启用的环境，目前包含 dev 和 prod
+        active: dev
     main:
-        banner-mode: off    # 关闭启动 Banner
-        lazy-initialization: false    # 关闭延迟初始化
+        # 关闭启动 Banner
+        banner-mode: off
+        # 关闭延迟初始化
+        lazy-initialization: false
+    jackson:
+        # 返回响应移除 null 值字段
+        default-property-inclusion: non_null
