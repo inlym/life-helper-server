@@ -13,3 +13,9 @@ spring:
 weixin:
     appid: xxxxxxxxxxxx
     secret: xxxxxxxxxxxx
+
+# 阿里云 OSS 配置
+oss:
+    access-key-id: xxxxxxxxxxxx
+    access-key-secret: xxxxxxxxxxxx
+    endpoint: oss-cn-hangzhou.aliyuncs.com
