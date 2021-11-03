@@ -28,9 +28,8 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
     }
 
     @Override
-    @Cacheable(value = "weixin:session:code", key = "#code")
+    @Cacheable(cacheNames = "weixin:session:code", key = "#code")
     public Code2SessionResponse code2Session(String code) {
-        System.out.println("进入到函数内");
         String url = "https://api.weixin.qq.com/sns/jscode2session";
 
         UriComponents uriBuilder = UriComponentsBuilder
