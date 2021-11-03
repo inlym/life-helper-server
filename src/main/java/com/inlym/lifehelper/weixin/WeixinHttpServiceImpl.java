@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.weixin;
 
 import com.inlym.lifehelper.weixin.model.Code2SessionResponse;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
@@ -26,17 +27,10 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
             .add(new WeixinMappingJackson2HttpMessageConverter());
     }
 
-    public static class WeixinMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
-        public WeixinMappingJackson2HttpMessageConverter() {
-            List<MediaType> mediaTypes = new ArrayList<>();
-            mediaTypes.add(MediaType.TEXT_PLAIN);
-            mediaTypes.add(MediaType.TEXT_HTML);
-            setSupportedMediaTypes(mediaTypes);
-        }
-    }
-
     @Override
+    @Cacheable(value = "weixin:session:code", key = "#code")
     public Code2SessionResponse code2Session(String code) {
+        System.out.println("进入到函数内");
         String url = "https://api.weixin.qq.com/sns/jscode2session";
 
         UriComponents uriBuilder = UriComponentsBuilder
@@ -50,5 +44,14 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
         Code2SessionResponse session = restTemplate.getForObject(uriBuilder.toUriString(), Code2SessionResponse.class);
         System.out.println(session);
         return session;
+    }
+
+    public static class WeixinMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
+        public WeixinMappingJackson2HttpMessageConverter() {
+            List<MediaType> mediaTypes = new ArrayList<>();
+            mediaTypes.add(MediaType.TEXT_PLAIN);
+            mediaTypes.add(MediaType.TEXT_HTML);
+            setSupportedMediaTypes(mediaTypes);
+        }
     }
 }

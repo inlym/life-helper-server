@@ -3,13 +3,15 @@ package com.inlym.lifehelper.weixin.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 微信服务端登录凭证校验响应数据
  *
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
  */
 @Data
-public class Code2SessionResponse {
+public class Code2SessionResponse implements Serializable {
     /**
      * 错误码
      */
