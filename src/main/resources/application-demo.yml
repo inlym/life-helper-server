@@ -8,6 +8,8 @@ spring:
         port: 6379
         password: xxxxxxxxxxxx
         connect-timeout: 1000
+server:
+    port: 8080
 
 # 微信小程序服务端配置
 weixin:
