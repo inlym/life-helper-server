@@ -1,5 +1,7 @@
-package com.inlym.lifehelper.weixin;
+package com.inlym.lifehelper.weixin.impl;
 
+import com.inlym.lifehelper.weixin.WeixinConfig;
+import com.inlym.lifehelper.weixin.WeixinHttpService;
 import com.inlym.lifehelper.weixin.model.Code2SessionResponse;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
@@ -28,7 +30,7 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
     }
 
     @Override
-    @Cacheable(cacheNames = "weixin:session:code", key = "#code")
+    @Cacheable(cacheNames = "weixin:session:code#1d", key = "#code")
     public Code2SessionResponse code2Session(String code) {
         String url = "https://api.weixin.qq.com/sns/jscode2session";
 
