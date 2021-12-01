@@ -7,8 +7,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableCaching    // 开启缓存功能
-@EnableScheduling    // 开启计划任务
+@EnableCaching    // 开启缓存的支持
+@EnableScheduling    // 开启计划任务的支持
 @ServletComponentScan    // 开启过滤器和监听器扫描
 public class Application {
     public static void main(String[] args) {
