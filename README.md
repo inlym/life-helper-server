@@ -23,10 +23,31 @@ life-helper-server
 
 ## 相关仓库
 
+### 服务端
+
+仓库（当前仓库）地址： [life-helper-server](https://github.com/inlym/life-helper-server)
+
+技术栈： `Spring Boot` + `MySQL` + `Redis` + `Docker`
+
+
+### 服务端（旧，使用 Nest.js 框架，已弃用）
+
+仓库地址： [life-helper-backend](https://github.com/inlym/life-helper-backend)
+
+技术栈： `Node.js` + `Nest.js` + `TypeScript` + `Typeorm` + `MySQL` + `Redis` + `Docker`
+
 ### 小程序端
 
-仓库地址： life-helper-miniprogram
+仓库地址： [life-helper-miniprogram](https://github.com/inlym/life-helper-miniprogram)
+
+技术栈： `原生小程序` + `自定义的一套框架加强工具`
+
+![](https://img.inlym.com/ed5676d20f6243328c2e89a1403e4ff0.jpg)
 
 ### Web 端
 
-### 服务器端
+仓库地址： [life-helper-frontend](https://github.com/inlym/life-helper-frontend)
+
+技术栈： `Angular` + `TypeScript` + `Sass` + `RxJS` + `Swagger` + `Webpack`
+
+Web 地址： [我的个人助手](https://www.lifehelper.com.cn/)
