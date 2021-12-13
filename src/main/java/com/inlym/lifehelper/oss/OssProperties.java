@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "oss")
 @Data
-public class OssConfig {
+public class OssProperties {
     private String accessKeyId;
 
     private String accessKeySecret;

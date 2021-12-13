@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 public class OssServiceImpl implements OssService {
     private final OSS ossClient;
 
-    public OssServiceImpl(OssConfig ossConfig) {
-        this.ossClient = new OSSClientBuilder().build(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
+    public OssServiceImpl(OssProperties ossProperties) {
+        this.ossClient = new OSSClientBuilder().build(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(), ossProperties.getAccessKeySecret());
     }
 
     @Override

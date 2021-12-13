@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.weixin.impl;
 
-import com.inlym.lifehelper.weixin.WeixinConfig;
+import com.inlym.lifehelper.weixin.WeixinProperties;
 import com.inlym.lifehelper.weixin.WeixinHttpService;
 import com.inlym.lifehelper.weixin.model.WeixinCode2SessionResult;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,12 +16,12 @@ import java.util.List;
 
 @Service
 public class WeixinHttpServiceImpl implements WeixinHttpService {
-    private final WeixinConfig weixinConfig;
+    private final WeixinProperties weixinProperties;
 
     private final RestTemplate restTemplate;
 
-    public WeixinHttpServiceImpl(WeixinConfig weixinConfig) {
-        this.weixinConfig = weixinConfig;
+    public WeixinHttpServiceImpl(WeixinProperties weixinProperties) {
+        this.weixinProperties = weixinProperties;
         this.restTemplate = new RestTemplate();
 
         this.restTemplate
@@ -36,8 +36,8 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
 
         UriComponents uriBuilder = UriComponentsBuilder
             .fromHttpUrl(url)
-            .queryParam("appid", weixinConfig.getAppid())
-            .queryParam("secret", weixinConfig.getSecret())
+            .queryParam("appid", weixinProperties.getAppid())
+            .queryParam("secret", weixinProperties.getSecret())
             .queryParam("js_code", code)
             .queryParam("grant_type", "authorization_code")
             .build();

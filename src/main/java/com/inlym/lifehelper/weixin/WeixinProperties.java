@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "weixin")
 @Data
-public class WeixinConfig {
+public class WeixinProperties {
     /**
      * 小程序 appId
      */
