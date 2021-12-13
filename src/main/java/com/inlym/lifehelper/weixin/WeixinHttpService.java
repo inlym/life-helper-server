@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.weixin;
 
-import com.inlym.lifehelper.weixin.model.Code2SessionResponse;
+import com.inlym.lifehelper.weixin.model.WeixinCode2SessionResult;
 
 public interface WeixinHttpService {
     /**
@@ -10,5 +10,5 @@ public interface WeixinHttpService {
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
      */
-    Code2SessionResponse code2Session(String code);
+    WeixinCode2SessionResult code2Session(String code);
 }

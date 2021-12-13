@@ -2,7 +2,7 @@ package com.inlym.lifehelper.weixin.impl;
 
 import com.inlym.lifehelper.weixin.WeixinConfig;
 import com.inlym.lifehelper.weixin.WeixinHttpService;
-import com.inlym.lifehelper.weixin.model.Code2SessionResponse;
+import com.inlym.lifehelper.weixin.model.WeixinCode2SessionResult;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -31,7 +31,7 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
 
     @Override
     @Cacheable(cacheNames = "weixin:session:code#1d", key = "#code")
-    public Code2SessionResponse code2Session(String code) {
+    public WeixinCode2SessionResult code2Session(String code) {
         String url = "https://api.weixin.qq.com/sns/jscode2session";
 
         UriComponents uriBuilder = UriComponentsBuilder
@@ -42,7 +42,7 @@ public class WeixinHttpServiceImpl implements WeixinHttpService {
             .queryParam("grant_type", "authorization_code")
             .build();
 
-        Code2SessionResponse session = restTemplate.getForObject(uriBuilder.toUriString(), Code2SessionResponse.class);
+        WeixinCode2SessionResult session = restTemplate.getForObject(uriBuilder.toUriString(), WeixinCode2SessionResult.class);
         System.out.println(session);
         return session;
     }

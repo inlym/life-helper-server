@@ -11,16 +11,18 @@ import java.io.Serializable;
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
  */
 @Data
-public class Code2SessionResponse implements Serializable {
+public class WeixinCode2SessionResult implements Serializable {
     /**
      * 错误码
      */
-    private Integer errcode;
+    @JsonProperty("errcode")
+    private Integer errCode;
 
     /**
      * 错误信息
      */
-    private String errmsg;
+    @JsonProperty("errmsg")
+    private String errMsg;
 
     /**
      * 用户唯一标识
