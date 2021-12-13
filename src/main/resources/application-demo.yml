@@ -1,5 +1,9 @@
 # 当前文件仅用于演示 application-dev.yml 和 application-prod.yml 的文件格式
 
+server:
+    # Web 监听端口
+    port: 8080
+
 spring:
     # Redis 配置
     redis:
@@ -8,8 +12,15 @@ spring:
         port: 6379
         password: xxxxxxxxxxxx
         connect-timeout: 1000
-server:
-    port: 8080
+    # MySQL 数据库配置
+    datasource:
+        url: jdbc:mysql://localhost:3306/lifehelper_db
+        username: xxxxxxxxxxxx
+        password: xxxxxxxxxxxx
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    # 缓存配置
+    cache:
+        type: redis
 
 # 微信小程序服务端配置
 weixin:
