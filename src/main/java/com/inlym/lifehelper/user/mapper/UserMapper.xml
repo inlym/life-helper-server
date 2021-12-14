@@ -12,4 +12,9 @@
         from user
         where openid = #{openid}
     </select>
+
+    <insert id="insertWithOpenid" keyProperty="id" useGeneratedKeys="true">
+        insert into user(openid)
+        values (#{user.openid})
+    </insert>
 </mapper>
