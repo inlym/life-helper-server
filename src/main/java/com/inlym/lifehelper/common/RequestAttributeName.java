@@ -11,10 +11,12 @@ public interface RequestAttributeName {
      * 唯一请求 ID
      */
     String REQUEST_ID = "REQUEST_ID";
+
     /**
      * 用户 ID
      */
     String USER_ID = "USER_ID";
+
     /**
      * 客户端的 IP 地址
      */
