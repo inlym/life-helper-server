@@ -22,19 +22,19 @@ public class HandleRequestIdFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest req) {
-            String requestId = req.getHeader("X-Ca-Request-Id");
+            String requestId = req.getHeader(CustomHttpHeader.REQUEST_ID);
             if (requestId != null) {
-                request.setAttribute("requestId", requestId);
+                request.setAttribute(RequestAttributeName.REQUEST_ID, requestId);
             } else {
                 String customId = UUID
                     .randomUUID()
                     .toString()
                     .toUpperCase();
 
-                request.setAttribute("requestId", customId);
+                request.setAttribute(RequestAttributeName.REQUEST_ID, customId);
 
                 if (response instanceof HttpServletResponse res) {
-                    res.setHeader("X-Ca-Request-Id", customId);
+                    res.setHeader(CustomHttpHeader.REQUEST_ID, customId);
                 }
             }
         }
