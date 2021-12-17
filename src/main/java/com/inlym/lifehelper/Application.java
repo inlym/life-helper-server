@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @SpringBootApplication
@@ -12,6 +13,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @EnableScheduling    // 开启计划任务的支持
 @ServletComponentScan    // 开启过滤器和监听器扫描
 @EnableOpenApi    // 开启 Swagger3
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600 * 24 * 10)    // 开启将会话存储在 Redis 中，会话有效期 10 天
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

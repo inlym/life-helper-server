@@ -10,3 +10,6 @@ spring:
     jackson:
         # 返回响应移除 null 值字段
         default-property-inclusion: non_null
+    session:
+        # 会话存储方式为 Redis
+        store-type: redis
