@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "oss")
+@ConfigurationProperties(prefix = "aliyun.oss")
 @Data
 public class OssProperties {
     private String accessKeyId;
