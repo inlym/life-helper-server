@@ -57,6 +57,12 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!-- Spring Session Redis 依赖 -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+
         <!-- Spring Boot 的测试框架 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -104,7 +110,6 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>3.0.0</version>
         </dependency>
-
 
     </dependencies>
 
