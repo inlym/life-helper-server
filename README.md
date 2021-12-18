@@ -1,4 +1,5 @@
 # life-helper-server
+
 「我的个人助手」小程序服务端代码
 
 ## 目录结构
@@ -21,15 +22,13 @@ life-helper-server
 
 ```
 
-
 ## 相关仓库
 
 ### 服务端
 
 仓库（当前仓库）地址： [life-helper-server](https://github.com/inlym/life-helper-server)
 
-技术栈： `Spring Boot` + `MySQL` + `Redis` + `Docker`
-
+技术栈： `Spring Boot` + `Spring Security` + `MyBatis` + `MySQL` + `Redis` + `Docker`
 
 ### 服务端（旧，使用 Nest.js 框架，已弃用）
 
