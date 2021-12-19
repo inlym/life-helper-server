@@ -17,7 +17,7 @@ import java.util.UUID;
  * 会自动生成一个唯一请求 ID 并放置于请求头的 `X-Ca-Request-Id` 字段，一般将该字段用作全链路追踪 ID，开发环境也模拟了这个 ID
  */
 @Order(1)
-@WebFilter(filterName = "HandleRequestIdFilter", urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class HandleRequestIdFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

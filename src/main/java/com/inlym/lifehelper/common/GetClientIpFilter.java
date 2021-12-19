@@ -11,7 +11,7 @@ import java.io.IOException;
  * 获取客户端 IP 地址
  */
 @Order(2)
-@WebFilter(filterName = "GetClientIpFilter", urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class GetClientIpFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
