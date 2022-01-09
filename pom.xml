@@ -118,6 +118,13 @@
             <version>3.0.0</version>
         </dependency>
 
+        <!-- Java JWT 依赖 -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.18.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

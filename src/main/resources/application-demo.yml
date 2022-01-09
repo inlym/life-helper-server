@@ -36,3 +36,6 @@ aliyun:
         access-key-id: xxxxxxxxxxxx
         access-key-secret: xxxxxxxxxxxx
         endpoint: oss-cn-hangzhou.aliyuncs.com
+
+jwt:
+    secret: xxxxxxxxxxxx
