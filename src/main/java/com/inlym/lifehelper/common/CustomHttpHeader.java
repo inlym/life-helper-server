@@ -13,4 +13,9 @@ public interface CustomHttpHeader {
      * 客户端 IP 地址，由 API 网关层加入到请求头中
      */
     String CLIENT_IP = "X-Client-Ip";
+
+    /**
+     * 存储 JWT 的请求头
+     */
+    String JWT_TOKEN = "X-Auth-Jwt";
 }
