@@ -2,6 +2,11 @@ package com.inlym.lifehelper.user.entity;
 
 import lombok.Data;
 
+/**
+ * 用户账户实体
+ * <p>
+ * 表名：`user`
+ */
 @Data
 public class User {
     /**
