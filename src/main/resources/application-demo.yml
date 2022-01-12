@@ -39,3 +39,11 @@ aliyun:
 
 jwt:
     secret: xxxxxxxxxxxx
+
+# 腾讯位置服务
+lbsqq:
+    # 开发者密钥
+    keys:
+        - xxxxxxxxxxxx
+        - xxxxxxxxxxxx
+        - xxxxxxxxxxxx
