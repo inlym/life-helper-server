@@ -1,9 +1,9 @@
-package com.inlym.lifehelper.weixin.impl;
+package com.inlym.lifehelper.external.weixin.impl;
 
-import com.inlym.lifehelper.weixin.WeixinHttpService;
-import com.inlym.lifehelper.weixin.WeixinProperties;
-import com.inlym.lifehelper.weixin.model.WeixinCode2SessionResult;
-import com.inlym.lifehelper.weixin.model.WeixinGetAccessTokenResult;
+import com.inlym.lifehelper.external.weixin.WeixinHttpService;
+import com.inlym.lifehelper.external.weixin.WeixinProperties;
+import com.inlym.lifehelper.external.weixin.model.WeixinCode2SessionResult;
+import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResult;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;

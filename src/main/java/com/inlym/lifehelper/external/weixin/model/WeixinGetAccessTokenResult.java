@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weixin.model;
+package com.inlym.lifehelper.external.weixin.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

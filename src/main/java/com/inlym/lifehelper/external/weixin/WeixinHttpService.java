@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.weixin;
+package com.inlym.lifehelper.external.weixin;
 
-import com.inlym.lifehelper.weixin.model.WeixinCode2SessionResult;
-import com.inlym.lifehelper.weixin.model.WeixinGetAccessTokenResult;
+import com.inlym.lifehelper.external.weixin.model.WeixinCode2SessionResult;
+import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResult;
 
 public interface WeixinHttpService {
     /**
