@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.external.lbsqq;
 
+import com.inlym.lifehelper.external.lbsqq.model.ConvertLocation2AddressResponse;
 import com.inlym.lifehelper.external.lbsqq.model.LocateIPResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,6 +61,35 @@ public class LbsqqHttpService {
 
         if (data != null && data.getStatus() != null && data.getStatus() == 0) {
             logger.debug("[IP 定位] ip=" + ip + ", 请求结果 status=" + data.getStatus());
+            return data;
+        } else {
+            throw new Exception("IP 定位请求错误");
+        }
+    }
+
+    /**
+     * 逆地址解析 - 将经纬度坐标转换为位置描述
+     * <p>
+     * 文档地址：
+     * https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public ConvertLocation2AddressResponse convertLocation2Address(double longitude, double latitude) throws Exception {
+        String location = latitude + "," + longitude;
+
+        String url = "https://apis.map.qq.com/ws/geocoder/v1";
+        UriComponents uriBuilder = UriComponentsBuilder
+            .fromHttpUrl(url)
+            .queryParam("location", location)
+            .queryParam("key", getKey())
+            .build();
+
+        ConvertLocation2AddressResponse data = restTemplate.getForObject(uriBuilder.toUriString(), ConvertLocation2AddressResponse.class);
+
+        if (data != null && data.getStatus() != null && data.getStatus() == 0) {
+            logger.debug("[逆地址解析] longitude=" + longitude + ", latitude=" + latitude + ", 请求结果 status=" + data.getStatus());
             return data;
         } else {
             throw new Exception("IP 定位请求错误");
