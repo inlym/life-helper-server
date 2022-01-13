@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.oss;
+package com.inlym.lifehelper.external.oss;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
