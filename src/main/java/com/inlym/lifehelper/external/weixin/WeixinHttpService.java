@@ -1,7 +1,10 @@
 package com.inlym.lifehelper.external.weixin;
 
-import com.inlym.lifehelper.external.weixin.model.WeixinCode2SessionResult;
-import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResult;
+import com.inlym.lifehelper.external.weixin.model.WeixinCode2SessionResponse;
+import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import java.util.List;
 
 @Service
 public class WeixinHttpService {
+    private static final Log logger = LogFactory.getLog(WeixinHttpService.class);
+
     private final WeixinProperties weixinProperties;
 
     private final RestTemplate restTemplate;
@@ -34,7 +39,8 @@ public class WeixinHttpService {
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
      */
-    public WeixinCode2SessionResult code2Session(String code) {
+    @Cacheable("weixin:session:code")
+    public WeixinCode2SessionResponse code2Session(String code) {
         String url = "https://api.weixin.qq.com/sns/jscode2session";
 
         UriComponents uriBuilder = UriComponentsBuilder
@@ -45,8 +51,9 @@ public class WeixinHttpService {
             .queryParam("grant_type", "authorization_code")
             .build();
 
-        WeixinCode2SessionResult session = restTemplate.getForObject(uriBuilder.toUriString(), WeixinCode2SessionResult.class);
-        System.out.println(session);
+        WeixinCode2SessionResponse session = restTemplate.getForObject(uriBuilder.toUriString(), WeixinCode2SessionResponse.class);
+        logger.debug("[code2Session] code=" + code + ", session=" + session);
+
         return session;
     }
 
@@ -55,7 +62,7 @@ public class WeixinHttpService {
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
      */
-    public WeixinGetAccessTokenResult getAccessToken() {
+    public WeixinGetAccessTokenResponse getAccessToken() {
         String url = "https://api.weixin.qq.com/cgi-bin/token";
 
         UriComponents uriComponents = UriComponentsBuilder
@@ -65,11 +72,14 @@ public class WeixinHttpService {
             .queryParam("secret", weixinProperties.getSecret())
             .build();
 
-        WeixinGetAccessTokenResult result = restTemplate.getForObject(uriComponents.toUriString(), WeixinGetAccessTokenResult.class);
+        WeixinGetAccessTokenResponse result = restTemplate.getForObject(uriComponents.toUriString(), WeixinGetAccessTokenResponse.class);
         System.out.println(result);
         return result;
     }
 
+    /**
+     * 微信部分服务端 API 的 `Content-Type` 为 `text/plain`，需要额外支持解析 JSON
+     */
     public static class WeixinMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
         public WeixinMappingJackson2HttpMessageConverter() {
             List<MediaType> mediaTypes = new ArrayList<>();

@@ -9,7 +9,7 @@ import lombok.Data;
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
  */
 @Data
-public class WeixinGetAccessTokenResult {
+public class WeixinGetAccessTokenResponse {
     /**
      * 错误码
      */

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
  */
 @Data
-public class WeixinCode2SessionResult implements Serializable {
+public class WeixinCode2SessionResponse implements Serializable {
     /**
      * 错误码
      */
