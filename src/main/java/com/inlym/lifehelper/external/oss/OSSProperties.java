@@ -18,7 +18,12 @@ public class OSSProperties {
     private String endpoint;
 
     /**
-     * 存储桶名称
+     * 存储空间名称
      */
     private String bucketName;
+
+    /**
+     * 自定义 URL 地址
+     */
+    private String aliasUrl;
 }
