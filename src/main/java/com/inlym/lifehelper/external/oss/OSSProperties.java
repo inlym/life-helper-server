@@ -16,4 +16,9 @@ public class OSSProperties {
      * 访问域名
      */
     private String endpoint;
+
+    /**
+     * 存储桶名称
+     */
+    private String bucketName;
 }
