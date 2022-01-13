@@ -4,6 +4,9 @@ import com.aliyun.oss.OSS;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 @Service
 public class OSSService {
@@ -24,5 +27,16 @@ public class OSSService {
      */
     public void upload(String filename, byte[] content) {
         ossClient.putObject(bucketName, filename, new ByteArrayInputStream(content));
+    }
+
+    /**
+     * 转储文件
+     *
+     * @param filename 文件名称（包含路径部分），注意不要以 `/` 开头
+     * @param url      资源文件的 URL 地址
+     */
+    public void dump(String filename, String url) throws IOException {
+        InputStream inputStream = new URL(url).openStream();
+        ossClient.putObject(bucketName, filename, inputStream);
     }
 }
