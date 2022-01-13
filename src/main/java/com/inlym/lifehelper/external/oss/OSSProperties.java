@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "aliyun.oss")
 @Data
-public class OssProperties {
+public class OSSProperties {
     private String accessKeyId;
 
     private String accessKeySecret;
