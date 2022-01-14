@@ -5,6 +5,7 @@ import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +25,12 @@ public class WeixinHttpService {
 
     private final RestTemplate restTemplate;
 
-    public WeixinHttpService(WeixinProperties weixinProperties) {
+    private final StringRedisTemplate stringRedisTemplate;
+
+    public WeixinHttpService(WeixinProperties weixinProperties, StringRedisTemplate stringRedisTemplate) {
         this.weixinProperties = weixinProperties;
         this.restTemplate = new RestTemplate();
+        this.stringRedisTemplate = stringRedisTemplate;
 
         this.restTemplate
             .getMessageConverters()
@@ -62,7 +67,7 @@ public class WeixinHttpService {
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
      */
-    public WeixinGetAccessTokenResponse getAccessToken() {
+    private WeixinGetAccessTokenResponse fetchAccessToken() {
         String url = "https://api.weixin.qq.com/cgi-bin/token";
 
         UriComponents uriComponents = UriComponentsBuilder
@@ -73,8 +78,38 @@ public class WeixinHttpService {
             .build();
 
         WeixinGetAccessTokenResponse result = restTemplate.getForObject(uriComponents.toUriString(), WeixinGetAccessTokenResponse.class);
-        System.out.println(result);
+        logger.debug(result);
+
         return result;
+    }
+
+    /**
+     * 更新接口调用凭据
+     */
+    private String updateAccessToken() {
+        WeixinGetAccessTokenResponse result = this.fetchAccessToken();
+        String accessToken = result.getAccessToken();
+        Duration duration = Duration.ofSeconds(result.getExpiresIn());
+
+        stringRedisTemplate
+            .opsForValue()
+            .set("weixin:access_token", accessToken, duration);
+
+        return accessToken;
+    }
+
+    /**
+     * 用于内部获取接口调用凭据
+     */
+    private String getAccessToken() {
+        String token = stringRedisTemplate
+            .opsForValue()
+            .get("weixin:access_token");
+        if (token != null) {
+            return token;
+        } else {
+            return updateAccessToken();
+        }
     }
 
     /**
