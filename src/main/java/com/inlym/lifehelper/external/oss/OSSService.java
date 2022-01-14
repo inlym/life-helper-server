@@ -18,6 +18,9 @@ import java.util.UUID;
 
 @Service
 public class OSSService {
+    /** 存储微信小程序码的目录 */
+    public static final String DIR_WXACODE = "wxacode";
+
     private final OSS ossClient;
 
     private final String bucketName;
