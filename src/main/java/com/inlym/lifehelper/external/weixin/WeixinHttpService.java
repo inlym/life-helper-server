@@ -17,6 +17,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 封装微信小程序服务端 HTTP 请求接口
+ * <p>
+ * 注意事项：
+ * 1. 当前类中的方法只是将 HTTP 请求封装为内部可以调用的方法，不要对返回数据做二次处理。
+ * 2. 数据处理在 `WeixinService` 类中的方法中执行。
+ */
 @Service
 public class WeixinHttpService {
     private static final Log logger = LogFactory.getLog(WeixinHttpService.class);
@@ -40,7 +47,7 @@ public class WeixinHttpService {
     /**
      * 通过 code 获取鉴权信息
      *
-     * @param code 小程序端通过 wx.login 获取的 code
+     * @param code 微信小程序端通过 wx.login 获取的 code
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
      */
