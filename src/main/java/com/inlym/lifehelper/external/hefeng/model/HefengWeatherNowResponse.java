@@ -2,6 +2,17 @@ package com.inlym.lifehelper.external.hefeng.model;
 
 import lombok.Data;
 
+/**
+ * 实时天气 HTTP 请求响应数据
+ * <p>
+ * 实时天气和格点实时天气共用当前响应数据结构：两个响应数据结构大致相同，部分差异项并无较大价值，已删除。
+ * 目前留下的字段为两个接口响应数据共有的。
+ *
+ * @author inlym
+ * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">实时天气</a>
+ * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-now/">格点实时天气</a>
+ * @since 2022-01-16 00:57
+ **/
 @Data
 public class HefengWeatherNowResponse {
     /** API 状态码 */
@@ -19,9 +30,6 @@ public class HefengWeatherNowResponse {
 
         /** 温度，默认单位：摄氏度 */
         private String temp;
-
-        /** 体感温度，默认单位：摄氏度 */
-        private String feelsLike;
 
         /** 天气状况和图标的代码 */
         private String icon;
@@ -49,9 +57,6 @@ public class HefengWeatherNowResponse {
 
         /** 大气压强，默认单位：百帕 */
         private String pressure;
-
-        /** 能见度，默认单位：公里 */
-        private String vis;
 
         /** 云量，百分比数值。可能为空 */
         private String cloud;

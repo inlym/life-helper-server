@@ -2,6 +2,17 @@ package com.inlym.lifehelper.external.hefeng.model;
 
 import lombok.Data;
 
+/**
+ * 逐天天气预报 HTTP 请求响应数据
+ * <p>
+ * 逐天天气预报和格点逐天天气预报共用当前响应数据结构：两个响应数据结构大致相同，部分差异项并无较大价值，已删除。
+ * 目前留下的字段为两个接口响应数据共有的。
+ *
+ * @author inlym
+ * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">逐天天气预报</a>
+ * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-daily-forecast/">格点逐天天气预报</a>
+ * @since 2022-01-16 00:01
+ **/
 @Data
 public class HefengWeatherDailyForecastResponse {
     /** API 状态码 */
@@ -16,24 +27,6 @@ public class HefengWeatherDailyForecastResponse {
     public static class DailyForecast {
         /** 预报日期 */
         private String fxDate;
-
-        /** 日出时间 */
-        private String sunrise;
-
-        /** 日落时间 */
-        private String sunset;
-
-        /** 月升时间 */
-        private String moonrise;
-
-        /** 月落时间 */
-        private String moonset;
-
-        /** 月相名称 */
-        private String moonPhase;
-
-        /** 月相图标代码 */
-        private String moonPhaseIcon;
 
         /** 预报当天最高温度 */
         private String tempMax;
@@ -80,19 +73,10 @@ public class HefengWeatherDailyForecastResponse {
         /** 预报当天总降水量，默认单位：毫米 */
         private String precip;
 
-        /** 紫外线强度指数 */
-        private String uvIndex;
-
         /** 相对湿度，百分比数值 */
         private String humidity;
 
         /** 大气压强，默认单位：百帕 */
         private String pressure;
-
-        /** 能见度，默认单位：公里 */
-        private String vis;
-
-        /** 云量，百分比数值。可能为空 */
-        private String cloud;
     }
 }
