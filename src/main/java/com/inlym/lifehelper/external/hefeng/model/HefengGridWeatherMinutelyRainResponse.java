@@ -10,7 +10,7 @@ import lombok.Data;
  * @since 2022-01-15 23:00
  **/
 @Data
-public class HefengGridWeatherMinutelyResponse {
+public class HefengGridWeatherMinutelyRainResponse {
     /** API 状态码 */
     private String code;
 
