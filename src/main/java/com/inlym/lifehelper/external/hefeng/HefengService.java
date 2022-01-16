@@ -1,5 +1,8 @@
 package com.inlym.lifehelper.external.hefeng;
 
+import com.inlym.lifehelper.external.hefeng.model.HefengGridWeatherDailyForecastResponse;
+import com.inlym.lifehelper.external.hefeng.model.HefengGridWeatherHourlyForecastResponse;
+import com.inlym.lifehelper.external.hefeng.model.HefengGridWeatherNowResponse;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,5 +39,49 @@ public class HefengService {
         double lat = Math.floor(latitude * 100) / 100;
 
         return lng + "," + lat;
+    }
+
+    /**
+     * 获取格点实时天气
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HefengGridWeatherNowResponse getGridWeatherNow(double longitude, double latitude) throws Exception {
+        String location = joinCoordinate(longitude, latitude);
+        return hefengHttpService.getGridWeatherNow(location);
+    }
+
+    /**
+     * 获取未来 7 天格点逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HefengGridWeatherDailyForecastResponse getGridWeatherDailyForecastFor7d(double longitude, double latitude) throws Exception {
+        String location = joinCoordinate(longitude, latitude);
+        return hefengHttpService.getGridWeatherDailyForecast(location, "7d");
+    }
+
+    /**
+     * 获取未来 24 小时格点逐小时天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecastFor24h(double longitude, double latitude) throws Exception {
+        String location = joinCoordinate(longitude, latitude);
+        return hefengHttpService.getGridWeatherHourlyForecast(location, "24h");
+    }
+
+    /**
+     * 获取未来 72 小时格点逐小时天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecastFor72h(double longitude, double latitude) throws Exception {
+        String location = joinCoordinate(longitude, latitude);
+        return hefengHttpService.getGridWeatherHourlyForecast(location, "72h");
     }
 }

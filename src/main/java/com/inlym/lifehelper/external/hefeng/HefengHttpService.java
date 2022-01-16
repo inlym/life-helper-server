@@ -182,7 +182,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-now/">格点实时天气</a>
      */
-    public HefengWeatherNowResponse getGridWeatherNow(String location) throws Exception {
+    public HefengGridWeatherNowResponse getGridWeatherNow(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/grid-weather/now";
 
@@ -195,7 +195,7 @@ public class HefengHttpService {
             .toUriString();
         logger.debug(url);
 
-        HefengWeatherNowResponse data = restTemplate.getForObject(url, HefengWeatherNowResponse.class);
+        HefengGridWeatherNowResponse data = restTemplate.getForObject(url, HefengGridWeatherNowResponse.class);
 
         if (data != null && data
             .getCode()
@@ -216,7 +216,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-daily-forecast/">格点逐天天气预报</a>
      */
-    public HefengWeatherDailyForecastResponse getGridWeatherDailyForecast(String location, String days) throws Exception {
+    public HefengGridWeatherDailyForecastResponse getGridWeatherDailyForecast(String location, String days) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/weather/" + days;
 
@@ -229,7 +229,7 @@ public class HefengHttpService {
             .toUriString();
         logger.debug(url);
 
-        HefengWeatherDailyForecastResponse data = restTemplate.getForObject(url, HefengWeatherDailyForecastResponse.class);
+        HefengGridWeatherDailyForecastResponse data = restTemplate.getForObject(url, HefengGridWeatherDailyForecastResponse.class);
 
         if (data != null && data
             .getCode()
@@ -250,7 +250,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/">格点逐小时天气预报</a>
      */
-    public HefengWeatherHourlyForecastResponse getGridWeatherHourlyForecast(String location, String hours) throws Exception {
+    public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecast(String location, String hours) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/weather/" + hours;
 
@@ -263,7 +263,7 @@ public class HefengHttpService {
             .toUriString();
         logger.debug(url);
 
-        HefengWeatherHourlyForecastResponse data = restTemplate.getForObject(url, HefengWeatherHourlyForecastResponse.class);
+        HefengGridWeatherHourlyForecastResponse data = restTemplate.getForObject(url, HefengGridWeatherHourlyForecastResponse.class);
 
         if (data != null && data
             .getCode()
