@@ -8,12 +8,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "hefeng")
 @Data
 public class HefengProperties {
-    /** 商业版请求 URL */
-    private String proUrl;
-
-    /** 开发版请求 URL */
-    private String devUrl;
-
     /** 商业版密钥 */
     private String proKey;
 

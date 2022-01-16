@@ -9,6 +9,7 @@ import lombok.Data;
  * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">空气质量预报</a>
  * @since 2022-01-15 23:17
  **/
+@Data
 public class HefengAirDailyForecastResponse {
     /** API 状态码 */
     private String code;
