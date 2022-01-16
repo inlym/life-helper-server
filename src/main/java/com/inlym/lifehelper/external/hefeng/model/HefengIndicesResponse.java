@@ -19,6 +19,7 @@ public class HefengIndicesResponse {
 
     private DailyIndices[] daily;
 
+    @Data
     public static class DailyIndices {
         /** 预报日期 */
         private String date;

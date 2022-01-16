@@ -20,6 +20,8 @@ public class HefengGridWeatherMinutelyRainResponse {
     /** 分钟降水描述 */
     private String summary;
 
+    private GridMinutelyForecast[] minutely;
+
     @Data
     public static class GridMinutelyForecast {
         /** 预报时间 */

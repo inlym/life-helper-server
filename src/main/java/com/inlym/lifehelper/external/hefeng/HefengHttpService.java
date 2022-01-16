@@ -4,6 +4,7 @@ import com.inlym.lifehelper.external.hefeng.model.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -48,6 +49,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/geo/city-lookup/">城市信息查询</a>
      */
+    @Cacheable("hefeng:city")
     public HefengLookUpCityResponse lockUpCity(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://geoapi.qweather.com/v2/city/lookup";
@@ -81,6 +83,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">实时天气</a>
      */
+    @Cacheable("hefeng:now")
     public HefengWeatherNowResponse getWeatherNow(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://devapi.qweather.com/v7/weather/now";
@@ -115,6 +118,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">逐天天气预报</a>
      */
+    @Cacheable("hefeng:daily")
     public HefengWeatherDailyForecastResponse getWeatherDailyForecast(String location, String days) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/weather/" + days;
@@ -149,6 +153,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">逐小时天气预报</a>
      */
+    @Cacheable("hefeng:hourly")
     public HefengWeatherHourlyForecastResponse getWeatherHourlyForecast(String location, String hours) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/weather/" + hours;
@@ -182,6 +187,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-now/">格点实时天气</a>
      */
+    @Cacheable("hefeng:grid-now")
     public HefengGridWeatherNowResponse getGridWeatherNow(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/grid-weather/now";
@@ -216,6 +222,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-daily-forecast/">格点逐天天气预报</a>
      */
+    @Cacheable("hefeng:grid-daily")
     public HefengGridWeatherDailyForecastResponse getGridWeatherDailyForecast(String location, String days) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/weather/" + days;
@@ -250,6 +257,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/">格点逐小时天气预报</a>
      */
+    @Cacheable("hefeng:grid-hourly")
     public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecast(String location, String hours) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/weather/" + hours;
@@ -283,6 +291,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">分钟级降水</a>
      */
+    @Cacheable("hefeng:grid-minutely-rain")
     public HefengGridWeatherMinutelyRainResponse getGridWeatherMinutelyRain(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/minutely/5m";
@@ -316,6 +325,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/indices/">天气生活指数</a>
      */
+    @Cacheable("hefeng:indices")
     public HefengIndicesResponse getIndices(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://devapi.qweather.com/v7/indices/1d";
@@ -350,6 +360,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">实时空气质量</a>
      */
+    @Cacheable("hefeng:air-now")
     public HefengAirNowResponse getAirNow(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://devapi.qweather.com/v7/air/now";
@@ -383,6 +394,7 @@ public class HefengHttpService {
      *
      * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">空气质量预报</a>
      */
+    @Cacheable("hefeng:air-daily")
     public HefengAirDailyForecastResponse getAirDailyForecast(String location) throws Exception {
         // 不含参数的请求地址前缀
         String baseURL = "https://api.qweather.com/v7/air/5d";

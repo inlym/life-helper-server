@@ -17,6 +17,8 @@ public class HefengAirNowResponse {
     /** 当前 API 的最近更新时间 */
     private String updateTime;
 
+    private AirNow now;
+
     @Data
     public static class AirNow {
         /** 空气质量数据发布时间 */
