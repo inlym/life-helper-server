@@ -15,10 +15,10 @@ import org.springframework.web.util.UriComponentsBuilder;
  * [主要用途]
  * 将对和风天气 API 的 HTTP 请求封装为内部可直接调用的方法。
  * <p>
- * [说明]
+ * [注意事项]
  * 1. 仅封装 HTTP 请求，不对响应数据做任何数据处理。
  * 2. 方法入参一般即为发起 HTTP 请求所需的参数，对部分未用到的参数不做封装。
- * 3. 建立响应数据模型时，大概率用不到的数据未建立对应字段。
+ * 3. 如实地反映请求和响应本身，这一层中不要管最终业务层是如何使用该数据的。
  *
  * @author inlym
  * @since 2022-01-15 18:54
@@ -44,7 +44,7 @@ public class HefengHttpService {
     /**
      * 城市信息查询
      *
-     * @param location 需要查询地区的名称
+     * @param location 需要查询地区的名称，支持文字、以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）、LocationID或Adcode（仅限中国城市）
      *
      * @see <a href="https://dev.qweather.com/docs/api/geo/city-lookup/">城市信息查询</a>
      */
