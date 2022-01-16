@@ -3,38 +3,34 @@ package com.inlym.lifehelper.external.hefeng.model;
 import lombok.Data;
 
 /**
- * 实时天气 HTTP 请求响应数据
+ * 格点逐小时天气预报 HTTP 请求响应数据
  *
  * @author inlym
- * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">实时天气</a>
- * @since 2022-01-16 00:57
+ * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/">格点逐小时天气预报</a>
+ * @since 2022-01-16 21:17
  **/
 @Data
-public class HefengWeatherNowResponse {
+public class HefengGridWeatherHourlyForecastResponse {
     /** API 状态码 */
     private String code;
 
     /** 当前 API 的最近更新时间 */
     private String updateTime;
 
-    /** 实时天气的有效数据部分 */
-    private WeatherNow now;
+    private GridHourlyForecast[] hourly;
 
     @Data
-    public static class WeatherNow {
-        /** 数据观测时间 */
-        private String obsTime;
+    public static class GridHourlyForecast {
+        /** 预报时间 */
+        private String fxTime;
 
         /** 温度，默认单位：摄氏度 */
         private String temp;
 
-        /** 体感温度，默认单位：摄氏度 */
-        private String feelsLike;
-
         /** 天气状况和图标的代码 */
         private String icon;
 
-        /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
+        /** 天气状况的文字描述 */
         private String text;
 
         /** 风向360角度 */
@@ -54,12 +50,6 @@ public class HefengWeatherNowResponse {
 
         /** 当前小时累计降水量，默认单位：毫米 */
         private String precip;
-
-        /** 大气压强，默认单位：百帕 */
-        private String pressure;
-
-        /** 能见度，默认单位：公里 */
-        private String vis;
 
         /** 云量，百分比数值。可能为空 */
         private String cloud;

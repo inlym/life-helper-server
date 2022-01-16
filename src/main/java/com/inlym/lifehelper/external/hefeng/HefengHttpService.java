@@ -9,6 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * 和风天气 HTTP 请求服务
+ * <p>
+ * [主要用途]
+ * 将对和风天气 API 的 HTTP 请求封装为内部可直接调用的方法。
+ * <p>
+ * [说明]
+ * 1. 仅封装 HTTP 请求，不对响应数据做任何数据处理。
+ * 2. 方法入参一般即为发起 HTTP 请求所需的参数，对部分未用到的参数不做封装。
+ * 3. 建立响应数据模型时，大概率用不到的数据未建立对应字段。
+ *
+ * @author inlym
+ * @since 2022-01-15 18:54
+ */
 @Service
 public class HefengHttpService {
     private final Log logger = LogFactory.getLog(getClass());

@@ -10,7 +10,6 @@ import lombok.Data;
  *
  * @author inlym
  * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">格点逐小时天气预报</a>
- * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/">格点逐小时天气预报</a>
  * @since 2022-01-16 00:05
  **/
 @Data
@@ -54,5 +53,17 @@ public class HefengWeatherHourlyForecastResponse {
 
         /** 当前小时累计降水量，默认单位：毫米 */
         private String precip;
+
+        /** 逐小时预报降水概率，百分比数值，可能为空 */
+        private String pop;
+
+        /** 大气压强，默认单位：百帕 */
+        private String pressure;
+
+        /** 云量，百分比数值。可能为空 */
+        private String cloud;
+
+        /** 露点温度。可能为空 */
+        private String dew;
     }
 }
