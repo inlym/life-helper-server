@@ -1,9 +1,10 @@
 package com.inlym.lifehelper.external.lbsqq;
 
 import com.inlym.lifehelper.external.lbsqq.model.ConvertLocation2AddressResponse;
-import com.inlym.lifehelper.external.lbsqq.model.LocateIPResponse;
+import com.inlym.lifehelper.external.lbsqq.model.LbsqqLocateIPResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
@@ -18,9 +19,7 @@ public class LbsqqHttpService {
 
     private final LbsqqProperties lbsqqProperties;
 
-    /**
-     * 调用次数
-     */
+    /** 调用次数 */
     private Integer invokeCounter = 0;
 
     public LbsqqHttpService(LbsqqProperties lbsqqProperties) {
@@ -41,30 +40,32 @@ public class LbsqqHttpService {
 
     /**
      * IP 定位
-     * <p>
-     * 文档地址：
-     * https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp
      *
      * @param ip IP 地址
+     *
+     * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
      */
-    public LocateIPResponse locateIP(String ip) throws Exception {
+    @Cacheable("lbsqq:locate-ip")
+    public LbsqqLocateIPResponse locateIP(String ip) throws Exception {
         Assert.notNull(ip, "IP 地址不允许为空");
 
-        String url = "https://apis.map.qq.com/ws/location/v1/ip";
-        UriComponents uriBuilder = UriComponentsBuilder
-            .fromHttpUrl(url)
+        String baseURL = "https://apis.map.qq.com/ws/location/v1/ip";
+        String url = UriComponentsBuilder
+            .fromHttpUrl(baseURL)
             .queryParam("ip", ip)
             .queryParam("key", getKey())
-            .build();
+            .build()
+            .toUriString();
 
-        LocateIPResponse data = restTemplate.getForObject(uriBuilder.toUriString(), LocateIPResponse.class);
+        LbsqqLocateIPResponse data = restTemplate.getForObject(url, LbsqqLocateIPResponse.class);
 
-        if (data != null && data.getStatus() != null && data.getStatus() == 0) {
-            logger.debug("[IP 定位] ip=" + ip + ", 请求结果 status=" + data.getStatus());
+        assert data != null;
+        if (data.getStatus() == 0) {
+            logger.info("[IP 定位] ip=" + ip + ", 请求结果 data=" + data);
             return data;
-        } else {
-            throw new Exception("IP 定位请求错误");
         }
+
+        throw new Exception("[IP 定位] 请求错误, url=" + url + ", status=" + data.getStatus() + ", message=" + data.getMessage());
     }
 
     /**
