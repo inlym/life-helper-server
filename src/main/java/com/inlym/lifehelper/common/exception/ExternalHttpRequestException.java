@@ -35,7 +35,7 @@ public class ExternalHttpRequestException extends Exception {
     private String errMessage;
 
     public ExternalHttpRequestException(String name, String url, String errCode, String errMessage) {
-        super("[" + name + "] url=" + url + ", errCode=" + errCode + ", errMessage=" + errMessage);
+        super("[" + name + "] 请求异常, url=" + url + ", errCode=" + errCode + ", errMessage=" + errMessage);
 
         this.name = name;
         this.url = url;

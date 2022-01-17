@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.external.lbsqq;
 
+import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.lbsqq.model.ConvertLocation2AddressResponse;
 import com.inlym.lifehelper.external.lbsqq.model.LbsqqLocateIPResponse;
 import org.apache.commons.logging.Log;
@@ -46,7 +47,7 @@ public class LbsqqHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
      */
     @Cacheable("lbsqq:locate-ip")
-    public LbsqqLocateIPResponse locateIP(String ip) throws Exception {
+    public LbsqqLocateIPResponse locateIP(String ip) throws ExternalHttpRequestException {
         Assert.notNull(ip, "IP 地址不允许为空");
 
         String baseURL = "https://apis.map.qq.com/ws/location/v1/ip";
@@ -65,7 +66,7 @@ public class LbsqqHttpService {
             return data;
         }
 
-        throw new Exception("[IP 定位] 请求错误, url=" + url + ", status=" + data.getStatus() + ", message=" + data.getMessage());
+        throw new ExternalHttpRequestException("IP 定位", url, data.getStatus(), data.getMessage());
     }
 
     /**
