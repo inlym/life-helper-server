@@ -10,13 +10,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 全局异常处理器
+ *
+ * @since 2022-01-17 22:31
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private static final Log logger = LogFactory.getLog(GlobalExceptionHandler.class);
+    private final Log logger = LogFactory.getLog(getClass());
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(RuntimeException.class)
-    public Map<String, Object> handler(RuntimeException e) {
+    @ExceptionHandler(Exception.class)
+    public Map<String, Object> handler(Exception e) {
         logger.error(e.getMessage());
         Map<String, Object> map = new HashMap<>();
 
