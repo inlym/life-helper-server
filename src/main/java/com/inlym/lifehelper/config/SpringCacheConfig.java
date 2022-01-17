@@ -34,7 +34,7 @@ public class SpringCacheConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager() {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
             .defaultCacheConfig()
-            .entryTtl(Duration.ofMinutes(5))
+            .entryTtl(Duration.ofMinutes(10))
             .computePrefixWith(name -> name)
             .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
