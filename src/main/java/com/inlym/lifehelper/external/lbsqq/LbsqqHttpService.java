@@ -47,7 +47,6 @@ public class LbsqqHttpService {
      */
     @Cacheable("lbsqq:locate-ip")
     public LbsqqLocateIPResponse locateIP(String ip) throws ExternalHttpRequestException {
-
         String baseURL = "https://apis.map.qq.com/ws/location/v1/ip";
         String url = UriComponentsBuilder
             .fromHttpUrl(baseURL)
