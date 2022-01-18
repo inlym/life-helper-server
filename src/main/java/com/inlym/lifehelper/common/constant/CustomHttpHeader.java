@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common;
+package com.inlym.lifehelper.common.constant;
 
 /**
  * 自定义的 HTTP 请求头

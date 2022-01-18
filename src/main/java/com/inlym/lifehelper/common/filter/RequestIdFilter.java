@@ -1,5 +1,7 @@
-package com.inlym.lifehelper.common;
+package com.inlym.lifehelper.common.filter;
 
+import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.RequestAttributeName;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 

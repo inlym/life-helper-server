@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.auth.jwt;
 
 import com.inlym.lifehelper.auth.core.SimpleAuthentication;
-import com.inlym.lifehelper.common.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

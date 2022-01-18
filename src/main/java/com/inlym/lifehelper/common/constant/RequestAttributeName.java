@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common;
+package com.inlym.lifehelper.common.constant;
 
 /**
  * 使用到的请求属性值
