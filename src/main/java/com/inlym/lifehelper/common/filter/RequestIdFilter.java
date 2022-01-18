@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.RequestAttributeName;
+import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,7 +31,7 @@ public class RequestIdFilter extends OncePerRequestFilter {
         String requestId = request.getHeader(REQUEST_ID_HEADER_NAME);
 
         if (requestId != null) {
-            request.setAttribute(RequestAttributeName.REQUEST_ID, requestId);
+            request.setAttribute(CustomRequestAttribute.REQUEST_ID, requestId);
         } else {
             // 如果没有从请求头中拿到，则自己生成一个并赋值
             String customId = UUID
@@ -39,7 +39,7 @@ public class RequestIdFilter extends OncePerRequestFilter {
                 .toString()
                 .toUpperCase();
 
-            request.setAttribute(RequestAttributeName.REQUEST_ID, customId);
+            request.setAttribute(CustomRequestAttribute.REQUEST_ID, customId);
             response.setHeader(REQUEST_ID_HEADER_NAME, customId);
         }
 

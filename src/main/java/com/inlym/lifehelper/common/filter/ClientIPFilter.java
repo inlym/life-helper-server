@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.RequestAttributeName;
+import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -33,11 +33,11 @@ public class ClientIPFilter extends OncePerRequestFilter {
             String[] ips = ipString.split(",");
 
             String clientIp = ips[ips.length - 1].trim();
-            request.setAttribute(RequestAttributeName.CLIENT_IP, clientIp);
+            request.setAttribute(CustomRequestAttribute.CLIENT_IP, clientIp);
         } else {
             // 该情况用于本地开发环境，兼容无 API 网关情况
             String remoteIp = request.getRemoteAddr();
-            request.setAttribute(RequestAttributeName.CLIENT_IP, remoteIp);
+            request.setAttribute(CustomRequestAttribute.CLIENT_IP, remoteIp);
         }
 
         chain.doFilter(request, response);
