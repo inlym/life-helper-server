@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -48,7 +47,6 @@ public class LbsqqHttpService {
      */
     @Cacheable("lbsqq:locate-ip")
     public LbsqqLocateIPResponse locateIP(String ip) throws ExternalHttpRequestException {
-        Assert.notNull(ip, "IP 地址不允许为空");
 
         String baseURL = "https://apis.map.qq.com/ws/location/v1/ip";
         String url = UriComponentsBuilder
@@ -90,11 +88,12 @@ public class LbsqqHttpService {
 
         ConvertLocation2AddressResponse data = restTemplate.getForObject(uriBuilder.toUriString(), ConvertLocation2AddressResponse.class);
 
-        if (data != null && data.getStatus() != null && data.getStatus() == 0) {
+        assert data != null;
+        if (data.getStatus() != null && data.getStatus() == 0) {
             logger.debug("[逆地址解析] longitude=" + longitude + ", latitude=" + latitude + ", 请求结果 status=" + data.getStatus());
             return data;
-        } else {
-            throw new Exception("IP 定位请求错误");
         }
+
+        throw new ExternalHttpRequestException("逆地址解析", url, data.getStatus(), data.getMessage());
     }
 }

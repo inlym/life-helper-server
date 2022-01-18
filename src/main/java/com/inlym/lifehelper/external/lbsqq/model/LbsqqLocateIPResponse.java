@@ -22,7 +22,7 @@ public class LbsqqLocateIPResponse {
     private Result result;
 
     @Data
-    static class Result {
+    public static class Result {
         /** 用于定位的IP地址 */
         private String ip;
 
@@ -34,7 +34,7 @@ public class LbsqqLocateIPResponse {
         private AddressInfo addressInfo;
 
         @Data
-        static class Location {
+        public static class Location {
             /** 经度 */
             @JsonProperty("lng")
             private Double longitude;
@@ -45,7 +45,7 @@ public class LbsqqLocateIPResponse {
         }
 
         @Data
-        static class AddressInfo {
+        public static class AddressInfo {
             /** 国家 */
             private String nation;
 
