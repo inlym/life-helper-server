@@ -1,15 +1,13 @@
 package com.inlym.lifehelper.common;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
+import com.inlym.lifehelper.common.model.ExceptionResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 全局异常处理器
@@ -25,14 +23,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ExternalHttpRequestException.class)
-    public Map<String, Object> handleExternalHttpRequestException(ExternalHttpRequestException e) {
+    public ExceptionResponse handleExternalHttpRequestException(ExternalHttpRequestException e) {
         logger.error(e.getMessage());
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("errCode", 50001);
-        map.put("errMsg", "内部错误");
-
-        return map;
+        return new ExceptionResponse(50001, "内部错误");
     }
 
     /**
@@ -40,13 +33,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public Map<String, Object> handler(Exception e) {
+    public ExceptionResponse handler(Exception e) {
         logger.error(e.getMessage());
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("errCode", 50000);
-        map.put("errMsg", "内部错误");
-
-        return map;
+        return new ExceptionResponse(50000, "内部错误");
     }
 }
