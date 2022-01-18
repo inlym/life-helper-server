@@ -3,8 +3,10 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.constant.RequestAttributeName;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,16 +14,15 @@ import java.io.IOException;
 
 /**
  * 获取客户端 IP 地址
- */
+ *
+ * @author inlym
+ * @since 2022-01-18 23:32
+ **/
 @Order(2)
 @WebFilter(urlPatterns = "/*")
-public class ClientIpFilter implements Filter {
+public class ClientIPFilter extends OncePerRequestFilter {
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
-    }
-
-    private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // 在正式环境，请求通过 API 网关时，会在指定字段（`X-Client-Ip`）添加客户端 IP 地址，
         // 同时，客户端可能伪造请求，直接传递该字段，在 API 网关做的处理是：
         // 直接该请求头值尾部加上 `, ` 和客户端 IP 地址
