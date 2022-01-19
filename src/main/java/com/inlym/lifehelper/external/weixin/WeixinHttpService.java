@@ -94,7 +94,7 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            logger.info("[code2Session] data=" + data);
+            logger.info("[getAccessToken] data=" + data);
             return data;
         }
 
