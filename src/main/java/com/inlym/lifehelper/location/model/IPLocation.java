@@ -4,10 +4,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * IP 地址位置信息
+ * 根据 IP 地址能够获得的位置信息
  *
  * @author inlym
- * @since 2022-01-18 21:47
+ * @since 2022-01-19 20:13
  **/
 @Data
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class IPLocation {
     private Double latitude;
 
     /** 国家 */
-    private String nation;
+    private String country;
 
     /** 省 */
     private String province;
@@ -29,7 +29,4 @@ public class IPLocation {
 
     /** 区 */
     private String district;
-
-    /** 行政区划代码 */
-    private String adcode;
 }

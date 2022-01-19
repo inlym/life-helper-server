@@ -2,7 +2,7 @@ package com.inlym.lifehelper.external.amap;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.amap.model.AmapLocateIPResponse;
-import com.inlym.lifehelper.external.amap.model.IPLocation;
+import com.inlym.lifehelper.location.model.IPLocation;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
