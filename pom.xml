@@ -105,12 +105,6 @@
             <version>3.13.2</version>
         </dependency>
 
-        <!-- XML 数据转化 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>
-
         <!-- Swagger 3 依赖 -->
         <dependency>
             <groupId>io.springfox</groupId>
