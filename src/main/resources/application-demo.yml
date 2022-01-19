@@ -57,3 +57,8 @@ lbsqq:
 hefeng:
     pro-key: xxxxxxxxxxxx
     dev-key: xxxxxxxxxxxx
+
+# 高德
+amap:
+    # 开发者密钥
+    key: xxxxxxxxxxxx
