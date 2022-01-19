@@ -6,6 +6,8 @@ import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 微信小程序服务端 HTTP 请求封装类
@@ -95,6 +99,47 @@ public class WeixinHttpService {
         }
 
         throw new ExternalHttpRequestException("getAccessToken", url, data.getErrCode(), data.getErrMsg());
+    }
+
+    /**
+     * 获取数量无限制的小程序码
+     *
+     * @param accessToken 接口调用凭证
+     * @param scene       最大32个可见字符，只支持数字，大小写英文以及部分特殊字符
+     * @param page        页面 page，根路径前不要填加 /，不能携带参数（参数请放在scene字段里）
+     * @param width       二维码的宽度，单位 px，最小 280px，最大 1280px
+     *
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html">wxacode.getUnlimited</a>
+     */
+    public byte[] getUnlimitedWxacode(String accessToken, String scene, String page, int width) throws ExternalHttpRequestException {
+        String baseURL = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
+
+        String url = UriComponentsBuilder
+            .fromHttpUrl(baseURL)
+            .queryParam("access_token", accessToken)
+            .build()
+            .toUriString();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("scene", scene);
+        map.put("page", page);
+        map.put("width", width);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+
+        byte[] data = restTemplate.postForObject(url, request, byte[].class);
+
+        // 实测 `data.length` 响应正常是 83748，异常是 118
+        // 因此可以判断 `data.length` 是否大于 1000 来判定响应是否正常
+        assert data != null;
+        if (data.length > 1000) {
+            return data;
+        }
+
+        throw new ExternalHttpRequestException("获取小程序码", url, "xxx", new String(data));
     }
 
     /**
