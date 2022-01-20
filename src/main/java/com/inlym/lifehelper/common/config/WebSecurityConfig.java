@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.config;
+package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.auth.jwt.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.config;
+package com.inlym.lifehelper.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.config;
+package com.inlym.lifehelper.common.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
