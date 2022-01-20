@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common;
+package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.common.exception.WeixinInvalidAccessTokenException;
