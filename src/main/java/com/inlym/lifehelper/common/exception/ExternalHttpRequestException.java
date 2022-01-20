@@ -40,7 +40,7 @@ public class ExternalHttpRequestException extends Exception {
         this.message = message;
     }
 
-    public ExternalHttpRequestException(String name, String url, int code, String errMessage) {
-        this(name, url, String.valueOf(code), errMessage);
+    public ExternalHttpRequestException(String name, String url, String code) {
+        this(name, url, code, "");
     }
 }
