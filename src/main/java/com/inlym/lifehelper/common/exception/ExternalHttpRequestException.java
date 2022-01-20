@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.exception;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 对外 HTTP 请求异常
@@ -13,37 +13,34 @@ import lombok.Setter;
  * @author inlym
  * @since 2022-01-18 00:11
  **/
+@ToString
 public class ExternalHttpRequestException extends Exception {
     /** 第三方 API 名称（中文描述） */
     @Getter
-    @Setter
-    private String name;
+    private final String name;
 
     /** 发起 HTTP 请求的 URL 地址 */
     @Getter
-    @Setter
-    private String url;
+    private final String url;
 
     /** 错误状态码 */
     @Getter
-    @Setter
-    private String errCode;
+    private final String code;
 
     /** 错误消息 */
     @Getter
-    @Setter
-    private String errMessage;
+    private final String message;
 
-    public ExternalHttpRequestException(String name, String url, String errCode, String errMessage) {
-        super("[" + name + "] 请求异常, url=" + url + ", errCode=" + errCode + ", errMessage=" + errMessage);
+    public ExternalHttpRequestException(String name, String url, String code, String message) {
+        super();
 
         this.name = name;
         this.url = url;
-        this.errCode = errCode;
-        this.errMessage = errMessage;
+        this.code = code;
+        this.message = message;
     }
 
-    public ExternalHttpRequestException(String name, String url, int errCode, String errMessage) {
-        this(name, url, String.valueOf(errCode), errMessage);
+    public ExternalHttpRequestException(String name, String url, int code, String errMessage) {
+        this(name, url, String.valueOf(code), errMessage);
     }
 }

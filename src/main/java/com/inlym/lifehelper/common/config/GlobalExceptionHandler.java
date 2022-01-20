@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ExternalHttpRequestException.class)
     public ExceptionResponse handleExternalHttpRequestException(ExternalHttpRequestException e) {
-        logger.error(e.getMessage());
+        logger.error(e);
         return new ExceptionResponse(50001, "内部错误");
     }
 
