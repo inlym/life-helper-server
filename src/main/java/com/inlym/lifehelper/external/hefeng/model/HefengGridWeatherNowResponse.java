@@ -34,7 +34,7 @@ public class HefengGridWeatherNowResponse {
         /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
         private String text;
 
-        /** 风向360角度 */
+        /** 风向360角度（文档标记有，但实际请求结果并无该字段） */
         private String wind360;
 
         /** 风向 */
@@ -43,7 +43,7 @@ public class HefengGridWeatherNowResponse {
         /** 风力等级 */
         private String windScale;
 
-        /** 风速，公里/小时 */
+        /** 风速，公里/小时（文档标记有，但实际请求结果并无该字段） */
         private String windSpeed;
 
         /** 相对湿度，百分比数值 */
@@ -55,10 +55,10 @@ public class HefengGridWeatherNowResponse {
         /** 大气压强，默认单位：百帕 */
         private String pressure;
 
-        /** 云量，百分比数值。可能为空 */
+        /** 云量，百分比数值。可能为空（文档标记有，但实际请求结果并无该字段） */
         private String cloud;
 
-        /** 露点温度。可能为空 */
+        /** 露点温度。可能为空（文档标记有，但实际请求结果并无该字段） */
         private String dew;
     }
 }
