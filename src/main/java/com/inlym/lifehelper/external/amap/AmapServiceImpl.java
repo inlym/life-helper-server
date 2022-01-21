@@ -16,10 +16,10 @@ import org.springframework.util.Assert;
  **/
 @Service
 @Primary
-public class AmapService implements LocationService {
+public class AmapServiceImpl implements LocationService {
     private final AmapHttpService amapHttpService;
 
-    public AmapService(AmapHttpService amapHttpService) {this.amapHttpService = amapHttpService;}
+    public AmapServiceImpl(AmapHttpService amapHttpService) {this.amapHttpService = amapHttpService;}
 
     /**
      * IP 定位
@@ -29,7 +29,7 @@ public class AmapService implements LocationService {
     @Override
     public IPLocation locateIp(String ip) throws ExternalHttpRequestException {
         Assert.notNull(ip, "IP 地址不允许为空");
-        AmapLocateIPResponse result = amapHttpService.locateIP(ip);
+        AmapLocateIPResponse result = amapHttpService.locateIp(ip);
 
         String[] list = result
             .getLocation()
