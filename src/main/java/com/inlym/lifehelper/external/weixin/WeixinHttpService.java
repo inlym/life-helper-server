@@ -3,8 +3,7 @@ package com.inlym.lifehelper.external.weixin;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.weixin.model.WeixinCode2SessionResponse;
 import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,9 +26,8 @@ import java.util.Map;
  * 2. 数据处理在 `WeixinService` 类中的方法中执行。
  */
 @Service
+@Slf4j
 public class WeixinHttpService {
-    private final Log logger = LogFactory.getLog(getClass());
-
     private final WeixinProperties weixinProperties;
 
     private final RestTemplate restTemplate;
@@ -52,10 +50,10 @@ public class WeixinHttpService {
      */
     @Cacheable("weixin:session")
     public WeixinCode2SessionResponse code2Session(String code) throws ExternalHttpRequestException {
-        String baseURL = "https://api.weixin.qq.com/sns/jscode2session";
+        String baseUrl = "https://api.weixin.qq.com/sns/jscode2session";
 
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("appid", weixinProperties.getAppid())
             .queryParam("secret", weixinProperties.getSecret())
             .queryParam("js_code", code)
@@ -67,7 +65,7 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            logger.info("[code2Session] code=" + code + ", data=" + data);
+            log.info("[code2Session] code=" + code + ", data=" + data);
             return data;
         }
 
@@ -80,10 +78,10 @@ public class WeixinHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
      */
     public WeixinGetAccessTokenResponse getAccessToken() throws ExternalHttpRequestException {
-        String baseURL = "https://api.weixin.qq.com/cgi-bin/token";
+        String baseUrl = "https://api.weixin.qq.com/cgi-bin/token";
 
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("grant_type", "client_credential")
             .queryParam("appid", weixinProperties.getAppid())
             .queryParam("secret", weixinProperties.getSecret())
@@ -94,7 +92,7 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            logger.info("[getAccessToken] data=" + data);
+            log.info("[getAccessToken] data=" + data);
             return data;
         }
 
@@ -112,10 +110,10 @@ public class WeixinHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html">wxacode.getUnlimited</a>
      */
     public byte[] getUnlimitedWxacode(String accessToken, String scene, String page, int width) throws ExternalHttpRequestException {
-        String baseURL = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
+        String baseUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
 
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("access_token", accessToken)
             .build()
             .toUriString();

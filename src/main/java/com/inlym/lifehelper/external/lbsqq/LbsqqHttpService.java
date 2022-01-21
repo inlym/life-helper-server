@@ -3,8 +3,7 @@ package com.inlym.lifehelper.external.lbsqq;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.lbsqq.model.ConvertLocation2AddressResponse;
 import com.inlym.lifehelper.external.lbsqq.model.LbsqqLocateIPResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,9 +11,8 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
+@Slf4j
 public class LbsqqHttpService {
-    private final Log logger = LogFactory.getLog(getClass());
-
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final LbsqqProperties lbsqqProperties;
@@ -46,10 +44,10 @@ public class LbsqqHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
      */
     @Cacheable("lbsqq:locate-ip")
-    public LbsqqLocateIPResponse locateIP(String ip) throws ExternalHttpRequestException {
-        String baseURL = "https://apis.map.qq.com/ws/location/v1/ip";
+    public LbsqqLocateIPResponse locateIp(String ip) throws ExternalHttpRequestException {
+        String baseUrl = "https://apis.map.qq.com/ws/location/v1/ip";
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("ip", ip)
             .queryParam("key", getKey())
             .build()
@@ -59,7 +57,7 @@ public class LbsqqHttpService {
 
         assert data != null;
         if (data.getStatus() == 0) {
-            logger.info("[IP 定位] ip=" + ip + ", 请求结果 data=" + data);
+            log.info("[IP 定位] ip=" + ip + ", 请求结果 data=" + data);
             return data;
         }
 
@@ -89,7 +87,7 @@ public class LbsqqHttpService {
 
         assert data != null;
         if (data.getStatus() != null && data.getStatus() == 0) {
-            logger.debug("[逆地址解析] longitude=" + longitude + ", latitude=" + latitude + ", 请求结果 status=" + data.getStatus());
+            log.debug("[逆地址解析] longitude=" + longitude + ", latitude=" + latitude + ", 请求结果 status=" + data.getStatus());
             return data;
         }
 

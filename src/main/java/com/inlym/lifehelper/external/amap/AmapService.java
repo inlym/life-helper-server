@@ -27,7 +27,7 @@ public class AmapService implements LocationService {
      * @param ip IP 地址
      */
     @Override
-    public IPLocation locateIP(String ip) throws ExternalHttpRequestException {
+    public IPLocation locateIp(String ip) throws ExternalHttpRequestException {
         Assert.notNull(ip, "IP 地址不允许为空");
         AmapLocateIPResponse result = amapHttpService.locateIP(ip);
 

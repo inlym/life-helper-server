@@ -17,6 +17,10 @@ public interface LocationService {
      * IP 定位
      *
      * @param ip IP 地址
+     *
+     * @return 经纬度和省市区等信息
+     *
+     * @throws ExternalHttpRequestException 对外 HTTP 请求异常
      */
-    IPLocation locateIP(String ip) throws ExternalHttpRequestException;
+    IPLocation locateIp(String ip) throws ExternalHttpRequestException;
 }

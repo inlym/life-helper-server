@@ -2,8 +2,7 @@ package com.inlym.lifehelper.external.hefeng;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.hefeng.model.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -26,8 +25,10 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @since 2022-01-15 18:54
  */
 @Service
+@Slf4j
 public class HefengHttpService {
-    private final Log logger = LogFactory.getLog(getClass());
+    /** 表示请求成功的 `code` 值 */
+    public static final String SUCCESS_CODE = "200";
 
     private final RestTemplate restTemplate;
 
@@ -53,11 +54,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:city")
     public HefengLookUpCityResponse lockUpCity(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://geoapi.qweather.com/v2/city/lookup";
+        String baseUrl = "https://geoapi.qweather.com/v2/city/lookup";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getDevKey())
             .build()
@@ -66,11 +67,9 @@ public class HefengHttpService {
         HefengLookUpCityResponse data = restTemplate.getForObject(url, HefengLookUpCityResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[城市信息查询] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[城市信息查询] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -88,11 +87,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:now")
     public HefengWeatherNowResponse getWeatherNow(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://devapi.qweather.com/v7/weather/now";
+        String baseUrl = "https://devapi.qweather.com/v7/weather/now";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getDevKey())
             .build()
@@ -101,11 +100,9 @@ public class HefengHttpService {
         HefengWeatherNowResponse data = restTemplate.getForObject(url, HefengWeatherNowResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[实时天气] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[实时天气] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -127,11 +124,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:daily")
     public HefengWeatherDailyForecastResponse getWeatherDailyForecast(String location, String days) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/weather/" + days;
+        String baseUrl = "https://api.qweather.com/v7/weather/" + days;
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -140,11 +137,9 @@ public class HefengHttpService {
         HefengWeatherDailyForecastResponse data = restTemplate.getForObject(url, HefengWeatherDailyForecastResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[逐天天气预报] location=" + location + ", days=" + days + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[逐天天气预报] location=" + location + ", days=" + days + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -163,11 +158,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:hourly")
     public HefengWeatherHourlyForecastResponse getWeatherHourlyForecast(String location, String hours) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/weather/" + hours;
+        String baseUrl = "https://api.qweather.com/v7/weather/" + hours;
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -176,11 +171,9 @@ public class HefengHttpService {
         HefengWeatherHourlyForecastResponse data = restTemplate.getForObject(url, HefengWeatherHourlyForecastResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[逐小时天气预报] location=" + location + ", hours=" + hours + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[逐小时天气预报] location=" + location + ", hours=" + hours + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -198,11 +191,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:grid-now")
     public HefengGridWeatherNowResponse getGridWeatherNow(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/grid-weather/now";
+        String baseUrl = "https://api.qweather.com/v7/grid-weather/now";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -211,11 +204,9 @@ public class HefengHttpService {
         HefengGridWeatherNowResponse data = restTemplate.getForObject(url, HefengGridWeatherNowResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[格点实时天气] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[格点实时天气] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -234,11 +225,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:grid-daily")
     public HefengGridWeatherDailyForecastResponse getGridWeatherDailyForecast(String location, String days) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/weather/" + days;
+        String baseUrl = "https://api.qweather.com/v7/weather/" + days;
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -247,11 +238,9 @@ public class HefengHttpService {
         HefengGridWeatherDailyForecastResponse data = restTemplate.getForObject(url, HefengGridWeatherDailyForecastResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[格点逐天天气预报] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[格点逐天天气预报] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -270,11 +259,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:grid-hourly")
     public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecast(String location, String hours) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/weather/" + hours;
+        String baseUrl = "https://api.qweather.com/v7/weather/" + hours;
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -283,11 +272,9 @@ public class HefengHttpService {
         HefengGridWeatherHourlyForecastResponse data = restTemplate.getForObject(url, HefengGridWeatherHourlyForecastResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[格点逐小时天气预报] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[格点逐小时天气预报] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -305,11 +292,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:grid-minutely-rain")
     public HefengGridWeatherMinutelyRainResponse getGridWeatherMinutelyRain(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/minutely/5m";
+        String baseUrl = "https://api.qweather.com/v7/minutely/5m";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -318,11 +305,9 @@ public class HefengHttpService {
         HefengGridWeatherMinutelyRainResponse data = restTemplate.getForObject(url, HefengGridWeatherMinutelyRainResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[分钟级降水] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[分钟级降水] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -340,11 +325,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:indices")
     public HefengIndicesResponse getIndices(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://devapi.qweather.com/v7/indices/1d";
+        String baseUrl = "https://devapi.qweather.com/v7/indices/1d";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getDevKey())
             .queryParam("type", "0")
@@ -354,11 +339,9 @@ public class HefengHttpService {
         HefengIndicesResponse data = restTemplate.getForObject(url, HefengIndicesResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[天气生活指数] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[天气生活指数] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -376,11 +359,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:air-now")
     public HefengAirNowResponse getAirNow(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://devapi.qweather.com/v7/air/now";
+        String baseUrl = "https://devapi.qweather.com/v7/air/now";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getDevKey())
             .build()
@@ -389,11 +372,9 @@ public class HefengHttpService {
         HefengAirNowResponse data = restTemplate.getForObject(url, HefengAirNowResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[实时空气质量] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[实时空气质量] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
@@ -411,11 +392,11 @@ public class HefengHttpService {
     @Cacheable("hefeng:air-daily")
     public HefengAirDailyForecastResponse getAirDailyForecast(String location) throws ExternalHttpRequestException {
         // 不含参数的请求地址前缀
-        String baseURL = "https://api.qweather.com/v7/air/5d";
+        String baseUrl = "https://api.qweather.com/v7/air/5d";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseURL)
+            .fromHttpUrl(baseUrl)
             .queryParam("location", location)
             .queryParam("key", hefengProperties.getProKey())
             .build()
@@ -424,11 +405,9 @@ public class HefengHttpService {
         HefengAirDailyForecastResponse data = restTemplate.getForObject(url, HefengAirDailyForecastResponse.class);
 
         assert data != null;
-        if (data
-            .getCode()
-            .equals("200")) {
-            logger.info("[空气质量预报] location=" + location + ", data=" + data);
-            logger.debug(url);
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[空气质量预报] location=" + location + ", data=" + data);
+            log.debug(url);
 
             return data;
         }
