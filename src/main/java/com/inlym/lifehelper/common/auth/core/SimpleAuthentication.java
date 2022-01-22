@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.auth.core;
+package com.inlym.lifehelper.common.auth.core;
 
 import com.inlym.lifehelper.common.constant.Role;
 import org.springframework.security.core.Authentication;

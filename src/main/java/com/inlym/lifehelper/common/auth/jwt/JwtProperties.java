@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.auth.jwt;
+package com.inlym.lifehelper.common.auth.jwt;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

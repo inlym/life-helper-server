@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.auth.jwt;
+package com.inlym.lifehelper.common.auth.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.inlym.lifehelper.auth.core.SimpleAuthentication;
+import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
