@@ -5,16 +5,19 @@
         <result property="id" column="id"/>
         <result property="openid" column="openid"/>
         <result property="phone" column="phone"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="avatar" column="avatar"/>
+        <result property="registerTime" column="register_time"/>
     </resultMap>
 
     <select id="findUserByOpenid" resultMap="UserResult">
-        select id, openid, phone
-        from user
-        where openid = #{openid}
+        SELECT id, openid, phone, phone, nick_name, avatar, register_time
+        FROM `user`
+        WHERE openid = #{openid}
     </select>
 
     <insert id="insertWithOpenid" keyProperty="id" useGeneratedKeys="true">
-        insert into user(openid)
-        values (#{user.openid})
+        insert into user(openid, register_time)
+        values (#{user.openid}, now())
     </insert>
 </mapper>

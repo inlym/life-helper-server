@@ -2,9 +2,18 @@ package com.inlym.lifehelper.user;
 
 import com.inlym.lifehelper.user.entity.User;
 import com.inlym.lifehelper.user.mapper.UserMapper;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * 用户账户服务类
+ *
+ * @author inlym
+ * @since 2022-01-23 00:33
+ */
 @Service
+@Slf4j
 public class UserService {
     private final UserMapper userMapper;
 
@@ -15,7 +24,7 @@ public class UserService {
      *
      * @param openid 微信小程序用户唯一标识
      */
-    public int getUserIdByOpenid(String openid) {
+    public int getUserIdByOpenid(@NonNull String openid) {
         User user = userMapper.findUserByOpenid(openid);
         if (user != null) {
             return user.getId();
@@ -23,6 +32,8 @@ public class UserService {
             User newUser = new User();
             newUser.setOpenid(openid);
             userMapper.insertWithOpenid(newUser);
+            log.info("新注册用户：" + newUser);
+
             return newUser.getId();
         }
     }
