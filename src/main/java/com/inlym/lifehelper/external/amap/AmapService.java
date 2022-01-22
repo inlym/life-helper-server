@@ -1,8 +1,9 @@
 package com.inlym.lifehelper.external.amap;
 
-import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.amap.model.AmapLocateIPResponse;
 import com.inlym.lifehelper.location.model.IPLocation;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -16,6 +17,7 @@ import org.springframework.util.Assert;
  * @since 2022-01-19 20:24
  **/
 @Service
+@Slf4j
 public class AmapService {
     private final AmapHttpService amapHttpService;
 
@@ -26,7 +28,8 @@ public class AmapService {
      *
      * @param ip IP 地址
      */
-    public IPLocation locateIp(String ip) throws ExternalHttpRequestException {
+    @SneakyThrows
+    public IPLocation locateIp(String ip) {
         Assert.notNull(ip, "IP 地址不允许为空");
         AmapLocateIPResponse result = amapHttpService.locateIp(ip);
 
