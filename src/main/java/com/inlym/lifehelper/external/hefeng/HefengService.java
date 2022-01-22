@@ -1,8 +1,9 @@
 package com.inlym.lifehelper.external.hefeng;
 
-import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.hefeng.model.*;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -66,21 +67,22 @@ public class HefengService {
      * @param longitude 经度
      * @param latitude  纬度
      */
-    public WeatherNow getWeatherNow(double longitude, double latitude) throws ExternalHttpRequestException {
+    @SneakyThrows
+    public WeatherNow getWeatherNow(double longitude, double latitude) {
         String location = joinCoordinate(longitude, latitude);
         HefengWeatherNowResponse res = hefengHttpService.getWeatherNow(location);
         HefengWeatherNowResponse.WeatherNow now = res.getNow();
 
         WeatherNow weatherNow = new WeatherNow();
-        weatherNow.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
+        BeanUtils.copyProperties(now, weatherNow);
+
+        // 以下3个属性改了名称，因此需要额外进行赋值
         weatherNow.setTemperature(now.getTemp());
-        weatherNow.setIcon(now.getIcon());
-        weatherNow.setText(now.getText());
         weatherNow.setWindDirection(now.getWindDir());
-        weatherNow.setWindScale(now.getWindScale());
-        weatherNow.setHumidity(now.getHumidity());
         weatherNow.setPrecipitation(now.getPrecip());
-        weatherNow.setPressure(now.getPressure());
+
+        // 新增的字段赋值
+        weatherNow.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
 
         return weatherNow;
     }
@@ -91,21 +93,22 @@ public class HefengService {
      * @param longitude 经度
      * @param latitude  纬度
      */
-    public WeatherNow getGridWeatherNow(double longitude, double latitude) throws ExternalHttpRequestException {
+    @SneakyThrows
+    public WeatherNow getGridWeatherNow(double longitude, double latitude) {
         String location = joinCoordinate(longitude, latitude);
         HefengGridWeatherNowResponse res = hefengHttpService.getGridWeatherNow(location);
         HefengGridWeatherNowResponse.GridWeatherNow now = res.getNow();
 
         WeatherNow weatherNow = new WeatherNow();
-        weatherNow.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
+        BeanUtils.copyProperties(now, weatherNow);
+
+        // 以下3个属性改了名称，因此需要额外进行赋值
         weatherNow.setTemperature(now.getTemp());
-        weatherNow.setIcon(now.getIcon());
-        weatherNow.setText(now.getText());
         weatherNow.setWindDirection(now.getWindDir());
-        weatherNow.setWindScale(now.getWindScale());
-        weatherNow.setHumidity(now.getHumidity());
         weatherNow.setPrecipitation(now.getPrecip());
-        weatherNow.setPressure(now.getPressure());
+
+        // 新增的字段赋值
+        weatherNow.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
 
         return weatherNow;
     }

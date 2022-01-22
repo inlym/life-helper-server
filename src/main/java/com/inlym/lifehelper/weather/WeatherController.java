@@ -58,4 +58,16 @@ public class WeatherController {
 
         return weatherService.getWeatherNow(coordinate.getLongitude(), coordinate.getLatitude());
     }
+
+    /**
+     * 获取格点实时天气
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
+     */
+    @GetMapping("/weather/grid-now")
+    public WeatherNow getGridWeatherNow(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
+        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+
+        return weatherService.getGridWeatherNow(coordinate.getLongitude(), coordinate.getLatitude());
+    }
 }
