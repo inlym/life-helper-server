@@ -2,6 +2,7 @@ package com.inlym.lifehelper.weather;
 
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.validation.LocationString;
+import com.inlym.lifehelper.external.hefeng.model.MinutelyRain;
 import com.inlym.lifehelper.external.hefeng.model.WeatherNow;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.model.LocationCoordinate;
@@ -69,5 +70,17 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
 
         return weatherService.getGridWeatherNow(coordinate.getLongitude(), coordinate.getLatitude());
+    }
+
+    /**
+     * 获取分钟级降水
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
+     */
+    @GetMapping("/weather/rain")
+    public MinutelyRain getMinutelyRain(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
+        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+
+        return weatherService.getMinutelyRain(coordinate.getLongitude(), coordinate.getLatitude());
     }
 }

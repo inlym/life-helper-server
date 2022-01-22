@@ -25,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class HefengService {
+    /** icon 图标存放的目录地址 */
+    private static final String ICON_BASE_URL = "https://static.lifehelper.com.cn/static/hefeng/";
+
     private final HefengHttpService hefengHttpService;
 
     public HefengService(HefengHttpService hefengHttpService) {this.hefengHttpService = hefengHttpService;}
@@ -62,6 +65,15 @@ public class HefengService {
     }
 
     /**
+     * 生成 icon 图片的网络地址
+     *
+     * @param iconId icon 字段数据
+     */
+    private static String makeIconUrl(String iconId) {
+        return ICON_BASE_URL + "c1/" + iconId + ".svg";
+    }
+
+    /**
      * 获取实时天气
      *
      * @param longitude 经度
@@ -83,6 +95,7 @@ public class HefengService {
 
         // 新增的字段赋值
         weatherNow.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
+        weatherNow.setIconUrl(makeIconUrl(now.getIcon()));
 
         return weatherNow;
     }
@@ -103,46 +116,47 @@ public class HefengService {
         BeanUtils.copyProperties(now, weatherNow);
 
         // 以下3个属性改了名称，因此需要额外进行赋值
+        weatherNow.setPrecipitation(now.getPrecip());
         weatherNow.setTemperature(now.getTemp());
         weatherNow.setWindDirection(now.getWindDir());
-        weatherNow.setPrecipitation(now.getPrecip());
 
         // 新增的字段赋值
         weatherNow.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
+        weatherNow.setIconUrl(makeIconUrl(now.getIcon()));
 
         return weatherNow;
     }
 
     /**
-     * 获取未来 7 天格点逐天天气预报
+     * 获取分钟级降水
      *
      * @param longitude 经度
      * @param latitude  纬度
      */
-    public HefengGridWeatherDailyForecastResponse getGridWeatherDailyForecastFor7d(double longitude, double latitude) throws Exception {
+    @SneakyThrows
+    public MinutelyRain getMinutelyRain(double longitude, double latitude) {
         String location = joinCoordinate(longitude, latitude);
-        return hefengHttpService.getGridWeatherDailyForecast(location, "7d");
-    }
+        HefengGridWeatherMinutelyRainResponse res = hefengHttpService.getGridWeatherMinutelyRain(location);
+        HefengGridWeatherMinutelyRainResponse.GridMinutelyForecast[] minutely = res.getMinutely();
 
-    /**
-     * 获取未来 24 小时格点逐小时天气预报
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     */
-    public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecastFor24h(double longitude, double latitude) throws Exception {
-        String location = joinCoordinate(longitude, latitude);
-        return hefengHttpService.getGridWeatherHourlyForecast(location, "24h");
-    }
+        MinutelyRain minutelyRain = new MinutelyRain();
+        minutelyRain.setSummary(res.getSummary());
+        minutelyRain.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
 
-    /**
-     * 获取未来 72 小时格点逐小时天气预报
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     */
-    public HefengGridWeatherHourlyForecastResponse getGridWeatherHourlyForecastFor72h(double longitude, double latitude) throws Exception {
-        String location = joinCoordinate(longitude, latitude);
-        return hefengHttpService.getGridWeatherHourlyForecast(location, "72h");
+        MinutelyRain.MinutelyRainItem[] list = new MinutelyRain.MinutelyRainItem[minutely.length];
+        for (int i = 0; i < res.getMinutely().length; i++) {
+            MinutelyRain.MinutelyRainItem item = new MinutelyRain.MinutelyRainItem();
+            item.setType(minutely[i].getType());
+            item.setPrecipitation(minutely[i].getPrecip());
+            item.setTime(minutely[i]
+                .getFxTime()
+                .substring(11, 16));
+
+            list[i] = item;
+        }
+
+        minutelyRain.setList(list);
+
+        return minutelyRain;
     }
 }

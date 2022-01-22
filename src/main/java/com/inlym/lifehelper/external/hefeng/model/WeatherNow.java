@@ -28,6 +28,9 @@ public class WeatherNow {
     /** 天气状况和图标的代码 */
     private String icon;
 
+    /** 图标的 URL 地址 */
+    private String iconUrl;
+
     /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
     private String text;
 
