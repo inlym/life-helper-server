@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
-import com.inlym.lifehelper.common.exception.WeixinInvalidAccessTokenException;
 import com.inlym.lifehelper.common.model.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,9 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 /**
  * 全局异常处理器
  *
+ * @author inlym
  * @since 2022-01-17 22:31
  */
 @RestControllerAdvice
@@ -28,13 +30,12 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 微信服务端接口调用凭据失效异常
+     * 数据校验不通过异常
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(WeixinInvalidAccessTokenException.class)
-    public ExceptionResponse handleWeixinInvalidAccessTokenException(WeixinInvalidAccessTokenException e) {
-        log.info("微信服务端接口调用凭证异常，错误信息：" + e);
-        return new ExceptionResponse(50002, "内部错误");
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ExceptionResponse handleConstraintViolationException(ConstraintViolationException e) {
+        return new ExceptionResponse(40000, "缺少参数或参数格式不正确");
     }
 
     /**
@@ -44,6 +45,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ExceptionResponse handler(Exception e) {
         log.error(e.getMessage());
-        return new ExceptionResponse(50000, "内部错误");
+        return new ExceptionResponse(50000, "服务器内部错误");
     }
 }
