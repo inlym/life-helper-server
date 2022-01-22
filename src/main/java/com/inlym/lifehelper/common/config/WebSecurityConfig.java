@@ -1,20 +1,20 @@
 package com.inlym.lifehelper.common.config;
 
-import com.inlym.lifehelper.auth.jwt.JWTAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Spring Security 配置
+ *
+ * @author inlym
+ * @since 2022-01-22 20:33
+ */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -29,8 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf()
             .disable();
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+        // 默认所有 API 均免鉴权，需要鉴权的 API 再额外使用 @Secured 注解声明需要的角色
         http
             .authorizeRequests()
             .anyRequest()

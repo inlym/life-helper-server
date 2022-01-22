@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.auth.core;
 
+import com.inlym.lifehelper.common.constant.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +13,9 @@ import java.util.List;
  * 简单鉴权凭证
  * <p>
  * 只提供用户 ID 和权限信息
+ *
+ * @author inlym
+ * @since 2022-01-22 20:18
  */
 public class SimpleAuthentication implements Authentication {
     private final Integer userId;
@@ -22,17 +26,17 @@ public class SimpleAuthentication implements Authentication {
 
     public SimpleAuthentication(int userId) {
         this.userId = userId;
+        this.authorities.add(new SimpleGrantedAuthority(Role.USER));
         this.authenticated = true;
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     public SimpleAuthentication(int userId, String[] roles) {
-        this.userId = userId;
-
         for (String role : roles) {
             this.authorities.add(new SimpleGrantedAuthority(role));
         }
 
+        this.userId = userId;
+        this.authorities.add(new SimpleGrantedAuthority(Role.USER));
         this.authenticated = true;
     }
 

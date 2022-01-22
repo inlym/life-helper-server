@@ -23,6 +23,11 @@ spring:
     # 缓存配置
     cache:
         type: redis
+    security:
+        filter:
+            # 鉴权过滤器排序
+            order: 10000
+
 
 # 微信小程序服务端配置
 weixin:
