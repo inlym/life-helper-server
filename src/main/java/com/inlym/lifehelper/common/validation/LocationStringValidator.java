@@ -27,6 +27,11 @@ public class LocationStringValidator implements ConstraintValidator<LocationStri
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        // 允许不传该字段，如果要传则必须符合格式要求
+        if (s == null) {
+            return true;
+        }
+
         String[] list = s.split(",");
         if (list.length == LIST_LENGTH) {
             double longitude = Double.parseDouble(list[0]);
