@@ -2,7 +2,6 @@ package com.inlym.lifehelper.external.lbsqq;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.lbsqq.model.LbsqqLocateIPResponse;
-import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.model.IPLocation;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -14,17 +13,16 @@ import org.springframework.util.Assert;
  * @since 2022-01-18 22:01
  **/
 @Service
-public class LbsqqServiceImpl implements LocationService {
+public class LbsqqService {
     private final LbsqqHttpService lbsqqHttpService;
 
-    public LbsqqServiceImpl(LbsqqHttpService lbsqqHttpService) {this.lbsqqHttpService = lbsqqHttpService;}
+    public LbsqqService(LbsqqHttpService lbsqqHttpService) {this.lbsqqHttpService = lbsqqHttpService;}
 
     /**
      * IP 定位
      *
      * @param ip IP 地址
      */
-    @Override
     public IPLocation locateIp(String ip) throws ExternalHttpRequestException {
         Assert.notNull(ip, "IP 地址不允许为空");
         Assert.isTrue(!ip.isEmpty(), "IP 地址不允许为空");
