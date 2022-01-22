@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.external.weixin;
 
-import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 微信服务
+ *
+ * @author inlym
+ * @since 2022-01-23 01:43
+ */
 @Service
 @Slf4j
 public class WeixinService {
@@ -30,7 +36,8 @@ public class WeixinService {
      *
      * @param code 微信小程序端通过 wx.login 获取的 code
      */
-    public String getOpenidByCode(String code) throws ExternalHttpRequestException {
+    @SneakyThrows
+    public String getOpenidByCode(String code) {
         return weixinHttpService
             .code2Session(code)
             .getOpenid();
@@ -39,7 +46,8 @@ public class WeixinService {
     /**
      * 更新在 Redis 中的微信服务端接口调用凭证
      */
-    private String updateAccessToken() throws ExternalHttpRequestException {
+    @SneakyThrows
+    private String updateAccessToken() {
         WeixinGetAccessTokenResponse data = weixinHttpService.getAccessToken();
         String accessToken = data.getAccessToken();
         int expiration = data.getExpiresIn();
@@ -54,7 +62,8 @@ public class WeixinService {
     /**
      * 用于内部使用获取微信服务端接口调用凭证
      */
-    private String getAccessTokenInternal() throws ExternalHttpRequestException {
+    @SneakyThrows
+    private String getAccessTokenInternal() {
         String token = stringRedisTemplate
             .opsForValue()
             .get(WEIXIN_ACCESS_TOKEN_KEY);
@@ -67,7 +76,7 @@ public class WeixinService {
      * 任务每 60 分钟执行一次
      */
     @Scheduled(fixedRate = 60, timeUnit = TimeUnit.MINUTES)
-    private void updateAccessTokenCron() throws ExternalHttpRequestException {
+    private void updateAccessTokenCron() {
         String token = updateAccessToken();
         log.info("[定时任务] 更新在 Redis 中的微信服务端接口调用凭证，新的凭证=" + token);
     }
