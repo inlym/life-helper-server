@@ -1,9 +1,6 @@
 package com.inlym.lifehelper.external.hefeng;
 
-import com.inlym.lifehelper.external.hefeng.model.HefengGridWeatherMinutelyRainResponse;
-import com.inlym.lifehelper.external.hefeng.model.HefengWeatherNowResponse;
-import com.inlym.lifehelper.external.hefeng.model.MinutelyRain;
-import com.inlym.lifehelper.external.hefeng.model.WeatherNow;
+import com.inlym.lifehelper.external.hefeng.model.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -96,6 +93,34 @@ public class HefengService {
         weatherNow.setIconUrl(makeIconUrl(now.getIcon()));
 
         return weatherNow;
+    }
+
+    /**
+     * 获取逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param days      天数
+     */
+    @SneakyThrows
+    public WeatherDailyForecast[] getWeatherDailyForecast(double longitude, double latitude, String days) {
+        String location = joinCoordinate(longitude, latitude);
+        HefengWeatherDailyForecastResponse res = hefengHttpService.getWeatherDailyForecast(location, days);
+        HefengWeatherDailyForecastResponse.DailyForecast[] daily = res.getDaily();
+
+        WeatherDailyForecast[] list = new WeatherDailyForecast[daily.length];
+        for (int i = 0; i < daily.length; i++) {
+            WeatherDailyForecast item = new WeatherDailyForecast();
+            BeanUtils.copyProperties(daily[i], item);
+
+            item.setDate(daily[i].getFxDate());
+            item.setIconDayUrl(makeIconUrl(daily[i].getIconDay()));
+            item.setIconNightUrl(makeIconUrl(daily[i].getIconNight()));
+
+            list[i] = item;
+        }
+
+        return list;
     }
 
     /**

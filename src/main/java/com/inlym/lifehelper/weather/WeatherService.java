@@ -2,6 +2,7 @@ package com.inlym.lifehelper.weather;
 
 import com.inlym.lifehelper.external.hefeng.HefengService;
 import com.inlym.lifehelper.external.hefeng.model.MinutelyRain;
+import com.inlym.lifehelper.external.hefeng.model.WeatherDailyForecast;
 import com.inlym.lifehelper.external.hefeng.model.WeatherNow;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,16 @@ public class WeatherService {
      */
     public WeatherNow getWeatherNow(double longitude, double latitude) {
         return hefengService.getWeatherNow(longitude, latitude);
+    }
+
+    /**
+     * 获取未来15天的逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public WeatherDailyForecast[] get15DaysWeatherDailyForecast(double longitude, double latitude) {
+        return hefengService.getWeatherDailyForecast(longitude, latitude, "15d");
     }
 
     /**
