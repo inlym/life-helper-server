@@ -3,6 +3,7 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +23,7 @@ import java.io.IOException;
  */
 @Order(100)
 @WebFilter(urlPatterns = "/*")
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
@@ -29,17 +31,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        System.out.println(SecurityContextHolder
-            .getContext()
-            .getAuthentication());
-
         String token = request.getHeader(CustomHttpHeader.JWT_TOKEN);
 
         if (token != null) {
-            SimpleAuthentication authentication = jwtService.parse(token);
-            SecurityContextHolder
-                .getContext()
-                .setAuthentication(authentication);
+            try {
+                SimpleAuthentication authentication = jwtService.parse(token);
+                SecurityContextHolder
+                    .getContext()
+                    .setAuthentication(authentication);
+            } catch (Exception e) {
+                log.trace("[JWT 解析出错] " + e.getMessage());
+            }
         }
 
         chain.doFilter(request, response);
