@@ -28,16 +28,6 @@ public class WeatherService {
     }
 
     /**
-     * 获取格点实时天气
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     */
-    public WeatherNow getGridWeatherNow(double longitude, double latitude) {
-        return hefengService.getGridWeatherNow(longitude, latitude);
-    }
-
-    /**
      * 获取分钟级降水
      *
      * @param longitude 经度
