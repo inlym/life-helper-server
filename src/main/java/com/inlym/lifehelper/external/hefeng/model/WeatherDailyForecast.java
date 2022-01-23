@@ -17,10 +17,10 @@ public class WeatherDailyForecast {
     /** 预报日期 */
     private String date;
 
-    /** 预报白天天气状况的图标代码 */
+    /** 预报白天天气状况的图标 URL 地址 */
     private String iconDayUrl;
 
-    /** 预报夜间天气状况的图标代码 */
+    /** 预报夜间天气状况的图标 URL 地址 */
     private String iconNightUrl;
 
     // ====================  原有的字段  ====================

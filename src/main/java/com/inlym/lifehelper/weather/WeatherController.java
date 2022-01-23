@@ -4,6 +4,7 @@ import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.validation.LocationString;
 import com.inlym.lifehelper.external.hefeng.model.MinutelyRain;
 import com.inlym.lifehelper.external.hefeng.model.WeatherDailyForecast;
+import com.inlym.lifehelper.external.hefeng.model.WeatherHourlyForecast;
 import com.inlym.lifehelper.external.hefeng.model.WeatherNow;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.model.LocationCoordinate;
@@ -70,6 +71,20 @@ public class WeatherController {
     public Object get15DaysWeatherDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
         LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
         WeatherDailyForecast[] list = weatherService.get15DaysWeatherDailyForecast(coordinate.getLongitude(), coordinate.getLatitude());
+
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("list", list);
+
+        return map;
+    }
+
+    /**
+     * 获取未来24小时的逐小时天气预报
+     */
+    @GetMapping("/weather/24h")
+    public Object get24HoursWeatherHourlyForecast(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
+        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+        WeatherHourlyForecast[] list = weatherService.get24HoursWeatherHourlyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
         Map<String, Object> map = new HashMap<>(16);
         map.put("list", list);

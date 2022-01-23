@@ -124,6 +124,33 @@ public class HefengService {
     }
 
     /**
+     * 获取逐小时天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param hours     小时数，支持 `24h`,`72h`,`168h`
+     */
+    @SneakyThrows
+    public WeatherHourlyForecast[] getWeatherHourlyForecast(double longitude, double latitude, String hours) {
+        String location = joinCoordinate(longitude, latitude);
+        HefengWeatherHourlyForecastResponse res = hefengHttpService.getWeatherHourlyForecast(location, hours);
+        HefengWeatherHourlyForecastResponse.HourlyForecast[] hourly = res.getHourly();
+
+        WeatherHourlyForecast[] list = new WeatherHourlyForecast[hourly.length];
+        for (int i = 0; i < hourly.length; i++) {
+            WeatherHourlyForecast item = new WeatherHourlyForecast();
+            BeanUtils.copyProperties(hourly[i], item);
+
+            item.setTime(hourly[i].getFxTime());
+            item.setIconUrl(makeIconUrl(hourly[i].getIcon()));
+
+            list[i] = item;
+        }
+
+        return list;
+    }
+
+    /**
      * 获取分钟级降水
      *
      * @param longitude 经度
