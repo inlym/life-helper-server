@@ -65,12 +65,21 @@ public class HefengService {
     }
 
     /**
-     * 生成 icon 图片的网络地址
+     * 生成 icon 图片的 URL 地址
      *
      * @param iconId icon 字段数据
      */
     private static String makeIconUrl(String iconId) {
         return ICON_BASE_URL + "c1/" + iconId + ".svg";
+    }
+
+    /**
+     * 生成天气生活指数的图片的 URL 地址
+     *
+     * @param type 生活指数类型ID
+     */
+    private static String makeIndicesImageUrl(String type) {
+        return ICON_BASE_URL + "live/" + type + ".svg";
     }
 
     /**
@@ -181,5 +190,24 @@ public class HefengService {
         minutelyRain.setList(list);
 
         return minutelyRain;
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    @SneakyThrows
+    public WeatherIndices getIndices(double longitude, double latitude) {
+        String location = joinCoordinate(longitude, latitude);
+        HefengIndicesResponse res = hefengHttpService.getIndices(location);
+        HefengIndicesResponse.DailyIndices[] daily = res.getDaily();
+
+        WeatherIndices indices = new WeatherIndices();
+        BeanUtils.copyProperties(daily[0], indices);
+        indices.setImageUrl(makeIndicesImageUrl(indices.getType()));
+
+        return indices;
     }
 }

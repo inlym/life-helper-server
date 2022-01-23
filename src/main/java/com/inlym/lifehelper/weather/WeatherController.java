@@ -2,10 +2,7 @@ package com.inlym.lifehelper.weather;
 
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.validation.LocationString;
-import com.inlym.lifehelper.external.hefeng.model.MinutelyRain;
-import com.inlym.lifehelper.external.hefeng.model.WeatherDailyForecast;
-import com.inlym.lifehelper.external.hefeng.model.WeatherHourlyForecast;
-import com.inlym.lifehelper.external.hefeng.model.WeatherNow;
+import com.inlym.lifehelper.external.hefeng.model.*;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.model.LocationCoordinate;
 import org.springframework.validation.annotation.Validated;
@@ -44,7 +41,7 @@ public class WeatherController {
      * [主要逻辑]
      * 如果请求传了有效的经纬度字符串则直接使用，否则通过 IP 地址换取经纬度坐标。
      *
-     * @param location 经纬度字符串
+     * @param location `120.12,30.34` 格式的经纬度字符串
      */
     private LocationCoordinate getLocationCoordinate(String location) {
         if (location != null) {
@@ -69,6 +66,8 @@ public class WeatherController {
 
     /**
      * 获取未来15天的逐天天气预报
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/15d")
     public Object get15DaysWeatherDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
@@ -83,6 +82,8 @@ public class WeatherController {
 
     /**
      * 获取未来24小时的逐小时天气预报
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/24h")
     public Object get24HoursWeatherHourlyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
@@ -105,5 +106,17 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate(location);
 
         return weatherService.getMinutelyRain(coordinate.getLongitude(), coordinate.getLatitude());
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
+     */
+    @GetMapping("/weather/indices")
+    public WeatherIndices getIndices(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
+
+        return weatherService.getIndices(coordinate.getLongitude(), coordinate.getLatitude());
     }
 }
