@@ -114,9 +114,13 @@ public class WeatherController {
      * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/indices")
-    public WeatherIndices getIndices(@LocationString @RequestParam(name = "location", required = false) String location) {
+    public Object getIndices(@LocationString @RequestParam(name = "location", required = false) String location) {
         LocationCoordinate coordinate = getLocationCoordinate(location);
+        WeatherIndices[] list = weatherService.getIndices(coordinate.getLongitude(), coordinate.getLatitude());
 
-        return weatherService.getIndices(coordinate.getLongitude(), coordinate.getLatitude());
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("list", list);
+
+        return map;
     }
 }

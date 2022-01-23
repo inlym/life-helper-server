@@ -199,15 +199,20 @@ public class HefengService {
      * @param latitude  纬度
      */
     @SneakyThrows
-    public WeatherIndices getIndices(double longitude, double latitude) {
+    public WeatherIndices[] getIndices(double longitude, double latitude) {
         String location = joinCoordinate(longitude, latitude);
         HefengIndicesResponse res = hefengHttpService.getIndices(location);
         HefengIndicesResponse.DailyIndices[] daily = res.getDaily();
 
-        WeatherIndices indices = new WeatherIndices();
-        BeanUtils.copyProperties(daily[0], indices);
-        indices.setImageUrl(makeIndicesImageUrl(indices.getType()));
+        WeatherIndices[] list = new WeatherIndices[daily.length];
+        for (int i = 0; i < daily.length; i++) {
+            WeatherIndices item = new WeatherIndices();
+            BeanUtils.copyProperties(daily[i], item);
 
-        return indices;
+            item.setImageUrl(makeIndicesImageUrl(item.getType()));
+            list[i] = item;
+        }
+
+        return list;
     }
 }

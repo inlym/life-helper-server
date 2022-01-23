@@ -62,7 +62,7 @@ public class WeatherService {
      * @param longitude 经度
      * @param latitude  纬度
      */
-    public WeatherIndices getIndices(double longitude, double latitude) {
+    public WeatherIndices[] getIndices(double longitude, double latitude) {
         return hefengService.getIndices(longitude, latitude);
     }
 }
