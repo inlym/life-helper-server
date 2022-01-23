@@ -30,9 +30,12 @@ public class WeatherController {
 
     private final LocationService locationService;
 
-    public WeatherController(WeatherService weatherService, LocationService locationService) {
+    private final HttpServletRequest request;
+
+    public WeatherController(WeatherService weatherService, LocationService locationService, HttpServletRequest request) {
         this.weatherService = weatherService;
         this.locationService = locationService;
+        this.request = request;
     }
 
     /**
@@ -41,13 +44,13 @@ public class WeatherController {
      * [主要逻辑]
      * 如果请求传了有效的经纬度字符串则直接使用，否则通过 IP 地址换取经纬度坐标。
      *
-     * @param ip       IP 地址
      * @param location 经纬度字符串
      */
-    private LocationCoordinate getLocationCoordinate(String ip, String location) {
+    private LocationCoordinate getLocationCoordinate(String location) {
         if (location != null) {
             return LocationService.parseLocationString(location);
         } else {
+            String ip = (String) request.getAttribute(CustomRequestAttribute.CLIENT_IP);
             return locationService.getLocationCoordinateByIp(ip);
         }
     }
@@ -58,8 +61,8 @@ public class WeatherController {
      * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/now")
-    public WeatherNow getWeatherNow(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
-        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+    public WeatherNow getWeatherNow(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
 
         return weatherService.getWeatherNow(coordinate.getLongitude(), coordinate.getLatitude());
     }
@@ -68,8 +71,8 @@ public class WeatherController {
      * 获取未来15天的逐天天气预报
      */
     @GetMapping("/weather/15d")
-    public Object get15DaysWeatherDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
-        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+    public Object get15DaysWeatherDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherDailyForecast[] list = weatherService.get15DaysWeatherDailyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
         Map<String, Object> map = new HashMap<>(16);
@@ -82,8 +85,8 @@ public class WeatherController {
      * 获取未来24小时的逐小时天气预报
      */
     @GetMapping("/weather/24h")
-    public Object get24HoursWeatherHourlyForecast(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
-        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+    public Object get24HoursWeatherHourlyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherHourlyForecast[] list = weatherService.get24HoursWeatherHourlyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
         Map<String, Object> map = new HashMap<>(16);
@@ -98,8 +101,8 @@ public class WeatherController {
      * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/rain")
-    public MinutelyRain getMinutelyRain(@LocationString @RequestParam(name = "location", required = false) String location, HttpServletRequest request) {
-        LocationCoordinate coordinate = getLocationCoordinate((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP), location);
+    public MinutelyRain getMinutelyRain(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
 
         return weatherService.getMinutelyRain(coordinate.getLongitude(), coordinate.getLatitude());
     }
