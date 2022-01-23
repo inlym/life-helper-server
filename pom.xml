@@ -88,7 +88,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.2.0</version>
+            <version>2.2.1</version>
         </dependency>
 
         <!-- Lombok -->
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.13.2</version>
+            <version>3.14.0</version>
         </dependency>
 
         <!-- Swagger 3 依赖 -->
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.18.2</version>
+            <version>3.18.3</version>
         </dependency>
 
         <dependency>
