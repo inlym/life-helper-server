@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public ExceptionResponse handleConstraintViolationException(ConstraintViolationException e) {
-        ConstraintViolationImpl cv = (ConstraintViolationImpl) e
+        ConstraintViolationImpl<?> cv = (ConstraintViolationImpl<?>) e
             .getConstraintViolations()
             .toArray()[0];
 
