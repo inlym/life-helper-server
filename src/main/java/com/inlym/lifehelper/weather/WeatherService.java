@@ -75,4 +75,14 @@ public class WeatherService {
     public WeatherAirNow getAirNow(double longitude, double latitude) {
         return hefengService.getAirNow(longitude, latitude);
     }
+
+    /**
+     * 获取空气质量预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public WeatherAirDailyForecast[] getAirDailyForecast(double longitude, double latitude) {
+        return hefengService.getAirDailyForecast(longitude, latitude);
+    }
 }

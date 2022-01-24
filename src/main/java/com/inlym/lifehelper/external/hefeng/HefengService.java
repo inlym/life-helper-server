@@ -232,4 +232,27 @@ public class HefengService {
 
         return weatherAirNow;
     }
+
+    /**
+     * 获取空气质量预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    @SneakyThrows
+    public WeatherAirDailyForecast[] getAirDailyForecast(double longitude, double latitude) {
+        String location = joinCoordinate(longitude, latitude);
+        HefengAirDailyForecastResponse res = hefengHttpService.getAirDailyForecast(location);
+        HefengAirDailyForecastResponse.AirDailyForecast[] daily = res.getDaily();
+
+        WeatherAirDailyForecast[] list = new WeatherAirDailyForecast[daily.length];
+        for (int i = 0; i < daily.length; i++) {
+            WeatherAirDailyForecast item = new WeatherAirDailyForecast();
+            BeanUtils.copyProperties(daily[i], item);
+            item.setDate(daily[i].getFxDate());
+            list[i] = item;
+        }
+
+        return list;
+    }
 }

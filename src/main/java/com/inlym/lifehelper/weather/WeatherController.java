@@ -70,7 +70,7 @@ public class WeatherController {
      * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/15d")
-    public Object get15DaysWeatherDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
+    public Map<String, Object> get15DaysWeatherDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherDailyForecast[] list = weatherService.get15DaysWeatherDailyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
@@ -86,7 +86,7 @@ public class WeatherController {
      * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/24h")
-    public Object get24HoursWeatherHourlyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
+    public Map<String, Object> get24HoursWeatherHourlyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherHourlyForecast[] list = weatherService.get24HoursWeatherHourlyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
@@ -114,7 +114,7 @@ public class WeatherController {
      * @param location `120.12,30.34` 格式的经纬度字符串
      */
     @GetMapping("/weather/indices")
-    public Object getIndices(@LocationString @RequestParam(name = "location", required = false) String location) {
+    public Map<String, Object> getIndices(@LocationString @RequestParam(name = "location", required = false) String location) {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherIndices[] list = weatherService.getIndices(coordinate.getLongitude(), coordinate.getLatitude());
 
@@ -134,5 +134,21 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate(location);
 
         return weatherService.getAirNow(coordinate.getLongitude(), coordinate.getLatitude());
+    }
+
+    /**
+     * 获取未来5天空气质量预报
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
+     */
+    @GetMapping("/weather/air/5d")
+    public Map<String, Object> getAirDailyForecast(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
+        WeatherAirDailyForecast[] list = weatherService.getAirDailyForecast(coordinate.getLongitude(), coordinate.getLatitude());
+
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("list", list);
+
+        return map;
     }
 }
