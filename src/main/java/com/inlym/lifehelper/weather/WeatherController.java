@@ -123,4 +123,16 @@ public class WeatherController {
 
         return map;
     }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
+     */
+    @GetMapping("/weather/air/now")
+    public WeatherAirNow getAirNow(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
+
+        return weatherService.getAirNow(coordinate.getLongitude(), coordinate.getLatitude());
+    }
 }

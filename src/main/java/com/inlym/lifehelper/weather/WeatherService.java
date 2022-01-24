@@ -65,4 +65,14 @@ public class WeatherService {
     public WeatherIndices[] getIndices(double longitude, double latitude) {
         return hefengService.getIndices(longitude, latitude);
     }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public WeatherAirNow getAirNow(double longitude, double latitude) {
+        return hefengService.getAirNow(longitude, latitude);
+    }
 }

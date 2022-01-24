@@ -215,4 +215,21 @@ public class HefengService {
 
         return list;
     }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    @SneakyThrows
+    public WeatherAirNow getAirNow(double longitude, double latitude) {
+        String location = joinCoordinate(longitude, latitude);
+        HefengAirNowResponse res = hefengHttpService.getAirNow(location);
+
+        WeatherAirNow weatherAirNow = new WeatherAirNow();
+        BeanUtils.copyProperties(res.getNow(), weatherAirNow);
+
+        return weatherAirNow;
+    }
 }
