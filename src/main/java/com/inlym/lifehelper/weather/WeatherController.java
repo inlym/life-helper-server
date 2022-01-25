@@ -39,6 +39,18 @@ public class WeatherController {
     }
 
     /**
+     * 包装单个列表为 Map
+     *
+     * @param list 列表
+     */
+    private Map<String, Object> wrapList(Object[] list) {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("list", list);
+
+        return map;
+    }
+
+    /**
      * 获取经纬度坐标
      * <p>
      * [主要逻辑]
@@ -89,10 +101,7 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherDailyForecast[] list = weatherService.get15DaysWeatherDailyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("list", list);
-
-        return map;
+        return wrapList(list);
     }
 
     /**
@@ -105,10 +114,7 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherHourlyForecast[] list = weatherService.get24HoursWeatherHourlyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("list", list);
-
-        return map;
+        return wrapList(list);
     }
 
     /**
@@ -133,10 +139,7 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherIndices[] list = weatherService.getIndices(coordinate.getLongitude(), coordinate.getLatitude());
 
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("list", list);
-
-        return map;
+        return wrapList(list);
     }
 
     /**
@@ -161,9 +164,6 @@ public class WeatherController {
         LocationCoordinate coordinate = getLocationCoordinate(location);
         WeatherAirDailyForecast[] list = weatherService.getAirDailyForecast(coordinate.getLongitude(), coordinate.getLatitude());
 
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("list", list);
-
-        return map;
+        return wrapList(list);
     }
 }
