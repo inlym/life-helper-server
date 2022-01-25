@@ -150,7 +150,9 @@ public class HefengService {
             WeatherHourlyForecast item = new WeatherHourlyForecast();
             BeanUtils.copyProperties(hourly[i], item);
 
-            item.setTime(hourly[i].getFxTime());
+            item.setTime(hourly[i]
+                .getFxTime()
+                .substring(11, 16));
             item.setIconUrl(makeIconUrl(hourly[i].getIcon()));
 
             list[i] = item;
@@ -178,15 +180,14 @@ public class HefengService {
         MinutelyRain.MinutelyRainItem[] list = new MinutelyRain.MinutelyRainItem[minutely.length];
         for (int i = 0; i < res.getMinutely().length; i++) {
             MinutelyRain.MinutelyRainItem item = new MinutelyRain.MinutelyRainItem();
-            item.setType(minutely[i].getType());
-            item.setPrecipitation(minutely[i].getPrecip());
+            BeanUtils.copyProperties(minutely[i], item);
+
             item.setTime(minutely[i]
                 .getFxTime()
                 .substring(11, 16));
 
             list[i] = item;
         }
-
         minutelyRain.setList(list);
 
         return minutelyRain;
