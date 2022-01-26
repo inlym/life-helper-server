@@ -17,7 +17,16 @@
     </select>
 
     <insert id="insertWithOpenid" keyProperty="id" useGeneratedKeys="true">
-        insert into user(openid, register_time)
-        values (#{user.openid}, now())
+        INSERT INTO user(openid, register_time)
+        VALUES (#{user.openid}, now())
     </insert>
+
+    <update id="updateUserInfo">
+        UPDATE `user`
+        <set>
+            <if test="user.nickName != null">nick_name = #{user.nickName},</if>
+            <if test="user.avatar != null">avatar = #{user.avatar},</if>
+        </set>
+        WHERE id = #{user.id}
+    </update>
 </mapper>

@@ -37,4 +37,18 @@ public class UserService {
             return newUser.getId();
         }
     }
+
+    /**
+     * 更新用户信息（昵称和头像）
+     *
+     * @param user 用户实体
+     */
+    public void updateUserInfo(User user) {
+        User user1 = new User();
+        user1.setId(user.getId());
+        user1.setNickName(user.getNickName());
+        user1.setAvatar(user.getAvatar());
+
+        userMapper.updateUserInfo(user1);
+    }
 }

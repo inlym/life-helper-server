@@ -27,4 +27,11 @@ public interface UserMapper {
      * @return 新创建用户的用户 ID
      */
     int insertWithOpenid(@Param("user") User user);
+
+    /**
+     * 更新用户信息
+     *
+     * @param user 用户实体
+     */
+    void updateUserInfo(@Param("user") User user);
 }
