@@ -16,7 +16,7 @@ import java.util.Map;
  * 登录控制器
  *
  * @author inlym
- * @since 2022-01-23 01:13
+ * @date 2022-01-23 01:13
  **/
 @RestController
 @Validated
@@ -31,7 +31,7 @@ public class LoginController {
      * @param code 微信小程序中获取的 code
      */
     @PostMapping("/login/weixin")
-    public Object loginByCode(@NotEmpty @RequestParam("code") String code) {
+    public Map<String, String> loginByCode(@NotEmpty @RequestParam("code") String code) {
         Map<String, String> map = new HashMap<>(16);
         map.put("token", loginService.loginByCode(code));
 
@@ -46,7 +46,7 @@ public class LoginController {
      */
     @PostMapping("/login/developer")
     @UserPermission
-    public Object loginForDeveloper(HttpServletRequest request) {
+    public Map<String, String> loginForDeveloper(HttpServletRequest request) {
         int userId = (int) request.getAttribute(CustomRequestAttribute.USER_ID);
         Map<String, String> map = new HashMap<>(16);
         map.put("token", loginService.loginForDeveloper(userId));
