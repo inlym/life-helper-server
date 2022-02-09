@@ -2,13 +2,13 @@ package com.inlym.lifehelper.login;
 
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
+import com.inlym.lifehelper.login.dto.LoginByCodeDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +27,11 @@ public class LoginController {
 
     /**
      * 通过微信获取的 code 登录
-     *
-     * @param code 微信小程序中获取的 code
      */
     @PostMapping("/login/weixin")
-    public Map<String, String> loginByCode(@NotEmpty @RequestParam("code") String code) {
+    public Map<String, String> loginByCode(@Validated @RequestBody LoginByCodeDTO data) {
         Map<String, String> map = new HashMap<>(16);
-        map.put("token", loginService.loginByCode(code));
+        map.put("token", loginService.loginByCode(data.getCode()));
 
         return map;
     }
