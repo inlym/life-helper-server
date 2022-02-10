@@ -9,6 +9,7 @@ import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * JWT 服务
@@ -41,10 +42,17 @@ public class JwtService {
      * @param roles  角色列表
      */
     public String create(int userId, String[] roles) {
+        // JWT 有效期：10天
+        Date expireTime = new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000);
+
         JWTCreator.Builder jwt = JWT
             .create()
             .withIssuer(ISSUER)
             .withIssuedAt(new Date())
+            .withJWTId(UUID
+                .randomUUID()
+                .toString())
+            .withExpiresAt(expireTime)
             .withClaim(USER_ID_FIELD, userId);
 
         if (roles != null && roles.length > 0) {
