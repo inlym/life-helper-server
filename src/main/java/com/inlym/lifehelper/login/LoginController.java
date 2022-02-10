@@ -29,9 +29,10 @@ public class LoginController {
      * 通过微信获取的 code 登录
      */
     @PostMapping("/login/weixin")
-    public Map<String, String> loginByCode(@Validated @RequestBody LoginByCodeDTO data) {
-        Map<String, String> map = new HashMap<>(16);
+    public Map<String, Object> loginByCode(@Validated @RequestBody LoginByCodeDTO data) {
+        Map<String, Object> map = new HashMap<>(16);
         map.put("token", loginService.loginByCode(data.getCode()));
+        map.put("expiration", System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000);
 
         return map;
     }
