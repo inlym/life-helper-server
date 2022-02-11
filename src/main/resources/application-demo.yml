@@ -16,7 +16,7 @@ spring:
 
     # MySQL 数据库配置
     datasource:
-        url: jdbc:mysql://localhost:3306/lifehelper_db
+        url: jdbc:mysql://localhost:3306/lifehelper_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: xxxxxxxxxxxx
         password: xxxxxxxxxxxx
         driver-class-name: com.mysql.cj.jdbc.Driver
