@@ -49,6 +49,6 @@ public class UserService {
         user1.setNickName(user.getNickName());
         user1.setAvatar(user.getAvatar());
 
-        userMapper.updateUserInfo(user1);
+        userMapper.update(user1);
     }
 }

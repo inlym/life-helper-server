@@ -21,9 +21,11 @@
         VALUES (#{user.openid}, now())
     </insert>
 
-    <update id="updateUserInfo">
+    <update id="update">
         UPDATE `user`
         <set>
+            <if test="user.openid != null">openid = #{user.openid},</if>
+            <if test="user.phone != null">phone = #{user.phone},</if>
             <if test="user.nickName != null">nick_name = #{user.nickName},</if>
             <if test="user.avatar != null">avatar = #{user.avatar},</if>
         </set>

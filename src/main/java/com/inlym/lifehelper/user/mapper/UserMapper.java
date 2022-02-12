@@ -33,5 +33,5 @@ public interface UserMapper {
      *
      * @param user 用户实体
      */
-    void updateUserInfo(@Param("user") User user);
+    void update(@Param("user") User user);
 }
