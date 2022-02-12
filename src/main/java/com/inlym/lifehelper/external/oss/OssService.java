@@ -3,21 +3,32 @@ package com.inlym.lifehelper.external.oss;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
+import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
+import com.aliyun.oss.model.PutObjectRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+/**
+ * OSS 服务类
+ * <p>
+ * [注意事项]
+ * 1. 当前只用到一个 OSS 储存空间（bucket），使用不同目录存放不同来源的资源。
+ * <p>
+ * [目录用途]
+ * 1. [temp]     -> 临时测试使用
+ * 2. [wxacode]  -> 微信小程序码图片
+ *
+ * @author inlym
+ * @date 2022-02-12 23:10
+ */
 @Service
-public class OSSService {
+public class OssService {
     /** 存储微信小程序码的目录 */
     public static final String DIR_WXACODE = "wxacode";
 
@@ -25,9 +36,11 @@ public class OSSService {
 
     private final String bucketName;
 
-    private final OSSProperties ossProperties;
+    private final OssProperties ossProperties;
 
-    public OSSService(OSSProperties ossProperties, OSS ossClient) {
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    public OssService(OssProperties ossProperties, OSS ossClient) {
         this.ossClient = ossClient;
         this.ossProperties = ossProperties;
         this.bucketName = ossProperties.getBucketName();
@@ -46,16 +59,38 @@ public class OSSService {
     /**
      * 转储文件
      *
-     * @param pathname 文件路径，注意不要以 `/` 开头
-     * @param url      资源文件的 URL 地址
+     * @param dirname 转储的目录（注意不要以 `/` 开头）
+     * @param url     资源文件的 URL 地址
+     *
+     * @return 资源在 OSS 中的路径
      */
-    public void dump(String pathname, String url) throws IOException {
-        InputStream inputStream = new URL(url).openStream();
-        ossClient.putObject(bucketName, pathname, inputStream);
+    public String dump(String dirname, String url) {
+        // 文件路径
+        String pathname = dirname + "/" + UUID
+            .randomUUID()
+            .toString()
+            .replaceAll("-", "");
+
+        ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
+
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, pathname, new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setHeader("Content-Type", Objects
+            .requireNonNull(response
+                .getHeaders()
+                .getContentType())
+            .toString());
+        putObjectRequest.setMetadata(metadata);
+        ossClient.putObject(putObjectRequest);
+
+        return pathname;
     }
 
     /**
-     * 生成客户端直传 OSS 凭证（客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器）
+     * 生成客户端直传 OSS 凭证
+     * <p>
+     * [主要用途]
+     * 客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器
      *
      * @param dirname 目录名称
      */
