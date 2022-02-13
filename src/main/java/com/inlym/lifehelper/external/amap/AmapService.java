@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.external.amap;
 
-import com.inlym.lifehelper.external.amap.model.AmapLocateIPResponse;
+import com.inlym.lifehelper.external.amap.pojo.AmapLocateIpResponse;
 import com.inlym.lifehelper.location.model.IPLocation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class AmapService {
     @SneakyThrows
     public IPLocation locateIp(String ip) {
         Assert.notNull(ip, "IP 地址不允许为空");
-        AmapLocateIPResponse result = amapHttpService.locateIp(ip);
+        AmapLocateIpResponse result = amapHttpService.locateIp(ip);
 
         String[] list = result
             .getLocation()

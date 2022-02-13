@@ -1,16 +1,16 @@
-package com.inlym.lifehelper.external.amap.model;
+package com.inlym.lifehelper.external.amap.pojo;
 
 import lombok.Data;
 
 /**
- * IP 定位 HTTP 请求响应数据
+ * 高德 IP 定位 HTTP 请求响应数据
  *
  * @author inlym
  * @see <a href="https://lbs.amap.com/api/webservice/guide/api/ipconfig">IP 定位</a>
  * @since 2022-01-19 19:52
  **/
 @Data
-public class AmapLocateIPResponse {
+public class AmapLocateIpResponse {
     /** 状态码：返回结果状态值，值为0或1，0表示失败，1表示成功 */
     private String status;
 
