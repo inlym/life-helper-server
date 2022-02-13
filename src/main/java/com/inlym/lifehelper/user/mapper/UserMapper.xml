@@ -10,7 +10,13 @@
         <result property="registerTime" column="register_time"/>
     </resultMap>
 
-    <select id="findUserByOpenid" resultMap="UserResult">
+    <select id="findById" resultMap="UserResult">
+        SELECT id, openid, phone, phone, nick_name, avatar, register_time
+        FROM `user`
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByOpenid" resultMap="UserResult">
         SELECT id, openid, phone, phone, nick_name, avatar, register_time
         FROM `user`
         WHERE openid = #{openid}
@@ -21,10 +27,10 @@
         VALUES (#{user.openid}, now())
     </insert>
 
+    <!-- 赋值时隐藏了不允许变更的字段，避免误操作 -->
     <update id="update">
         UPDATE `user`
         <set>
-            <if test="user.openid != null">openid = #{user.openid},</if>
             <if test="user.phone != null">phone = #{user.phone},</if>
             <if test="user.nickName != null">nick_name = #{user.nickName},</if>
             <if test="user.avatar != null">avatar = #{user.avatar},</if>

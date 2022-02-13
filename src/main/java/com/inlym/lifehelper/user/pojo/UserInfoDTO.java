@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.user.dto;
+package com.inlym.lifehelper.user.pojo;
 
 import lombok.Data;
 
@@ -11,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
  * @apiNote 数据来源与微信小程序接口获取
  * @date 2022-01-26 20:54
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserProfile.html">获取用户信息</a>
+ * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/UserInfo.html">用户信息</a>
  **/
 @Data
 public class UserInfoDTO {

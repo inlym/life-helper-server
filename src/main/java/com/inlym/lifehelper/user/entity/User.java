@@ -12,7 +12,7 @@ import java.util.Date;
  * 1. 表名：`user`
  *
  * @author inlym
- * @since 2022-01-22 21:34
+ * @date 2022-01-22 21:34
  */
 @Data
 @NoArgsConstructor
@@ -30,10 +30,10 @@ public class User {
     private String nickName;
 
     /**
-     * 用户头像图片
+     * 用户头像图片路径
      * <p>
      * [说明]
-     * 从微信侧获取的头像 URL，会将其转储到我方 OSS 中，文件名为 UUID。
+     * 从微信侧获取的头像 URL，会将图片内容转储到我方 OSS 中，最终存储的是在 OSS 中的路径。
      */
     private String avatar;
 

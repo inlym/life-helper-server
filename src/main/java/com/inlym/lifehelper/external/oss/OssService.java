@@ -30,7 +30,10 @@ import java.util.*;
 @Service
 public class OssService {
     /** 存储微信小程序码的目录 */
-    public static final String DIR_WXACODE = "wxacode";
+    public static final String WXACODE_DIR = "wxacode";
+
+    /** 存在用户头像的目录 */
+    public static final String AVATAR_DIR = "avatar";
 
     private final OSS ossClient;
 
@@ -84,6 +87,20 @@ public class OssService {
         ossClient.putObject(putObjectRequest);
 
         return pathname;
+    }
+
+    /**
+     * 联结生成资源的完整 URL 地址
+     *
+     * @param path 资源在 OSS 中的路径
+     *
+     * @return 完整的 URL 地址
+     */
+    public String concatUrl(String path) {
+        if ("".equals(path)) {
+            return "";
+        }
+        return ossProperties.getAliasUrl() + "/" + path;
     }
 
     /**

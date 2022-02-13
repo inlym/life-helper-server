@@ -6,10 +6,19 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author inlym
- * @since 2022-01-23 00:07
+ * @date 2022-01-23 00:07
  */
 @Mapper
 public interface UserMapper {
+    /**
+     * 通过用户 ID 查找用户
+     *
+     * @param id 主键 ID
+     *
+     * @return 用户实体
+     */
+    User findById(int id);
+
     /**
      * 通过 openid 查找用户
      *
@@ -17,7 +26,7 @@ public interface UserMapper {
      *
      * @return 用户实体
      */
-    User findUserByOpenid(String openid);
+    User findByOpenid(String openid);
 
     /**
      * 通过 openid 创建新用户
