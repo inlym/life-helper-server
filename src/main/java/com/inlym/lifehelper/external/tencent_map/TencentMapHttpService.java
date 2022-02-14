@@ -5,6 +5,7 @@ import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapLocateIpResponse
 import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapReverseGeocodingResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -55,6 +56,7 @@ public class TencentMapHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
      */
     @SneakyThrows
+    @Cacheable("lbs:locate-ip")
     public TencentMapLocateIpResponse locateIp(String ip) {
         String baseUrl = "https://apis.map.qq.com/ws/location/v1/ip";
         String url = UriComponentsBuilder
@@ -82,6 +84,7 @@ public class TencentMapHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder">逆地址解析（坐标位置描述）</a>
      */
     @SneakyThrows
+    @Cacheable("lbs:regeo")
     public TencentMapReverseGeocodingResponse reverseGeocoding(String location) {
         String baseUrl = "https://apis.map.qq.com/ws/geocoder/v1/";
         String url = UriComponentsBuilder

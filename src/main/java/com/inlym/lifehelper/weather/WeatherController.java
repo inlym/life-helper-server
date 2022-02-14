@@ -4,7 +4,7 @@ import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.validation.LocationString;
 import com.inlym.lifehelper.external.hefeng.model.*;
 import com.inlym.lifehelper.location.LocationService;
-import com.inlym.lifehelper.location.model.LocationCoordinate;
+import com.inlym.lifehelper.location.pojo.LocationCoordinate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

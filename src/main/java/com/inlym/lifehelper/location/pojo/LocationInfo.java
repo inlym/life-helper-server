@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.location.model;
+package com.inlym.lifehelper.location.pojo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  **/
 @Data
 @NoArgsConstructor
-public class IPLocation {
+public class LocationInfo {
     /** 经度 */
     private Double longitude;
 
@@ -19,7 +19,7 @@ public class IPLocation {
     private Double latitude;
 
     /** 国家 */
-    private String country;
+    private String nation;
 
     /** 省 */
     private String province;

@@ -2,7 +2,7 @@ package com.inlym.lifehelper.external.lbsqq;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.lbsqq.model.LbsqqLocateIPResponse;
-import com.inlym.lifehelper.location.model.IPLocation;
+import com.inlym.lifehelper.location.pojo.LocationInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -23,7 +23,7 @@ public class LbsqqService {
      *
      * @param ip IP 地址
      */
-    public IPLocation locateIp(String ip) throws ExternalHttpRequestException {
+    public LocationInfo locateIp(String ip) throws ExternalHttpRequestException {
         Assert.notNull(ip, "IP 地址不允许为空");
         Assert.isTrue(!ip.isEmpty(), "IP 地址不允许为空");
 
@@ -32,14 +32,14 @@ public class LbsqqService {
         LbsqqLocateIPResponse.Result.Location location = result.getLocation();
         LbsqqLocateIPResponse.Result.AddressInfo addressInfo = result.getAddressInfo();
 
-        IPLocation ipLocation = new IPLocation();
-        ipLocation.setLongitude(location.getLongitude());
-        ipLocation.setLatitude(location.getLatitude());
-        ipLocation.setCountry(addressInfo.getNation());
-        ipLocation.setProvince(addressInfo.getProvince());
-        ipLocation.setCity(addressInfo.getCity());
-        ipLocation.setDistrict(addressInfo.getDistrict());
+        LocationInfo locationInfo = new LocationInfo();
+        locationInfo.setLongitude(location.getLongitude());
+        locationInfo.setLatitude(location.getLatitude());
+        locationInfo.setNation(addressInfo.getNation());
+        locationInfo.setProvince(addressInfo.getProvince());
+        locationInfo.setCity(addressInfo.getCity());
+        locationInfo.setDistrict(addressInfo.getDistrict());
 
-        return ipLocation;
+        return locationInfo;
     }
 }

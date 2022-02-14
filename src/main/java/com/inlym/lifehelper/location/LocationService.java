@@ -1,10 +1,11 @@
 package com.inlym.lifehelper.location;
 
-import com.inlym.lifehelper.external.amap.AmapService;
-import com.inlym.lifehelper.location.model.IPLocation;
-import com.inlym.lifehelper.location.model.LocationCoordinate;
+import com.inlym.lifehelper.external.tencent_map.TencentMapService;
+import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapLocateIpResponse;
+import com.inlym.lifehelper.location.pojo.LocationCoordinate;
+import com.inlym.lifehelper.location.pojo.LocationInfo;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,11 +15,12 @@ import org.springframework.stereotype.Service;
  * @since 2022-01-19 20:42
  **/
 @Service
-@Slf4j
 public class LocationService {
-    private final AmapService amapService;
+    private final TencentMapService tencentMapService;
 
-    public LocationService(AmapService amapService) {this.amapService = amapService;}
+    public LocationService(TencentMapService tencentMapService) {
+        this.tencentMapService = tencentMapService;
+    }
 
     /**
      * 解析经纬度字符串
@@ -41,8 +43,18 @@ public class LocationService {
      *
      * @param ip IP 地址
      */
-    public IPLocation locateIp(String ip) {
-        return amapService.locateIp(ip);
+    public LocationInfo locateIp(String ip) {
+        TencentMapLocateIpResponse data = tencentMapService.locateIp(ip);
+
+        LocationInfo info = new LocationInfo();
+        BeanUtils.copyProperties(data
+            .getResult()
+            .getLocation(), info);
+        BeanUtils.copyProperties(data
+            .getResult()
+            .getAddressInfo(), info);
+
+        return info;
     }
 
     /**
@@ -51,7 +63,7 @@ public class LocationService {
      * @param ip IP 地址
      */
     public LocationCoordinate getLocationCoordinateByIp(String ip) {
-        IPLocation ipLocation = locateIp(ip);
-        return new LocationCoordinate(ipLocation.getLongitude(), ipLocation.getLatitude());
+        LocationInfo locationInfo = locateIp(ip);
+        return new LocationCoordinate(locationInfo.getLongitude(), locationInfo.getLatitude());
     }
 }
