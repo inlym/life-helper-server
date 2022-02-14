@@ -2,6 +2,8 @@ package com.inlym.lifehelper.location;
 
 import com.inlym.lifehelper.external.tencent_map.TencentMapService;
 import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapLocateIpResponse;
+import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapReverseGeocodingResponse;
+import com.inlym.lifehelper.location.pojo.AddressComponent;
 import com.inlym.lifehelper.location.pojo.LocationCoordinate;
 import com.inlym.lifehelper.location.pojo.LocationInfo;
 import lombok.NonNull;
@@ -65,5 +67,34 @@ public class LocationService {
     public LocationCoordinate getLocationCoordinateByIp(String ip) {
         LocationInfo locationInfo = locateIp(ip);
         return new LocationCoordinate(locationInfo.getLongitude(), locationInfo.getLatitude());
+    }
+
+    /**
+     * 逆地址解析
+     *
+     * @param longitude 纬度
+     * @param latitude  经度
+     */
+    public AddressComponent reverseGeocoding(double longitude, double latitude) {
+        TencentMapReverseGeocodingResponse data = tencentMapService.reverseGeocoding(longitude, latitude);
+        TencentMapReverseGeocodingResponse.AddressComponent ac = data
+            .getResult()
+            .getAddressComponent();
+
+        AddressComponent component = new AddressComponent();
+        component.setAddress(data
+            .getResult()
+            .getAddress());
+        component.setRecommendAddresses(data
+            .getResult()
+            .getFormattedAddresses()
+            .getRecommend());
+        component.setNation(ac.getNation());
+        component.setProvince(ac.getProvince());
+        component.setCity(ac.getCity());
+        component.setDistrict(ac.getDistrict());
+        component.setStreet(ac.getStreet());
+
+        return component;
     }
 }
