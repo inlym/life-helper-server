@@ -1,5 +1,7 @@
 package com.inlym.lifehelper.weather.weather_place;
 
+import com.inlym.lifehelper.location.LocationService;
+import com.inlym.lifehelper.location.pojo.AddressComponent;
 import com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.weather_place.mapper.WeatherPlaceMapper;
 import com.inlym.lifehelper.weather.weather_place.pojo.WeixinChooseLocationDTO;
@@ -17,7 +19,12 @@ import org.springframework.stereotype.Service;
 public class WeatherPlaceService {
     private final WeatherPlaceMapper weatherPlaceMapper;
 
-    public WeatherPlaceService(WeatherPlaceMapper weatherPlaceMapper) {this.weatherPlaceMapper = weatherPlaceMapper;}
+    private final LocationService locationService;
+
+    public WeatherPlaceService(WeatherPlaceMapper weatherPlaceMapper, LocationService locationService) {
+        this.weatherPlaceMapper = weatherPlaceMapper;
+        this.locationService = locationService;
+    }
 
     /**
      * 新增一个天气地点
@@ -25,18 +32,17 @@ public class WeatherPlaceService {
      * @param dto 前端传输的请求数据
      */
     public WeatherPlace add(int userId, WeixinChooseLocationDTO dto) {
+        AddressComponent ac = locationService.reverseGeocoding(dto.getLongitude(), dto.getLatitude());
+
         WeatherPlace place = new WeatherPlace();
         place.setUserId(userId);
         place.setName(dto.getName());
         place.setAddress(dto.getAddress());
         place.setLongitude(dto.getLongitude());
         place.setLatitude(dto.getLatitude());
-
-        // 临时代码 - 开始
-        place.setProvince("浙江省");
-        place.setCity("杭州市");
-        place.setDistrict("西湖区");
-        // 临时代码 - 结束
+        place.setProvince(ac.getProvince());
+        place.setCity(ac.getCity());
+        place.setDistrict(ac.getDistrict());
 
         weatherPlaceMapper.insert(place);
 

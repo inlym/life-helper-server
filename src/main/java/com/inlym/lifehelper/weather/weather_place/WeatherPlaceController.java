@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.weather.weather_place;
 
+import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.weather_place.pojo.WeixinChooseLocationDTO;
 import io.swagger.annotations.ApiOperation;
@@ -9,8 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 天气地点控制器
@@ -22,18 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 public class WeatherPlaceController {
     private final WeatherPlaceService weatherPlaceService;
 
-    private final HttpServletRequest request;
-
-    public WeatherPlaceController(WeatherPlaceService weatherPlaceService, HttpServletRequest request) {
+    public WeatherPlaceController(WeatherPlaceService weatherPlaceService) {
         this.weatherPlaceService = weatherPlaceService;
-        this.request = request;
     }
 
     @ApiOperation("新增天气地点")
     @PostMapping("/weather/place")
     @UserPermission
-    public WeatherPlace add(@Validated @RequestBody WeixinChooseLocationDTO dto) {
-        int userId = (int) request.getAttribute(CustomRequestAttribute.USER_ID);
+    public WeatherPlace add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
         return weatherPlaceService.add(userId, dto);
     }
 }
