@@ -61,7 +61,7 @@ public class TencentMapLocateIpResponse {
         /** 区 */
         private String district;
 
-        /** 行政区划代码 */
+        /** 行政区划代码（非正常情况则返回 -1） */
         private Integer adcode;
     }
 }

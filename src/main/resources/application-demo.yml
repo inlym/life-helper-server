@@ -28,6 +28,15 @@ spring:
             # 鉴权过滤器排序
             order: 10000
 
+# 项目配置
+lifehelper:
+    # 腾讯位置服务
+    tencent-map:
+        # 开发者密钥
+        keys:
+            - xxxxxxxxxxxx
+            - xxxxxxxxxxxx
+            - xxxxxxxxxxxx
 
 # 微信小程序服务端配置
 weixin:

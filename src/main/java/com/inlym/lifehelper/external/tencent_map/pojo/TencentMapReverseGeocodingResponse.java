@@ -22,6 +22,8 @@ public class TencentMapReverseGeocodingResponse {
     @JsonProperty("request_id")
     private String requestId;
 
+    private ReverseGeocodingResult result;
+
     @Data
     public static class ReverseGeocodingResult {
         /** 以行政区划+道路+门牌号等信息组成的标准格式化地址 */
