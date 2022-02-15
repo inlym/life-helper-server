@@ -8,6 +8,8 @@ import com.inlym.lifehelper.weather.weather_place.pojo.WeixinChooseLocationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 天气地点服务类
  *
@@ -47,5 +49,16 @@ public class WeatherPlaceService {
         weatherPlaceMapper.insert(place);
 
         return place;
+    }
+
+    /**
+     * 获取指定用户所属的天气地点列表
+     *
+     * @param userId 用户 ID
+     *
+     * @return 天气地点列表
+     */
+    public List<WeatherPlace> list(int userId) {
+        return weatherPlaceMapper.list(userId);
     }
 }

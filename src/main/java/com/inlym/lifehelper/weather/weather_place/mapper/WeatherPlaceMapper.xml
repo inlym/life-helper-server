@@ -18,5 +18,18 @@
         VALUES (#{place.userId}, #{place.name}, #{place.address}, #{place.longitude}, #{place.latitude},
                 #{place.province}, #{place.city}, #{place.district})
     </insert>
+    <select id="list" resultMap="WeatherPlaceResult">
+        SELECT id,
+               name,
+               address,
+               longitude,
+               latitude,
+               province,
+               city,
+               district
+        FROM weather_place
+        WHERE user_id = #{userId}
+        ORDER BY id DESC
+    </select>
 
 </mapper>
