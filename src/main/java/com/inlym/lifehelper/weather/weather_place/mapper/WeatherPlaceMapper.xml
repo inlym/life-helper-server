@@ -3,6 +3,7 @@
 <mapper namespace="com.inlym.lifehelper.weather.weather_place.mapper.WeatherPlaceMapper">
     <resultMap id="WeatherPlaceResult" type="com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace">
         <result property="id" column="id"/>
+        <result property="deleteTime" column="delete_time"/>
         <result property="userId" column="user_id"/>
         <result property="name" column="name"/>
         <result property="address" column="address"/>
@@ -18,6 +19,7 @@
         VALUES (#{place.userId}, #{place.name}, #{place.address}, #{place.longitude}, #{place.latitude},
                 #{place.province}, #{place.city}, #{place.district})
     </insert>
+
     <select id="list" resultMap="WeatherPlaceResult">
         SELECT id,
                name,
@@ -28,8 +30,16 @@
                city,
                district
         FROM weather_place
-        WHERE user_id = #{userId}
+        WHERE delete_time IS NULL
+          AND user_id = #{userId}
         ORDER BY id DESC
     </select>
+
+    <delete id="delete">
+        UPDATE weather_place
+        SET delete_time = NOW()
+        WHERE id = #{id}
+          AND user_id = #{userId}
+    </delete>
 
 </mapper>

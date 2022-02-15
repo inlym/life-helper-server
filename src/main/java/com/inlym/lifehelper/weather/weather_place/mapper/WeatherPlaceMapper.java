@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface WeatherPlaceMapper {
     /**
-     * 插入1条天气地点
+     * 插入一条天气地点
      *
      * @param weatherPlace 天气地点
      */
@@ -27,4 +27,12 @@ public interface WeatherPlaceMapper {
      * @return 天气地点列表
      */
     List<WeatherPlace> list(int userId);
+
+    /**
+     * 删除一条天气地点
+     *
+     * @param userId 用户 ID
+     * @param id     主键 ID
+     */
+    void delete(@Param("userId") int userId, @Param("id") int id);
 }

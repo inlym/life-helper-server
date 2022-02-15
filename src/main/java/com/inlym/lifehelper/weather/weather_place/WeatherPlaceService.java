@@ -65,4 +65,14 @@ public class WeatherPlaceService {
         PageHelper.startPage(1, 10);
         return weatherPlaceMapper.list(userId);
     }
+
+    /**
+     * 删除一条天气地点
+     *
+     * @param userId 用户 ID
+     * @param id     主键 ID
+     */
+    public void delete(int userId, int id) {
+        weatherPlaceMapper.delete(userId, id);
+    }
 }

@@ -1,6 +1,9 @@
 package com.inlym.lifehelper.weather.weather_place.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 天气地点实体
@@ -22,7 +25,12 @@ public class WeatherPlace {
     /** 主键 ID */
     private Integer id;
 
+    /** 删除时间 */
+    @JsonIgnore
+    private Date deleteTime;
+
     /** 所属用户 ID */
+    @JsonIgnore
     private Integer userId;
 
     /** 位置名称 */
