@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.weather_place;
 
+import com.github.pagehelper.PageHelper;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.AddressComponent;
 import com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace;
@@ -57,8 +58,11 @@ public class WeatherPlaceService {
      * @param userId 用户 ID
      *
      * @return 天气地点列表
+     *
+     * @apiNote 默认只展示前10条
      */
     public List<WeatherPlace> list(int userId) {
+        PageHelper.startPage(1, 10);
         return weatherPlaceMapper.list(userId);
     }
 }
