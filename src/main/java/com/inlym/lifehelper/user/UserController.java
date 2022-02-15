@@ -7,7 +7,7 @@ import com.inlym.lifehelper.user.pojo.UserInfoDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户个人信息")
-    @PostMapping("/userinfo")
+    @PutMapping("/userinfo")
     @UserPermission
     public UserInfoBO updateUserInfo(@Validated @RequestBody UserInfoDTO dto, @UserId int userId) {
         return userService.updateUserInfo(userId, dto);
