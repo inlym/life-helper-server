@@ -70,6 +70,16 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- 测试文件中使用的 @Test 应使用当前库，默认的那个会导致无法自动注入 -->
+        <!-- 默认的是 org.junit.jupiter.api.Test -->
+        <!-- 应该使用 org.junit.Test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Spring Security 测试依赖 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
