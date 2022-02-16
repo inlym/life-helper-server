@@ -20,13 +20,22 @@ spring:
         username: xxxxxxxxxxxx
         password: xxxxxxxxxxxx
         driver-class-name: com.mysql.cj.jdbc.Driver
+
     # 缓存配置
     cache:
         type: redis
+
+    # Spring Security 配置
     security:
         filter:
             # 鉴权过滤器排序
             order: 10000
+
+# 日志
+logging:
+    # 日志等级
+    level:
+        com.inlym.lifehelper: debug
 
 # 项目配置
 lifehelper:
