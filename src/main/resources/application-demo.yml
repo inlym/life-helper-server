@@ -46,6 +46,11 @@ lifehelper:
             - xxxxxxxxxxxx
             - xxxxxxxxxxxx
             - xxxxxxxxxxxx
+    # 和风天气
+    he-weather:
+        dev-key: xxxxxxxxxxxx
+        pro-key: xxxxxxxxxxxx
+
 
 # 微信小程序服务端配置
 weixin:
