@@ -1,9 +1,12 @@
 package com.inlym.lifehelper.external.heweather;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
-import com.inlym.lifehelper.external.heweather.pojo.HeWeatherNowResponse;
+import com.inlym.lifehelper.external.heweather.pojo.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,8 +34,17 @@ public class HeWeatherHttpService {
 
     private final HeWeatherProperties heWeatherProperties;
 
+    /** 开发版配置信息 */
+    private final Config devConfig;
+
+    /** 商业版配置信息 */
+    private final Config proConfig;
+
     public HeWeatherHttpService(HeWeatherProperties heWeatherProperties) {
         this.heWeatherProperties = heWeatherProperties;
+
+        this.devConfig = new Config("https://devapi.qweather.com/v7", heWeatherProperties.getDevKey());
+        this.proConfig = new Config("https://api.qweather.com/v7", heWeatherProperties.getProKey());
     }
 
     /**
@@ -43,13 +55,13 @@ public class HeWeatherHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">实时天气</a>
      */
     @SneakyThrows
+    @Cacheable("hefeng:now")
     public HeWeatherNowResponse getWeatherNow(String location) {
-        // 不含参数的请求地址前缀
-        String baseUrl = "https://devapi.qweather.com/v7/weather/now";
+        String path = "/weather/now";
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseUrl)
+            .fromHttpUrl(devConfig.getBaseUrl() + path)
             .queryParam("location", location)
             .queryParam("key", heWeatherProperties.getDevKey())
             .queryParam("gzip", "n")
@@ -64,5 +76,210 @@ public class HeWeatherHttpService {
             return data;
         }
         throw new ExternalHttpRequestException("实时天气", url, data.getCode());
+    }
+
+    /**
+     * 获取逐天天气预报
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     * @param days     天数，支持 `3d`,`7d`,`10d`,`15d`
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">逐天天气预报</a>
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:daily")
+    public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
+        Config config = "15d".equals(days) || "10d".equals(days) ? proConfig : devConfig;
+        String path = "/weather/" + days;
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(config.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeWeatherDailyResponse data = restTemplate.getForObject(url, HeWeatherDailyResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [逐天天气预报] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("逐天天气预报", url, data.getCode());
+    }
+
+    /**
+     * 获取逐小时天气预报
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     * @param hours    小时数，支持 `24h`,`72h`,`168h`
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">逐小时天气预报</a>
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:hourly")
+    public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
+        Config config = "24h".equals(hours) ? devConfig : proConfig;
+        String path = "/weather/" + hours;
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(config.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeWeatherHourlyResponse data = restTemplate.getForObject(url, HeWeatherHourlyResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [逐小时天气预报] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("逐小时天气预报", url, data.getCode());
+    }
+
+    /**
+     * 获取分钟级降水
+     *
+     * @param location 需要查询地区的以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">分钟级降水</a>
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:minutely")
+    public HeMinutelyResponse getMinutely(String location) {
+        String path = "/minutely/5m";
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(proConfig.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeMinutelyResponse data = restTemplate.getForObject(url, HeMinutelyResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [分钟级降水] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("分钟级降水", url, data.getCode());
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     * @param days     小时数，支持 `1d`,`3d`
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/indices/">天气生活指数</a>
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:indices")
+    public HeIndicesResponse getIndicesDaily(String location, String days) {
+        Config config = "1d".equals(days) ? devConfig : proConfig;
+        String path = "/indices/" + days;
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(config.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeIndicesResponse data = restTemplate.getForObject(url, HeIndicesResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [天气生活指数] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("天气生活指数", url, data.getCode());
+    }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">实时空气质量</a>
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:air-now")
+    public HeAirNowResponse getAirNow(String location) {
+        String path = "/air/now";
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(devConfig.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeAirNowResponse data = restTemplate.getForObject(url, HeAirNowResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [实时空气质量] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("实时空气质量", url, data.getCode());
+    }
+
+    /**
+     * 获取空气质量预报
+     *
+     * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">空气质量预报</a>
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:air-daily")
+    public HeAirDailyResponse getAirDaily(String location) {
+        String path = "/air/5d";
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(proConfig.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeAirDailyResponse data = restTemplate.getForObject(url, HeAirDailyResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [空气质量预报] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("空气质量预报", url, data.getCode());
+    }
+
+    /**
+     * 封装和风天气配置信息
+     */
+    @Data
+    @AllArgsConstructor
+    private static class Config {
+        /** 请求地址前缀部分 */
+        private String baseUrl;
+
+        /** 密钥 */
+        private String key;
     }
 }

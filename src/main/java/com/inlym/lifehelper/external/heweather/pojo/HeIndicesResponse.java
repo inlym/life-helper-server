@@ -10,7 +10,7 @@ import lombok.Data;
  * @see <a href="https://dev.qweather.com/docs/api/indices/">天气生活指数</a>
  **/
 @Data
-public class HeWeatherIndicesResponse {
+public class HeIndicesResponse {
     /** API 状态码 */
     private String code;
 

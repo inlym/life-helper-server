@@ -17,10 +17,10 @@ public class HeWeatherDailyResponse {
     /** 当前 API 的最近更新时间 */
     private String updateTime;
 
-    private WeatherDaily[] daily;
+    private Daily[] daily;
 
     @Data
-    public static class WeatherDaily {
+    public static class Daily {
         /** 预报日期 */
         private String fxDate;
 

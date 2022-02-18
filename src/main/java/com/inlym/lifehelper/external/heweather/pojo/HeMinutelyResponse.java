@@ -10,7 +10,7 @@ import lombok.Data;
  * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">分钟级降水</a>
  **/
 @Data
-public class HeWeatherMinutelyResponse {
+public class HeMinutelyResponse {
     /** API 状态码 */
     private String code;
 

@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.external.heweather;
 
-import com.inlym.lifehelper.external.heweather.pojo.HeWeatherNowResponse;
+import com.inlym.lifehelper.external.heweather.pojo.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,5 +46,93 @@ public class HeWeatherService {
     public HeWeatherNowResponse getWeatherNow(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heWeatherHttpService.getWeatherNow(location);
+    }
+
+    /**
+     * 获取未来7天逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeWeatherDailyResponse getWeather7D(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getWeatherDaily(location, "7d");
+    }
+
+    /**
+     * 获取未来15天逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeWeatherDailyResponse getWeather15D(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getWeatherDaily(location, "15d");
+    }
+
+    /**
+     * 获取未来24小时逐小时天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeWeatherHourlyResponse getWeather24H(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getWeatherHourly(location, "24h");
+    }
+
+    /**
+     * 获取分钟级降水
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeMinutelyResponse getMinutely(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getMinutely(location);
+    }
+
+    /**
+     * 获取当天天气生活指数
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeIndicesResponse getIndices1D(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getIndicesDaily(location, "1d");
+    }
+
+    /**
+     * 获取未来3天天气生活指数
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeIndicesResponse getIndices3D(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getIndicesDaily(location, "3d");
+    }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeAirNowResponse getAirNow(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getAirNow(location);
+    }
+
+    /**
+     * 获取未来5天空气质量预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    public HeAirDailyResponse getAir5D(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heWeatherHttpService.getAirDaily(location);
     }
 }

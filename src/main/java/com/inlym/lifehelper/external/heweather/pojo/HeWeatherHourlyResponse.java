@@ -16,10 +16,10 @@ public class HeWeatherHourlyResponse {
     /** 当前 API 的最近更新时间 */
     private String updateTime;
 
-    private WeatherHourly[] hourly;
+    private Hourly[] hourly;
 
     @Data
-    public static class WeatherHourly {
+    public static class Hourly {
         /** 预报时间 */
         private String fxTime;
 

@@ -18,10 +18,10 @@ public class HeWeatherNowResponse {
     private String updateTime;
 
     /** 实时天气的有效数据部分 */
-    private WeatherNow now;
+    private Now now;
 
     @Data
-    public static class WeatherNow {
+    public static class Now {
         /** 数据观测时间 */
         private String obsTime;
 
