@@ -1,12 +1,12 @@
-package com.inlym.lifehelper.weather.weather_data;
+package com.inlym.lifehelper.weather.weatherdata;
 
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.validation.LocationString;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.LocationCoordinate;
-import com.inlym.lifehelper.weather.weather_data.pojo.AirNow;
-import com.inlym.lifehelper.weather.weather_data.pojo.MinutelyRain;
-import com.inlym.lifehelper.weather.weather_data.pojo.WeatherNow;
+import com.inlym.lifehelper.weather.weatherdata.pojo.AirNow;
+import com.inlym.lifehelper.weather.weatherdata.pojo.MinutelyRain;
+import com.inlym.lifehelper.weather.weatherdata.pojo.WeatherNow;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

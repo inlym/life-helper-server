@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.weather_place.entity;
+package com.inlym.lifehelper.weather.weatherplace.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

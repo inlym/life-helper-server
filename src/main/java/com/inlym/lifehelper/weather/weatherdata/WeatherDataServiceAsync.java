@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.weather.weather_data;
+package com.inlym.lifehelper.weather.weatherdata;
 
-import com.inlym.lifehelper.weather.weather_data.pojo.*;
+import com.inlym.lifehelper.weather.weatherdata.pojo.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 

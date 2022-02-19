@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.weather.weather_place.mapper;
+package com.inlym.lifehelper.weather.weatherplace.mapper;
 
-import com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.weather_data.pojo;
+package com.inlym.lifehelper.weather.weatherdata.pojo;
 
 import lombok.Data;
 

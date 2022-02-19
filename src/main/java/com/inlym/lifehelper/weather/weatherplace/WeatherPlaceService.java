@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.weather.weather_place;
+package com.inlym.lifehelper.weather.weatherplace;
 
 import com.github.pagehelper.PageHelper;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.AddressComponent;
-import com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.weather_place.mapper.WeatherPlaceMapper;
-import com.inlym.lifehelper.weather.weather_place.pojo.WeixinChooseLocationDTO;
+import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.weatherplace.mapper.WeatherPlaceMapper;
+import com.inlym.lifehelper.weather.weatherplace.pojo.WeixinChooseLocationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

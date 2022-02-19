@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.inlym.lifehelper.weather.weather_place.mapper.WeatherPlaceMapper">
-    <resultMap id="WeatherPlaceResult" type="com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace">
+<mapper namespace="com.inlym.lifehelper.weather.weatherplace.mapper.WeatherPlaceMapper">
+    <resultMap id="WeatherPlaceResult" type="com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace">
         <result property="id" column="id"/>
         <result property="deleteTime" column="delete_time"/>
         <result property="userId" column="user_id"/>

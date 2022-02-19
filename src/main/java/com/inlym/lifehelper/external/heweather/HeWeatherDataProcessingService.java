@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.external.heweather;
 
 import com.inlym.lifehelper.external.heweather.pojo.*;
-import com.inlym.lifehelper.weather.weather_data.pojo.*;
+import com.inlym.lifehelper.weather.weatherdata.pojo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

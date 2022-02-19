@@ -1,9 +1,9 @@
-package com.inlym.lifehelper.weather.weather_place;
+package com.inlym.lifehelper.weather.weatherplace;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.weather.weather_place.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.weather_place.pojo.WeixinChooseLocationDTO;
+import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.weatherplace.pojo.WeixinChooseLocationDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
