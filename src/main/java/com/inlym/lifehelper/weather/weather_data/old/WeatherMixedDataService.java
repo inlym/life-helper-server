@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.weather_data;
+package com.inlym.lifehelper.weather.weather_data.old;
 
 import com.inlym.lifehelper.external.hefeng.model.*;
 import lombok.SneakyThrows;

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.weather_data;
+package com.inlym.lifehelper.weather.weather_data.old;
 
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.validation.LocationString;
