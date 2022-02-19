@@ -26,12 +26,15 @@ import java.util.Map;
 public class WeatherDataController {
     private final WeatherDataService weatherDataService;
 
+    private final WeatherMixedDataService weatherMixedDataService;
+
     private final LocationService locationService;
 
     private final HttpServletRequest request;
 
-    public WeatherDataController(WeatherDataService weatherDataService, LocationService locationService, HttpServletRequest request) {
+    public WeatherDataController(WeatherDataService weatherDataService, WeatherMixedDataService weatherMixedDataService, LocationService locationService, HttpServletRequest request) {
         this.weatherDataService = weatherDataService;
+        this.weatherMixedDataService = weatherMixedDataService;
         this.locationService = locationService;
         this.request = request;
     }
@@ -51,6 +54,17 @@ public class WeatherDataController {
             String ip = (String) request.getAttribute(CustomRequestAttribute.CLIENT_IP);
             return locationService.getLocationCoordinateByIp(ip);
         }
+    }
+
+    /**
+     * 获取天气汇总信息
+     *
+     * @param location `120.12,30.34` 格式的经纬度字符串
+     */
+    @GetMapping("/weather")
+    public Map<String, Object> getMixedWeatherData(@LocationString @RequestParam(name = "location", required = false) String location) {
+        LocationCoordinate coordinate = getLocationCoordinate(location);
+        return weatherMixedDataService.getMixedWeatherData(coordinate.getLongitude(), coordinate.getLatitude());
     }
 
     /**

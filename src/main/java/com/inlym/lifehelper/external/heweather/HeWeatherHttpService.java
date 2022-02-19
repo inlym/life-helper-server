@@ -90,7 +90,6 @@ public class HeWeatherHttpService {
     @Cacheable("hefeng:daily")
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
         Config config = ("15d".equals(days) || "10d".equals(days)) ? proConfig : devConfig;
-        System.out.println(config);
         String path = "/weather/" + days;
 
         // 包含请求参数的完整请求地址
@@ -195,6 +194,7 @@ public class HeWeatherHttpService {
             .fromHttpUrl(config.getBaseUrl() + path)
             .queryParam("location", location)
             .queryParam("key", config.getKey())
+            .queryParam("type", "0")
             .queryParam("gzip", "n")
             .build()
             .toUriString();
