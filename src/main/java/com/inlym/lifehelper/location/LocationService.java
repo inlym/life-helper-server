@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.location;
 
-import com.inlym.lifehelper.external.tencent_map.TencentMapService;
-import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapLocateIpResponse;
-import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapReverseGeocodingResponse;
+import com.inlym.lifehelper.external.tencentmap.TencentMapService;
+import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapLocateIpResponse;
+import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapReverseGeocodingResponse;
 import com.inlym.lifehelper.location.pojo.AddressComponent;
 import com.inlym.lifehelper.location.pojo.LocationCoordinate;
 import com.inlym.lifehelper.location.pojo.LocationInfo;

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.external.tencent_map.pojo;
+package com.inlym.lifehelper.external.tencentmap.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

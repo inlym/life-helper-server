@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.external.tencent_map;
+package com.inlym.lifehelper.external.tencentmap;
 
-import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapLocateIpResponse;
-import com.inlym.lifehelper.external.tencent_map.pojo.TencentMapReverseGeocodingResponse;
+import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapLocateIpResponse;
+import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapReverseGeocodingResponse;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 

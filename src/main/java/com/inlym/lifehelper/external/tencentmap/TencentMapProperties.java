@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.external.tencent_map;
+package com.inlym.lifehelper.external.tencentmap;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
