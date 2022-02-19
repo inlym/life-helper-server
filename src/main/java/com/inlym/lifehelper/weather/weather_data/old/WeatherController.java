@@ -8,7 +8,6 @@ import com.inlym.lifehelper.location.pojo.LocationCoordinate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import java.util.Map;
  * @author inlym
  * @since 2022-01-21 23:36
  **/
-@RestController
+//@RestController
 @Validated
 public class WeatherController {
     private final WeatherService weatherService;

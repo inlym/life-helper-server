@@ -89,14 +89,15 @@ public class HeWeatherHttpService {
     @SneakyThrows
     @Cacheable("hefeng:daily")
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
-        Config config = "15d".equals(days) || "10d".equals(days) ? proConfig : devConfig;
+        Config config = ("15d".equals(days) || "10d".equals(days)) ? proConfig : devConfig;
+        System.out.println(config);
         String path = "/weather/" + days;
 
         // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
             .fromHttpUrl(config.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", config.getKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
@@ -129,7 +130,7 @@ public class HeWeatherHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl(config.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", config.getKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
@@ -160,7 +161,7 @@ public class HeWeatherHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl(proConfig.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", proConfig.getKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
@@ -193,7 +194,7 @@ public class HeWeatherHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl(config.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", config.getKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
@@ -224,7 +225,7 @@ public class HeWeatherHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl(devConfig.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", devConfig.getKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
@@ -255,7 +256,7 @@ public class HeWeatherHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl(proConfig.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", proConfig.getKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
