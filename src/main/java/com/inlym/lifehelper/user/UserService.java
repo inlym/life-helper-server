@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * 用户账户服务类
  *
  * @author inlym
- * @date 2022-01-23 00:33
+ * @date 2022-01-23
  */
 @Service
 @Slf4j
@@ -38,10 +38,13 @@ public class UserService {
         if (user != null) {
             return user.getId();
         } else {
-            User newUser = new User();
-            newUser.setOpenid(openid);
-            userMapper.insertWithOpenid(newUser);
-            log.info("新注册用户：" + newUser);
+            User newUser = User
+                .builder()
+                .openid(openid)
+                .build();
+
+            userMapper.insert(newUser);
+            log.info("新注册用户：{}", newUser);
 
             return newUser.getId();
         }
@@ -56,10 +59,11 @@ public class UserService {
     public UserInfoBO getUserInfo(int id) {
         User user = userMapper.findById(id);
         if (user != null) {
-            UserInfoBO bo = new UserInfoBO();
-            bo.setNickName(user.getNickName());
-            bo.setAvatarUrl(ossService.concatUrl(user.getAvatar()));
-            return bo;
+            return UserInfoBO
+                .builder()
+                .nickName(user.getNickName())
+                .avatarUrl(ossService.concatUrl(user.getAvatar()))
+                .build();
         }
 
         throw new Exception("查找的用户不存在");
@@ -72,15 +76,19 @@ public class UserService {
      * @param dto    前端传输的用户信息
      */
     public UserInfoBO updateUserInfo(int userId, UserInfoDTO dto) {
-        User user = new User();
-        user.setId(userId);
-        user.setNickName(dto.getNickName());
-        user.setAvatar(ossService.dump(OssService.AVATAR_DIR, dto.getAvatarUrl()));
+        User user = User
+            .builder()
+            .id(userId)
+            .nickName(dto.getNickName())
+            .avatar(ossService.dump(OssService.AVATAR_DIR, dto.getAvatarUrl()))
+            .build();
+
         userMapper.update(user);
 
-        UserInfoBO bo = new UserInfoBO();
-        bo.setNickName(user.getNickName());
-        bo.setAvatarUrl(ossService.concatUrl(user.getAvatar()));
-        return bo;
+        return UserInfoBO
+            .builder()
+            .nickName(user.getNickName())
+            .avatarUrl(ossService.concatUrl(user.getAvatar()))
+            .build();
     }
 }

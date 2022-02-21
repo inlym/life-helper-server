@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
  * 用户信息控制器
  *
  * @author inlym
- * @date 2022-01-26 20:59
+ * @date 2022-01-26
  **/
 @RestController
+@Validated
 public class UserController {
     private final UserService userService;
 

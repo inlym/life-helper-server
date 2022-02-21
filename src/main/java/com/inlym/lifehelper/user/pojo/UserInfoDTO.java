@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
  *
  * @author inlym
  * @apiNote 数据来源与微信小程序接口获取
- * @date 2022-01-26 20:54
+ * @date 2022-01-26
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserProfile.html">获取用户信息</a>
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/UserInfo.html">用户信息</a>
  **/

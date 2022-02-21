@@ -11,7 +11,7 @@
     </resultMap>
 
     <select id="findById" resultMap="UserResult">
-        SELECT id, openid, phone, phone, nick_name, avatar, register_time
+        SELECT id, openid, phone, nick_name, avatar, register_time
         FROM `user`
         WHERE id = #{id}
     </select>
@@ -22,7 +22,7 @@
         WHERE openid = #{openid}
     </select>
 
-    <insert id="insertWithOpenid" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO user(openid, register_time)
         VALUES (#{user.openid}, now())
     </insert>

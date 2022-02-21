@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * @author inlym
- * @date 2022-01-23 00:07
+ * @date 2022-01-23
  */
 @Mapper
 public interface UserMapper {
@@ -35,7 +35,7 @@ public interface UserMapper {
      *
      * @return 新创建用户的用户 ID
      */
-    int insertWithOpenid(@Param("user") User user);
+    int insert(@Param("user") User user);
 
     /**
      * 更新用户信息

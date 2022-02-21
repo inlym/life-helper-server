@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.user.pojo;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -12,6 +13,7 @@ import lombok.Data;
  * @date 2022-02-13 15:32
  **/
 @Data
+@Builder
 public class UserInfoBO {
     /** 用户昵称 */
     private String nickName;
