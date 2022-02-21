@@ -1,5 +1,7 @@
 package com.inlym.lifehelper.location.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,10 +9,12 @@ import lombok.NoArgsConstructor;
  * 根据 IP 地址能够获得的位置信息
  *
  * @author inlym
- * @since 2022-01-19 20:13
+ * @date 2022-01-19
  **/
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class LocationInfo {
     /** 经度 */
     private Double longitude;

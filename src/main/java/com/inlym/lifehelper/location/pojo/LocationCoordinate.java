@@ -1,16 +1,14 @@
 package com.inlym.lifehelper.location.pojo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * 经纬度坐标
  *
  * @author inlym
- * @since 2022-01-22 15:06
+ * @date 2022-01-22
  **/
 @Data
-@AllArgsConstructor
 public class LocationCoordinate {
     /** 经度最小值 */
     public static final Double MIN_LONGITUDE = -180.0;

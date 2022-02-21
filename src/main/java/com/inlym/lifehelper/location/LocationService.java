@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * 位置信息服务
  *
  * @author inlym
- * @since 2022-01-19 20:42
+ * @date 2022-01-19
  **/
 @Service
 public class LocationService {
@@ -26,9 +26,8 @@ public class LocationService {
 
     /**
      * 解析经纬度字符串
-     * <p>
-     * [注意事项]
-     * 一般用在控制器中解析参数，在这之前已通过数据校验。
+     *
+     * <li> （注意）一般用在控制器中解析参数，在这之前已通过数据校验。
      *
      * @param locationString 经纬度字符串
      */
@@ -81,20 +80,20 @@ public class LocationService {
             .getResult()
             .getAddressComponent();
 
-        AddressComponent component = new AddressComponent();
-        component.setAddress(data
-            .getResult()
-            .getAddress());
-        component.setRecommendAddresses(data
-            .getResult()
-            .getFormattedAddresses()
-            .getRecommend());
-        component.setNation(ac.getNation());
-        component.setProvince(ac.getProvince());
-        component.setCity(ac.getCity());
-        component.setDistrict(ac.getDistrict());
-        component.setStreet(ac.getStreet());
-
-        return component;
+        return AddressComponent
+            .builder()
+            .address(data
+                .getResult()
+                .getAddress())
+            .recommendAddresses(data
+                .getResult()
+                .getFormattedAddresses()
+                .getRecommend())
+            .nation(ac.getNation())
+            .province(ac.getProvince())
+            .city(ac.getCity())
+            .district(ac.getDistrict())
+            .street(ac.getStreet())
+            .build();
     }
 }

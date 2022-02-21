@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.location.pojo;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,9 +10,10 @@ import lombok.Data;
  * 将腾讯位置服务的逆地址解析数据做了整合
  *
  * @author inlym
- * @date 2022-02-14 21:48
+ * @date 2022-02-14
  **/
 @Data
+@Builder
 public class AddressComponent {
     /** 以行政区划+道路+门牌号等信息组成的标准格式化地址 */
     private String address;
