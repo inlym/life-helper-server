@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 接口调试控制器
+ * 通用调试控制器
  *
  * @author inlym
- * @since 2022-01-22 20:21
+ * @date 2022-01-22
  */
 @RestController
 public class HelloController {
