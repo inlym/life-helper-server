@@ -4,13 +4,15 @@ import java.lang.annotation.*;
 
 /**
  * 用户 ID 注入器
- * <p>
- * [使用说明]
- * 1. 需要结合 `@UserPermission` 注解使用。
- * 2. 在控制器方法参数注入 `@UserId int userId`。
+ *
+ * <ul>
+ *     <li> 需要结合 {@code @UserPermission} 注解使用（登录鉴权通过才会有用户 ID）。
+ *     <li> 在控制器方法参数注入 {@code @UserId int userId} 。
+ * </ul>
  *
  * @author inlym
- * @date 2022-02-14 22:12
+ * @date 2022-02-14
+ * @see UserIdMethodArgumentResolver
  **/
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

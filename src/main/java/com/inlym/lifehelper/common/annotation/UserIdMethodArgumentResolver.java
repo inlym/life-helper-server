@@ -13,6 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author inlym
  * @date 2022-02-14 22:17
+ * @see UserId
  **/
 public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -22,6 +23,10 @@ public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolv
             .isAssignableFrom(int.class) && parameter.hasParameterAnnotation(UserId.class);
     }
 
+    /**
+     * 在过滤器链中，如果鉴权通过，则会在 {@link org.springframework.web.context.request.RequestAttributes RequestAttributes}
+     * 赋值，其中会将解析后的用户 ID 赋值在 {@code CustomRequestAttribute.USER_ID} 参数上，将其获取后进行返回即可。
+     */
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Integer userId = (Integer) webRequest.getAttribute(CustomRequestAttribute.USER_ID, RequestAttributes.SCOPE_REQUEST);

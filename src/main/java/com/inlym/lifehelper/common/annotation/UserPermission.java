@@ -7,12 +7,14 @@ import java.lang.annotation.*;
 
 /**
  * 用户登录权限鉴权注解
- * <p>
- * [使用说明]
- * 放在需要用户身份鉴权的控制器方法上。
+ *
+ * <ul>
+ *     <li> 该注解放在需要用户身份鉴权的控制器方法上。
+ *     <li> 该注解无解析器。
+ * </ul>
  *
  * @author inlym
- * @since 2022-01-21 00:31
+ * @date 2022-01-21
  **/
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
