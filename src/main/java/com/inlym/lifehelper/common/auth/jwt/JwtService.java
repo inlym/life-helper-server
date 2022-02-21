@@ -15,7 +15,7 @@ import java.util.UUID;
  * JWT 服务
  *
  * @author inlym
- * @since 2022-01-22 19:43
+ * @date 2022-01-22
  */
 @Service
 public class JwtService {
@@ -73,7 +73,7 @@ public class JwtService {
     }
 
     /**
-     * 解析 JWT 字符串
+     * 解析 JWT 字符串，并返回 {@linkplain SimpleAuthentication 自定义的鉴权凭证}
      *
      * @param token JWT 字符串
      */
@@ -85,10 +85,12 @@ public class JwtService {
 
         DecodedJWT jwt = verifier.verify(token);
 
+        // 用户 ID
         int userId = jwt
             .getClaim(USER_ID_FIELD)
             .asInt();
 
+        // 权限字符串
         String rolesStr = jwt
             .getClaim(AUTHORITIES_FIELD)
             .asString();

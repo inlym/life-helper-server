@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
  * JWT 配置项
  *
  * @author inlym
- * @since 2022-01-22 19:43
+ * @date 2022-01-22
  */
 @Component
-@ConfigurationProperties(prefix = "jwt")
+@ConfigurationProperties(prefix = "lifehelper.auth.jwt")
 @Data
 public class JwtProperties {
     /** 签名密钥 */

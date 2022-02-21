@@ -20,7 +20,7 @@ import java.io.IOException;
  * JWT 鉴权过滤器
  *
  * @author inlym
- * @since 2022-01-22 20:19
+ * @date 2022-01-22
  */
 @Order(100)
 @WebFilter(urlPatterns = "/*")
@@ -28,10 +28,13 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {this.jwtService = jwtService;}
+    public JwtAuthenticationFilter(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        // 从请求头获取鉴权凭证
         String token = request.getHeader(CustomHttpHeader.JWT_TOKEN);
 
         if (token != null) {
