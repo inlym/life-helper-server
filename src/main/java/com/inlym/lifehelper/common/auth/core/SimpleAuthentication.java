@@ -10,12 +10,14 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 简单鉴权凭证
- * <p>
- * 只提供用户 ID 和权限信息
+ * 自定义简单鉴权凭证
+ *
+ * <ul>
+ *     <li> 只提供用户 ID 和权限信息。
+ * </ul>
  *
  * @author inlym
- * @since 2022-01-22 20:18
+ * @date 2022-01-22
  */
 public class SimpleAuthentication implements Authentication {
     private final Integer userId;

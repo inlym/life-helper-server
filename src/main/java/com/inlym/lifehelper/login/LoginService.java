@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * 登录服务类
  *
  * @author inlym
- * @since 2022-01-23 00:53
+ * @date 2022-01-23
  **/
 @Service
 @Slf4j
@@ -29,7 +29,7 @@ public class LoginService {
     }
 
     /**
-     * 通过微信获取的 code 登录
+     * 通过微信获取的 code 登录，并返回登录凭证
      *
      * @param code 微信小程序中获取的 code
      *

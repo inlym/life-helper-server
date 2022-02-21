@@ -2,7 +2,7 @@ package com.inlym.lifehelper.login;
 
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
-import com.inlym.lifehelper.login.dto.LoginByCodeDTO;
+import com.inlym.lifehelper.login.pojo.LoginByCodeDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,20 +17,24 @@ import java.util.Map;
  * 登录控制器
  *
  * @author inlym
- * @date 2022-01-23 01:13
+ * @date 2022-01-23
  **/
 @RestController
 @Validated
 public class LoginController {
     private final LoginService loginService;
 
-    public LoginController(LoginService loginService) {this.loginService = loginService;}
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @ApiOperation("通过微信获取的 code 登录")
     @PostMapping("/login/weixin")
-    public Map<String, Object> loginByCode(@Validated @RequestBody LoginByCodeDTO data) {
+    public Map<String, Object> loginByCode(@Validated @RequestBody LoginByCodeDTO dto) {
         Map<String, Object> map = new HashMap<>(16);
-        map.put("token", loginService.loginByCode(data.getCode()));
+        map.put("token", loginService.loginByCode(dto.getCode()));
+
+        // 登录凭证有效期 10 天
         map.put("expiration", System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000);
 
         return map;
@@ -40,7 +44,7 @@ public class LoginController {
      * 开发者登录，用于获取开发者角色
      * <p>
      * [使用说明]
-     * 正常登录后，再访问以下这个接口就可以了。
+     * <li> 正常登录后，再访问以下这个接口就可以了。
      */
     @PostMapping("/login/developer")
     @UserPermission
