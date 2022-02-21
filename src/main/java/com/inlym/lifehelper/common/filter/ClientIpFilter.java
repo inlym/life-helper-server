@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 获取客户端 IP 地址
+ * 客户端 IP 地址过滤器
  *
  * @author inlym
- * @since 2022-01-18 23:32
+ * @date 2022-01-18
  **/
 @Order(2)
 @WebFilter(urlPatterns = "/*")
-public class ClientIPFilter extends OncePerRequestFilter {
+public class ClientIpFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // 在正式环境，请求通过 API 网关时，会在指定字段（`X-Client-Ip`）添加客户端 IP 地址，

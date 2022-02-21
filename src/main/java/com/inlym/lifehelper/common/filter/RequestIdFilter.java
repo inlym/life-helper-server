@@ -14,14 +14,13 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * 唯一请求 ID 过滤器
+ * 请求 ID 过滤器
  *
- * <p>
- * 线上生产环境使用 <a href="https://www.aliyun.com/product/apigateway?userCode=lzfqdh6g">阿里云 API 网关</a> 承载 HTTP 请求，
+ * <p> 线上生产环境使用 <a href="https://www.aliyun.com/product/apigateway?userCode=lzfqdh6g">阿里云 API 网关</a> 承载 HTTP 请求，
  * 会自动生成一个唯一请求 ID 并放置于请求头的 `X-Ca-Request-Id` 字段，一般将该字段用作全链路追踪 ID，开发环境也模拟了这个 ID。
  *
  * @author inlym
- * @since 2022-01-19 00:36
+ * @date 2022-01-19
  */
 @Order(1)
 @WebFilter(urlPatterns = "/*")
