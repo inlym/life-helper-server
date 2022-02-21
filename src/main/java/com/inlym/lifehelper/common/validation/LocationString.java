@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 经纬度字符串检验注解
  *
  * @author inlym
- * @since 2022-01-22 01:09
+ * @date 2022-01-22
  **/
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
