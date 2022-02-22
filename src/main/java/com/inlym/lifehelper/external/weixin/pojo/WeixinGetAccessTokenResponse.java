@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.external.weixin.model;
+package com.inlym.lifehelper.external.weixin.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -6,6 +6,8 @@ import lombok.Data;
 /**
  * 微信获取小程序全局唯一后台接口调用凭据请求响应数据
  *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-01-23
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
  */
 @Data

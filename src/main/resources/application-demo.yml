@@ -49,11 +49,12 @@ lifehelper:
         dev-key: xxxxxxxxxxxx
         pro-key: xxxxxxxxxxxx
 
+    # 微信小程序服务端配置
+    weixin:
+        appid: xxxxxxxxxxxx
+        secret: xxxxxxxxxxxx
 
-# 微信小程序服务端配置
-weixin:
-    appid: xxxxxxxxxxxx
-    secret: xxxxxxxxxxxx
+
 
 # 阿里云资源配置
 aliyun:

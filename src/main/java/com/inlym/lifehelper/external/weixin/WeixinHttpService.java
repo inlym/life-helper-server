@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.external.weixin;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
-import com.inlym.lifehelper.external.weixin.model.WeixinCode2SessionResponse;
-import com.inlym.lifehelper.external.weixin.model.WeixinGetAccessTokenResponse;
+import com.inlym.lifehelper.external.weixin.pojo.WeixinCode2SessionResponse;
+import com.inlym.lifehelper.external.weixin.pojo.WeixinGetAccessTokenResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
@@ -20,10 +20,13 @@ import java.util.Map;
 
 /**
  * 微信小程序服务端 HTTP 请求封装类
- * <p>
- * 注意事项：
+ *
+ * <p> 注意事项：
  * 1. 当前类中的方法只是将 HTTP 请求封装为内部可以调用的方法，不要对返回数据做二次处理。
  * 2. 数据处理在 `WeixinService` 类中的方法中执行。
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-01-23
  */
 @Service
 @Slf4j
@@ -65,7 +68,7 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            log.info("[code2Session] code=" + code + ", data=" + data);
+            log.info("[code2Session] code={}, data={}", code, data);
             return data;
         }
 
@@ -92,7 +95,7 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            log.info("[getAccessToken] data=" + data);
+            log.info("[getAccessToken] data={}", data);
             return data;
         }
 
@@ -118,7 +121,7 @@ public class WeixinHttpService {
             .build()
             .toUriString();
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         map.put("scene", scene);
         map.put("page", page);
         map.put("width", width);
@@ -132,8 +135,9 @@ public class WeixinHttpService {
 
         // 实测 `data.length` 响应正常是 83748，异常是 118
         // 因此可以判断 `data.length` 是否大于 1000 来判定响应是否正常
+        final int largeEnoughBytes = 1000;
         assert data != null;
-        if (data.length > 1000) {
+        if (data.length > largeEnoughBytes) {
             return data;
         }
 

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.external.weixin.model;
+package com.inlym.lifehelper.external.weixin.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -8,6 +8,8 @@ import java.io.Serializable;
 /**
  * 微信服务端登录凭证校验响应数据
  *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-01-23
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
  */
 @Data
