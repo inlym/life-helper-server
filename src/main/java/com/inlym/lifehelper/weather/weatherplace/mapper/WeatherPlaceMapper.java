@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author inlym
- * @date 2022-02-13 19:03
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-13
  **/
 @Mapper
 public interface WeatherPlaceMapper {
@@ -29,7 +29,7 @@ public interface WeatherPlaceMapper {
     List<WeatherPlace> list(int userId);
 
     /**
-     * 删除一条天气地点
+     * 软删除一条天气地点
      *
      * @param userId 用户 ID
      * @param id     主键 ID
