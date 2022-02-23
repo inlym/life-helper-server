@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>lifehelper</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>lifehelper</name>
     <description>Life Helper</description>
 
@@ -67,16 +67,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- 测试文件中使用的 @Test 应使用当前库，默认的那个会导致无法自动注入 -->
-        <!-- 默认的是 org.junit.jupiter.api.Test -->
-        <!-- 应该使用 org.junit.Test -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -158,6 +148,30 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <!-- Docker 构建插件 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>lifehelper/${project.name}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <dockerfile>Dockerfile</dockerfile>
+                </configuration>
+            </plugin>
         </plugins>
 
         <resources>
@@ -165,6 +179,13 @@
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>static/**</include>
                 </includes>
             </resource>
         </resources>
