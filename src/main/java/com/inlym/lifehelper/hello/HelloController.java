@@ -27,7 +27,7 @@ public class HelloController {
      */
     @GetMapping("/")
     public String index() {
-        return "你好，我是小鸣助手";
+        return "hello lifehelper";
     }
 
     /**
@@ -55,7 +55,7 @@ public class HelloController {
      * @param body    请求数据
      */
     @RequestMapping("/debug")
-    public Map<String, Object> debug(@RequestParam Map<String, String> params, @RequestHeader Map<String, String> headers, @RequestBody Object body) {
+    public Map<String, Object> debug(@RequestParam Map<String, String> params, @RequestHeader Map<String, String> headers, @RequestBody(required = false) Object body) {
         Map<String, Object> map = new HashMap<>(16);
         map.put("params", params);
         map.put("headers", headers);
