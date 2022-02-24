@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 /**
  * JWT 配置项
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22
+ * @since 1.0.0
  */
 @Component
 @ConfigurationProperties(prefix = "lifehelper.auth.jwt")
