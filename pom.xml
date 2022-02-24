@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>lifehelper_server</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
     <name>lifehelper_server</name>
     <description>Life Helper</description>
 
@@ -119,11 +119,6 @@
             <version>3.18.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-
         <!-- 分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -135,6 +130,7 @@
 
     <build>
         <finalName>lifehelper</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -166,7 +162,6 @@
                 <configuration>
                     <!-- 跳过插件，使用阿里云的云效构建时，不使用该插件 -->
                     <skip>true</skip>
-
                     <!-- 使用阿里云容器镜像服务的镜像仓库 -->
                     <repository>registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server</repository>
                     <tag>${project.version}</tag>
