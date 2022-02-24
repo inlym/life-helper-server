@@ -12,8 +12,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * 用户 ID 注入器注解解析器
  *
  * @author inlym
- * @date 2022-02-14 22:17
+ * @date 2022-02-14
  * @see UserId
+ * @since 1.0.0
  **/
 public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -24,7 +25,11 @@ public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolv
     }
 
     /**
-     * 在过滤器链中，如果鉴权通过，则会在 {@link org.springframework.web.context.request.RequestAttributes RequestAttributes}
+     * 解析参数处理
+     *
+     * <h2>处理逻辑
+     *
+     * <p>在过滤器链中，如果鉴权通过，则会在 {@link org.springframework.web.context.request.RequestAttributes RequestAttributes}
      * 赋值，其中会将解析后的用户 ID 赋值在 {@code CustomRequestAttribute.USER_ID} 参数上，将其获取后进行返回即可。
      */
     @Override
