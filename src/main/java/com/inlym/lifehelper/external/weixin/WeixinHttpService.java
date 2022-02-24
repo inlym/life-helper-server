@@ -19,25 +19,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 微信小程序服务端 HTTP 请求封装类
+ * 微信小程序服务端 HTTP 请求服务
  *
- * <p> 注意事项：
- * 1. 当前类中的方法只是将 HTTP 请求封装为内部可以调用的方法，不要对返回数据做二次处理。
- * 2. 数据处理在 `WeixinService` 类中的方法中执行。
+ * <h2>注意事项
+ * <li>当前类中的方法只是将 HTTP 请求封装为内部可以调用的方法，不要对返回数据做二次处理。
+ * <li>数据处理在 `WeixinService` 类中的方法中执行。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-23
+ * @since 1.0.0
  */
 @Service
 @Slf4j
 public class WeixinHttpService {
     private final WeixinProperties weixinProperties;
 
-    private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public WeixinHttpService(WeixinProperties weixinProperties) {
         this.weixinProperties = weixinProperties;
-        this.restTemplate = new RestTemplate();
 
         this.restTemplate
             .getMessageConverters()
@@ -49,7 +49,8 @@ public class WeixinHttpService {
      *
      * @param code 微信小程序端通过 wx.login 获取的 code
      *
-     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">auth.code2Session</a>
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">官方文档</a>
+     * @since 1.0.0
      */
     @Cacheable("weixin:session")
     public WeixinCode2SessionResponse code2Session(String code) throws ExternalHttpRequestException {
@@ -68,17 +69,17 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            log.info("[code2Session] code={}, data={}", code, data);
+            log.info("[HTTP] [code2Session] code={}, data={}", code, data);
             return data;
         }
-
         throw new ExternalHttpRequestException("code2Session", url, data.getErrCode(), data.getErrMsg());
     }
 
     /**
      * 微信获取小程序全局唯一后台接口调用凭据（access_token）
      *
-     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">官方文档</a>
+     * @since 1.0.0
      */
     public WeixinGetAccessTokenResponse getAccessToken() throws ExternalHttpRequestException {
         String baseUrl = "https://api.weixin.qq.com/cgi-bin/token";
@@ -95,10 +96,9 @@ public class WeixinHttpService {
 
         assert data != null;
         if (data.getErrCode() == null || data.getErrCode() == 0) {
-            log.info("[getAccessToken] data={}", data);
+            log.info("[HTTP] [getAccessToken] data={}", data);
             return data;
         }
-
         throw new ExternalHttpRequestException("getAccessToken", url, data.getErrCode(), data.getErrMsg());
     }
 
@@ -110,7 +110,8 @@ public class WeixinHttpService {
      * @param page        页面 page，根路径前不要填加 /，不能携带参数（参数请放在scene字段里）
      * @param width       二维码的宽度，单位 px，最小 280px，最大 1280px
      *
-     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html">wxacode.getUnlimited</a>
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html">官方文档</a>
+     * @since 1.0.0
      */
     public byte[] getUnlimitedWxacode(String accessToken, String scene, String page, int width) throws ExternalHttpRequestException {
         String baseUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
@@ -140,14 +141,18 @@ public class WeixinHttpService {
         if (data.length > largeEnoughBytes) {
             return data;
         }
-
         throw new ExternalHttpRequestException("获取小程序码", url, "xxx", new String(data));
     }
 
     /**
-     * 微信部分服务端 API 的 `Content-Type` 为 `text/plain`，需要额外支持解析 JSON
+     * 微信请求数据转换器
+     *
+     * <h2>为什么需要这个转换器？
+     * <p>微信部分服务端 API 的 `Content-Type` 为 `text/plain`，需要额外支持解析 JSON
+     *
+     * @since 1.0.0
      */
-    public static class WeixinMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
+    private static class WeixinMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
         public WeixinMappingJackson2HttpMessageConverter() {
             List<MediaType> mediaTypes = new ArrayList<>();
             mediaTypes.add(MediaType.TEXT_PLAIN);

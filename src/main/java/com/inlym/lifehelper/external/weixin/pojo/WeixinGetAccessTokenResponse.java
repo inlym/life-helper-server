@@ -9,30 +9,23 @@ import lombok.Data;
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-23
  * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html">auth.getAccessToken</a>
+ * @since 1.0.0
  */
 @Data
 public class WeixinGetAccessTokenResponse {
-    /**
-     * 错误码
-     */
+    /** 错误码 */
     @JsonProperty("errcode")
     private Integer errCode;
 
-    /**
-     * 错误信息
-     */
+    /** 错误信息 */
     @JsonProperty("errmsg")
     private String errMsg;
 
-    /**
-     * 获取到的凭证
-     */
+    /** 获取到的凭证 */
     @JsonProperty("access_token")
     private String accessToken;
 
-    /**
-     * 凭证有效时间，单位：秒。目前是7200秒之内的值。
-     */
+    /** 凭证有效时间，单位：秒。目前是7200秒之内的值。 */
     @JsonProperty("expires_in")
     private Integer expiresIn;
 }

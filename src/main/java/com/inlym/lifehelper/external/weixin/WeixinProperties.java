@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-23
+ * @since 1.0.0
  */
 @Component
 @ConfigurationProperties(prefix = "lifehelper.weixin")
