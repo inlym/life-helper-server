@@ -15,8 +15,13 @@ import java.io.IOException;
 /**
  * 客户端 IP 地址过滤器
  *
- * @author inlym
+ * <h2>主要用途
+ *
+ * <p>用于获取客户端的 IP 地址。
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-18
+ * @since 1.0.0
  **/
 @Order(2)
 @WebFilter(urlPatterns = "/*")

@@ -19,8 +19,9 @@ import java.io.IOException;
 /**
  * JWT 鉴权过滤器
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22
+ * @since 1.0.0
  */
 @Order(100)
 @WebFilter(urlPatterns = "/*")
