@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 /**
  * OSS 配置信息
  *
- * @author inlym
- * @date 2022-02-12 23:10
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-12
+ * @since 1.0.0
  */
 @Component
 @ConfigurationProperties(prefix = "aliyun.oss")

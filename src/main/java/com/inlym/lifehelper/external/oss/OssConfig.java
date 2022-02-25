@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
 /**
  * OSS 配置类（主要用于输出封装好的 OSS 客户端）
  *
- * @author inlym
- * @date 2022-02-12 23:09
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-12
+ * @since 1.0.0
  */
 @Configuration
 public class OssConfig {

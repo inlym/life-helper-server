@@ -16,16 +16,19 @@ import java.util.*;
 
 /**
  * OSS 服务类
- * <p>
- * [注意事项]
- * 1. 当前只用到一个 OSS 储存空间（bucket），使用不同目录存放不同来源的资源。
- * <p>
- * [目录用途]
- * 1. [temp]     -> 临时测试使用
- * 2. [wxacode]  -> 微信小程序码图片
  *
- * @author inlym
- * @date 2022-02-12 23:10
+ * <h2>注意事项
+ *
+ * <li>当前只用到一个 OSS 储存空间（bucket），使用不同目录存放不同来源的资源。
+ *
+ * <h2>目录用途
+ *
+ * <li> 临时调试使用 {@code temp}
+ * <li> 微信小程序码图片 {@code wxacode}
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-12
+ * @since 1.0.0
  */
 @Service
 public class OssService {
