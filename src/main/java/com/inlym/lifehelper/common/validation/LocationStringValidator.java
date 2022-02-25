@@ -6,8 +6,10 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * 经纬度字符串检验器
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22
+ * @see LocationString
+ * @since 1.0.0
  **/
 public class LocationStringValidator implements ConstraintValidator<LocationString, String> {
     /** 经度最小值 */

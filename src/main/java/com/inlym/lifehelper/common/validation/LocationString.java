@@ -7,8 +7,14 @@ import java.lang.annotation.*;
 /**
  * 经纬度字符串检验注解
  *
- * @author inlym
+ * <h2>主要用途
+ *
+ * <p>校验请求参数是否为指定格式
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22
+ * @see LocationStringValidator
+ * @since 1.0.0
  **/
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)

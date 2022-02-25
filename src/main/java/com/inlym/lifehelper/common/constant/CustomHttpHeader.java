@@ -3,8 +3,9 @@ package com.inlym.lifehelper.common.constant;
 /**
  * 自定义的 HTTP 请求头
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-19
+ * @since 1.0.0
  */
 public final class CustomHttpHeader {
     /** 请求 ID，用作全链路追踪 ID */
