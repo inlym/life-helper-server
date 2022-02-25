@@ -54,8 +54,6 @@ lifehelper:
         appid: xxxxxxxxxxxx
         secret: xxxxxxxxxxxx
 
-
-
 # 阿里云资源配置
 aliyun:
     # 阿里云 OSS 配置
@@ -68,8 +66,3 @@ aliyun:
         bucket-name: xxxxxxxxxxxx
         # 绑定的自定义域名（包含 https:// 前缀部分）
         alias-url: xxxxxxxxxxxx
-
-# 高德
-amap:
-    # 开发者密钥
-    key: xxxxxxxxxxxx
