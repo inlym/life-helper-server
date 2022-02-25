@@ -10,10 +10,13 @@ import java.util.Date;
 /**
  * 用户实体
  *
- * <li> 表名：{@code user}
+ * <h2>说明
  *
- * @author inlym
+ * <li>表名：{@code user}
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22
+ * @since 1.0.0
  */
 @Data
 @Builder
