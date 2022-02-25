@@ -9,8 +9,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 /**
  * Spring Security 配置
  *
- * @author inlym
- * @since 2022-01-22 20:33
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-01-22
+ * @since 1.0.0
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)

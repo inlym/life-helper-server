@@ -16,8 +16,12 @@ import javax.validation.ConstraintViolationException;
 /**
  * 全局异常处理器
  *
- * @author inlym
- * @since 2022-01-17 22:31
+ * <h2>主要用途
+ * <p>捕获项目内抛出的错误，直接返回对应的响应内容。
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2021-12-27
+ * @since 1.0.0
  */
 @RestControllerAdvice
 @Slf4j

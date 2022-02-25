@@ -78,6 +78,8 @@ public class JwtService {
      *
      * @param userId 用户 ID
      * @param roles  角色列表
+     *
+     * @since 1.0.0
      */
     public String create(int userId, String[] roles) {
         return create(userId, DEFAULT_JWT_DURATION, roles);

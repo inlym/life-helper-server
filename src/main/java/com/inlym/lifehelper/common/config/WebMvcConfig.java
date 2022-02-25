@@ -8,8 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import java.util.List;
 
 /**
- * @author inlym
- * @date 2022-02-14 22:26
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-14
+ * @since 1.0.0
  **/
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
