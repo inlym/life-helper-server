@@ -1,26 +1,22 @@
 package com.inlym.lifehelper.weather.weatherdata;
 
-import com.inlym.lifehelper.external.heweather.HeWeatherDataProcessingService;
-import com.inlym.lifehelper.external.heweather.HeWeatherService;
-import com.inlym.lifehelper.external.heweather.pojo.*;
+import com.inlym.lifehelper.external.heweather.HeMainService;
 import com.inlym.lifehelper.weather.weatherdata.pojo.*;
 import org.springframework.stereotype.Service;
 
 /**
  * 天气数据服务
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-19
+ * @since 1.0.0
  **/
 @Service
 public class WeatherDataService {
-    private final HeWeatherService heWeatherService;
+    private final HeMainService heMainService;
 
-    private final HeWeatherDataProcessingService heWeatherDataProcessingService;
-
-    public WeatherDataService(HeWeatherService heWeatherService, HeWeatherDataProcessingService heWeatherDataProcessingService) {
-        this.heWeatherService = heWeatherService;
-        this.heWeatherDataProcessingService = heWeatherDataProcessingService;
+    public WeatherDataService(HeMainService heMainService) {
+        this.heMainService = heMainService;
     }
 
     /**
@@ -28,10 +24,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public WeatherNow getWeatherNow(double longitude, double latitude) {
-        HeWeatherNowResponse res = heWeatherService.getWeatherNow(longitude, latitude);
-        return heWeatherDataProcessingService.processWeatherNow(res);
+        return heMainService.getWeatherNow(longitude, latitude);
     }
 
     /**
@@ -39,10 +36,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public WeatherDaily[] getWeather7D(double longitude, double latitude) {
-        HeWeatherDailyResponse res = heWeatherService.getWeather7D(longitude, latitude);
-        return heWeatherDataProcessingService.processWeatherDaily(res);
+        return heMainService.getWeatherDaily(longitude, latitude, "7d");
     }
 
     /**
@@ -50,10 +48,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public WeatherDaily[] getWeather15D(double longitude, double latitude) {
-        HeWeatherDailyResponse res = heWeatherService.getWeather15D(longitude, latitude);
-        return heWeatherDataProcessingService.processWeatherDaily(res);
+        return heMainService.getWeatherDaily(longitude, latitude, "15d");
     }
 
     /**
@@ -61,10 +60,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public WeatherHourly[] getWeather24H(double longitude, double latitude) {
-        HeWeatherHourlyResponse res = heWeatherService.getWeather24H(longitude, latitude);
-        return heWeatherDataProcessingService.processWeatherHourly(res);
+        return heMainService.getWeatherHourly(longitude, latitude, "24h");
     }
 
     /**
@@ -72,10 +72,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public MinutelyRain getMinutely(double longitude, double latitude) {
-        HeMinutelyResponse res = heWeatherService.getMinutely(longitude, latitude);
-        return heWeatherDataProcessingService.processMinutelyRain(res);
+        return heMainService.getMinutely(longitude, latitude);
     }
 
     /**
@@ -83,10 +84,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public IndicesDaily[] getIndices1D(double longitude, double latitude) {
-        HeIndicesResponse res = heWeatherService.getIndices1D(longitude, latitude);
-        return heWeatherDataProcessingService.processIndicesDaily(res);
+        return heMainService.getIndicesDaily(longitude, latitude, "1d");
     }
 
     /**
@@ -94,10 +96,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public IndicesDaily[] getIndices3D(double longitude, double latitude) {
-        HeIndicesResponse res = heWeatherService.getIndices3D(longitude, latitude);
-        return heWeatherDataProcessingService.processIndicesDaily(res);
+        return heMainService.getIndicesDaily(longitude, latitude, "3d");
     }
 
     /**
@@ -105,10 +108,11 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public AirNow getAirNow(double longitude, double latitude) {
-        HeAirNowResponse res = heWeatherService.getAirNow(longitude, latitude);
-        return heWeatherDataProcessingService.processAirNow(res);
+        return heMainService.getAirNow(longitude, latitude);
     }
 
     /**
@@ -116,9 +120,10 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     public AirDaily[] getAir5D(double longitude, double latitude) {
-        HeAirDailyResponse res = heWeatherService.getAir5D(longitude, latitude);
-        return heWeatherDataProcessingService.processAirDaily(res);
+        return heMainService.getAirDaily(longitude, latitude);
     }
 }

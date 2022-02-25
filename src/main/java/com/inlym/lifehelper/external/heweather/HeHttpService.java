@@ -13,26 +13,27 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 和风天气 HTTP 请求服务类
- * <p>
- * [主要用途]
- * 将对和风天气 API 的 HTTP 请求封装为内部可直接调用的方法。
- * <p>
- * [注意事项]
- * 1. 仅封装 HTTP 请求，不对响应数据做任何数据处理。
- * 2. 方法入参一般即为发起 HTTP 请求所需的参数，对部分未用到的参数不做封装。
  *
- * @author inlym
+ * <h2>主要用途
+ * <p>将对和风天气 API 的 HTTP 请求封装为内部可直接调用的方法。
+ *
+ * <h2>注意事项
+ * <li>仅封装 HTTP 请求，不对响应数据做任何数据处理。
+ * <li>方法入参一般即为发起 HTTP 请求所需的参数，对部分未用到的参数不做封装。
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-17
+ * @since 1.0.0
  **/
 @Service
 @Slf4j
-public class HeWeatherHttpService {
+public class HeHttpService {
     /** 表示请求成功的 `code` 值 */
     public static final String SUCCESS_CODE = "200";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final HeWeatherProperties heWeatherProperties;
+    private final HeProperties heProperties;
 
     /** 开发版配置信息 */
     private final Config devConfig;
@@ -40,11 +41,11 @@ public class HeWeatherHttpService {
     /** 商业版配置信息 */
     private final Config proConfig;
 
-    public HeWeatherHttpService(HeWeatherProperties heWeatherProperties) {
-        this.heWeatherProperties = heWeatherProperties;
+    public HeHttpService(HeProperties heProperties) {
+        this.heProperties = heProperties;
 
-        this.devConfig = new Config("https://devapi.qweather.com/v7", heWeatherProperties.getDevKey());
-        this.proConfig = new Config("https://api.qweather.com/v7", heWeatherProperties.getProKey());
+        this.devConfig = new Config("https://devapi.qweather.com/v7", heProperties.getDevKey());
+        this.proConfig = new Config("https://api.qweather.com/v7", heProperties.getProKey());
     }
 
     /**
@@ -52,7 +53,8 @@ public class HeWeatherHttpService {
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      *
-     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">实时天气</a>
+     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:now")
@@ -63,7 +65,7 @@ public class HeWeatherHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl(devConfig.getBaseUrl() + path)
             .queryParam("location", location)
-            .queryParam("key", heWeatherProperties.getDevKey())
+            .queryParam("key", heProperties.getDevKey())
             .queryParam("gzip", "n")
             .build()
             .toUriString();
@@ -84,7 +86,8 @@ public class HeWeatherHttpService {
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      * @param days     天数，支持 `3d`,`7d`,`10d`,`15d`
      *
-     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">逐天天气预报</a>
+     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:daily")
@@ -117,7 +120,8 @@ public class HeWeatherHttpService {
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      * @param hours    小时数，支持 `24h`,`72h`,`168h`
      *
-     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">逐小时天气预报</a>
+     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:hourly")
@@ -149,7 +153,8 @@ public class HeWeatherHttpService {
      *
      * @param location 需要查询地区的以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）
      *
-     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">分钟级降水</a>
+     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:minutely")
@@ -181,7 +186,8 @@ public class HeWeatherHttpService {
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      * @param days     小时数，支持 `1d`,`3d`
      *
-     * @see <a href="https://dev.qweather.com/docs/api/indices/">天气生活指数</a>
+     * @see <a href="https://dev.qweather.com/docs/api/indices/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:indices")
@@ -214,7 +220,8 @@ public class HeWeatherHttpService {
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
      *
-     * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">实时空气质量</a>
+     * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:air-now")
@@ -245,7 +252,8 @@ public class HeWeatherHttpService {
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
      *
-     * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">空气质量预报</a>
+     * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">官方文档</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("hefeng:air-daily")
@@ -272,7 +280,10 @@ public class HeWeatherHttpService {
     }
 
     /**
-     * 封装和风天气配置信息
+     * 和风天气配置信息类
+     *
+     * <h2>主要用途
+     * <p>和风天气开发者密钥分开发版和商业版，两个密钥对应的请求地址，这个类将这两个信息封装起来。
      */
     @Data
     @AllArgsConstructor
