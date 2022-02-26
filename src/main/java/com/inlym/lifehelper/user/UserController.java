@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 用户信息控制器
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-26
+ * @since 1.0.0
  **/
 @RestController
 @Validated

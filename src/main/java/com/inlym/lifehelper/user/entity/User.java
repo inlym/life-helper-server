@@ -1,9 +1,7 @@
 package com.inlym.lifehelper.user.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -20,8 +18,6 @@ import java.util.Date;
  */
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
     /** 用户 ID */
     private Integer id;
@@ -37,9 +33,10 @@ public class User {
 
     /**
      * 用户头像图片路径
-     * <p>
-     * [说明]
-     * 从微信侧获取的头像 URL，会将图片内容转储到我方 OSS 中，最终存储的是在 OSS 中的路径。
+     *
+     * <h2>说明
+     *
+     * <p>从微信侧获取的头像 URL，会将图片内容转储到我方 OSS 中，最终存储的是在 OSS 中的路径。
      */
     private String avatar;
 

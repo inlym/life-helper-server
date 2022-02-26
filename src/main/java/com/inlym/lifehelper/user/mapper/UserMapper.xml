@@ -12,24 +12,24 @@
 
     <select id="findById" resultMap="UserResult">
         SELECT id, openid, phone, nick_name, avatar, register_time
-        FROM `user`
+        FROM user
         WHERE id = #{id}
     </select>
 
     <select id="findByOpenid" resultMap="UserResult">
         SELECT id, openid, phone, phone, nick_name, avatar, register_time
-        FROM `user`
+        FROM user
         WHERE openid = #{openid}
     </select>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO user(openid, register_time)
-        VALUES (#{user.openid}, now())
+        VALUES (#{user.openid}, NOW())
     </insert>
 
     <!-- 赋值时隐藏了不允许变更的字段，避免误操作 -->
     <update id="update">
-        UPDATE `user`
+        UPDATE user
         <set>
             <if test="user.phone != null">phone = #{user.phone},</if>
             <if test="user.nickName != null">nick_name = #{user.nickName},</if>

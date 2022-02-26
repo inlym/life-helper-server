@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
+ * 用户映射器
+ *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-23
  * @since 1.0.0

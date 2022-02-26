@@ -5,12 +5,14 @@ import lombok.Data;
 
 /**
  * 用户个人信息
- * <p>
- * [说明]
- * 业务层从数据库获取并完成数据处理后的信息
  *
- * @author inlym
- * @date 2022-02-13 15:32
+ * <h2>说明
+ *
+ * <p>业务层从数据库获取并完成数据处理后的信息
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-13
+ * @since 1.0.0
  **/
 @Data
 @Builder
