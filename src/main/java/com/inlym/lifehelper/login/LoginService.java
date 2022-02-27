@@ -8,10 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * 登录服务类
+ * 登录服务
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-23
+ * @since 1.0.0
  **/
 @Service
 @Slf4j
