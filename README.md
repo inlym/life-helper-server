@@ -22,6 +22,45 @@ life-helper-server
 
 ```
 
+## 技术栈
+
+|       技术栈       | 链接                                          |
+|:---------------:|---------------------------------------------|
+|   Spring Boot   | https://spring.io/projects/spring-boot      |
+| Spring Security | https://spring.io/projects/spring-security  |
+|     Lombok      | https://www.projectlombok.org/              |
+|      Maven      | https://maven.apache.org/                   |
+|     MyBatis     | https://mybatis.org/mybatis-3/zh/index.html |
+|     Docker      | https://www.docker.com/                     |
+|      MySQL      | https://www.mysql.com/cn/                   |
+|      Redis      | https://redis.io/                           |
+|      Druid      | https://druid.apache.org/                   |
+|       JWT       | https://jwt.io/                             |
+|     Swagger     | https://swagger.io/                         |
+
+## 运行
+
+按照以下流程可以将 [本项目](https://github.com/inlym/life-helper-server) 启动：
+
+1. 将代码克隆至本地
+
+```sh
+git clone https://github.com/inlym/life-helper-server.git
+````
+
+2. 准备相关资源并完成配置
+
+本项目依赖 MySQL 和 Redis，请自行准备相关资源并在 `src/main/resources` 目录下创建 `application-dev.yml` 配置文件，
+配置文件内容请直接复制 `application-demo.yml` ，然后将对应资源替换为实际地址。
+
+3. 启动项目
+
+完成配置并安装依赖后，启动 `com.inlym.lifehelper.Application` 的 `main` 方法启动项目。
+
+4. 访问项目
+
+http://localhost:23010
+
 ## 相关仓库
 
 ### 服务端
