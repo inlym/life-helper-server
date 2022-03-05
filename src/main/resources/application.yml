@@ -52,3 +52,8 @@ spring:
             max-wait: 8000
         # 数据源类型
         type: com.alibaba.druid.pool.DruidDataSource
+
+# 数据库查询分页插件
+pagehelper:
+    # 分页合理化参数，当页码不大于0时则默认取第1页，当页码超过最大值时，默认取最后一页
+    reasonable: true
