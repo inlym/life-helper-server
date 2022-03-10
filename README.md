@@ -67,7 +67,7 @@ http://localhost:23010
 
 仓库（当前仓库）地址： [life-helper-server](https://github.com/inlym/life-helper-server)
 
-技术栈： `Spring Boot` + `Spring Security` + `MyBatis` + `MySQL` + `Redis` + `Docker`
+技术栈： `Spring Boot` + `Spring Security` + `JWT` + `MyBatis` + `MySQL` + `Redis` + `Docker`
 
 ### 服务端（旧，使用 Nest.js 框架，已弃用）
 
