@@ -3,7 +3,6 @@ package com.inlym.lifehelper.login;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.login.pojo.LoginByCodeDTO;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,6 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @ApiOperation("通过微信获取的 code 登录")
     @PostMapping("/login/weixin")
     public Map<String, Object> loginByCode(@Validated @RequestBody LoginByCodeDTO dto) {
         Map<String, Object> map = new HashMap<>(16);

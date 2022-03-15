@@ -4,7 +4,6 @@ import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.weatherplace.pojo.WeixinChooseLocationDTO;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +23,18 @@ public class WeatherPlaceController {
         this.weatherPlaceService = weatherPlaceService;
     }
 
-    @ApiOperation("新增天气地点")
+    /**
+     * 新增天气地点
+     */
     @PostMapping("/weather/place")
     @UserPermission
     public WeatherPlace add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
         return weatherPlaceService.add(userId, dto);
     }
 
-    @ApiOperation("删除一条天气地点")
+    /**
+     * 删除一条天气地点
+     */
     @DeleteMapping("/weather/place/{id}")
     @UserPermission
     public Map<String, Object> delete(@PathVariable("id") int id, @UserId int userId) {
@@ -39,7 +42,9 @@ public class WeatherPlaceController {
         return Map.of("id", id);
     }
 
-    @ApiOperation("获取天气地点列表")
+    /**
+     * 获取天气地点列表
+     */
     @GetMapping("/weather/place")
     @UserPermission
     public Map<String, Object> list(@UserId int userId) {
