@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 /**
  * 用户账户服务类
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-23
+ * @since 1.0.0
  */
 @Service
 @Slf4j
@@ -32,6 +33,8 @@ public class UserService {
      * 通过 openid 获取用户 ID（用户不存在时将自动创建用户）
      *
      * @param openid 微信小程序用户唯一标识
+     *
+     * @since 1.0.0
      */
     public int getUserIdByOpenid(@NonNull String openid) {
         User user = userMapper.findByOpenid(openid);
@@ -54,6 +57,8 @@ public class UserService {
      * 获取用户信息
      *
      * @param id 用户 ID
+     *
+     * @since 1.0.0
      */
     @SneakyThrows
     public UserInfoBO getUserInfo(int id) {
@@ -74,6 +79,8 @@ public class UserService {
      *
      * @param userId 用户 ID
      * @param dto    前端传输的用户信息
+     *
+     * @since 1.0.0
      */
     public UserInfoBO updateUserInfo(int userId, UserInfoDTO dto) {
         User user = User

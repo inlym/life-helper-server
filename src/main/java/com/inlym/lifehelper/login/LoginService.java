@@ -7,6 +7,8 @@ import com.inlym.lifehelper.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+
 /**
  * 登录服务
  *
@@ -35,11 +37,13 @@ public class LoginService {
      * @param code 微信小程序中获取的 code
      *
      * @return JWT 字符串
+     *
+     * @since 1.0.0
      */
     public String loginByCode(String code) {
         String openid = weixinService.getOpenidByCode(code);
         int userId = userService.getUserIdByOpenid(openid);
-        String token = jwtService.create(userId);
+        String token = jwtService.create(userId, Duration.ofDays(30), new String[0]);
 
         log.info("[用户登录] code={}, openid={}, userId={}", code, openid, userId);
 
@@ -52,6 +56,8 @@ public class LoginService {
      * @param userId 用户 ID
      *
      * @return 具有开发者角色的 JWT
+     *
+     * @since 1.0.0
      */
     public String loginForDeveloper(int userId) {
         return jwtService.create(userId, new String[]{Role.DEVELOPER});

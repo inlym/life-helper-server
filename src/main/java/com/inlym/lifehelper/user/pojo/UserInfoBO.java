@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 用户个人信息
+ * 用户个人信息业务对象
  *
  * <h2>说明
  *

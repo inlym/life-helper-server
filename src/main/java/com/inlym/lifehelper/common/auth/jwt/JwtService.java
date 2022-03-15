@@ -30,10 +30,10 @@ public class JwtService {
     /** 在 JWT 中存储权限信息的字段名 */
     private static final String AUTHORITIES_FIELD = "aut";
 
-    /** JWT 发行人，即项目名称 */
-    private static final String ISSUER = "lifehelper-server";
+    /** JWT 签发者，这里放了官网域名 */
+    private static final String ISSUER = "lifehelper.com.cn";
 
-    /** JWT 算法 */
+    /** JWT 算法，用于签名和验证环节 */
     private final Algorithm algorithm;
 
     public JwtService(JwtProperties jwtProperties) {
@@ -62,7 +62,8 @@ public class JwtService {
             .withIssuedAt(new Date(now))
             .withJWTId(UUID
                 .randomUUID()
-                .toString())
+                .toString()
+                .toLowerCase())
             .withExpiresAt(new Date(expireTime))
             .withClaim(USER_ID_FIELD, userId);
 
@@ -89,6 +90,8 @@ public class JwtService {
      * 生成 JWT 字符串（不包含权限信息）
      *
      * @param userId 用户 ID
+     *
+     * @since 1.0.0
      */
     public String create(int userId) {
         return this.create(userId, DEFAULT_JWT_DURATION, null);
