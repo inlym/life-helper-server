@@ -1,11 +1,16 @@
 <component name="ProjectDictionaryState">
   <dictionary name="lym">
     <words>
+      <w>aliyun</w>
       <w>aliyuncs</w>
+      <w>errcode</w>
+      <w>errmsg</w>
       <w>inlym</w>
       <w>lifehelper</w>
       <w>projectlombok</w>
+      <w>unionid</w>
       <w>weixin</w>
+      <w>wxacode</w>
     </words>
   </dictionary>
 </component>

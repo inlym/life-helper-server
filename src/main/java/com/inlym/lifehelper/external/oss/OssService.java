@@ -40,6 +40,7 @@ public class OssService {
 
     private final OSS ossClient;
 
+    /** 存储空间名称 */
     private final String bucketName;
 
     private final OssProperties ossProperties;
@@ -57,6 +58,8 @@ public class OssService {
      *
      * @param pathname 文件路径，注意不要以 `/` 开头
      * @param content  文件内容
+     *
+     * @since 1.0.0
      */
     public void upload(String pathname, byte[] content) {
         ossClient.putObject(bucketName, pathname, new ByteArrayInputStream(content));
@@ -69,6 +72,8 @@ public class OssService {
      * @param url     资源文件的 URL 地址
      *
      * @return 资源在 OSS 中的路径
+     *
+     * @since 1.0.0
      */
     public String dump(String dirname, String url) {
         // 文件路径
@@ -98,6 +103,8 @@ public class OssService {
      * @param path 资源在 OSS 中的路径
      *
      * @return 完整的 URL 地址
+     *
+     * @since 1.0.0
      */
     public String concatUrl(String path) {
         if ("".equals(path)) {
@@ -108,11 +115,14 @@ public class OssService {
 
     /**
      * 生成客户端直传 OSS 凭证
-     * <p>
-     * [主要用途]
-     * 客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器
+     *
+     * <h2>主要用途
+     *
+     * <p>客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器
      *
      * @param dirname 目录名称
+     *
+     * @since 1.0.0
      */
     public Map<String, String> createClientToken(String dirname) {
         // 凭证有效时长（分钟）：120 分钟

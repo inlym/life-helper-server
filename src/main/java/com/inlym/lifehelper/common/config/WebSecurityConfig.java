@@ -18,6 +18,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 备注：实际上可以使用 {@code .and()} 来连接各个语句，但笔者觉得使用 {@code http} 看起来更优雅。
+
         http
             .formLogin()
             .disable();

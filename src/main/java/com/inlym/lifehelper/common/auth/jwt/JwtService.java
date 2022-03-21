@@ -87,17 +87,6 @@ public class JwtService {
     }
 
     /**
-     * 生成 JWT 字符串（不包含权限信息）
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.0.0
-     */
-    public String create(int userId) {
-        return this.create(userId, DEFAULT_JWT_DURATION, null);
-    }
-
-    /**
      * 解析 JWT 字符串，并返回 {@linkplain SimpleAuthentication 自定义的鉴权凭证}
      *
      * @param token JWT 字符串

@@ -26,7 +26,7 @@ public class TencentMapHttpService {
 
     private final TencentMapProperties properties;
 
-    /** 调用次数 */
+    /** 开发者密钥调用次数 */
     private Integer invokeCounter = 0;
 
     public TencentMapHttpService(TencentMapProperties properties) {
@@ -35,9 +35,9 @@ public class TencentMapHttpService {
 
     /**
      * 获取开发者调用密钥
-     * <p>
-     * [说明]
-     * 正常企业级项目中，只需要一个密钥就可以了，而不是这里的一组密钥列表。这里使用密钥列表的原因是：
+     *
+     * <h2>说明
+     * <p>正常企业级项目中，只需要一个密钥就可以了，而不是这里的一组密钥列表。这里使用密钥列表的原因是：
      * 个人开发者的密钥存在并发限制和较低的免费额度，容易达到上限，因此申请多个密钥用于轮询调用。
      */
     private String getKey() {
@@ -54,6 +54,7 @@ public class TencentMapHttpService {
      * @param ip IP 地址
      *
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
+     * @since 1.0.0
      */
     @SneakyThrows
     @Cacheable("lbs:locate-ip")
