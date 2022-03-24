@@ -83,11 +83,16 @@ public class UserService {
      * @since 1.0.0
      */
     public UserInfoBO updateUserInfo(int userId, UserInfoDTO dto) {
+        // URL 最后一个数值代表正方形头像大小，默认132，0 代表 640x640 的正方形头像
+        String avatarUrl = dto
+            .getAvatarUrl()
+            .replace("/132", "/0");
+
         User user = User
             .builder()
             .id(userId)
             .nickName(dto.getNickName())
-            .avatar(ossService.dump(OssService.AVATAR_DIR, dto.getAvatarUrl()))
+            .avatar(ossService.dump(OssService.AVATAR_DIR, avatarUrl))
             .build();
 
         userMapper.update(user);
