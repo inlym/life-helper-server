@@ -19,6 +19,9 @@ public class HeConstant {
     /** 存放和风天气图标的目录地址 */
     public static final String ICON_BASE_URL = "https://static.lifehelper.com.cn/qweather/icon/";
 
+    /** 存放和风天气生活指数图片的目录地址 */
+    public static final String LIVE_IMAGE_BASE_URL = "https://static.lifehelper.com.cn/qweather/live/";
+
     /** 逐天天气预报可查询天数 */
     public static final class WeatherDailyDays {
         /** 3天 */

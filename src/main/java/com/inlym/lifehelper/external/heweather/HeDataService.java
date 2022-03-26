@@ -21,9 +21,6 @@ import java.util.concurrent.TimeUnit;
  **/
 @Service
 public final class HeDataService {
-    /** 存放和风天气图标的目录地址 */
-    private static final String ICON_BASE_URL = HeConstant.ICON_BASE_URL;
-
     private final HeHttpService heHttpService;
 
     public HeDataService(HeHttpService heHttpService) {
@@ -38,7 +35,18 @@ public final class HeDataService {
      * @since 1.0.0
      */
     private static String makeIconUrl(String iconId) {
-        return ICON_BASE_URL + iconId + ".png";
+        return HeConstant.ICON_BASE_URL + iconId + ".png";
+    }
+
+    /**
+     * 生成天气生活指数图片的 URL 地址
+     *
+     * @param typeId 生活指数类型 ID
+     *
+     * @since 1.0.0
+     */
+    private static String makeLiveImageUrl(String typeId) {
+        return HeConstant.LIVE_IMAGE_BASE_URL + typeId + ".svg";
     }
 
     /**
@@ -246,8 +254,7 @@ public final class HeDataService {
             HeIndicesResponse.Daily source = daily[i];
             IndicesDaily target = new IndicesDaily();
             BeanUtils.copyProperties(source, target);
-
-            // todo 待补充图片地址
+            target.setImageUrl(makeLiveImageUrl(target.getType()));
             list[i] = target;
         }
 
