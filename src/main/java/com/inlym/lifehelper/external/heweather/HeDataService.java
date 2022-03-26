@@ -255,14 +255,14 @@ public final class HeDataService {
      * @see HeHttpService#getIndicesDaily
      * @since 1.0.0
      */
-    public IndicesDaily[] getIndicesDaily(String location, String days) {
+    public IndicesItem[] getIndicesDaily(String location, String days) {
         HeIndicesResponse res = heHttpService.getIndicesDaily(location, days);
         HeIndicesResponse.Daily[] daily = res.getDaily();
-        IndicesDaily[] list = new IndicesDaily[daily.length];
+        IndicesItem[] list = new IndicesItem[daily.length];
 
         for (int i = 0; i < daily.length; i++) {
             HeIndicesResponse.Daily source = daily[i];
-            IndicesDaily target = new IndicesDaily();
+            IndicesItem target = new IndicesItem();
             BeanUtils.copyProperties(source, target);
             target.setImageUrl(makeLiveImageUrl(target.getType()));
             list[i] = target;

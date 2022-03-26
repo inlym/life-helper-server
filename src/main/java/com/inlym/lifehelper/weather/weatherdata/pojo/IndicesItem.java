@@ -3,13 +3,13 @@ package com.inlym.lifehelper.weather.weatherdata.pojo;
 import lombok.Data;
 
 /**
- * 天气生活指数中的单天详情
+ * 天气生活指数中的单个指数详情
  *
  * @author inlym
  * @date 2022-02-19
  **/
 @Data
-public class IndicesDaily {
+public class IndicesItem {
     // ====================  新增的字段  ====================
 
     /** 图片 URL */

@@ -110,7 +110,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public IndicesDaily[] getIndices1D(double longitude, double latitude) {
+    public IndicesItem[] getIndices1D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getIndicesDaily(location, "1d");
     }
@@ -123,7 +123,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public IndicesDaily[] getIndices3D(double longitude, double latitude) {
+    public IndicesItem[] getIndices3D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getIndicesDaily(location, "3d");
     }
