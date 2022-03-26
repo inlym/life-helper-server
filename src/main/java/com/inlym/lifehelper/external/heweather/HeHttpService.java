@@ -31,7 +31,7 @@ import java.net.URI;
 @Slf4j
 public class HeHttpService {
     /** 表示请求成功的 `code` 值 */
-    public static final String SUCCESS_CODE = "200";
+    public static final String SUCCESS_CODE = HeConstant.SUCCESS_CODE;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -46,8 +46,8 @@ public class HeHttpService {
     public HeHttpService(HeProperties heProperties) {
         this.heProperties = heProperties;
 
-        this.devConfig = new Config("https://devapi.qweather.com/v7", heProperties.getDevKey());
-        this.proConfig = new Config("https://api.qweather.com/v7", heProperties.getProKey());
+        this.devConfig = new Config(HeConstant.DEV_API_BASE_URL, heProperties.getDevKey());
+        this.proConfig = new Config(HeConstant.PRO_API_BASE_URL, heProperties.getProKey());
     }
 
     /**
@@ -128,7 +128,7 @@ public class HeHttpService {
     @SneakyThrows
     @Cacheable("hefeng:daily")
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
-        Config config = ("15d".equals(days) || "10d".equals(days)) ? proConfig : devConfig;
+        Config config = (HeConstant.WeatherDailyDays.DAYS_15.equals(days) || HeConstant.WeatherDailyDays.DAYS_10.equals(days)) ? proConfig : devConfig;
         String path = "/weather/" + days;
 
         // 包含请求参数的完整请求地址
@@ -162,7 +162,7 @@ public class HeHttpService {
     @SneakyThrows
     @Cacheable("hefeng:hourly")
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
-        Config config = "24h".equals(hours) ? devConfig : proConfig;
+        Config config = HeConstant.WeatherHourlyHours.Hours_24.equals(hours) ? devConfig : proConfig;
         String path = "/weather/" + hours;
 
         // 包含请求参数的完整请求地址

@@ -22,6 +22,9 @@ public class WeatherNow {
     /** 图标的 URL 地址 */
     private String iconUrl;
 
+    /** 自行归纳的天气类型 */
+    private String type;
+
     // ====================  和风天气原有的字段  ====================
 
     /** 温度，默认单位：摄氏度 */

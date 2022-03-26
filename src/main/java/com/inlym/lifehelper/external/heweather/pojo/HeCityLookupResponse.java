@@ -25,6 +25,12 @@ public class HeCityLookupResponse {
         /** 地区/城市 ID */
         private String id;
 
+        /** 地区/城市纬度 */
+        private String lat;
+
+        /** 地区/城市经度 */
+        private String lon;
+
         /** 地区/城市的上级行政区划名称 */
         private String adm2;
 

@@ -16,6 +16,12 @@ public class HeCity {
     /** 地区/城市名称 */
     private String name;
 
+    /** 地区/城市经度 */
+    private Double longitude;
+
+    /** 地区/城市纬度 */
+    private Double latitude;
+
     /** 地区/城市的上级行政区划名称 */
     private String adm2;
 

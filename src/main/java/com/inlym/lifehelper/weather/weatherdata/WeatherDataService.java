@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.weather.weatherdata;
 
-import com.inlym.lifehelper.external.heweather.HeMainService;
+import com.inlym.lifehelper.external.heweather.HeConstant;
+import com.inlym.lifehelper.external.heweather.HeDataService;
 import com.inlym.lifehelper.weather.weatherdata.pojo.*;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,27 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class WeatherDataService {
-    private final HeMainService heMainService;
+    private final HeDataService heDataService;
 
-    public WeatherDataService(HeMainService heMainService) {
-        this.heMainService = heMainService;
+    public WeatherDataService(HeDataService heDataService) {
+        this.heDataService = heDataService;
+    }
+
+    /**
+     * 联结经纬度坐标，使其变成 `lng,lat` 的格式
+     *
+     * <h2>为什么要联结经纬度
+     * <li>最终发起 HTTP 请求时，经纬度坐标需要以 `location=lng,lat` 的格式传递。
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    private static String concatLocation(double longitude, double latitude) {
+        // 将数值向下取整到 2 位小数
+        double lng = Math.floor(longitude * 100) / 100;
+        double lat = Math.floor(latitude * 100) / 100;
+
+        return lng + "," + lat;
     }
 
     /**
@@ -28,7 +46,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public WeatherNow getWeatherNow(double longitude, double latitude) {
-        return heMainService.getWeatherNow(longitude, latitude);
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getWeatherNow(location);
     }
 
     /**
@@ -40,7 +59,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public WeatherDaily[] getWeather7D(double longitude, double latitude) {
-        return heMainService.getWeatherDaily(longitude, latitude, "7d");
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getWeatherDaily(location, HeConstant.WeatherDailyDays.DAYS_7);
     }
 
     /**
@@ -52,7 +72,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public WeatherDaily[] getWeather15D(double longitude, double latitude) {
-        return heMainService.getWeatherDaily(longitude, latitude, "15d");
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getWeatherDaily(location, HeConstant.WeatherDailyDays.DAYS_15);
     }
 
     /**
@@ -64,7 +85,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public WeatherHourly[] getWeather24H(double longitude, double latitude) {
-        return heMainService.getWeatherHourly(longitude, latitude, "24h");
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getWeatherHourly(location, HeConstant.WeatherHourlyHours.Hours_24);
     }
 
     /**
@@ -76,7 +98,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public MinutelyRain getMinutely(double longitude, double latitude) {
-        return heMainService.getMinutely(longitude, latitude);
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getMinutely(location);
     }
 
     /**
@@ -88,7 +111,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public IndicesDaily[] getIndices1D(double longitude, double latitude) {
-        return heMainService.getIndicesDaily(longitude, latitude, "1d");
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getIndicesDaily(location, "1d");
     }
 
     /**
@@ -100,7 +124,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public IndicesDaily[] getIndices3D(double longitude, double latitude) {
-        return heMainService.getIndicesDaily(longitude, latitude, "3d");
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getIndicesDaily(location, "3d");
     }
 
     /**
@@ -112,7 +137,8 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public AirNow getAirNow(double longitude, double latitude) {
-        return heMainService.getAirNow(longitude, latitude);
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getAirNow(location);
     }
 
     /**
@@ -124,6 +150,7 @@ public class WeatherDataService {
      * @since 1.0.0
      */
     public AirDaily[] getAir5D(double longitude, double latitude) {
-        return heMainService.getAirDaily(longitude, latitude);
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getAirDaily(location);
     }
 }
