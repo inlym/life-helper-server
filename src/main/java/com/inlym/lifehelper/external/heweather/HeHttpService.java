@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+
 /**
  * 和风天气 HTTP 请求服务类
  *
@@ -46,6 +48,40 @@ public class HeHttpService {
 
         this.devConfig = new Config("https://devapi.qweather.com/v7", heProperties.getDevKey());
         this.proConfig = new Config("https://api.qweather.com/v7", heProperties.getProKey());
+    }
+
+    /**
+     * 城市信息查询
+     *
+     * <h2>说明
+     * <p>实测结果：
+     * 1. 当有结果时，返回 code=200，且 location 为一个列表。
+     * 2. 当无结果时，返回 code=404，且无 location 字段。
+     * 因此这个方法不抛出错误，在下一个环节处理，返回一个空数组。
+     *
+     * @param location 需要查询地区的名称，支持文字、以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）、LocationID 或 Adcode（仅限中国城市）
+     *
+     * @since 1.0.0
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:city")
+    public HeCityLookupResponse searchCities(String location) {
+        String url = UriComponentsBuilder
+            .fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
+            .queryParam("location", location)
+            .queryParam("key", heProperties.getDevKey())
+            .queryParam("range", "cn")
+            .queryParam("gzip", "n")
+            .toUriString();
+
+        // 在 `url` 外面套一层 `new URI()` 的原因是：
+        // 这样可以避免请求参数中包含中文时，被默认规则转码变成乱码的问题。
+        HeCityLookupResponse data = restTemplate.getForObject(new URI(url), HeCityLookupResponse.class);
+
+        assert data != null;
+        log.info("[HTTP] [城市信息查询] code={}, url={}", data.getCode(), url);
+
+        return data;
     }
 
     /**
