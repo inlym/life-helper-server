@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 逐天天气预报中单天的数据详情
  *
- * @author inlym
+ * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-19
  **/
 @Data
@@ -20,6 +20,9 @@ public class WeatherDaily {
 
     /** 预报夜间天气状况的图标 URL 地址 */
     private String iconNightUrl;
+
+    /** 天气总结，示例：晴转多云 */
+    private String text;
 
     // ====================  和风天气原有的字段  ====================
 

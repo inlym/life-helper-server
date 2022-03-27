@@ -3,6 +3,7 @@ package com.inlym.lifehelper.external.heweather;
 import com.inlym.lifehelper.external.heweather.pojo.*;
 import com.inlym.lifehelper.weather.weatherdata.pojo.*;
 import com.inlym.lifehelper.weather.weatherplace.pojo.HeCity;
+import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -166,6 +167,7 @@ public final class HeDataService {
      * @see HeHttpService#getWeatherDaily
      * @since 1.0.0
      */
+    @SneakyThrows
     public WeatherDaily[] getWeatherDaily(String location, String days) {
         HeWeatherDailyResponse res = heHttpService.getWeatherDaily(location, days);
         HeWeatherDailyResponse.Daily[] daily = res.getDaily();
@@ -175,9 +177,19 @@ public final class HeDataService {
             HeWeatherDailyResponse.Daily source = daily[i];
             WeatherDaily target = new WeatherDaily();
             BeanUtils.copyProperties(source, target);
+
             target.setDate(source.getFxDate());
             target.setIconDayUrl(makeIconUrl(source.getIconDay()));
             target.setIconNightUrl(makeIconUrl(source.getIconNight()));
+
+            // 天气描述
+            if (source
+                .getTextDay()
+                .equals(source.getTextNight())) {
+                target.setText(source.getTextDay());
+            } else {
+                target.setText(source.getTextDay() + "转" + source.getTextNight());
+            }
 
             list[i] = target;
         }
@@ -265,6 +277,7 @@ public final class HeDataService {
             IndicesItem target = new IndicesItem();
             BeanUtils.copyProperties(source, target);
             target.setImageUrl(makeLiveImageUrl(target.getType()));
+
             list[i] = target;
         }
 
