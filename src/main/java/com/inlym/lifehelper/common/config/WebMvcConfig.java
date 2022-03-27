@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.config;
 
+import com.inlym.lifehelper.common.annotation.ClientIpMethodArgumentResolver;
 import com.inlym.lifehelper.common.annotation.UserIdMethodArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -17,5 +18,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new UserIdMethodArgumentResolver());
+        argumentResolvers.add(new ClientIpMethodArgumentResolver());
     }
 }

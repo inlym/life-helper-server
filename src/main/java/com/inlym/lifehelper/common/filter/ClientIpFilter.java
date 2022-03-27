@@ -41,8 +41,8 @@ public class ClientIpFilter extends OncePerRequestFilter {
             request.setAttribute(CustomRequestAttribute.CLIENT_IP, clientIp);
         } else {
             // 该情况用于本地开发环境，兼容无 API 网关情况
-            String remoteIp = request.getRemoteAddr();
-            request.setAttribute(CustomRequestAttribute.CLIENT_IP, remoteIp);
+            String mockIp = "0.0.0.0";
+            request.setAttribute(CustomRequestAttribute.CLIENT_IP, mockIp);
         }
 
         chain.doFilter(request, response);
