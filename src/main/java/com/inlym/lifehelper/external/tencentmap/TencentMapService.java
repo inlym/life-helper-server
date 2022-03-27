@@ -21,9 +21,9 @@ public class TencentMapService {
 
     /**
      * 联结经纬度坐标，使其变成 `lat,lng` 的格式
-     * <p>
-     * [为什么要联结经纬度]
-     * 最终发起 HTTP 请求时，经纬度坐标需要以 `location=lat,lng` 的格式传递。
+     *
+     * <h2>为什么要联结经纬度
+     * <p>最终发起 HTTP 请求时，经纬度坐标需要以 `location=lat,lng` 的格式传递。
      *
      * @param longitude 经度
      * @param latitude  纬度

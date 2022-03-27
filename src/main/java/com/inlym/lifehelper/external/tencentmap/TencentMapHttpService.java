@@ -13,8 +13,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 /**
  * 腾讯位置服务 - HTTP 请求封装类
  *
- * @author inlym
- * @date 2022-02-14 19:41
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2022-02-14
  **/
 @Service
 @Slf4j
