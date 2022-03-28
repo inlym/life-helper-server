@@ -16,7 +16,7 @@ public class WeatherHourly {
     // ====================     新增的字段     ====================
 
     /** 预报时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date time;
 
     /** 天气状况和图标 URL 地址 */
