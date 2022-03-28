@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -206,6 +207,7 @@ public final class HeDataService {
      * @see HeHttpService#getWeatherHourly
      * @since 1.0.0
      */
+    @SneakyThrows
     public WeatherHourly[] getWeatherHourly(String location, String hours) {
         HeWeatherHourlyResponse res = heHttpService.getWeatherHourly(location, hours);
         HeWeatherHourlyResponse.Hourly[] hourly = res.getHourly();
@@ -215,9 +217,11 @@ public final class HeDataService {
             HeWeatherHourlyResponse.Hourly source = hourly[i];
             WeatherHourly target = new WeatherHourly();
             BeanUtils.copyProperties(source, target);
-            target.setTime(source
-                .getFxTime()
-                .substring(11, 16));
+
+            // 待解析的时间格式示例："2021-02-16T16:00+08:00"
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00");
+            target.setTime(sdf.parse(source.getFxTime()));
+
             target.setIconUrl(makeIconUrl(source.getIcon()));
 
             list[i] = target;
