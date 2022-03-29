@@ -2,7 +2,7 @@ package com.inlym.lifehelper.weather.weatherdata;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.location.LocationService;
-import com.inlym.lifehelper.location.pojo.LocationInfo;
+import com.inlym.lifehelper.location.pojo.IpLocation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +29,24 @@ public class WeatherDataController {
 
     /**
      * 获取天气汇总信息（匿名方式）
+     *
+     * @since 1.0.0
      */
     @GetMapping("/weather")
     public Map<String, Object> getMixedWeatherData(@ClientIp String ip) {
-        LocationInfo info = locationService.locateIp(ip);
-        String locationName = info.getCity() + info.getDistrict();
-        String locationDesc = info.getProvince();
+        IpLocation info = locationService.locateIpPlus(ip);
+        String locationName;
+        String locationDesc;
+
+        if (info
+            .getDistrict()
+            .length() == 0) {
+            locationName = info.getCity();
+            locationDesc = info.getProvince();
+        } else {
+            locationName = info.getDistrict();
+            locationDesc = info.getProvince() + "，" + info.getCity();
+        }
 
         Map<String, String> locationData = Map.of("name", locationName, "desc", locationDesc);
 

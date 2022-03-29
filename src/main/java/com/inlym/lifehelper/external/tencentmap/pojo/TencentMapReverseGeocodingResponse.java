@@ -7,8 +7,9 @@ import lombok.Data;
  * 腾讯位置服务逆地址解析响应数据
  *
  * @author inlym
- * @date 2022-02-14 00:52
+ * @date 2022-02-14
  * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder">逆地址解析</a>
+ * @since 1.0.0
  **/
 @Data
 public class TencentMapReverseGeocodingResponse {

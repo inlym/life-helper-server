@@ -4,8 +4,8 @@ import com.inlym.lifehelper.external.tencentmap.TencentMapService;
 import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapLocateIpResponse;
 import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapReverseGeocodingResponse;
 import com.inlym.lifehelper.location.pojo.AddressComponent;
-import com.inlym.lifehelper.location.pojo.LocationCoordinate;
-import com.inlym.lifehelper.location.pojo.LocationInfo;
+import com.inlym.lifehelper.location.pojo.GeographicCoordinate;
+import com.inlym.lifehelper.location.pojo.IpLocation;
 import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
  *
  * @author inlym
  * @date 2022-01-19
+ * @since 1.0.0
  **/
 @Service
 public class LocationService {
@@ -27,27 +28,32 @@ public class LocationService {
     /**
      * 解析经纬度字符串
      *
-     * <li> （注意）一般用在控制器中解析参数，在这之前已通过数据校验。
+     * <h2>注意事项
+     * <li>一般用在控制器中解析参数，在这之前已通过数据校验。
      *
      * @param locationString 经纬度字符串
+     *
+     * @since 1.0.0
      */
-    public static LocationCoordinate parseLocationString(@NonNull String locationString) {
+    public static GeographicCoordinate parseLocationString(@NonNull String locationString) {
         String[] list = locationString.split(",");
         double longitude = Double.parseDouble(list[0]);
         double latitude = Double.parseDouble(list[1]);
 
-        return new LocationCoordinate(longitude, latitude);
+        return new GeographicCoordinate(longitude, latitude);
     }
 
     /**
      * IP 定位
      *
      * @param ip IP 地址
+     *
+     * @since 1.0.0
      */
-    public LocationInfo locateIp(String ip) {
+    public IpLocation locateIp(String ip) {
         TencentMapLocateIpResponse data = tencentMapService.locateIp(ip);
 
-        LocationInfo info = new LocationInfo();
+        IpLocation info = new IpLocation();
         BeanUtils.copyProperties(data
             .getResult()
             .getLocation(), info);
@@ -59,13 +65,28 @@ public class LocationService {
     }
 
     /**
-     * 通过 IP 地址换取经纬度坐标
+     * 加强版的 IP 定位
+     *
+     * <h2>说明
+     * <p>普通的 IP 定位，实测获取的“市”和“县”均可能为空，利用从普通的 IP 定位获取的经纬度，使用逆地址解析再反查一遍，能够获取不为空的省市区
+     * 信息（文档说“区县”值可能为空，但实测目前未遇到该情况）。
      *
      * @param ip IP 地址
+     *
+     * @since 1.0.0
      */
-    public LocationCoordinate getLocationCoordinateByIp(String ip) {
-        LocationInfo locationInfo = locateIp(ip);
-        return new LocationCoordinate(locationInfo.getLongitude(), locationInfo.getLatitude());
+    public IpLocation locateIpPlus(String ip) {
+        IpLocation location = locateIp(ip);
+        if (location
+            .getDistrict()
+            .equals("")) {
+            AddressComponent component = reverseGeocoding(location.getLongitude(), location.getLatitude());
+            location.setProvince(component.getProvince());
+            location.setCity(component.getCity());
+            location.setDistrict(component.getDistrict());
+        }
+
+        return location;
     }
 
     /**
@@ -73,6 +94,8 @@ public class LocationService {
      *
      * @param longitude 纬度
      * @param latitude  经度
+     *
+     * @since 1.0.0
      */
     public AddressComponent reverseGeocoding(double longitude, double latitude) {
         TencentMapReverseGeocodingResponse data = tencentMapService.reverseGeocoding(longitude, latitude);

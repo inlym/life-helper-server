@@ -5,12 +5,13 @@ import lombok.Data;
 
 /**
  * 地址信息
- * <p>
- * [说明]
- * 将腾讯位置服务的逆地址解析数据做了整合
+ *
+ * <h2>说明
+ * <p>将腾讯位置服务的逆地址解析数据做了整合
  *
  * @author inlym
  * @date 2022-02-14
+ * @since 1.0.0
  **/
 @Data
 @Builder

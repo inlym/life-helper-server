@@ -10,12 +10,13 @@ import lombok.NoArgsConstructor;
  *
  * @author inlym
  * @date 2022-01-19
+ * @since 1.0.0
  **/
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationInfo {
+public class IpLocation {
     /** 经度 */
     private Double longitude;
 

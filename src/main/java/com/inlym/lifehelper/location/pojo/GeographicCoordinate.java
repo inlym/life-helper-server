@@ -7,9 +7,10 @@ import lombok.Data;
  *
  * @author inlym
  * @date 2022-01-22
+ * @since 1.0.0
  **/
 @Data
-public class LocationCoordinate {
+public class GeographicCoordinate {
     /** 经度最小值 */
     public static final Double MIN_LONGITUDE = -180.0;
 
@@ -28,7 +29,7 @@ public class LocationCoordinate {
     /** 纬度 */
     private Double latitude;
 
-    public LocationCoordinate(double longitude, double latitude) {
+    public GeographicCoordinate(double longitude, double latitude) {
         if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
             throw new IllegalArgumentException("经度范围应为 -180~180，当前为 " + longitude);
         }
