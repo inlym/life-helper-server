@@ -13,7 +13,7 @@ import java.util.Map;
  * 天气地点控制器
  *
  * @author inlym
- * @date 2022-02-13 20:50
+ * @date 2022-02-13
  **/
 @RestController
 public class WeatherPlaceController {
@@ -25,6 +25,11 @@ public class WeatherPlaceController {
 
     /**
      * 新增天气地点
+     *
+     * @param dto    客户端提交的位置数据
+     * @param userId 用户 ID
+     *
+     * @since 1.0.0
      */
     @PostMapping("/weather/place")
     @UserPermission
@@ -34,6 +39,11 @@ public class WeatherPlaceController {
 
     /**
      * 删除一条天气地点
+     *
+     * @param id     天气城市 ID
+     * @param userId 用户 ID
+     *
+     * @since 1.0.0
      */
     @DeleteMapping("/weather/place/{id}")
     @UserPermission
@@ -44,6 +54,10 @@ public class WeatherPlaceController {
 
     /**
      * 获取天气地点列表
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.0.0
      */
     @GetMapping("/weather/place")
     @UserPermission

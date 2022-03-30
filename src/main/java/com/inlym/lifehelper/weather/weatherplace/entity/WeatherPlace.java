@@ -8,11 +8,14 @@ import java.util.Date;
 /**
  * 天气地点实体
  *
- * <p> 表名：{@code weather_place}
+ * <h2>表名
+ * <p>`weather_place`
  *
- * <p> 数据来源：微信小程序中调用 `wx.chooseLocation` 方法获取经纬度信息，再根据经纬度获取省市区信息存入此表。
+ * <h2>数据来源
+ * <p>微信小程序中调用 `wx.chooseLocation` 方法获取经纬度信息，再根据经纬度获取省市区信息存入此表。
  *
- * <p> 主要用途：为用户关注的城市，选择其中一个查看所在地点天气情况。
+ * <h2>主要用途
+ * <p>为用户关注的城市，选择其中一个查看所在地点天气情况。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-13

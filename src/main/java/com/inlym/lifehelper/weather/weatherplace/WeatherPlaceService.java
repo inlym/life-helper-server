@@ -62,6 +62,7 @@ public class WeatherPlaceService {
      * @apiNote 默认只展示前10条
      */
     public List<WeatherPlace> list(int userId) {
+        // 只展示前 10 条数据
         PageHelper.startPage(1, 10);
         return weatherPlaceMapper.list(userId);
     }
