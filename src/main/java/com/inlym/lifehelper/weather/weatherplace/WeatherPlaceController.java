@@ -24,6 +24,19 @@ public class WeatherPlaceController {
     }
 
     /**
+     * 获取天气地点列表
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.0.0
+     */
+    @GetMapping("/weather/places")
+    @UserPermission
+    public Map<String, Object> list(@UserId int userId) {
+        return Map.of("list", weatherPlaceService.list(userId));
+    }
+
+    /**
      * 新增天气地点
      *
      * @param dto    客户端提交的位置数据
@@ -50,18 +63,5 @@ public class WeatherPlaceController {
     public Map<String, Object> delete(@PathVariable("id") int id, @UserId int userId) {
         weatherPlaceService.delete(userId, id);
         return Map.of("id", id);
-    }
-
-    /**
-     * 获取天气地点列表
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.0.0
-     */
-    @GetMapping("/weather/place")
-    @UserPermission
-    public Map<String, Object> list(@UserId int userId) {
-        return Map.of("list", weatherPlaceService.list(userId));
     }
 }
