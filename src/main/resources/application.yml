@@ -26,6 +26,12 @@ spring:
         filter:
             # 鉴权过滤器排序
             order: 10000
+        # 内置的一个账户鉴权方式
+        user:
+            name: NOT_USER
+            password: NOT_USER
+            roles:
+                - NOT_USER
 
     # 数据源配置
     datasource:
