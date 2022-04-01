@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.user.pojo;
 
-import lombok.Builder;
+import com.inlym.lifehelper.common.constant.Endpoint;
 import lombok.Data;
 
 /**
@@ -15,11 +15,21 @@ import lombok.Data;
  * @since 1.0.0
  **/
 @Data
-@Builder
 public class UserInfoBO {
     /** 用户昵称 */
     private String nickName;
 
     /** 用户头像图片的 URL */
     private String avatarUrl;
+
+    /** 用户信息是否为空 */
+    private Boolean empty;
+
+    public static UserInfoBO createEmpty() {
+        UserInfoBO bo = new UserInfoBO();
+        bo.setNickName("小鸣助手");
+        bo.setAvatarUrl(Endpoint.LOGO_URL);
+        bo.setEmpty(true);
+        return bo;
+    }
 }

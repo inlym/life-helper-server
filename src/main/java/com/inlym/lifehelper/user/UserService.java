@@ -54,6 +54,21 @@ public class UserService {
     }
 
     /**
+     * 将用户实体转换为用户信息业务对象
+     *
+     * @param user 用户实体
+     *
+     * @since 1.0.0
+     */
+    public UserInfoBO convertToUserInfoBO(User user) {
+        UserInfoBO bo = new UserInfoBO();
+        bo.setNickName(user.getNickName());
+        bo.setAvatarUrl(ossService.concatUrl(user.getAvatar()));
+        bo.setEmpty(false);
+        return bo;
+    }
+
+    /**
      * 获取用户信息
      *
      * @param id 用户 ID
@@ -63,15 +78,17 @@ public class UserService {
     @SneakyThrows
     public UserInfoBO getUserInfo(int id) {
         User user = userMapper.findById(id);
-        if (user != null) {
-            return UserInfoBO
-                .builder()
-                .nickName(user.getNickName())
-                .avatarUrl(ossService.concatUrl(user.getAvatar()))
-                .build();
-        }
+        assert user != null;
 
-        throw new Exception("查找的用户不存在");
+        if (user
+            .getNickName()
+            .isEmpty() && user
+            .getAvatar()
+            .isEmpty()) {
+            return UserInfoBO.createEmpty();
+        } else {
+            return convertToUserInfoBO(user);
+        }
     }
 
     /**
@@ -97,10 +114,6 @@ public class UserService {
 
         userMapper.update(user);
 
-        return UserInfoBO
-            .builder()
-            .nickName(user.getNickName())
-            .avatarUrl(ossService.concatUrl(user.getAvatar()))
-            .build();
+        return convertToUserInfoBO(user);
     }
 }
