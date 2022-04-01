@@ -20,6 +20,21 @@
                 #{place.province}, #{place.city}, #{place.district})
     </insert>
 
+    <select id="findById" resultMap="WeatherPlaceResult">
+        SELECT id,
+               name,
+               address,
+               longitude,
+               latitude,
+               province,
+               city,
+               district
+        FROM weather_place
+        WHERE delete_time IS NULL
+          AND id = #{id}
+          AND user_id = #{userId}
+    </select>
+
     <select id="list" resultMap="WeatherPlaceResult">
         SELECT id,
                name,

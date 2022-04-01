@@ -20,6 +20,16 @@ public interface WeatherPlaceMapper {
     void insert(@Param("place") WeatherPlace weatherPlace);
 
     /**
+     * 查询一条天气地点
+     *
+     * @param userId 用户 ID
+     * @param id     主键 ID
+     *
+     * @return 天气地点
+     */
+    WeatherPlace findById(@Param("userId") int userId, @Param("id") int id);
+
+    /**
      * 获取指定用户所属的天气地点列表
      *
      * @param userId 用户 ID

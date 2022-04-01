@@ -5,6 +5,7 @@ import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.AddressComponent;
 import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.weatherplace.mapper.WeatherPlaceMapper;
+import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceBO;
 import com.inlym.lifehelper.weather.weatherplace.pojo.WeixinChooseLocationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,26 @@ public class WeatherPlaceService {
     }
 
     /**
+     * 将天气地点实体转换为业务对象
+     *
+     * @param place 天气地点实体
+     *
+     * @since 1.0.0
+     */
+    public static WeatherPlaceBO convertToWeatherPlaceBO(WeatherPlace place) {
+        WeatherPlaceBO bo = new WeatherPlaceBO();
+        bo.setId(place.getId());
+        bo.setName(place.getName());
+        bo.setRegion(place.getCity() + place.getDistrict());
+        return bo;
+    }
+
+    /**
      * 新增一个天气地点
      *
      * @param dto 前端传输的请求数据
      */
-    public WeatherPlace add(int userId, WeixinChooseLocationDTO dto) {
+    public WeatherPlaceBO add(int userId, WeixinChooseLocationDTO dto) {
         AddressComponent ac = locationService.reverseGeocoding(dto.getLongitude(), dto.getLatitude());
 
         WeatherPlace place = new WeatherPlace();
@@ -49,7 +65,17 @@ public class WeatherPlaceService {
 
         weatherPlaceMapper.insert(place);
 
-        return place;
+        return convertToWeatherPlaceBO(place);
+    }
+
+    /**
+     * 根据 ID 查询天气地点
+     *
+     * @param userId 用户 ID
+     * @param id     主键 ID
+     */
+    public WeatherPlace findById(int userId, int id) {
+        return weatherPlaceMapper.findById(userId, id);
     }
 
     /**
@@ -61,10 +87,15 @@ public class WeatherPlaceService {
      *
      * @apiNote 默认只展示前10条
      */
-    public List<WeatherPlace> list(int userId) {
+    public List<WeatherPlaceBO> list(int userId) {
         // 只展示前 10 条数据
         PageHelper.startPage(1, 10);
-        return weatherPlaceMapper.list(userId);
+
+        List<WeatherPlace> list = weatherPlaceMapper.list(userId);
+        return list
+            .stream()
+            .map(WeatherPlaceService::convertToWeatherPlaceBO)
+            .toList();
     }
 
     /**

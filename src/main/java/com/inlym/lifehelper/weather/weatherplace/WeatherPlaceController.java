@@ -2,7 +2,7 @@ package com.inlym.lifehelper.weather.weatherplace;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceBO;
 import com.inlym.lifehelper.weather.weatherplace.pojo.WeixinChooseLocationDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +46,7 @@ public class WeatherPlaceController {
      */
     @PostMapping("/weather/place")
     @UserPermission
-    public WeatherPlace add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
+    public WeatherPlaceBO add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
         return weatherPlaceService.add(userId, dto);
     }
 
