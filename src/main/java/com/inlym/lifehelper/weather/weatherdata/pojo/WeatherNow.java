@@ -25,9 +25,6 @@ public class WeatherNow {
     /** 自行归纳的天气类型 */
     private String type;
 
-    /** 日夜类型：day, night */
-    private String clock;
-
     // ====================  和风天气原有的字段  ====================
 
     /** 温度，默认单位：摄氏度 */

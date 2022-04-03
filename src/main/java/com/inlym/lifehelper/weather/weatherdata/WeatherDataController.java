@@ -44,23 +44,13 @@ public class WeatherDataController {
     @GetMapping("/weather")
     public Map<String, Object> getMixedWeatherData(@ClientIp String ip) {
         IpLocation info = locationService.locateIpPlus(ip);
-        String locationName;
-        String locationDesc;
+        String name = info.getDistrict();
+        String region = info.getProvince() + info.getCity();
 
-        if (info
-            .getDistrict()
-            .length() == 0) {
-            locationName = info.getCity();
-            locationDesc = info.getProvince();
-        } else {
-            locationName = info.getDistrict();
-            locationDesc = info.getProvince() + "，" + info.getCity();
-        }
-
-        Map<String, String> locationData = Map.of("name", locationName, "desc", locationDesc);
+        Map<String, String> location = Map.of("name", name, "region", region);
 
         Map<String, Object> mixedData = weatherMixedDataService.getMixedWeatherData(info.getLongitude(), info.getLatitude());
-        mixedData.put("location", locationData);
+        mixedData.put("location", location);
 
         return mixedData;
     }

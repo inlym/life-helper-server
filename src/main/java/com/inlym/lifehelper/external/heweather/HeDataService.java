@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -147,14 +146,6 @@ public final class HeDataService {
         now.setIconUrl(makeIconUrl(now.getIcon()));
         now.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
         now.setType(getWeatherTypeByIconId(now.getIcon()));
-
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        if (hour > 6 && hour < 18) {
-            now.setClock("day");
-        } else {
-            now.setClock("night");
-        }
 
         return now;
     }
