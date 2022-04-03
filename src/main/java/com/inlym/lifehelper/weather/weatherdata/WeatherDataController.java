@@ -7,7 +7,7 @@ import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.IpLocation;
 import com.inlym.lifehelper.weather.weatherplace.WeatherPlaceService;
 import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceBO;
+import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceWithWeatherNowBO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,7 +74,7 @@ public class WeatherDataController {
         WeatherPlace place = weatherPlaceService.findById(userId, placeId);
         assert place != null;
 
-        WeatherPlaceBO bo = WeatherPlaceService.convertToWeatherPlaceBO(place);
+        WeatherPlaceWithWeatherNowBO bo = weatherPlaceService.convertWeatherPlace(place);
 
         Map<String, Object> mixedData = weatherMixedDataService.getMixedWeatherData(place.getLongitude(), place.getLatitude());
         mixedData.put("place", bo);

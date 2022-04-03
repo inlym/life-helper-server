@@ -2,7 +2,7 @@ package com.inlym.lifehelper.weather.weatherplace;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceBO;
+import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceWithWeatherNowBO;
 import com.inlym.lifehelper.weather.weatherplace.pojo.WeixinChooseLocationDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class WeatherPlaceController {
     }
 
     /**
-     * 获取天气地点列表
+     * 获取（包含天气信息的）天气地点列表
      *
      * @param userId 用户 ID
      *
@@ -33,7 +33,7 @@ public class WeatherPlaceController {
     @GetMapping("/weather/places")
     @UserPermission
     public Map<String, Object> list(@UserId int userId) {
-        return Map.of("list", weatherPlaceService.list(userId));
+        return Map.of("list", weatherPlaceService.getConvertedWeatherPlaceList(userId));
     }
 
     /**
@@ -46,7 +46,7 @@ public class WeatherPlaceController {
      */
     @PostMapping("/weather/place")
     @UserPermission
-    public WeatherPlaceBO add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
+    public WeatherPlaceWithWeatherNowBO add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
         return weatherPlaceService.add(userId, dto);
     }
 
