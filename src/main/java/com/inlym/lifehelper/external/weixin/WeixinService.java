@@ -90,7 +90,7 @@ public class WeixinService {
      */
     @Scheduled(fixedRate = 60, timeUnit = TimeUnit.MINUTES)
     private void updateAccessTokenCron() {
-        String token = updateAccessToken();
-        log.info("[定时任务] 更新在 Redis 中的微信服务端接口调用凭证，新的凭证={}", token);
+        updateAccessToken();
+        log.info("[定时任务] 更新在 Redis 中的微信服务端接口调用凭证");
     }
 }
