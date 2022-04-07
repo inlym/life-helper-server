@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>lifehelper_server</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>lifehelper_server</name>
     <description>Life Helper</description>
 
@@ -170,7 +170,7 @@
                 <configuration>
                     <!-- 使用阿里云容器镜像服务的镜像仓库 -->
                     <repository>registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server</repository>
-                    <tag>${project.version}</tag>
+                    <tag>v${project.version}</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
