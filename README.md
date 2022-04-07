@@ -61,6 +61,59 @@ git clone https://github.com/inlym/life-helper-server.git
 
 http://localhost:23010
 
+## 生产环境
+
+以下是本项目在生产环境的构建和部署流程，可供读者参考。
+
+### 介绍
+
+项目使用阿里云 [云效](https://www.aliyun.com/product/yunxiao?userCode=lzfqdh6g)
+的流水线进行项目的构建、部署和上线，构建过程中使用 [dockerfile-maven-plugin](https://github.com/spotify/dockerfile-maven) 插件进行 Docker 打包。
+
+### 构建
+
+下面是构建流程：
+
+1. 将代码克隆至本地
+
+```sh
+git clone https://github.com/inlym/life-helper-server.git
+````
+
+2. 将生产环境配置文件（`application-prod.yml`）转存至 `src/main/resources` 目录。
+
+3. 使用以下命令打包构建：
+
+```sh
+mvn clean package
+````
+
+### 镜像上传
+
+构建完成后会在本地生成 Docker 镜像，将其上传至私有仓库：
+
+```sh
+mvn dockerfile:push -Ddockerfile.username=xxxxxx -Ddockerfile.password=xxxxxx
+````
+
+这里的 Docker 私有仓库使用的是阿里云的 [容器镜像服务](https://www.aliyun.com/product/acr?userCode=lzfqdh6g) 。
+
+### 部署
+
+部署机从私有仓库上将最新的项目 Docker 镜像拉下来，然后运行。
+
+1. 拉取镜像：
+
+```sh
+docker pull registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server:[tag]
+````
+
+2. 运行：
+
+```sh
+docker run -d -p 23030:23030 registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server:[tag]
+````
+
 ## 相关仓库
 
 ### 服务端
