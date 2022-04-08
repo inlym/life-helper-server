@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>lifehelper_server</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <name>lifehelper_server</name>
     <description>Life Helper</description>
 
@@ -131,6 +131,13 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.4.1</version>
+        </dependency>
+
+        <!-- 阿里云表格存储（TableStore） -->
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>tablestore</artifactId>
+            <version>5.13.9</version>
         </dependency>
 
     </dependencies>
