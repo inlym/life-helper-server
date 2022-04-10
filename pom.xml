@@ -10,10 +10,11 @@
     </parent>
 
     <groupId>com.inlym</groupId>
-    <artifactId>lifehelper_server</artifactId>
+    <artifactId>life-helper-server</artifactId>
     <version>1.1.0</version>
-    <name>lifehelper_server</name>
-    <description>Life Helper</description>
+    
+    <name>life-helper-server</name>
+    <description>Awesome Helper For Life.</description>
 
     <properties>
         <java.version>17</java.version>
@@ -98,6 +99,13 @@
             </exclusions>
         </dependency>
 
+        <!-- 分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+
         <!-- Alibaba Druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -112,13 +120,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- 阿里云 OSS -->
-        <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.14.0</version>
-        </dependency>
-
         <!-- Java JWT 依赖 -->
         <dependency>
             <groupId>com.auth0</groupId>
@@ -126,14 +127,14 @@
             <version>3.19.0</version>
         </dependency>
 
-        <!-- 分页插件 -->
+        <!-- 阿里云对象存储（OSS）SDK -->
         <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.1</version>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.14.0</version>
         </dependency>
 
-        <!-- 阿里云表格存储（TableStore） -->
+        <!-- 阿里云表格存储（TableStore）SDK -->
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>tablestore</artifactId>

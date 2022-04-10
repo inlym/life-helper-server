@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.external.tablestore;
 
-import com.alicloud.openservices.tablestore.SyncClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TableStoreConfig {
     @Bean
-    public SyncClient otsClient(TableStoreProperties properties) {
+    public TableStoreClient otsClient(TableStoreProperties properties) {
         String endpoint = properties.getEndpoint();
         String accessKeyId = properties.getAccessKeyId();
         String accessKeySecret = properties.getAccessKeySecret();
         String instanceName = properties.getInstanceName();
-        return new SyncClient(endpoint, accessKeyId, accessKeySecret, instanceName);
+        return new TableStoreClient(endpoint, accessKeyId, accessKeySecret, instanceName);
     }
 }
