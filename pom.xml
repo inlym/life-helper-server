@@ -12,7 +12,7 @@
     <groupId>com.inlym</groupId>
     <artifactId>life-helper-server</artifactId>
     <version>1.1.0</version>
-    
+
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>
 
@@ -103,7 +103,7 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
         </dependency>
 
         <!-- Alibaba Druid -->
@@ -124,7 +124,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.19.0</version>
+            <version>3.19.1</version>
         </dependency>
 
         <!-- 阿里云对象存储（OSS）SDK -->

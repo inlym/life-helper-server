@@ -1,9 +1,9 @@
-package com.inlym.lifehelper.login;
+package com.inlym.lifehelper.login.weixinlogin;
 
 import com.auth0.jwt.JWT;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
-import com.inlym.lifehelper.login.pojo.WeixinCodeDTO;
+import com.inlym.lifehelper.login.weixinlogin.pojo.WeixinCodeDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +21,11 @@ import java.util.Map;
  **/
 @RestController
 @Validated
-public class LoginController {
-    private final LoginService loginService;
+public class WeixinLoginController {
+    private final WeixinLoginService weixinLoginService;
 
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public WeixinLoginController(WeixinLoginService weixinLoginService) {
+        this.weixinLoginService = weixinLoginService;
     }
 
     /**
@@ -35,7 +35,7 @@ public class LoginController {
      */
     @PostMapping("/login/weixin")
     public Map<String, Object> loginByCode(@Validated @RequestBody WeixinCodeDTO dto) {
-        String token = loginService.loginByCode(dto.getCode());
+        String token = weixinLoginService.loginByCode(dto.getCode());
 
         Map<String, Object> map = new HashMap<>(16);
         map.put("token", token);
@@ -62,7 +62,7 @@ public class LoginController {
     public Map<String, String> loginForDeveloper(HttpServletRequest request) {
         int userId = (int) request.getAttribute(CustomRequestAttribute.USER_ID);
         Map<String, String> map = new HashMap<>(16);
-        map.put("token", loginService.loginForDeveloper(userId));
+        map.put("token", weixinLoginService.loginForDeveloper(userId));
 
         return map;
     }

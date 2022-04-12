@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login;
+package com.inlym.lifehelper.login.weixinlogin;
 
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.Role;
@@ -18,14 +18,14 @@ import java.time.Duration;
  **/
 @Service
 @Slf4j
-public class LoginService {
+public class WeixinLoginService {
     private final UserService userService;
 
     private final WeixinService weixinService;
 
     private final JwtService jwtService;
 
-    public LoginService(UserService userService, WeixinService weixinService, JwtService jwtService) {
+    public WeixinLoginService(UserService userService, WeixinService weixinService, JwtService jwtService) {
         this.userService = userService;
         this.weixinService = weixinService;
         this.jwtService = jwtService;

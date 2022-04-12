@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.pojo;
+package com.inlym.lifehelper.login.weixinlogin.pojo;
 
 import lombok.Data;
 
