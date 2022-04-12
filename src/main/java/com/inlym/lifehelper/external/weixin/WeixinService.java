@@ -93,4 +93,19 @@ public class WeixinService {
         updateAccessToken();
         log.info("[定时任务] 更新在 Redis 中的微信服务端接口调用凭证");
     }
+
+    /**
+     * 生成小程序码
+     *
+     * @param page  页面 page，根路径前不要填加 /，不能携带参数（参数请放在scene字段里）
+     * @param scene 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符
+     * @param width 二维码的宽度，单位 px，最小 280px，最大 1280px
+     *
+     * @since 1.1.0
+     */
+    @SneakyThrows
+    public byte[] generateWxacode(String page, String scene, int width) {
+        String token = getAccessTokenInternal();
+        return weixinHttpService.getUnlimitedWxacode(token, page, scene, width);
+    }
 }

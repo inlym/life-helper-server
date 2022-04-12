@@ -106,14 +106,14 @@ public class WeixinHttpService {
      * 获取数量无限制的小程序码
      *
      * @param accessToken 接口调用凭证
-     * @param scene       最大32个可见字符，只支持数字，大小写英文以及部分特殊字符
      * @param page        页面 page，根路径前不要填加 /，不能携带参数（参数请放在scene字段里）
+     * @param scene       最大32个可见字符，只支持数字，大小写英文以及部分特殊字符
      * @param width       二维码的宽度，单位 px，最小 280px，最大 1280px
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html">官方文档</a>
      * @since 1.0.0
      */
-    public byte[] getUnlimitedWxacode(String accessToken, String scene, String page, int width) throws ExternalHttpRequestException {
+    public byte[] getUnlimitedWxacode(String accessToken, String page, String scene, int width) throws ExternalHttpRequestException {
         String baseUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
 
         String url = UriComponentsBuilder
