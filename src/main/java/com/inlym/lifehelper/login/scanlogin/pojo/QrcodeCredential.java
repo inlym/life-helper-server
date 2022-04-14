@@ -6,7 +6,7 @@ import lombok.Data;
  * 小程序码鉴权凭证
  *
  * <h2>使用说明
- * <p>该对象仅用于内部逻辑判断，输出给客户端时，请转换为 {@link QrcodeCredentialBO} 业务对象。
+ * <p>该对象仅用于内部逻辑判断，输出给客户端时，请转换为 {@link ScanLoginResult} 业务对象。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/4/12
@@ -20,8 +20,20 @@ public class QrcodeCredential {
     /** 生成的小程序码访问地址 */
     private String url;
 
+    /**
+     * 发起者（Web 端）的 IP 地址
+     *
+     * <h2>说明
+     * <p>在 Web 端发起请求需要一个新的小程序码凭证时，会记录该 IP 地址，在获取登录状态时，也会带上 IP 地址，两者需一致。这样做可以从一定程度
+     * 上降低登录凭证被冒领的风险。
+     */
+    private String ip;
+
+    /** IP 地址所在区域，包含省和市，例如：浙江省杭州市 */
+    private String region;
+
     /** 状态 */
-    private int status = CredentialStatus.CREATED;
+    private int status = Status.CREATED;
 
     /** 创建时间（时间戳） */
     private Long createTime = System.currentTimeMillis();
@@ -45,12 +57,12 @@ public class QrcodeCredential {
      */
     public static QrcodeCredential invalid() {
         QrcodeCredential credential = new QrcodeCredential();
-        credential.setStatus(QrcodeCredential.CredentialStatus.INVALID);
+        credential.setStatus(Status.INVALID);
         return credential;
     }
 
     /** 凭证状态 */
-    public static class CredentialStatus {
+    public static class Status {
         /** 已创建 */
         public static final int CREATED = 0;
 

@@ -1,6 +1,8 @@
 package com.inlym.lifehelper.login.scanlogin;
 
 import com.inlym.lifehelper.external.oss.OssService;
+import com.inlym.lifehelper.location.LocationService;
+import com.inlym.lifehelper.location.pojo.IpLocation;
 import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredential;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,10 +26,13 @@ public class QrcodeCredentialService {
 
     private final OssService ossService;
 
-    public QrcodeCredentialService(QrcodeTicketService qrcodeTicketService, RedisTemplate<String, Object> redisTemplate, OssService ossService) {
+    private final LocationService locationService;
+
+    public QrcodeCredentialService(QrcodeTicketService qrcodeTicketService, RedisTemplate<String, Object> redisTemplate, OssService ossService, LocationService locationService) {
         this.qrcodeTicketService = qrcodeTicketService;
         this.redisTemplate = redisTemplate;
         this.ossService = ossService;
+        this.locationService = locationService;
     }
 
     /**
@@ -44,11 +49,14 @@ public class QrcodeCredentialService {
     /**
      * 从 Redis 中获取小程序码凭证对象
      *
+     * <h2>说明
+     * <p>返回值可能为 {@code null}。
+     *
      * @param ticket 凭证编码
      *
      * @since 1.1.0
      */
-    private QrcodeCredential getQrcodeCredentialFromRedis(String ticket) {
+    private QrcodeCredential getFromRedis(String ticket) {
         return (QrcodeCredential) redisTemplate
             .opsForValue()
             .get(getRedisKey(ticket));
@@ -59,14 +67,22 @@ public class QrcodeCredentialService {
      *
      * @since 1.1.0
      */
-    public QrcodeCredential create() {
+    public QrcodeCredential create(String ip) {
         // 异步流程判断是否需要额外去生成一批凭证编码
         qrcodeTicketService.createTicketsWhenFewAsync(10, 10);
 
+        // 获取一个凭证编码
         String ticket = qrcodeTicketService.getTicket();
+
         QrcodeCredential qc = new QrcodeCredential();
         qc.setTicket(ticket);
         qc.setUrl(ossService.concatUrl(qrcodeTicketService.getPathname(ticket)));
+        qc.setIp(ip);
+
+        IpLocation ipLocation = locationService.locateIpPlus(ip);
+        String region = ipLocation.getProvince() + ipLocation.getCity();
+
+        qc.setRegion(region);
 
         // 存入 Redis，有效期 10 分钟
         redisTemplate
@@ -84,7 +100,7 @@ public class QrcodeCredentialService {
      * @since 1.1.0
      */
     public QrcodeCredential get(String ticket) {
-        QrcodeCredential qc = getQrcodeCredentialFromRedis(ticket);
+        QrcodeCredential qc = getFromRedis(ticket);
 
         if (qc == null) {
             return QrcodeCredential.invalid();
@@ -102,7 +118,7 @@ public class QrcodeCredentialService {
      * @since 1.1.0
      */
     public QrcodeCredential scan(String ticket, int userId) {
-        QrcodeCredential qc = getQrcodeCredentialFromRedis(ticket);
+        QrcodeCredential qc = getFromRedis(ticket);
 
         if (qc == null) {
             return QrcodeCredential.invalid();
@@ -110,7 +126,7 @@ public class QrcodeCredentialService {
 
         qc.setUserId(userId);
         qc.setScanTime(System.currentTimeMillis());
-        qc.setStatus(QrcodeCredential.CredentialStatus.SCANNED);
+        qc.setStatus(QrcodeCredential.Status.SCANNED);
 
         // 存入 Redis，有效期 10 分钟
         redisTemplate
@@ -129,7 +145,7 @@ public class QrcodeCredentialService {
      * @since 1.1.0
      */
     public QrcodeCredential confirm(String ticket, int userId) {
-        QrcodeCredential qc = getQrcodeCredentialFromRedis(ticket);
+        QrcodeCredential qc = getFromRedis(ticket);
 
         if (qc == null) {
             return QrcodeCredential.invalid();
@@ -137,7 +153,7 @@ public class QrcodeCredentialService {
 
         qc.setUserId(userId);
         qc.setConfirmTime(System.currentTimeMillis());
-        qc.setStatus(QrcodeCredential.CredentialStatus.CONFIRMED);
+        qc.setStatus(QrcodeCredential.Status.CONFIRMED);
 
         // 存入 Redis，有效期 10 分钟
         redisTemplate
@@ -145,5 +161,27 @@ public class QrcodeCredentialService {
             .set(getRedisKey(ticket), qc, 10, TimeUnit.MINUTES);
 
         return qc;
+    }
+
+    /**
+     * 标记鉴权凭证已使用（即不能用于再次新的登录凭证）
+     *
+     * <h2>说明
+     * <p>在调用这个方法前已经对凭证对象进行了验证，不会出现 {@code null} 值。
+     *
+     * @param ticket 凭证编码
+     *
+     * @since 1.1.0
+     */
+    public void consume(String ticket) {
+        QrcodeCredential qc = getFromRedis(ticket);
+
+        qc.setConsumeTime(System.currentTimeMillis());
+        qc.setStatus(QrcodeCredential.Status.CONSUMED);
+
+        // 存入 Redis，有效期 10 分钟
+        redisTemplate
+            .opsForValue()
+            .set(getRedisKey(ticket), qc, 10, TimeUnit.MINUTES);
     }
 }

@@ -50,7 +50,7 @@ public class LocationService {
      *
      * @since 1.0.0
      */
-    public IpLocation locateIp(String ip) {
+    private IpLocation locateIp(String ip) {
         TencentMapLocateIpResponse data = tencentMapService.locateIp(ip);
 
         IpLocation info = new IpLocation();
@@ -79,7 +79,7 @@ public class LocationService {
         IpLocation location = locateIp(ip);
         if (location
             .getDistrict()
-            .equals("")) {
+            .length() == 0) {
             AddressComponent component = reverseGeocoding(location.getLongitude(), location.getLatitude());
             location.setProvince(component.getProvince());
             location.setCity(component.getCity());

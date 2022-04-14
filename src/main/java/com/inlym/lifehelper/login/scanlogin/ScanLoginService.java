@@ -2,7 +2,7 @@ package com.inlym.lifehelper.login.scanlogin;
 
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredential;
-import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredentialBO;
+import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,30 +26,16 @@ public class ScanLoginService {
     }
 
     /**
-     * 将小程序码凭证对象转换为客户端使用的业务对象
-     *
-     * @param qc 小程序码凭证对象
-     *
-     * @since 1.1.0
-     */
-    private QrcodeCredentialBO convertToBO(QrcodeCredential qc) {
-        QrcodeCredentialBO bo = new QrcodeCredentialBO();
-        bo.setTicket(qc.getTicket());
-        bo.setUrl(qc.getUrl());
-        bo.setStatus(qc.getStatus());
-
-        return bo;
-    }
-
-    /**
      * 创建一个新的凭证
      *
+     * @param ip 发起者 IP 地址
+     *
      * @since 1.1.0
      */
-    public QrcodeCredentialBO createCredential() {
-        QrcodeCredential qc = qrcodeCredentialService.create();
+    public ScanLoginResult createCredential(String ip) {
+        QrcodeCredential qc = qrcodeCredentialService.create(ip);
 
-        QrcodeCredentialBO bo = new QrcodeCredentialBO();
+        ScanLoginResult bo = new ScanLoginResult();
         bo.setTicket(qc.getTicket());
         bo.setUrl(qc.getUrl());
 
@@ -60,31 +46,77 @@ public class ScanLoginService {
      * 查询对应凭证编码的状态，并根据状态返回对应的数据
      *
      * @param ticket 凭证编码
+     * @param ip     发起者 IP 地址
      *
      * @since 1.1.0
      */
-    public QrcodeCredentialBO checkTicket(String ticket) {
+    public ScanLoginResult checkTicket(String ticket, String ip) {
         QrcodeCredential qc = qrcodeCredentialService.get(ticket);
 
         // 根据不同的状态，执行不同的操作
-        if (qc.getStatus() == QrcodeCredential.CredentialStatus.INVALID) {
-            return QrcodeCredentialBO.invalid();
-        } else if (qc.getStatus() == QrcodeCredential.CredentialStatus.CREATED) {
-            return QrcodeCredentialBO.fromStatus(qc.getStatus());
-        } else if (qc.getStatus() == QrcodeCredential.CredentialStatus.SCANNED) {
-            return QrcodeCredentialBO.fromStatus(qc.getStatus());
-        } else if (qc.getStatus() == QrcodeCredential.CredentialStatus.CONFIRMED) {
+        if (qc.getStatus() == QrcodeCredential.Status.INVALID || !qc
+            .getIp()
+            .equals(ip)) {
+            return ScanLoginResult.invalid();
+        } else if (qc.getStatus() == QrcodeCredential.Status.CREATED) {
+            return ScanLoginResult.fromStatus(qc.getStatus());
+        } else if (qc.getStatus() == QrcodeCredential.Status.SCANNED) {
+            return ScanLoginResult.fromStatus(qc.getStatus());
+        } else if (qc.getStatus() == QrcodeCredential.Status.CONFIRMED) {
+            qrcodeCredentialService.consume(qc.getTicket());
+
             int userId = qc.getUserId();
             String token = jwtService.createTokenForUser(userId);
 
-            QrcodeCredentialBO bo = new QrcodeCredentialBO();
+            ScanLoginResult bo = new ScanLoginResult();
             bo.setStatus(qc.getStatus());
             bo.setToken(token);
 
             return bo;
         } else {
             log.error("未知的状态：{}", qc.getStatus());
-            return QrcodeCredentialBO.invalid();
+            return ScanLoginResult.invalid();
         }
+    }
+
+    /**
+     * 进行扫码操作（仅扫码，未点击确定）
+     *
+     * @param ticket 凭证编码
+     * @param userId 用户 ID
+     *
+     * @since 1.1.0
+     */
+    public ScanLoginResult scan(String ticket, int userId) {
+        QrcodeCredential qc = qrcodeCredentialService.scan(ticket, userId);
+
+        if (qc.getStatus() == QrcodeCredential.Status.INVALID) {
+            return ScanLoginResult.invalid();
+        }
+
+        ScanLoginResult result = new ScanLoginResult();
+        result.setStatus(qc.getStatus());
+        result.setIp(qc.getIp());
+        result.setRegion(qc.getRegion());
+
+        return result;
+    }
+
+    /**
+     * 进行确认登录操作（仅扫码，未点击确定）
+     *
+     * @param ticket 凭证编码
+     * @param userId 用户 ID
+     *
+     * @since 1.1.0
+     */
+    public ScanLoginResult confirm(String ticket, int userId) {
+        QrcodeCredential qc = qrcodeCredentialService.confirm(ticket, userId);
+
+        if (qc.getStatus() == QrcodeCredential.Status.INVALID) {
+            return ScanLoginResult.invalid();
+        }
+
+        return ScanLoginResult.fromStatus(qc.getStatus());
     }
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
  *
  * <h2>说明
  * <li>当前包中的 `Qrcode` 均指微信小程序码，不是普通的二维码。
- * <li>这里提到的“凭证编码”就是其他处出现的 `ticket`。
+ * <li>这里提到的 “凭证编码” 就是其他处出现的 `ticket`。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/4/12
