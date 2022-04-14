@@ -21,8 +21,8 @@ import java.util.UUID;
  */
 @Service
 public class JwtService {
-    /** 默认 JWT 有效期 */
-    public static final Duration DEFAULT_JWT_DURATION = Duration.ofDays(10);
+    /** 默认 JWT 有效期：30天 */
+    public static final Duration DEFAULT_JWT_DURATION = Duration.ofDays(30);
 
     /** 在 JWT 中存储用户 ID 的字段名 */
     private static final String USER_ID_FIELD = "uid";
@@ -41,20 +41,18 @@ public class JwtService {
     }
 
     /**
-     * 生成 JWT 字符串
+     * 为普通用户创建登录凭证（JWT 字符串）
      *
-     * @param userId   用户 ID
-     * @param duration 有效时长
-     * @param roles    角色列表
+     * @param userId 用户 ID
      *
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    public String create(int userId, Duration duration, String[] roles) {
+    public String createTokenForUser(int userId) {
         // 当前时间的时间戳
         long now = System.currentTimeMillis();
 
         // 到期时间的时间戳
-        long expireTime = now + duration.toMillis();
+        long expireTime = now + DEFAULT_JWT_DURATION.toMillis();
 
         JWTCreator.Builder jwt = JWT
             .create()
@@ -67,23 +65,7 @@ public class JwtService {
             .withExpiresAt(new Date(expireTime))
             .withClaim(USER_ID_FIELD, userId);
 
-        if (roles != null && roles.length > 0) {
-            jwt.withClaim(AUTHORITIES_FIELD, String.join(",", roles));
-        }
-
         return jwt.sign(algorithm);
-    }
-
-    /**
-     * 生成 JWT 字符串
-     *
-     * @param userId 用户 ID
-     * @param roles  角色列表
-     *
-     * @since 1.0.0
-     */
-    public String create(int userId, String[] roles) {
-        return create(userId, DEFAULT_JWT_DURATION, roles);
     }
 
     /**

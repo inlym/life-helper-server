@@ -1,13 +1,10 @@
 package com.inlym.lifehelper.login.weixinlogin;
 
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
-import com.inlym.lifehelper.common.constant.Role;
 import com.inlym.lifehelper.external.weixin.WeixinService;
 import com.inlym.lifehelper.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
 
 /**
  * 登录服务
@@ -43,23 +40,10 @@ public class WeixinLoginService {
     public String loginByCode(String code) {
         String openid = weixinService.getOpenidByCode(code);
         int userId = userService.getUserIdByOpenid(openid);
-        String token = jwtService.create(userId, Duration.ofDays(30), new String[0]);
+        String token = jwtService.createTokenForUser(userId);
 
         log.info("[用户登录] code={}, openid={}, userId={}", code, openid, userId);
 
         return token;
-    }
-
-    /**
-     * 开发者登录
-     *
-     * @param userId 用户 ID
-     *
-     * @return 具有开发者角色的 JWT
-     *
-     * @since 1.0.0
-     */
-    public String loginForDeveloper(int userId) {
-        return jwtService.create(userId, new String[]{Role.DEVELOPER});
     }
 }

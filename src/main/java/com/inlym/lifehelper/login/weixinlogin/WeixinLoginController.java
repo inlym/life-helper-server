@@ -1,15 +1,12 @@
 package com.inlym.lifehelper.login.weixinlogin;
 
 import com.auth0.jwt.JWT;
-import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.login.weixinlogin.pojo.WeixinCodeDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,25 +41,6 @@ public class WeixinLoginController {
         map.put("expiration", JWT
             .decode(token)
             .getExpiresAt());
-
-        return map;
-    }
-
-    /**
-     * 开发者登录，用于获取开发者角色
-     *
-     * @since 1.0.0
-     *
-     * <h2>使用说明
-     *
-     * <p>正常登录后，再访问以下这个接口就可以了。
-     */
-    @PostMapping("/login/developer")
-    @UserPermission
-    public Map<String, String> loginForDeveloper(HttpServletRequest request) {
-        int userId = (int) request.getAttribute(CustomRequestAttribute.USER_ID);
-        Map<String, String> map = new HashMap<>(16);
-        map.put("token", weixinLoginService.loginForDeveloper(userId));
 
         return map;
     }

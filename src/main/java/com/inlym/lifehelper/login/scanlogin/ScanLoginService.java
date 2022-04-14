@@ -1,13 +1,10 @@
 package com.inlym.lifehelper.login.scanlogin;
 
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
-import com.inlym.lifehelper.common.constant.Role;
 import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredential;
 import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredentialBO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
 
 /**
  * 扫码登录服务
@@ -78,7 +75,7 @@ public class ScanLoginService {
             return QrcodeCredentialBO.fromStatus(qc.getStatus());
         } else if (qc.getStatus() == QrcodeCredential.CredentialStatus.CONFIRMED) {
             int userId = qc.getUserId();
-            String token = jwtService.create(userId, Duration.ofDays(10), new String[]{Role.USER});
+            String token = jwtService.createTokenForUser(userId);
 
             QrcodeCredentialBO bo = new QrcodeCredentialBO();
             bo.setStatus(qc.getStatus());
