@@ -71,5 +71,8 @@ public class ScanLoginResult {
 
         /** 已扫码但未确认 */
         public static final int SCANNED = 1;
+
+        /** 已扫码确认 */
+        public static final int CONFIRMED = 2;
     }
 }
