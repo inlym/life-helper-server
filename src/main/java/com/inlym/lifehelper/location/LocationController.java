@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.location;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
+import com.inlym.lifehelper.location.pojo.IpInfoVO;
 import com.inlym.lifehelper.location.pojo.IpLocation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,14 @@ public class LocationController {
      * @since 1.1.0
      */
     @GetMapping("/ip")
-    public IpLocation getIp(@ClientIp String ip) {
-        return locationService.locateIpPlus(ip);
+    public IpInfoVO getIp(@ClientIp String ip) {
+        IpLocation ipLocation = locationService.locateIpPlus(ip);
+        String region = ipLocation.getProvince() + ipLocation.getCity();
+
+        return IpInfoVO
+            .builder()
+            .ip(ip)
+            .region(region)
+            .build();
     }
 }
