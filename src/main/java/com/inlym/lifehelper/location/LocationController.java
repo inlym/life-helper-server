@@ -31,7 +31,7 @@ public class LocationController {
     @GetMapping("/ip")
     public IpInfoVO getIp(@ClientIp String ip) {
         IpLocation ipLocation = locationService.locateIpPlus(ip);
-        String region = ipLocation.getProvince() + ipLocation.getCity();
+        String region = locationService.getRoughIpRegion(ip);
 
         return IpInfoVO
             .builder()

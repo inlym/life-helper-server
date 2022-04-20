@@ -9,6 +9,7 @@ import com.inlym.lifehelper.location.pojo.IpLocation;
 import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 位置信息服务
@@ -76,8 +77,10 @@ public class LocationService {
      * @since 1.0.0
      */
     public IpLocation locateIpPlus(String ip) {
+        String chinaNationName = "中国";
+
         IpLocation location = locateIp(ip);
-        if (location
+        if (chinaNationName.equals(location.getNation()) && location
             .getDistrict()
             .length() == 0) {
             AddressComponent component = reverseGeocoding(location.getLongitude(), location.getLatitude());
@@ -87,6 +90,24 @@ public class LocationService {
         }
 
         return location;
+    }
+
+    /**
+     * 获取 IP 地址粗略的地理位置描述
+     *
+     * @param ip IP 地址
+     *
+     * @since 1.1.0
+     */
+    public String getRoughIpRegion(String ip) {
+        IpLocation location = locateIpPlus(ip);
+        if (StringUtils.hasLength(location.getCity())) {
+            return location.getCity();
+        } else if (StringUtils.hasLength(location.getProvince())) {
+            return location.getProvince();
+        } else {
+            return location.getNation();
+        }
     }
 
     /**
