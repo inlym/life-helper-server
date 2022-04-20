@@ -16,7 +16,7 @@ import lombok.ToString;
  * @since 1.0.0
  **/
 @ToString
-public class ExternalHttpRequestException extends Exception {
+public class ExternalHttpRequestException extends RuntimeException {
     /** 第三方 API 名称（中文描述） */
     @Getter
     private final String name;

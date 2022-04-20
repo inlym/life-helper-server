@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.annotation;
 
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
+import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -33,11 +34,12 @@ public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolv
      * 赋值，其中会将解析后的用户 ID 赋值在 {@code CustomRequestAttribute.USER_ID} 参数上，将其获取后进行返回即可。
      */
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(@SuppressWarnings("NullableProblems") MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws UnauthorizedAccessException {
         Integer userId = (Integer) webRequest.getAttribute(CustomRequestAttribute.USER_ID, RequestAttributes.SCOPE_REQUEST);
         if (userId != null && userId > 0) {
             return userId;
         }
-        throw new Exception("鉴权失败，未获取用户 ID");
+
+        throw new UnauthorizedAccessException("用户未登录");
     }
 }

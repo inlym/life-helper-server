@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
+import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
@@ -68,8 +69,17 @@ public class GlobalExceptionHandler {
      * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(AccessDeniedException.class )
     public ExceptionResponse handleAccessDeniedException(AccessDeniedException e) {
+        return new ExceptionResponse(40010, "未登录或登录信息错误");
+    }
+
+    /**
+     * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
+     */
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler( UnauthorizedAccessException.class)
+    public ExceptionResponse handleUnauthorizedAccessException(UnauthorizedAccessException e) {
         return new ExceptionResponse(40010, "未登录或登录信息错误");
     }
 
