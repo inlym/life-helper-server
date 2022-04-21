@@ -95,19 +95,43 @@ public class LocationService {
     /**
      * 获取 IP 地址粗略的地理位置描述
      *
+     * <h2>返回格式示例
+     *
+     * <li>浙江杭州
+     * <li>上海
+     * <li>美国
+     *
      * @param ip IP 地址
      *
      * @since 1.1.0
      */
     public String getRoughIpRegion(String ip) {
+        String result;
         IpLocation location = locateIpPlus(ip);
         if (StringUtils.hasLength(location.getCity())) {
-            return location.getCity();
+            // 省和市同名，表明是直辖市
+            if (location
+                .getCity()
+                .equals(location.getProvince())) {
+                result = location
+                    .getCity()
+                    .replaceAll("市", "");
+            } else {
+                result = location
+                    .getProvince()
+                    .replaceAll("省", "") + location
+                    .getCity()
+                    .replaceAll("市", "");
+            }
         } else if (StringUtils.hasLength(location.getProvince())) {
-            return location.getProvince();
+            result = location
+                .getProvince()
+                .replaceAll("省", "");
         } else {
-            return location.getNation();
+            result = location.getNation();
         }
+
+        return result;
     }
 
     /**
