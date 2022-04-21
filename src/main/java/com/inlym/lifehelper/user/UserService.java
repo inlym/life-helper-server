@@ -1,5 +1,8 @@
 package com.inlym.lifehelper.user;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import com.inlym.lifehelper.common.constant.Endpoint;
 import com.inlym.lifehelper.external.oss.OssService;
 import com.inlym.lifehelper.user.entity.User;
 import com.inlym.lifehelper.user.mapper.UserMapper;
@@ -9,6 +12,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 用户账户服务类
@@ -62,9 +66,20 @@ public class UserService {
      */
     public UserInfoBO convertToUserInfoBO(User user) {
         UserInfoBO bo = new UserInfoBO();
-        bo.setNickName(user.getNickName());
-        bo.setAvatarUrl(ossService.concatUrl(user.getAvatar()));
-        bo.setEmpty(false);
+
+        if (StringUtils.hasLength(user.getNickName())) {
+            bo.setNickName(user.getNickName());
+            bo.setAvatarUrl(ossService.concatUrl(user.getAvatar()));
+            bo.setEmpty(false);
+        } else {
+            bo.setNickName("点击更新获取头像");
+            bo.setAvatarUrl(Endpoint.LOGO_URL);
+            bo.setEmpty(true);
+        }
+
+        long days = DateUtil.between(DateUtil.date(), user.getRegisterTime(), DateUnit.DAY) + 1;
+        bo.setRegisteredDays(days);
+
         return bo;
     }
 
@@ -80,15 +95,7 @@ public class UserService {
         User user = userMapper.findById(id);
         assert user != null;
 
-        if (user
-            .getNickName()
-            .isEmpty() && user
-            .getAvatar()
-            .isEmpty()) {
-            return UserInfoBO.createEmpty();
-        } else {
-            return convertToUserInfoBO(user);
-        }
+        return convertToUserInfoBO(user);
     }
 
     /**

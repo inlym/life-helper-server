@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>
@@ -139,6 +139,13 @@
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>tablestore</artifactId>
             <version>5.13.9</version>
+        </dependency>
+
+        <!-- Hutool -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.7.22</version>
         </dependency>
 
     </dependencies>

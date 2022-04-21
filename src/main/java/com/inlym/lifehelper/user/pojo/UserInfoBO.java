@@ -1,13 +1,11 @@
 package com.inlym.lifehelper.user.pojo;
 
-import com.inlym.lifehelper.common.constant.Endpoint;
 import lombok.Data;
 
 /**
  * 用户个人信息业务对象
  *
  * <h2>说明
- *
  * <p>业务层从数据库获取并完成数据处理后的信息
  *
  * @author <a href="https://www.inlym.com">inlym</a>
@@ -25,11 +23,13 @@ public class UserInfoBO {
     /** 用户信息是否为空 */
     private Boolean empty;
 
-    public static UserInfoBO createEmpty() {
-        UserInfoBO bo = new UserInfoBO();
-        bo.setNickName("小鸣助手");
-        bo.setAvatarUrl(Endpoint.LOGO_URL);
-        bo.setEmpty(true);
-        return bo;
-    }
+    /**
+     * 注册天数
+     *
+     * <h2>说明
+     * <p>注册当天天数记为 1，实际含义是注册第 n 天
+     *
+     * @since 1.1.1
+     */
+    private Long registeredDays;
 }
