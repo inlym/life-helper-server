@@ -1,14 +1,8 @@
 package com.inlym.lifehelper.external.weixin;
 
-import com.inlym.lifehelper.external.weixin.pojo.WeixinGetAccessTokenResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 微信封装服务
@@ -23,16 +17,13 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class WeixinService {
-    /** 在 Redis 中存储微信服务端接口调用凭证的键名 */
-    public static final String WEIXIN_ACCESS_TOKEN_KEY = "weixin:token";
-
     private final WeixinHttpService weixinHttpService;
 
-    private final StringRedisTemplate stringRedisTemplate;
+    private final WeixinTokenService weixinTokenService;
 
-    public WeixinService(WeixinHttpService weixinHttpService, StringRedisTemplate stringRedisTemplate) {
+    public WeixinService(WeixinHttpService weixinHttpService, WeixinTokenService weixinTokenService) {
         this.weixinHttpService = weixinHttpService;
-        this.stringRedisTemplate = stringRedisTemplate;
+        this.weixinTokenService = weixinTokenService;
     }
 
     /**
@@ -50,51 +41,6 @@ public class WeixinService {
     }
 
     /**
-     * 更新在 Redis 中的微信服务端接口调用凭证
-     *
-     * @since 1.0.0
-     */
-    @SneakyThrows
-    private String updateAccessToken() {
-        WeixinGetAccessTokenResponse data = weixinHttpService.getAccessToken();
-        String accessToken = data.getAccessToken();
-        int expiration = data.getExpiresIn();
-
-        stringRedisTemplate
-            .opsForValue()
-            .set(WEIXIN_ACCESS_TOKEN_KEY, accessToken, Duration.ofSeconds(expiration));
-
-        return accessToken;
-    }
-
-    /**
-     * 用于内部使用获取微信服务端接口调用凭证
-     *
-     * @since 1.0.0
-     */
-    @SneakyThrows
-    private String getAccessTokenInternal() {
-        String token = stringRedisTemplate
-            .opsForValue()
-            .get(WEIXIN_ACCESS_TOKEN_KEY);
-        return token != null ? token : updateAccessToken();
-    }
-
-    /**
-     * [计划任务] 更新在 Redis 中的微信服务端接口调用凭证
-     *
-     * <h2>执行频率
-     * <p>每60分钟执行一次
-     *
-     * @since 1.0.0
-     */
-    @Scheduled(fixedRate = 60, timeUnit = TimeUnit.MINUTES)
-    private void updateAccessTokenCron() {
-        updateAccessToken();
-        log.info("[定时任务] 更新在 Redis 中的微信服务端接口调用凭证");
-    }
-
-    /**
      * 生成小程序码
      *
      * @param page  页面 page，根路径前不要填加 /，不能携带参数（参数请放在scene字段里）
@@ -105,7 +51,7 @@ public class WeixinService {
      */
     @SneakyThrows
     public byte[] generateWxacode(String page, String scene, int width) {
-        String token = getAccessTokenInternal();
+        String token = weixinTokenService.getToken();
         return weixinHttpService.getUnlimitedWxacode(token, page, scene, width);
     }
 }
