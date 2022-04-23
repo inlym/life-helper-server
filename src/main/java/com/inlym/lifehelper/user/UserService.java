@@ -80,7 +80,6 @@ public class UserService {
         // 更新用户资料的时候，直接使用 update 方法，不需要再次查询，因此未获取该值
         if (user.getRegisterTime() != null) {
             long days = DateUtil.between(user.getRegisterTime(), DateUtil.date(), DateUnit.DAY) + 1;
-            log.debug("days:{}", days);
             bo.setRegisteredDays(days);
         }
 

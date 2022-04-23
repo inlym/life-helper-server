@@ -45,6 +45,27 @@ public class HelloController {
     }
 
     /**
+     * 等待 n 秒后返回结果
+     *
+     * <h2>主要用途
+     * <p>用于客户端调试网络请求超时的情况
+     *
+     * @param n 等待时间，单位：秒
+     *
+     * @since 1.1.2
+     */
+    @GetMapping("/sleep")
+    public Map<String, Object> sleep(@RequestParam(defaultValue = "1") int n) {
+        try {
+            Thread.sleep(n * 1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Map.of("n", n);
+    }
+
+    /**
      * 反射请求内容
      *
      * <h2>主要用途
