@@ -55,9 +55,8 @@ public class HeHttpService {
      *
      * <h2>说明
      * <p>实测结果：
-     * 1. 当有结果时，返回 code=200，且 location 为一个列表。
-     * 2. 当无结果时，返回 code=404，且无 location 字段。
-     * 因此这个方法不抛出错误，在下一个环节处理，返回一个空数组。
+     * <li>当有结果时，返回 code=200，且 location 为一个列表。
+     * <li>当无结果时，返回 code=404，且无 location 字段。 因此这个方法不抛出错误，在下一个环节处理，返回一个空数组。
      *
      * @param location 需要查询地区的名称，支持文字、以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）、LocationID 或 Adcode（仅限中国城市）
      *
@@ -249,6 +248,38 @@ public class HeHttpService {
             return data;
         }
         throw new ExternalHttpRequestException("天气生活指数", url, data.getCode());
+    }
+
+    /**
+     * 获取天气灾害预警
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning/">官方文档</a>
+     * @since 1.2.0
+     */
+    @SneakyThrows
+    @Cacheable("hefeng:warning-now")
+    public HeWarningNowResponse getWarningNow(String location, String days) {
+        String path = "/warning/now";
+
+        // 包含请求参数的完整请求地址
+        String url = UriComponentsBuilder
+            .fromHttpUrl(devConfig.getBaseUrl() + path)
+            .queryParam("location", location)
+            .queryParam("key", heProperties.getDevKey())
+            .queryParam("gzip", "n")
+            .build()
+            .toUriString();
+
+        HeWarningNowResponse data = restTemplate.getForObject(url, HeWarningNowResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            log.info("[HTTP] [天气灾害预警] url={}", url);
+            return data;
+        }
+        throw new ExternalHttpRequestException("天气灾害预警", url, data.getCode());
     }
 
     /**
