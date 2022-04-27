@@ -31,8 +31,8 @@ public class WeatherMixedDataService {
     @SneakyThrows
     public Map<String, Object> getMixedWeatherData(double longitude, double latitude) {
         CompletableFuture<WeatherNow> now = weatherDataServiceAsync.getWeatherNow(longitude, latitude);
-        CompletableFuture<WeatherDaily[]> f15d = weatherDataServiceAsync.getWeather15D(longitude, latitude);
-        CompletableFuture<WeatherHourly[]> f24h = weatherDataServiceAsync.getWeather24H(longitude, latitude);
+        CompletableFuture<WeatherDailyItem[]> f15d = weatherDataServiceAsync.getWeather15D(longitude, latitude);
+        CompletableFuture<WeatherHourlyItem[]> f24h = weatherDataServiceAsync.getWeather24H(longitude, latitude);
         CompletableFuture<MinutelyRain> rain = weatherDataServiceAsync.getMinutely(longitude, latitude);
         CompletableFuture<IndicesItem[]> indices3d = weatherDataServiceAsync.getIndices3D(longitude, latitude);
         CompletableFuture<AirNow> airNow = weatherDataServiceAsync.getAirNow(longitude, latitude);

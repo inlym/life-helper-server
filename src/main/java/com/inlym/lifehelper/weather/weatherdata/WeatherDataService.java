@@ -58,7 +58,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public WeatherDaily[] getWeather7D(double longitude, double latitude) {
+    public WeatherDailyItem[] getWeather7D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWeatherDaily(location, HeConstant.WeatherDailyDays.DAYS_7);
     }
@@ -71,7 +71,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public WeatherDaily[] getWeather15D(double longitude, double latitude) {
+    public WeatherDailyItem[] getWeather15D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWeatherDaily(location, HeConstant.WeatherDailyDays.DAYS_15);
     }
@@ -84,7 +84,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public WeatherHourly[] getWeather24H(double longitude, double latitude) {
+    public WeatherHourlyItem[] getWeather24H(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWeatherHourly(location, HeConstant.WeatherHourlyHours.Hours_24);
     }

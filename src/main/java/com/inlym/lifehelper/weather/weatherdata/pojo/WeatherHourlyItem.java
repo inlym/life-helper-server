@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2022-02-19
  **/
 @Data
-public class WeatherHourly {
+public class WeatherHourlyItem {
     // ====================     新增的字段     ====================
 
     /** 预报时间 */
@@ -30,7 +30,7 @@ public class WeatherHourly {
     /** 天气状况的文字描述 */
     private String text;
 
-    /** 风向360角度 */
+    /** 风向 360 角度 */
     private String wind360;
 
     /** 风向 */

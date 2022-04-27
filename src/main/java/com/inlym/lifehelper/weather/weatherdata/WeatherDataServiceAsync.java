@@ -38,7 +38,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<WeatherDaily[]> getWeather7D(double longitude, double latitude) {
+    public CompletableFuture<WeatherDailyItem[]> getWeather7D(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getWeather7D(longitude, latitude));
     }
 
@@ -49,7 +49,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<WeatherDaily[]> getWeather15D(double longitude, double latitude) {
+    public CompletableFuture<WeatherDailyItem[]> getWeather15D(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getWeather15D(longitude, latitude));
     }
 
@@ -60,7 +60,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<WeatherHourly[]> getWeather24H(double longitude, double latitude) {
+    public CompletableFuture<WeatherHourlyItem[]> getWeather24H(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getWeather24H(longitude, latitude));
     }
 

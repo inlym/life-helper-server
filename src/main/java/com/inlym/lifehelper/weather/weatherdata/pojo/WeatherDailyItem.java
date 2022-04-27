@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2022-02-19
  **/
 @Data
-public class WeatherDaily {
+public class WeatherDailyItem {
     // ====================     新增的字段     ====================
 
     /** 预报日期 */

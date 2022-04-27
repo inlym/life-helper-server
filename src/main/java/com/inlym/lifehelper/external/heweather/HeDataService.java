@@ -110,9 +110,9 @@ public final class HeDataService {
     public HeCity[] searchCities(String location) {
         HeCityLookupResponse data = heHttpService.searchCities(location);
 
-        String SUCCESS_CODE = "200";
+        String successCode = "200";
 
-        if (!SUCCESS_CODE.equals(data.getCode())) {
+        if (!successCode.equals(data.getCode())) {
             return new HeCity[0];
         }
 
@@ -160,14 +160,14 @@ public final class HeDataService {
      * @since 1.0.0
      */
     @SneakyThrows
-    public WeatherDaily[] getWeatherDaily(String location, String days) {
+    public WeatherDailyItem[] getWeatherDaily(String location, String days) {
         HeWeatherDailyResponse res = heHttpService.getWeatherDaily(location, days);
         HeWeatherDailyResponse.Daily[] daily = res.getDaily();
 
-        WeatherDaily[] list = new WeatherDaily[daily.length];
+        WeatherDailyItem[] list = new WeatherDailyItem[daily.length];
         for (int i = 0; i < daily.length; i++) {
             HeWeatherDailyResponse.Daily source = daily[i];
-            WeatherDaily target = new WeatherDaily();
+            WeatherDailyItem target = new WeatherDailyItem();
             BeanUtils.copyProperties(source, target);
 
             target.setDate(source.getFxDate());
@@ -199,14 +199,14 @@ public final class HeDataService {
      * @since 1.0.0
      */
     @SneakyThrows
-    public WeatherHourly[] getWeatherHourly(String location, String hours) {
+    public WeatherHourlyItem[] getWeatherHourly(String location, String hours) {
         HeWeatherHourlyResponse res = heHttpService.getWeatherHourly(location, hours);
         HeWeatherHourlyResponse.Hourly[] hourly = res.getHourly();
 
-        WeatherHourly[] list = new WeatherHourly[hourly.length];
+        WeatherHourlyItem[] list = new WeatherHourlyItem[hourly.length];
         for (int i = 0; i < hourly.length; i++) {
             HeWeatherHourlyResponse.Hourly source = hourly[i];
-            WeatherHourly target = new WeatherHourly();
+            WeatherHourlyItem target = new WeatherHourlyItem();
             BeanUtils.copyProperties(source, target);
 
             // 待解析的时间格式示例："2021-02-16T16:00+08:00"
