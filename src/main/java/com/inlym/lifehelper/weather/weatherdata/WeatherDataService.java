@@ -129,6 +129,19 @@ public class WeatherDataService {
     }
 
     /**
+     * 获取天气灾害预警
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.2.0
+     */
+    public WeatherWarningItem[] getWarningNow(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getWarningNow(location);
+    }
+
+    /**
      * 获取实时空气质量
      *
      * @param longitude 经度

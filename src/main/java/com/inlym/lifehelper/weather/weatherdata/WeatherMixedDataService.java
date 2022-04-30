@@ -35,10 +35,11 @@ public class WeatherMixedDataService {
         CompletableFuture<WeatherHourlyItem[]> f24h = weatherDataServiceAsync.getWeather24H(longitude, latitude);
         CompletableFuture<MinutelyRain> rain = weatherDataServiceAsync.getMinutely(longitude, latitude);
         CompletableFuture<IndicesItem[]> indices3d = weatherDataServiceAsync.getIndices3D(longitude, latitude);
+        CompletableFuture<WeatherWarningItem[]> warnings = weatherDataServiceAsync.getWarningNow(longitude, latitude);
         CompletableFuture<AirNow> airNow = weatherDataServiceAsync.getAirNow(longitude, latitude);
 
         CompletableFuture
-            .allOf(now, f15d, f24h, rain, indices3d, airNow)
+            .allOf(now, f15d, f24h, rain, indices3d, warnings, airNow)
             .join();
 
         Map<String, Object> map = new HashMap<>(16);
@@ -47,6 +48,7 @@ public class WeatherMixedDataService {
         map.put("f24h", f24h.get());
         map.put("rain", rain.get());
         map.put("indices3d", indices3d.get());
+        map.put("warnings", warnings.get());
         map.put("airNow", airNow.get());
 
         return map;

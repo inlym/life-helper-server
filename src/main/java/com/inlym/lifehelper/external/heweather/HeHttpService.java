@@ -260,7 +260,7 @@ public class HeHttpService {
      */
     @SneakyThrows
     @Cacheable("hefeng:warning-now")
-    public HeWarningNowResponse getWarningNow(String location, String days) {
+    public HeWarningNowResponse getWarningNow(String location) {
         String path = "/warning/now";
 
         // 包含请求参数的完整请求地址

@@ -98,6 +98,18 @@ public class WeatherDataServiceAsync {
     }
 
     /**
+     * 获取天气灾害预警
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.2.0
+     */
+    public CompletableFuture<WeatherWarningItem[]> getWarningNow(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(weatherDataService.getWarningNow(longitude, latitude));
+    }
+
+    /**
      * 获取实时空气质量
      *
      * @param longitude 经度

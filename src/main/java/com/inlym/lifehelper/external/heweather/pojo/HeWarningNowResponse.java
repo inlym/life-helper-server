@@ -2,6 +2,8 @@ package com.inlym.lifehelper.external.heweather.pojo;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 天气灾害预警响应数据
  *
@@ -21,10 +23,10 @@ public class HeWarningNowResponse {
     /** 当前 API 的最近更新时间 */
     private String updateTime;
 
-    private Warning warning;
+    private WarningItem[] warning;
 
     @Data
-    public static class Warning {
+    public static class WarningItem {
         /** 本条预警的唯一标识，可判断本条预警是否已经存在 */
         private String id;
 
@@ -32,7 +34,7 @@ public class HeWarningNowResponse {
         private String sender;
 
         /** 预警发布时间 */
-        private String pubTime;
+        private Date pubTime;
 
         /** 预警信息标题 */
         private String title;
@@ -46,7 +48,7 @@ public class HeWarningNowResponse {
         /** 预警信息的发布状态 */
         private String status;
 
-        /** 预警等级 */
+        /** 预警等级，目前包含：白色、蓝色、绿色、黄色、橙色、红色、黑色 */
         private String level;
 
         /** 预警类型ID */

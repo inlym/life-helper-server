@@ -280,6 +280,29 @@ public final class HeDataService {
     }
 
     /**
+     * 获取天气灾害预警
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     *
+     * @since 1.2.0
+     */
+    public WeatherWarningItem[] getWarningNow(String location) {
+        HeWarningNowResponse res = heHttpService.getWarningNow(location);
+        HeWarningNowResponse.WarningItem[] warningItems = res.getWarning();
+        WeatherWarningItem[] list = new WeatherWarningItem[warningItems.length];
+
+        for (int i = 0; i < warningItems.length; i++) {
+            HeWarningNowResponse.WarningItem source = warningItems[i];
+            WeatherWarningItem target = new WeatherWarningItem();
+            BeanUtils.copyProperties(source, target);
+
+            list[i] = target;
+        }
+
+        return list;
+    }
+
+    /**
      * 获取实时空气质量
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
