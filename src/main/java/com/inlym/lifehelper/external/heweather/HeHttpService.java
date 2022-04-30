@@ -161,7 +161,7 @@ public class HeHttpService {
     @SneakyThrows
     @Cacheable("hefeng:hourly")
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
-        Config config = HeConstant.WeatherHourlyHours.Hours_24.equals(hours) ? devConfig : proConfig;
+        Config config = HeConstant.WeatherHourlyHours.HOURS_24.equals(hours) ? devConfig : proConfig;
         String path = "/weather/" + hours;
 
         // 包含请求参数的完整请求地址

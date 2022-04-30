@@ -86,7 +86,7 @@ public class WeatherDataService {
      */
     public WeatherHourlyItem[] getWeather24H(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherHourly(location, HeConstant.WeatherHourlyHours.Hours_24);
+        return heDataService.getWeatherHourly(location, HeConstant.WeatherHourlyHours.HOURS_24);
     }
 
     /**

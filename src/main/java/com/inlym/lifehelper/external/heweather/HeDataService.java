@@ -52,6 +52,48 @@ public final class HeDataService {
     }
 
     /**
+     * 预警等级转换为对应的数字字符串
+     *
+     * @param level 预警等级
+     *
+     * @since 1.2.0
+     */
+    private static String getWarningLevelNum(String level) {
+        String red = "红色";
+        String orange = "橙色";
+        String yellow = "黄色";
+        String blue = "蓝色";
+        String white = "白色";
+
+        if (red.equals(level)) {
+            return "1";
+        } else if (orange.equals(level)) {
+            return "2";
+        } else if (yellow.equals(level)) {
+            return "3";
+        } else if (blue.equals(level)) {
+            return "4";
+        } else if (white.equals(level)) {
+            return "5";
+        } else {
+            return "0";
+        }
+    }
+
+    /**
+     * 生成天气预警图片的 URL 地址
+     *
+     * @param type  预警类型 ID
+     * @param level 预警等级
+     *
+     * @since 1.2.0
+     */
+    private static String makeWarningImageUrl(String type, String level) {
+        String levelNum = getWarningLevelNum(level);
+        return HeConstant.WARNING_IMAGE_BASE_URL + type + "-" + levelNum + ".png";
+    }
+
+    /**
      * 根据 icon 图标的 ID 计算所属的天气类型
      *
      * <h2>天气类型（来源于自行归纳）
@@ -295,6 +337,8 @@ public final class HeDataService {
             HeWarningNowResponse.WarningItem source = warningItems[i];
             WeatherWarningItem target = new WeatherWarningItem();
             BeanUtils.copyProperties(source, target);
+
+            target.setImageUrl(makeWarningImageUrl(source.getType(), source.getLevel()));
 
             list[i] = target;
         }
