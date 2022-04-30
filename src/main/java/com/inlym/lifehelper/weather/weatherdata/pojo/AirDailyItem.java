@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2022-02-19
  **/
 @Data
-public class AirDaily {
+public class AirDailyItem {
     /** 预报日期 */
     private String date;
 

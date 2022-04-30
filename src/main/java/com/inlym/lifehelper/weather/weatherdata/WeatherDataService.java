@@ -73,7 +73,7 @@ public class WeatherDataService {
      */
     public WeatherDailyItem[] getWeather15D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherDaily(location, HeConstant.WeatherDailyDays.DAYS_15);
+        return heDataService.getWeatherDailyWithAqi(location, HeConstant.WeatherDailyDays.DAYS_15);
     }
 
     /**
@@ -149,7 +149,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public AirDaily[] getAir5D(double longitude, double latitude) {
+    public AirDailyItem[] getAir5D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getAirDaily(location);
     }

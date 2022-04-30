@@ -302,14 +302,14 @@ public final class HeDataService {
      * @see HeHttpService#getAirDaily
      * @since 1.0.0
      */
-    public AirDaily[] getAirDaily(String location) {
+    public AirDailyItem[] getAirDaily(String location) {
         HeAirDailyResponse res = heHttpService.getAirDaily(location);
         HeAirDailyResponse.Daily[] daily = res.getDaily();
-        AirDaily[] list = new AirDaily[daily.length];
+        AirDailyItem[] list = new AirDailyItem[daily.length];
 
         for (int i = 0; i < daily.length; i++) {
             HeAirDailyResponse.Daily source = daily[i];
-            AirDaily target = new AirDaily();
+            AirDailyItem target = new AirDailyItem();
             BeanUtils.copyProperties(source, target);
             target.setDate(source.getFxDate());
 
@@ -317,5 +317,30 @@ public final class HeDataService {
         }
 
         return list;
+    }
+
+    /**
+     * 获取包含控制质量预报的逐天天气预报
+     *
+     * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
+     *
+     * @since 1.2.0
+     */
+    public WeatherDailyItem[] getWeatherDailyWithAqi(String location, String days) {
+        WeatherDailyItem[] weatherDaily = getWeatherDaily(location, days);
+        AirDailyItem[] airDaily = getAirDaily(location);
+
+        for (WeatherDailyItem weather : weatherDaily) {
+            for (AirDailyItem air : airDaily) {
+                if (weather
+                    .getDate()
+                    .equals(air.getDate())) {
+                    weather.setAqiLevel(air.getLevel());
+                    weather.setAqiCategory(air.getCategory());
+                }
+            }
+        }
+
+        return weatherDaily;
     }
 }
