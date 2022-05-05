@@ -7,9 +7,6 @@ import java.util.Date;
 /**
  * 天气灾害预警响应数据
  *
- * <h2>说明
- * <p>
- *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/4/25
  * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning/">天气灾害预警</a>
