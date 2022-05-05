@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.external.tencentmap;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
+import com.inlym.lifehelper.external.tencentmap.exception.InvalidIpException;
 import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapLocateIpResponse;
 import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapReverseGeocodingResponse;
 import lombok.SneakyThrows;
@@ -73,8 +74,10 @@ public class TencentMapHttpService {
         if (data.getStatus() == SUCCESS_STATUS) {
             log.info("[IP 定位] ip={}, data={}", ip, data);
             return data;
+        } else {
+            log.error("[IP 定位] url={}, status={}, message={}", url, data.getStatus(), data.getMessage());
+            throw new InvalidIpException(data.getMessage());
         }
-        throw new ExternalHttpRequestException("IP 定位", url, data.getStatus(), data.getMessage());
     }
 
     /**

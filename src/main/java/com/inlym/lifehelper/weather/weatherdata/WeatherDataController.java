@@ -43,7 +43,21 @@ public class WeatherDataController {
      */
     @GetMapping("/weather")
     public Map<String, Object> getMixedWeatherData(@ClientIp String ip) {
-        IpLocation info = locationService.locateIpPlus(ip);
+        IpLocation info;
+
+        try {
+            info = locationService.locateIpPlus(ip);
+        } catch (Exception e) {
+            // IP 定位可能出错，此处保证出错时能够返回正常的数据
+            // 目前设定出错时返回北京的数据
+            info = new IpLocation();
+            info.setLongitude(116.40);
+            info.setLatitude(39.90);
+            info.setDistrict("北京市");
+            info.setCity("北京市");
+            info.setProvince("");
+        }
+
         String name = info.getDistrict();
         String region = info.getProvince() + info.getCity();
 

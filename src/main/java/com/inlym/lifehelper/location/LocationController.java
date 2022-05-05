@@ -30,13 +30,21 @@ public class LocationController {
      */
     @GetMapping("/ip")
     public IpInfoVO getIp(@ClientIp String ip) {
-        IpLocation ipLocation = locationService.locateIpPlus(ip);
-        String region = locationService.getRoughIpRegion(ip);
+        try {
+            IpLocation ipLocation = locationService.locateIpPlus(ip);
+            String region = locationService.getRoughIpRegion(ip);
 
-        return IpInfoVO
-            .builder()
-            .ip(ip)
-            .region(region)
-            .build();
+            return IpInfoVO
+                .builder()
+                .ip(ip)
+                .region(region)
+                .build();
+        } catch (Exception e) {
+            // IP 定位可能出错，此处保证出错时能够返回 IP 地址
+            return IpInfoVO
+                .builder()
+                .ip(ip)
+                .build();
+        }
     }
 }
