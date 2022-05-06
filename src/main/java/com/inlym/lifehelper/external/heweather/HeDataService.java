@@ -94,6 +94,19 @@ public final class HeDataService {
     }
 
     /**
+     * 生成天气预警图标的 URL 地址
+     *
+     * @param type  预警类型 ID
+     * @param level 预警等级
+     *
+     * @since 1.2.1
+     */
+    private static String makeWarningIconUrl(String type, String level) {
+        String levelNum = getWarningLevelNum(level);
+        return HeConstant.WARNING_ICON_BASE_URL + type + "-" + levelNum + ".svg";
+    }
+
+    /**
      * 根据 icon 图标的 ID 计算所属的天气类型
      *
      * <h2>天气类型（来源于自行归纳）
@@ -338,7 +351,9 @@ public final class HeDataService {
             WeatherWarningItem target = new WeatherWarningItem();
             BeanUtils.copyProperties(source, target);
 
+            target.setLevelId(getWarningLevelNum(source.getLevel()));
             target.setImageUrl(makeWarningImageUrl(source.getType(), source.getLevel()));
+            target.setIconUrl(makeWarningIconUrl(source.getType(), source.getLevel()));
 
             list[i] = target;
         }

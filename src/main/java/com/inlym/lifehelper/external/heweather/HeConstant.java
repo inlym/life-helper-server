@@ -25,6 +25,9 @@ public class HeConstant {
     /** 存放和风天气灾害预警图片的目录地址 */
     public static final String WARNING_IMAGE_BASE_URL = "https://static.lifehelper.com.cn/qweather/warning/";
 
+    /** 存放和风天气灾害预警图片的目录地址 */
+    public static final String WARNING_ICON_BASE_URL = "https://static.lifehelper.com.cn/qweather/warning-icon/";
+
     /** 逐天天气预报可查询天数 */
     public static final class WeatherDailyDays {
         /** 3天 */

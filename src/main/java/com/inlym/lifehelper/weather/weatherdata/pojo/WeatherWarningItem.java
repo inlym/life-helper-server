@@ -15,8 +15,14 @@ import java.util.Date;
 public class WeatherWarningItem {
     // =============================  数据处理后新增的字段  =============================
 
+    /** 预警等级 ID */
+    private String levelId;
+
     /** 图片的 URL 地址 */
     private String imageUrl;
+
+    /** 图标的 URL 地址 */
+    private String iconUrl;
 
     // =============================  和风天气原有的字段  ==============================
 
