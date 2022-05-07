@@ -37,7 +37,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @SuppressWarnings("NullableProblems")
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // 从请求头获取鉴权凭证
-        String token = request.getHeader(CustomHttpHeader.JWT_TOKEN);
+        String token1 = request.getHeader(CustomHttpHeader.JWT_TOKEN);
+        String token2 = request.getHeader("X-Auth-Jwt");
+
+        String token = token1 != null ? token1 : token2;
 
         if (token != null) {
             try {

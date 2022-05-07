@@ -12,8 +12,8 @@ public final class CustomHttpHeader {
     public static final String REQUEST_ID = "X-Ca-Request-Id";
 
     /** 客户端 IP 地址，由 API 网关层加入到请求头中 */
-    public static final String CLIENT_IP = "X-Client-Ip";
+    public static final String CLIENT_IP = "X-Lifehelper-Client-Ip";
 
     /** JWT 字符串 */
-    public static final String JWT_TOKEN = "X-Auth-Jwt";
+    public static final String JWT_TOKEN = "X-Lifehelper-Auth-Jwt";
 }
