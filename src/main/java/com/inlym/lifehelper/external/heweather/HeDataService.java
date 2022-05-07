@@ -8,9 +8,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 和风天气数据服务
@@ -103,7 +100,12 @@ public final class HeDataService {
      */
     private static String makeWarningIconUrl(String type, String level) {
         String levelNum = getWarningLevelNum(level);
-        return HeConstant.WARNING_ICON_BASE_URL + type + "-" + levelNum + ".svg";
+
+        // 备注（2022.05.08）：
+        // 原定此处根据不同等级返回不同颜色的图片，但由于背景色使用了该颜色，因此此处统一返回白色图标。
+        // return HeConstant.WARNING_ICON_BASE_URL + type + "-" + levelNum + ".svg";
+
+        return HeConstant.WARNING_ICON_BASE_URL + type + "-5.svg";
     }
 
     /**
@@ -136,23 +138,6 @@ public final class HeDataService {
         } else {
             return "unknown";
         }
-    }
-
-    /**
-     * 计算当前时间与指定时间的时间差（分钟数）
-     *
-     * @param timeText 时间的文本格式，范例 "2022-01-21T19:35+08:00"
-     *
-     * @since 1.0.0
-     */
-    private static long calculateMinutesDiff(String timeText) {
-        Date target = Date.from(OffsetDateTime
-            .parse(timeText)
-            .toInstant());
-
-        long diff = System.currentTimeMillis() - target.getTime();
-
-        return TimeUnit.MILLISECONDS.toMinutes(diff);
     }
 
     /**
@@ -199,7 +184,6 @@ public final class HeDataService {
         BeanUtils.copyProperties(res.getNow(), now);
 
         now.setIconUrl(makeIconUrl(now.getIcon()));
-        now.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
         now.setType(getWeatherTypeByIconId(now.getIcon()));
 
         return now;
@@ -287,19 +271,26 @@ public final class HeDataService {
     public MinutelyRain getMinutely(String location) {
         HeMinutelyResponse res = heHttpService.getMinutely(location);
         HeMinutelyResponse.Minutely[] minutely = res.getMinutely();
-        MinutelyRain rain = new MinutelyRain();
 
+        MinutelyRain rain = new MinutelyRain();
         rain.setSummary(res.getSummary());
-        rain.setUpdateMinutesDiff(String.valueOf(calculateMinutesDiff(res.getUpdateTime())));
+        rain.setUpdateTime(res
+            .getUpdateTime()
+            .substring(11, 16));
+        rain.setType(res.getMinutely()[0].getType());
 
         MinutelyRain.Minutely[] list = new MinutelyRain.Minutely[minutely.length];
         for (int i = 0; i < minutely.length; i++) {
             HeMinutelyResponse.Minutely source = minutely[i];
             MinutelyRain.Minutely target = new MinutelyRain.Minutely();
-            BeanUtils.copyProperties(source, target);
             target.setTime(source
                 .getFxTime()
                 .substring(11, 16));
+            target.setPrecip(Float.valueOf(source.getPrecip()));
+
+            if (target.getPrecip() > 0) {
+                rain.setHasRain(true);
+            }
 
             list[i] = target;
         }

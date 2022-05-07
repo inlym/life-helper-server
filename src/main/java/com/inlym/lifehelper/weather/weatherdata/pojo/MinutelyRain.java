@@ -8,8 +8,27 @@ import lombok.Data;
  **/
 @Data
 public class MinutelyRain {
-    /** 当前 API 的最近更新时间，不是原接口返回的时间节点，而是该时间与当前时间的时间差，单位：分钟 */
-    private String updateMinutesDiff;
+    // ============================== 数据处理后新增的字段 ==============================
+
+    /**
+     * 是否有雨
+     *
+     * <h2>字段规则
+     * <p>遍历列表降水量值，只要存在不为零的项，该值即为 true
+     */
+    private Boolean hasRain = false;
+
+    /**
+     * 降水类型: - rain -> 雨 - snow -> 雪
+     */
+    private String type;
+
+    // ========================== 和风天气原有的字段但是做了数据处理 ===========================
+
+    /** 当前 API 的最近更新时间，格式示例：`07:55` */
+    private String updateTime;
+
+    // ============================== 和风天气原有的字段 ===============================
 
     /** 分钟降水描述 */
     private String summary;
@@ -22,13 +41,6 @@ public class MinutelyRain {
         private String time;
 
         /** 10分钟累计降水量，单位毫米 */
-        private String precip;
-
-        /**
-         * 降水类型:
-         * - rain -> 雨
-         * - snow -> 雪
-         */
-        private String type;
+        private Float precip;
     }
 }
