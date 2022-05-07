@@ -2,6 +2,7 @@ package com.inlym.lifehelper.hello;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.common.constant.SpecialPath;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class HelloController {
      * <h2>注意事项
      * <p>项目内部进行日志记录时，不要记录当前接口，因为负载均衡的健康检查频率为1次/秒，记录日志会造成大量无效日志。
      */
-    @GetMapping("/ping")
+    @GetMapping(SpecialPath.HEALTH_CHECK_PATH)
     public String ping() {
         return "pong";
     }
