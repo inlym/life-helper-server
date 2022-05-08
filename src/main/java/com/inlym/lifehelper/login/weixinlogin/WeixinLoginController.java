@@ -37,10 +37,11 @@ public class WeixinLoginController {
         Map<String, Object> map = new HashMap<>(16);
         map.put("token", token);
 
-        // 登录凭证有效时间
+        // 登录凭证有效时间（到期时间的时间戳）
         map.put("expiration", JWT
             .decode(token)
-            .getExpiresAt());
+            .getExpiresAt()
+            .getTime());
 
         return map;
     }
