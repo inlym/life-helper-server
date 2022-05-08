@@ -21,6 +21,9 @@ public class WeatherDailyItem {
     /** 预报夜间天气状况的图标 URL 地址 */
     private String iconNightUrl;
 
+    /** 月相图标 URL 地址 */
+    private String moonPhaseIconUrl;
+
     /** 天气总结，示例：晴转多云 */
     private String text;
 
@@ -48,9 +51,6 @@ public class WeatherDailyItem {
 
     /** 月相名称 */
     private String moonPhase;
-
-    /** 月相图标代码 */
-    private String moonPhaseIcon;
 
     /** 预报当天最高温度 */
     private String tempMax;

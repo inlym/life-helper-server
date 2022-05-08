@@ -212,6 +212,7 @@ public final class HeDataService {
             target.setDate(source.getFxDate());
             target.setIconDayUrl(makeIconUrl(source.getIconDay()));
             target.setIconNightUrl(makeIconUrl(source.getIconNight()));
+            target.setMoonPhaseIconUrl(makeIconUrl(source.getMoonPhaseIcon()));
 
             // 天气描述
             if (source
@@ -393,7 +394,7 @@ public final class HeDataService {
     }
 
     /**
-     * 获取包含控制质量预报的逐天天气预报
+     * 获取包含空气质量预报的逐天天气预报
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
      *
