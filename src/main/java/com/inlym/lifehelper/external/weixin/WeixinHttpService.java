@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.external.weixin;
 
+import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.weixin.pojo.WeixinCode2SessionResponse;
 import com.inlym.lifehelper.external.weixin.pojo.WeixinGetAccessTokenResponse;
@@ -52,7 +53,7 @@ public class WeixinHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable("weixin:session")
+    @Cacheable(RedisCacheCollector.WEIXIN_SESSION)
     public WeixinCode2SessionResponse code2Session(String code) throws ExternalHttpRequestException {
         String baseUrl = "https://api.weixin.qq.com/sns/jscode2session";
 

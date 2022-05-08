@@ -5,7 +5,6 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -37,13 +36,13 @@ public class SpringCacheConfig extends CachingConfigurerSupport {
 
     @Override
     public CacheManager cacheManager() {
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
+        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration
             .defaultCacheConfig()
             .entryTtl(Duration.ofMinutes(10))
             .computePrefixWith(name -> name)
             .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
-        return new RedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory), redisCacheConfiguration);
+        return new CustomRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory), defaultCacheConfig);
     }
 
     /**
@@ -70,6 +69,7 @@ public class SpringCacheConfig extends CachingConfigurerSupport {
      */
     public static class MyKeyGenerator implements KeyGenerator {
         @Override
+        @SuppressWarnings("NullableProblems")
         public Object generate(Object target, Method method, Object... params) {
             if (params.length > 0) {
                 StringBuilder sb = new StringBuilder();

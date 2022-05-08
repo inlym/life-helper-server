@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.external.tencentmap;
 
+import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.tencentmap.exception.InvalidIpException;
 import com.inlym.lifehelper.external.tencentmap.pojo.TencentMapLocateIpResponse;
@@ -58,7 +59,7 @@ public class TencentMapHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("lbs:locate-ip")
+    @Cacheable(RedisCacheCollector.TENCENT_MAP_LOCATE_IP)
     public TencentMapLocateIpResponse locateIp(String ip) {
         String baseUrl = "https://apis.map.qq.com/ws/location/v1/ip";
         String url = UriComponentsBuilder
@@ -88,7 +89,7 @@ public class TencentMapHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder">逆地址解析（坐标位置描述）</a>
      */
     @SneakyThrows
-    @Cacheable("lbs:regeo")
+    @Cacheable(RedisCacheCollector.TENCENT_MAP_REVERSE_GEOCODING)
     public TencentMapReverseGeocodingResponse reverseGeocoding(String location) {
         String baseUrl = "https://apis.map.qq.com/ws/geocoder/v1/";
         String url = UriComponentsBuilder

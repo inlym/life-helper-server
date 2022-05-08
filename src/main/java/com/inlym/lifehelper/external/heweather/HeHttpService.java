@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.external.heweather;
 
+import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.external.heweather.pojo.*;
 import lombok.AllArgsConstructor;
@@ -63,7 +64,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:city")
+    @Cacheable(RedisCacheCollector.HE_SEARCH_CITIES)
     public HeCityLookupResponse searchCities(String location) {
         String url = UriComponentsBuilder
             .fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
@@ -92,7 +93,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:now")
+    @Cacheable(RedisCacheCollector.HE_WEATHER_NOW)
     public HeWeatherNowResponse getWeatherNow(String location) {
         String path = "/weather/now";
 
@@ -125,7 +126,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:daily")
+    @Cacheable(RedisCacheCollector.HE_WEATHER_DAILY)
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
         Config config = (HeConstant.WeatherDailyDays.DAYS_15.equals(days) || HeConstant.WeatherDailyDays.DAYS_10.equals(days)) ? proConfig : devConfig;
         String path = "/weather/" + days;
@@ -159,7 +160,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:hourly")
+    @Cacheable(RedisCacheCollector.HE_WEATHER_HOURLY)
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
         Config config = HeConstant.WeatherHourlyHours.HOURS_24.equals(hours) ? devConfig : proConfig;
         String path = "/weather/" + hours;
@@ -192,7 +193,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:minutely")
+    @Cacheable(RedisCacheCollector.HE_MINUTELY)
     public HeMinutelyResponse getMinutely(String location) {
         String path = "/minutely/5m";
 
@@ -225,7 +226,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:indices")
+    @Cacheable(RedisCacheCollector.HE_INDICES_DAILY)
     public HeIndicesResponse getIndicesDaily(String location, String days) {
         Config config = "1d".equals(days) ? devConfig : proConfig;
         String path = "/indices/" + days;
@@ -259,7 +260,7 @@ public class HeHttpService {
      * @since 1.2.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:warning-now")
+    @Cacheable(RedisCacheCollector.HE_WARNING_NOW)
     public HeWarningNowResponse getWarningNow(String location) {
         String path = "/warning/now";
 
@@ -291,7 +292,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:air-now")
+    @Cacheable(RedisCacheCollector.HE_AIR_NOW)
     public HeAirNowResponse getAirNow(String location) {
         String path = "/air/now";
 
@@ -323,7 +324,7 @@ public class HeHttpService {
      * @since 1.0.0
      */
     @SneakyThrows
-    @Cacheable("hefeng:air-daily")
+    @Cacheable(RedisCacheCollector.HE_AIR_DAILY)
     public HeAirDailyResponse getAirDaily(String location) {
         String path = "/air/5d";
 
