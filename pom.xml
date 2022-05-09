@@ -58,6 +58,12 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!-- Redis 连接池依赖 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
         <!-- Spring Security 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -131,7 +137,7 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.14.0</version>
+            <version>3.14.1</version>
         </dependency>
 
         <!-- 阿里云表格存储（TableStore）SDK -->
