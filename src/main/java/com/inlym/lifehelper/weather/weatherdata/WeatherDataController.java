@@ -46,7 +46,7 @@ public class WeatherDataController {
         IpLocation info;
 
         try {
-            info = locationService.locateIpPlus(ip);
+            info = locationService.locateIpUpToCity(ip);
         } catch (Exception e) {
             // IP 定位可能出错，此处保证出错时能够返回正常的数据
             // 目前设定出错时返回北京的数据
@@ -58,13 +58,15 @@ public class WeatherDataController {
             info.setProvince("");
         }
 
+        // 备注（2022.05.09）：
+        // 下一版本去掉 `location` 字段
         String name = info.getDistrict();
         String region = info.getProvince() + info.getCity();
-
         Map<String, String> location = Map.of("name", name, "region", region);
 
         Map<String, Object> mixedData = weatherMixedDataService.getMixedWeatherData(info.getLongitude(), info.getLatitude());
         mixedData.put("location", location);
+        mixedData.put("ipLocationName", info.getCity());
 
         return mixedData;
     }

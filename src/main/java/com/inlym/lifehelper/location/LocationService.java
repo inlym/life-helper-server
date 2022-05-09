@@ -20,6 +20,8 @@ import org.springframework.util.StringUtils;
  **/
 @Service
 public class LocationService {
+    private static final String CHINA_NATION_NAME = "中国";
+
     private final TencentMapService tencentMapService;
 
     public LocationService(TencentMapService tencentMapService) {
@@ -45,6 +47,59 @@ public class LocationService {
     }
 
     /**
+     * 获取省级行政区的简称
+     *
+     * @param province 省级行政区全称
+     *
+     * @since 1.2.2
+     */
+    private static String getProvinceShortName(String province) {
+        String provinceSuffix = "省";
+        String citySuffix = "市";
+        String sarSuffix = "特别行政区";
+
+        String nmg = "内蒙古自治区";
+        String gx = "广西壮族自治区";
+        String xz = "西藏自治区";
+        String nx = "宁夏回族自治区";
+        String xj = "新疆维吾尔自治区";
+
+        if (province.contains(provinceSuffix)) {
+            return province.replaceAll(provinceSuffix, "");
+        }
+
+        if (province.contains(citySuffix)) {
+            return province.replaceAll(citySuffix, "");
+        }
+
+        if (province.contains(sarSuffix)) {
+            return province.replaceAll(sarSuffix, "");
+        }
+
+        if (nmg.equals(province)) {
+            return "内蒙古";
+        }
+
+        if (gx.equals(province)) {
+            return "广西";
+        }
+
+        if (xz.equals(province)) {
+            return "西藏";
+        }
+
+        if (nx.equals(province)) {
+            return "宁夏";
+        }
+
+        if (xj.equals(province)) {
+            return "新疆";
+        }
+
+        return "";
+    }
+
+    /**
      * IP 定位
      *
      * @param ip IP 地址
@@ -63,75 +118,6 @@ public class LocationService {
             .getAddressInfo(), info);
 
         return info;
-    }
-
-    /**
-     * 加强版的 IP 定位
-     *
-     * <h2>说明
-     * <p>普通的 IP 定位，实测获取的“市”和“县”均可能为空，利用从普通的 IP 定位获取的经纬度，使用逆地址解析再反查一遍，能够获取不为空的省市区
-     * 信息（文档说“区县”值可能为空，但实测目前未遇到该情况）。
-     *
-     * @param ip IP 地址
-     *
-     * @since 1.0.0
-     */
-    public IpLocation locateIpPlus(String ip) {
-        String chinaNationName = "中国";
-
-        IpLocation location = locateIp(ip);
-        if (chinaNationName.equals(location.getNation()) && location
-            .getDistrict()
-            .length() == 0) {
-            AddressComponent component = reverseGeocoding(location.getLongitude(), location.getLatitude());
-            location.setProvince(component.getProvince());
-            location.setCity(component.getCity());
-            location.setDistrict(component.getDistrict());
-        }
-
-        return location;
-    }
-
-    /**
-     * 获取 IP 地址粗略的地理位置描述
-     *
-     * <h2>返回格式示例
-     *
-     * <li>浙江杭州
-     * <li>上海
-     * <li>美国
-     *
-     * @param ip IP 地址
-     *
-     * @since 1.1.0
-     */
-    public String getRoughIpRegion(String ip) {
-        String result;
-        IpLocation location = locateIpPlus(ip);
-        if (StringUtils.hasLength(location.getCity())) {
-            // 省和市同名，表明是直辖市
-            if (location
-                .getCity()
-                .equals(location.getProvince())) {
-                result = location
-                    .getCity()
-                    .replaceAll("市", "");
-            } else {
-                result = location
-                    .getProvince()
-                    .replaceAll("省", "") + location
-                    .getCity()
-                    .replaceAll("市", "");
-            }
-        } else if (StringUtils.hasLength(location.getProvince())) {
-            result = location
-                .getProvince()
-                .replaceAll("省", "");
-        } else {
-            result = location.getNation();
-        }
-
-        return result;
     }
 
     /**
@@ -163,5 +149,68 @@ public class LocationService {
             .district(ac.getDistrict())
             .street(ac.getStreet())
             .build();
+    }
+
+    /**
+     * IP 定位精确到市级（仅限于国内城市）
+     *
+     * @param ip IP 地址
+     *
+     * @since 1.2.2
+     */
+    public IpLocation locateIpUpToCity(String ip) {
+        IpLocation location = locateIp(ip);
+        if (CHINA_NATION_NAME.equals(location.getNation()) && !StringUtils.hasText(location.getCity())) {
+            AddressComponent component = reverseGeocoding(location.getLongitude(), location.getLatitude());
+            location.setProvince(component.getProvince());
+            location.setCity(component.getCity());
+            location.setDistrict(component.getDistrict());
+        }
+
+        return location;
+    }
+
+    /**
+     * 获取 IP 地址粗略的地理位置描述（最多到市级）
+     *
+     * <h2>返回格式示例
+     *
+     * <li>浙江杭州
+     * <li>上海
+     * <li>美国
+     *
+     * @param ip IP 地址
+     *
+     * @since 1.1.0
+     */
+    public String getRoughIpRegion(String ip) {
+        IpLocation location = locateIpUpToCity(ip);
+
+        // 非国内地区，直接返回国家名称
+        if (!CHINA_NATION_NAME.equals(location.getNation())) {
+            return location.getNation();
+        }
+
+        // 省和市同名，表明是直辖市
+        if (location
+            .getProvince()
+            .equals(location.getCity())) {
+            return location
+                .getProvince()
+                .replaceAll("市", "");
+        }
+
+        // 其他情况，返回“省 + 市”
+        String province = getProvinceShortName(location.getProvince());
+        String city = location
+            .getCity()
+            .replaceAll("市", "");
+
+        // 省和市去掉后缀后同名，则返回完整的省市名称，例如“吉林省吉林市”
+        if (province.equals(city)) {
+            return location.getProvince() + location.getCity();
+        }
+
+        return province + city;
     }
 }

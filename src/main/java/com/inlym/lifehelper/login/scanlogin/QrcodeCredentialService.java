@@ -2,7 +2,6 @@ package com.inlym.lifehelper.login.scanlogin;
 
 import com.inlym.lifehelper.external.oss.OssService;
 import com.inlym.lifehelper.location.LocationService;
-import com.inlym.lifehelper.location.pojo.IpLocation;
 import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredential;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -79,8 +78,7 @@ public class QrcodeCredentialService {
         qc.setUrl(ossService.concatUrl(qrcodeTicketService.getPathname(ticket)));
         qc.setIp(ip);
 
-        IpLocation ipLocation = locationService.locateIpPlus(ip);
-        String region = ipLocation.getProvince() + ipLocation.getCity();
+        String region = locationService.getRoughIpRegion(ip);
 
         qc.setRegion(region);
 
