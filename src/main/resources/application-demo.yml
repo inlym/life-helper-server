@@ -29,6 +29,9 @@ logging:
 
 # 项目配置
 lifehelper:
+    # 网页端 URL 地址
+    web-url: https://www.lifehelper.com.cn
+
     # 权限相关
     auth:
         # JSON Web Token
