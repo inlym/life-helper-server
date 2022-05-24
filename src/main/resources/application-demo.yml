@@ -13,6 +13,14 @@ spring:
         password: xxxxxxxxxxxx
         connect-timeout: 1000
         timeout: 20000
+        lettuce:
+            pool:
+                # 连接池最大的活动连接数
+                max-active: 20
+                # 连接池最大空闲连接数
+                max-idle: 20
+                # 连接池最小空闲连接数
+                min-idle: 2
 
     # MySQL 数据库配置
     datasource:
