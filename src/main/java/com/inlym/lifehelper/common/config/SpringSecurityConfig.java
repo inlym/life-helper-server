@@ -1,23 +1,29 @@
 package com.inlym.lifehelper.common.config;
 
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Spring Security 配置
  *
+ * <h2>说明
+ * <p>目前配置方式为 2.7.0 版本后的优选配置方式。
+ *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022-01-22
- * @since 1.0.0
- */
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+ * @date 2022/6/2
+ * @since 1.2.3
+ **/
+@Configuration
+@RequiredArgsConstructor
+public class SpringSecurityConfig {
+    private final HttpSecurity http;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain() throws Exception {
         // 备注：实际上可以使用 {@code .and()} 来连接各个语句，但笔者觉得使用 {@code http} 看起来更优雅。
 
         http
@@ -41,5 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        return http.build();
     }
 }
