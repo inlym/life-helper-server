@@ -2,6 +2,7 @@ package com.inlym.lifehelper.user;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.common.constant.Endpoint;
 import com.inlym.lifehelper.user.entity.User;
@@ -119,7 +120,7 @@ public class UserService {
             .builder()
             .id(userId)
             .nickName(dto.getNickName())
-            .avatar(ossService.dump(OssService.AVATAR_DIR, avatarUrl))
+            .avatar(ossService.dump(OssDir.AVATAR, avatarUrl))
             .build();
 
         userMapper.update(user);

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * OSS 配置信息
+ * 阿里云 OSS 配置信息
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-12

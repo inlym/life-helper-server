@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.login.scanlogin;
 
+import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.external.weixin.WeixinService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class QrcodeTicketService {
      * @since 1.1.0
      */
     public String getPathname(String ticket) {
-        return OssService.WXACODE_DIR + "/" + ticket + ".png";
+        return OssDir.WXACODE + "/" + ticket + ".png";
     }
 
     /**

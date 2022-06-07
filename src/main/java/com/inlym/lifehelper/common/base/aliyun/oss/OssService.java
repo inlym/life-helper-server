@@ -32,12 +32,6 @@ import java.util.*;
  */
 @Service
 public class OssService {
-    /** 存储微信小程序码的目录 */
-    public static final String WXACODE_DIR = "wxacode";
-
-    /** 存在用户头像的目录 */
-    public static final String AVATAR_DIR = "avatar";
-
     private final OSS ossClient;
 
     /** 存储空间名称 */
@@ -51,6 +45,22 @@ public class OssService {
         this.ossClient = ossClient;
         this.ossProperties = ossProperties;
         this.bucketName = ossProperties.getBucketName();
+    }
+
+    /**
+     * 获取随机文件名
+     *
+     * <h2>说明
+     * <p>目前为去掉短横线的 UUID。
+     *
+     * @since 1.2.3
+     */
+    public static String getRandomFilename() {
+        return UUID
+            .randomUUID()
+            .toString()
+            .toLowerCase()
+            .replaceAll("-", "");
     }
 
     /**
