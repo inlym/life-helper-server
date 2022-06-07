@@ -87,10 +87,7 @@ public class OssService {
      */
     public String dump(String dirname, String url) {
         // 文件路径
-        String pathname = dirname + "/" + UUID
-            .randomUUID()
-            .toString()
-            .replaceAll("-", "");
+        String pathname = dirname + "/" + getRandomFilename();
 
         ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
 
