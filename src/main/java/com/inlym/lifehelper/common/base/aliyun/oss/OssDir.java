@@ -11,6 +11,9 @@ package com.inlym.lifehelper.common.base.aliyun.oss;
  * @since 1.2.3
  **/
 public class OssDir {
+    /** 临时使用的目录，一般仅用于开发阶段调试 */
+    public static final String TEMP = "temp";
+
     /** 存储微信小程序码 */
     public static final String WXACODE = "wxacode";
 

@@ -6,6 +6,7 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
+import com.inlym.lifehelper.common.base.aliyun.oss.pojo.GeneratePostCredentialOptions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -34,9 +35,6 @@ import java.util.*;
 public class OssService {
     private final OSS ossClient;
 
-    /** 存储空间名称 */
-    private final String bucketName;
-
     private final OssProperties ossProperties;
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -44,7 +42,6 @@ public class OssService {
     public OssService(OssProperties ossProperties, OSS ossClient) {
         this.ossClient = ossClient;
         this.ossProperties = ossProperties;
-        this.bucketName = ossProperties.getBucketName();
     }
 
     /**
@@ -72,7 +69,7 @@ public class OssService {
      * @since 1.0.0
      */
     public void upload(String pathname, byte[] content) {
-        ossClient.putObject(bucketName, pathname, new ByteArrayInputStream(content));
+        ossClient.putObject(ossProperties.getBucketName(), pathname, new ByteArrayInputStream(content));
     }
 
     /**
@@ -91,7 +88,7 @@ public class OssService {
 
         ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
 
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, pathname, new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
+        PutObjectRequest putObjectRequest = new PutObjectRequest(ossProperties.getBucketName(), pathname, new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setHeader("Content-Type", Objects
             .requireNonNull(response
@@ -121,47 +118,34 @@ public class OssService {
     }
 
     /**
-     * 生成客户端直传 OSS 凭证
+     * 生成用于客户端直传文件至 OSS 的临时鉴权凭证信息
      *
      * <h2>主要用途
+     * <p>客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器。
      *
-     * <p>客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器
-     *
-     * @param dirname 目录名称
-     *
-     * @since 1.0.0
+     * @see <a href="https://help.aliyun.com/document_detail/91868.html">服务端签名直传</a>
+     * @since 1.2.3
      */
-    public Map<String, String> createClientToken(String dirname) {
-        // 凭证有效时长（分钟）：120 分钟
-        long freshMinutes = 120;
-
-        // 上传文件的最大体积：50MB
-        long maxSize = 50 * 1024 * 1024;
-
-        // 文件名：去掉短横线的 UUID
-        String filename = UUID
-            .randomUUID()
-            .toString()
-            .replaceAll("-", "");
-
-        // 文件完整路径
-        String pathname = dirname + "/" + filename;
+    public Map<String, String> generatePostCredential(GeneratePostCredentialOptions options) {
+        // 文件在 OSS 中的完整路径
+        String pathname = options.getDirname() + "/" + getRandomFilename();
 
         // 凭证有效期结束时间（时间戳）
-        long expireEndTime = System.currentTimeMillis() + freshMinutes * 60 * 1000;
+        long expireEndTime = System.currentTimeMillis() + options
+            .getTtl()
+            .toMillis();
         Date expiration = new Date(expireEndTime);
 
         PolicyConditions policyConditions = new PolicyConditions();
         // 指定文件体积（范围）
-        policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxSize);
+        policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, options.getMaxSize());
         // 指定文件路径（完全匹配）
         policyConditions.addConditionItem(MatchMode.Exact, PolicyConditions.COND_KEY, pathname);
         // 指定存储空间（完全匹配）
-        policyConditions.addConditionItem(MatchMode.Exact, "bucket", bucketName);
+        policyConditions.addConditionItem(MatchMode.Exact, "bucket", ossProperties.getBucketName());
 
         String postPolicy = ossClient.generatePostPolicy(expiration, policyConditions);
         byte[] binaryData = postPolicy.getBytes(StandardCharsets.UTF_8);
-
         String policy = BinaryUtil.toBase64String(binaryData);
         String signature = ossClient.calculatePostSignature(postPolicy);
 
