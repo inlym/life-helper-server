@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.external.oss;
+package com.inlym.lifehelper.common.base.aliyun.oss;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

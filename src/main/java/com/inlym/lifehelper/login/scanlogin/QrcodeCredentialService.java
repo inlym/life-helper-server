@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.login.scanlogin;
 
-import com.inlym.lifehelper.external.oss.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredential;
 import lombok.extern.slf4j.Slf4j;

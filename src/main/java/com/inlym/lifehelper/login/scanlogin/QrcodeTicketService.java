@@ -1,7 +1,8 @@
 package com.inlym.lifehelper.login.scanlogin;
 
-import com.inlym.lifehelper.external.oss.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.external.weixin.WeixinService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,7 @@ import java.util.UUID;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class QrcodeTicketService {
     /** 凭证编码列表的 Redis 键名 */
     public static final String TICKET_LIST_KEY = "scan_login:ticket_list";
@@ -31,12 +33,6 @@ public class QrcodeTicketService {
     private final StringRedisTemplate stringRedisTemplate;
 
     private final OssService ossService;
-
-    public QrcodeTicketService(WeixinService weixinService, StringRedisTemplate stringRedisTemplate, OssService ossService) {
-        this.weixinService = weixinService;
-        this.stringRedisTemplate = stringRedisTemplate;
-        this.ossService = ossService;
-    }
 
     /**
      * 根据凭证编号获取其在 OSS 中的存储路径

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.external.oss;
+package com.inlym.lifehelper.common.base.aliyun.oss;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.common.utils.BinaryUtil;

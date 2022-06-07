@@ -2,8 +2,8 @@ package com.inlym.lifehelper.user;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.common.constant.Endpoint;
-import com.inlym.lifehelper.external.oss.OssService;
 import com.inlym.lifehelper.user.entity.User;
 import com.inlym.lifehelper.user.mapper.UserMapper;
 import com.inlym.lifehelper.user.pojo.UserInfoBO;
