@@ -80,7 +80,9 @@ aliyun:
 
     # 阿里云表格存储配置
     tablestore:
-        access-key-id: xxxxxxxxxxxx
-        access-key-secret: xxxxxxxxxxxx
-        endpoint: xxxxxxxxxxxx
-        instance-name: xxxxxxxxxxxx
+        # 宽表模型
+        wide-column:
+            access-key-id: xxxxxxxxxxxx
+            access-key-secret: xxxxxxxxxxxx
+            endpoint: xxxxxxxxxxxx
+            instance-name: xxxxxxxxxxxx
