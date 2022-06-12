@@ -13,7 +13,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * OSS 服务类
@@ -45,22 +48,6 @@ public class OssService {
     }
 
     /**
-     * 获取随机文件名
-     *
-     * <h2>说明
-     * <p>目前为去掉短横线的 UUID。
-     *
-     * @since 1.2.3
-     */
-    public static String getRandomFilename() {
-        return UUID
-            .randomUUID()
-            .toString()
-            .toLowerCase()
-            .replaceAll("-", "");
-    }
-
-    /**
      * 上传文件
      *
      * @param pathname 文件路径，注意不要以 `/` 开头
@@ -84,7 +71,7 @@ public class OssService {
      */
     public String dump(String dirname, String url) {
         // 文件路径
-        String pathname = dirname + "/" + getRandomFilename();
+        String pathname = dirname + "/" + OssUtils.getRandomFilename();
 
         ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
 
@@ -128,7 +115,7 @@ public class OssService {
      */
     public Map<String, String> generatePostCredential(GeneratePostCredentialOptions options) {
         // 文件在 OSS 中的完整路径
-        String pathname = options.getDirname() + "/" + getRandomFilename();
+        String pathname = options.getDirname() + "/" + OssUtils.getRandomFilename();
 
         // 凭证有效期结束时间（时间戳）
         long expireEndTime = System.currentTimeMillis() + options
