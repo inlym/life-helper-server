@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.photoalbum.album.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ public class Album {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID */
+    @JsonIgnore
     private Integer userId;
 
     /** 相册 ID */
