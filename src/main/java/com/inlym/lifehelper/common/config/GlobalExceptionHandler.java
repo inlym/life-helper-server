@@ -7,12 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.util.List;
 
 /**
  * 全局异常处理器
@@ -47,6 +52,30 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 处理 {@code @Valid} 抛出的异常
+     *
+     * @since 1.3.0
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ExceptionResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        BindingResult exceptions = e.getBindingResult();
+
+        // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息
+        if (exceptions.hasErrors()) {
+            List<ObjectError> errors = exceptions.getAllErrors();
+            if (!errors.isEmpty()) {
+                // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
+                FieldError fieldError = (FieldError) errors.get(0);
+
+                return new ExceptionResponse(40002, fieldError.getDefaultMessage());
+            }
+        }
+        
+        return new ExceptionResponse(40002, "请求数据错误");
+    }
+
+    /**
      * 数据校验不通过异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -69,7 +98,7 @@ public class GlobalExceptionHandler {
      * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AccessDeniedException.class )
+    @ExceptionHandler(AccessDeniedException.class)
     public ExceptionResponse handleAccessDeniedException(AccessDeniedException e) {
         return new ExceptionResponse(40010, "未登录或登录信息错误");
     }
@@ -78,7 +107,7 @@ public class GlobalExceptionHandler {
      * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler( UnauthorizedAccessException.class)
+    @ExceptionHandler(UnauthorizedAccessException.class)
     public ExceptionResponse handleUnauthorizedAccessException(UnauthorizedAccessException e) {
         return new ExceptionResponse(40010, "未登录或登录信息错误");
     }
