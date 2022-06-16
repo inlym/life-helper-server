@@ -1,7 +1,10 @@
-package com.inlym.lifehelper.photoalbum.entity;
+package com.inlym.lifehelper.photoalbum.album.entity;
 
 /**
  * 相册实体在表格存储中注册的列名
+ *
+ * <h2>说明
+ * <p>与 {@link Album} 中的属性名保持一致。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/6/16

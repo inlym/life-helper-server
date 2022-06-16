@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.photoalbum;
+package com.inlym.lifehelper.photoalbum.album;
 
 import com.alicloud.openservices.tablestore.model.*;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreUtils;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnClient;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnTables;
-import com.inlym.lifehelper.photoalbum.entity.Album;
-import com.inlym.lifehelper.photoalbum.entity.AlbumColumns;
+import com.inlym.lifehelper.photoalbum.album.entity.Album;
+import com.inlym.lifehelper.photoalbum.album.entity.AlbumColumns;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

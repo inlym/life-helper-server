@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.photoalbum.entity;
+package com.inlym.lifehelper.photoalbum.album.entity;
 
 import lombok.Data;
 
@@ -11,11 +11,15 @@ import lombok.Data;
  **/
 @Data
 public class Album {
-    /** 相册 ID */
-    private String id;
+    // ================================= 主键列 =================================
 
     /** 所属用户 ID */
     private Integer userId;
+
+    /** 相册 ID */
+    private String albumId;
+
+    // ================================= 属性列 =================================
 
     /** 相册名称 */
     private String name;
