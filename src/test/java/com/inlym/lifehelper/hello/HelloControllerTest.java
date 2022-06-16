@@ -23,7 +23,7 @@ public class HelloControllerTest {
 
     @Test
     public void testPing() {
-        String value = testRestTemplate.getForObject("/", String.class);
+        String value = testRestTemplate.getForObject("/ping", String.class);
         Assertions.assertEquals("pong", value);
     }
 }
