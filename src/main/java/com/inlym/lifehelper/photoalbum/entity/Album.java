@@ -22,4 +22,16 @@ public class Album {
 
     /** 相册描述 */
     private String description;
+
+    /** 是否被删除 */
+    private Boolean deleted;
+
+    /** 创建时间 */
+    private Long createTime;
+
+    /** 更新时间 */
+    private Long updateTime;
+
+    /** 删除时间 */
+    private Long deleteTime;
 }
