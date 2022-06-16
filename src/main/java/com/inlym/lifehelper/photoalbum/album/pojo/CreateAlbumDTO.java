@@ -2,6 +2,9 @@ package com.inlym.lifehelper.photoalbum.album.pojo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * 创建相册请求数据
  *
@@ -15,8 +18,10 @@ import lombok.Data;
 @Data
 public class CreateAlbumDTO {
     /** 相册名称 */
+    @NotBlank
     private String name;
 
     /** 相册描述 */
+    @NotNull
     private String description;
 }

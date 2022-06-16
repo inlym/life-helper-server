@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * 相册模块控制器
  *
@@ -31,7 +33,7 @@ public class AlbumController {
      */
     @PostMapping("/album")
     @UserPermission
-    public Album create(@UserId int userId, @RequestBody CreateAlbumDTO dto) {
+    public Album create(@UserId int userId, @Valid @RequestBody CreateAlbumDTO dto) {
         Album album = new Album();
         album.setName(dto.getName());
         album.setDescription(dto.getDescription());
