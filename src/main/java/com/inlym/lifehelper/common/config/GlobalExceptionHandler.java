@@ -71,12 +71,14 @@ public class GlobalExceptionHandler {
                 return new ExceptionResponse(40002, fieldError.getDefaultMessage());
             }
         }
-        
+
         return new ExceptionResponse(40002, "请求数据错误");
     }
 
     /**
-     * 数据校验不通过异常
+     * 处理 {@code @Validated} 抛出的异常
+     *
+     * @since 1.3.0
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
@@ -91,7 +93,7 @@ public class GlobalExceptionHandler {
 
         String message = cv.getMessage();
 
-        return new ExceptionResponse(40002, property + " " + message);
+        return new ExceptionResponse(40002, message);
     }
 
     /**
