@@ -1,13 +1,13 @@
 package com.inlym.lifehelper.external.weixin;
 
 import com.inlym.lifehelper.external.weixin.pojo.WeixinGetAccessTokenResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 微信服务端接口调用凭据服务
@@ -19,8 +19,9 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/4/23
  * @since 1.1.2
  **/
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class WeixinTokenService {
     /** 在 Redis 中存储微信服务端接口调用凭证的键名 */
     public static final String WEIXIN_ACCESS_TOKEN_KEY = "weixin:token";
@@ -28,11 +29,6 @@ public class WeixinTokenService {
     private final WeixinHttpService weixinHttpService;
 
     private final StringRedisTemplate stringRedisTemplate;
-
-    public WeixinTokenService(WeixinHttpService weixinHttpService, StringRedisTemplate stringRedisTemplate) {
-        this.weixinHttpService = weixinHttpService;
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
 
     /**
      * 从 Redis 中读取凭证
@@ -98,18 +94,13 @@ public class WeixinTokenService {
 
     /**
      * 执行更新凭证定时任务
+     *
+     * <h2>循环周期
+     * <p>每半小时运行一次
      */
-    @Scheduled(fixedDelay = 10, timeUnit = TimeUnit.MINUTES)
-    public void execRefreshTokenTimedTask() {
-        Long ttl = stringRedisTemplate.getExpire(WEIXIN_ACCESS_TOKEN_KEY, TimeUnit.SECONDS);
-
-        assert ttl != null;
-        long minTtl = 1000;
-
-        if (ttl > minTtl && checkTokenValid()) {
-            log.debug("[定时任务] 微信服务端接口调用凭证有效，不需要更新");
-        } else {
-            refreshTokenInRedis();
-        }
+    @Scheduled(cron = "0 0/30 * * * *")
+    public void execRefreshTokenScheduledTask() {
+        log.debug("[定时任务] 更新微信服务端接口调用凭证");
+        refreshTokenInRedis();
     }
 }
