@@ -3,6 +3,7 @@ package com.inlym.lifehelper.external.weixin;
 import com.inlym.lifehelper.external.weixin.pojo.WeixinGetAccessTokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,7 @@ public class WeixinTokenService {
      * <p>每半小时运行一次
      */
     @Scheduled(cron = "0 0/30 * * * *")
+    @SchedulerLock(name = "weixin_token")
     public void execRefreshTokenScheduledTask() {
         log.debug("[定时任务] 更新微信服务端接口调用凭证");
         refreshTokenInRedis();

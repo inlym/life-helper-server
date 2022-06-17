@@ -122,7 +122,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.9</version>
+            <version>1.2.11</version>
         </dependency>
 
         <!-- Lombok -->
@@ -157,7 +157,21 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.8.0</version>
+            <version>5.8.3</version>
+        </dependency>
+
+        <!-- ShedLock -->
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>4.37.0</version>
+        </dependency>
+
+        <!-- ShedLock for Redis -->
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-redis-spring</artifactId>
+            <version>4.37.0</version>
         </dependency>
 
     </dependencies>
@@ -222,5 +236,12 @@
             </resource>
         </resources>
     </build>
+    <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
 
 </project>
