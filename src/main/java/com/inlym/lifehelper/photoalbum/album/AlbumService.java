@@ -9,6 +9,8 @@ import com.inlym.lifehelper.photoalbum.album.entity.AlbumColumns;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 /**
  * 相册服务
  *
@@ -41,5 +43,51 @@ public class AlbumService {
         wideColumnClient.putRow(new PutRowRequest(rowPutChange));
 
         return id;
+    }
+
+    /**
+     * 获取用户的所有相册
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.3.0
+     */
+    public void list(int userId) {
+        String uid = TableStoreUtils.getNonClusteredId(userId);
+
+        RangeRowQueryCriteria criteria = new RangeRowQueryCriteria(WideColumnTables.ALBUM);
+
+        PrimaryKeyBuilder startPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+        startPrimaryKeyBuilder.addPrimaryKeyColumn(AlbumColumns.USER_ID, PrimaryKeyValue.fromString(uid));
+        startPrimaryKeyBuilder.addPrimaryKeyColumn(AlbumColumns.ALBUM_ID, PrimaryKeyValue.INF_MIN);
+        criteria.setInclusiveStartPrimaryKey(startPrimaryKeyBuilder.build());
+
+        PrimaryKeyBuilder endPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+        endPrimaryKeyBuilder.addPrimaryKeyColumn(AlbumColumns.USER_ID, PrimaryKeyValue.fromString(uid));
+        endPrimaryKeyBuilder.addPrimaryKeyColumn(AlbumColumns.ALBUM_ID, PrimaryKeyValue.INF_MAX);
+        criteria.setExclusiveEndPrimaryKey(endPrimaryKeyBuilder.build());
+
+        criteria.setMaxVersions(1);
+
+        while (true) {
+            GetRangeResponse getRangeResponse = wideColumnClient.getRange(new GetRangeRequest(criteria));
+            for (Row row : getRangeResponse.getRows()) {
+                for (Column column : row.getColumns()) {
+                    System.out.println("-----------------------------------");
+                    System.out.println(column.getDataSize());
+                    System.out.println(column.getName());
+                    System.out.println(Arrays.toString(column.getNameRawData()));
+                    System.out.println(column.getTimestamp());
+                    System.out.println(column.getValue());
+                }
+            }
+
+            //如果nextStartPrimaryKey不为null，则继续读取。
+            if (getRangeResponse.getNextStartPrimaryKey() != null) {
+                criteria.setInclusiveStartPrimaryKey(getRangeResponse.getNextStartPrimaryKey());
+            } else {
+                break;
+            }
+        }
     }
 }

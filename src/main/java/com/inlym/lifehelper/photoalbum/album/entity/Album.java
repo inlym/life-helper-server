@@ -14,7 +14,7 @@ import lombok.Data;
 public class Album {
     // ================================= 主键列 =================================
 
-    /** 所属用户 ID */
+    /** 所属用户 ID - 分区键 */
     @JsonIgnore
     private Integer userId;
 
