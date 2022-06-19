@@ -13,7 +13,7 @@ package com.inlym.lifehelper.photoalbum.album.entity;
 public abstract class AlbumColumns {
     // ================================= 主键列 =================================
 
-    public static final String USER_ID = "user_id";
+    public static final String HASHED_USER_ID = "uid";
 
     public static final String ALBUM_ID = "album_id";
 
@@ -22,4 +22,12 @@ public abstract class AlbumColumns {
     public static final String NAME = "name";
 
     public static final String DESCRIPTION = "description";
+
+    public static final String DELETED = "deleted";
+
+    public static final String CREATE_TIME = "create_time";
+
+    public static final String UPDATE_TIME = "update_time";
+
+    public static final String DELETE_TIME = "delete_time";
 }

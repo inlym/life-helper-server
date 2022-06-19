@@ -32,7 +32,7 @@ public class TableStoreUtilsTests {
     @Test
     public void getNonClusteredIdTest() {
         int id = (int) Math.floor(Math.random() * 1000000);
-        String result = TableStoreUtils.getNonClusteredId(id);
+        String result = TableStoreUtils.getHashedId(id);
         String[] list = result.split("_");
 
         // 第1部分为8位英文字母和数字

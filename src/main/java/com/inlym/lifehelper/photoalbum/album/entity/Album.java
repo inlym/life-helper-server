@@ -16,7 +16,7 @@ public class Album {
 
     /** 所属用户 ID - 分区键 */
     @JsonIgnore
-    private Integer userId;
+    private String hashedUserId;
 
     /** 相册 ID */
     private String albumId;
