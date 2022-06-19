@@ -2,14 +2,17 @@ package com.inlym.lifehelper.photoalbum.album;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreUtils;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.pojo.CreateAlbumDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * 相册模块控制器
@@ -37,11 +40,17 @@ public class AlbumController {
         Album album = new Album();
         album.setName(dto.getName());
         album.setDescription(dto.getDescription());
-        album.setUserId(userId);
+        album.setHashedUserId(TableStoreUtils.getHashedId(userId));
 
         String albumId = albumService.create(album);
         album.setAlbumId(albumId);
 
         return album;
+    }
+
+    @GetMapping("/albums")
+    @UserPermission
+    public Object list(@UserId int userId) {
+        return Map.of("list", albumService.list(userId));
     }
 }
