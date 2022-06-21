@@ -1,7 +1,11 @@
 package com.inlym.lifehelper.common.base.aliyun.tablestore;
 
+import com.alicloud.openservices.tablestore.model.*;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.TableStoreColumn;
+import lombok.SneakyThrows;
 import org.springframework.util.DigestUtils;
 
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -46,5 +50,76 @@ public abstract class TableStoreUtils {
             .substring(0, 8);
 
         return prefix + "_" + sid;
+    }
+
+    /**
+     * 根据表格存储的行建立一个实体
+     *
+     * <h2>说明
+     * <p>当前版本不考虑性能，先实现，后续再优化。
+     *
+     * @param row   表格存储的行
+     * @param clazz 对象类
+     *
+     * @since 1.3.0
+     */
+    @SneakyThrows
+    public static <T> T buildEntity(Row row, Class<T> clazz) {
+        T obj = clazz
+            .getDeclaredConstructor()
+            .newInstance();
+
+        for (PrimaryKeyColumn column : row
+            .getPrimaryKey()
+            .getPrimaryKeyColumns()) {
+            PrimaryKeyValue primaryKeyValue = column.getValue();
+            for (Field field : clazz.getDeclaredFields()) {
+                TableStoreColumn tableStoreColumn = field.getDeclaredAnnotation(TableStoreColumn.class);
+                String columnName = tableStoreColumn.value();
+                if (column
+                    .getName()
+                    .equals(columnName)) {
+                    // 将字段设为可访问
+                    field.setAccessible(true);
+
+                    // 根据实体类型对字段赋值
+                    if (field.getType() == String.class) {
+                        field.set(obj, primaryKeyValue.asString());
+                    } else if (field.getType() == Long.class) {
+                        field.set(obj, primaryKeyValue.asLong());
+                    } else {
+                        // 一般不会走到这里
+                        throw new RuntimeException("TableStore Build Entity Error!");
+                    }
+                }
+            }
+        }
+
+        for (Column column : row.getColumns()) {
+            ColumnValue columnValue = column.getValue();
+            for (Field field : clazz.getDeclaredFields()) {
+                String columnName = field
+                    .getDeclaredAnnotation(TableStoreColumn.class)
+                    .value();
+                if (column
+                    .getName()
+                    .equals(columnName)) {
+                    field.setAccessible(true);
+                    if (field.getType() == String.class) {
+                        field.set(obj, columnValue.asString());
+                    } else if (field.getType() == Long.class) {
+                        field.set(obj, columnValue.asLong());
+                    } else if (field.getType() == Boolean.class) {
+                        field.set(obj, columnValue.asBoolean());
+                    } else if (field.getType() == Double.class) {
+                        field.set(obj, columnValue.asDouble());
+                    } else {
+                        throw new RuntimeException("TableStore Build Entity Error!");
+                    }
+                }
+            }
+        }
+
+        return obj;
     }
 }
