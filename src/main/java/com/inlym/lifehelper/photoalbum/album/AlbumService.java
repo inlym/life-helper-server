@@ -54,6 +54,23 @@ public class AlbumService {
     }
 
     /**
+     * 删除一个相册（逻辑删除）
+     *
+     * @param album 相册实体
+     */
+    public void delete(Album album) {
+        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+        primaryKeyBuilder.addPrimaryKeyColumn(AlbumColumns.HASHED_USER_ID, PrimaryKeyValue.fromString(album.getHashedUserId()));
+        primaryKeyBuilder.addPrimaryKeyColumn(AlbumColumns.ALBUM_ID, PrimaryKeyValue.fromString(album.getAlbumId()));
+
+        RowUpdateChange change = new RowUpdateChange(WideColumnTables.ALBUM, primaryKeyBuilder.build());
+        change.put(AlbumColumns.DELETED, ColumnValue.fromBoolean(true));
+        change.put(AlbumColumns.DELETE_TIME, ColumnValue.fromLong(System.currentTimeMillis()));
+
+        wideColumnClient.updateRow(new UpdateRowRequest(change));
+    }
+
+    /**
      * 获取用户的所有相册
      *
      * @param userId 用户 ID

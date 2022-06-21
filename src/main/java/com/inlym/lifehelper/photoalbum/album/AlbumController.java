@@ -6,12 +6,11 @@ import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreUtils;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.pojo.CreateAlbumDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 /**
@@ -26,6 +25,7 @@ import java.util.Map;
  **/
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class AlbumController {
     private final AlbumService albumService;
 
@@ -48,6 +48,27 @@ public class AlbumController {
         return album;
     }
 
+    /**
+     * 删除相册
+     *
+     * @since 1.3.0
+     */
+    @DeleteMapping("/album/{id}")
+    @UserPermission
+    public Object delete(@UserId int userId, @NotBlank @PathVariable String id) {
+        Album album = new Album();
+        album.setHashedUserId(TableStoreUtils.getHashedId(userId));
+        album.setAlbumId(id);
+
+        albumService.delete(album);
+        return Map.of("id", id);
+    }
+
+    /**
+     * 获取相册列表
+     *
+     * @since 1.3.0
+     */
     @GetMapping("/albums")
     @UserPermission
     public Object list(@UserId int userId) {
