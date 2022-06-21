@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.photoalbum.album;
 
 import com.alicloud.openservices.tablestore.model.*;
+import com.alicloud.openservices.tablestore.model.filter.SingleColumnValueFilter;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreUtils;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnClient;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnTables;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -75,67 +77,17 @@ public class AlbumService {
 
         criteria.setMaxVersions(1);
 
+        SingleColumnValueFilter filter = new SingleColumnValueFilter(AlbumColumns.DELETED, SingleColumnValueFilter.CompareOperator.EQUAL, ColumnValue.fromBoolean(false));
+        filter.setLatestVersionsOnly(true);
+        filter.setPassIfMissing(true);
+        criteria.setFilter(filter);
+
         List<Album> albumList = new ArrayList<>();
 
         while (true) {
             GetRangeResponse getRangeResponse = wideColumnClient.getRange(new GetRangeRequest(criteria));
             for (Row row : getRangeResponse.getRows()) {
-                Album album = new Album();
-
-                for (PrimaryKeyColumn column : row
-                    .getPrimaryKey()
-                    .getPrimaryKeyColumns()) {
-                    if (AlbumColumns.HASHED_USER_ID.equals(column.getName())) {
-                        album.setHashedUserId(column
-                            .getValue()
-                            .asString());
-                    }
-
-                    if (AlbumColumns.ALBUM_ID.equals(column.getName())) {
-                        album.setAlbumId(column
-                            .getValue()
-                            .asString());
-                    }
-                }
-
-                for (Column column : row.getColumns()) {
-                    if (AlbumColumns.NAME.equals(column.getName())) {
-                        album.setName(column
-                            .getValue()
-                            .asString());
-                    }
-
-                    if (AlbumColumns.DESCRIPTION.equals(column.getName())) {
-                        album.setDescription(column
-                            .getValue()
-                            .asString());
-                    }
-
-                    if (AlbumColumns.DELETED.equals(column.getName())) {
-                        album.setDeleted(column
-                            .getValue()
-                            .asBoolean());
-                    }
-
-                    if (AlbumColumns.CREATE_TIME.equals(column.getName())) {
-                        album.setCreateTime(column
-                            .getValue()
-                            .asLong());
-                    }
-
-                    if (AlbumColumns.UPDATE_TIME.equals(column.getName())) {
-                        album.setUpdateTime(column
-                            .getValue()
-                            .asLong());
-                    }
-
-                    if (AlbumColumns.DELETE_TIME.equals(column.getName())) {
-                        album.setDeleteTime(column
-                            .getValue()
-                            .asLong());
-                    }
-                }
-
+                Album album = TableStoreUtils.buildEntity(row, Album.class);
                 albumList.add(album);
             }
 
@@ -146,6 +98,11 @@ public class AlbumService {
                 break;
             }
         }
+
+        // 按更新时间降序排列
+        albumList.sort(Comparator
+            .comparing(Album::getUpdateTime)
+            .reversed());
 
         return albumList;
     }
