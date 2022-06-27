@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.scanlogin;
+package com.inlym.lifehelper.login.scanlogin2;
 
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;

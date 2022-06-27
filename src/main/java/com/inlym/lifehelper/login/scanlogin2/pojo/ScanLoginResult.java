@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.scanlogin.pojo;
+package com.inlym.lifehelper.login.scanlogin2.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

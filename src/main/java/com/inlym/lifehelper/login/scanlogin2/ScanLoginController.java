@@ -1,10 +1,10 @@
-package com.inlym.lifehelper.login.scanlogin;
+package com.inlym.lifehelper.login.scanlogin2;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeTicketDTO;
-import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginResult;
+import com.inlym.lifehelper.login.scanlogin2.pojo.QrcodeTicketDTO;
+import com.inlym.lifehelper.login.scanlogin2.pojo.ScanLoginResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,8 +1,8 @@
-package com.inlym.lifehelper.login.scanlogin;
+package com.inlym.lifehelper.login.scanlogin2;
 
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
-import com.inlym.lifehelper.login.scanlogin.pojo.QrcodeCredential;
-import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginResult;
+import com.inlym.lifehelper.login.scanlogin2.pojo.QrcodeCredential;
+import com.inlym.lifehelper.login.scanlogin2.pojo.ScanLoginResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
