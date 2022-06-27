@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @Validated
-public class ScanLoginController {
-    private final ScanLoginService scanLoginService;
+public class ScanLoginController2 {
+    private final ScanLoginService2 scanLoginService2;
 
-    public ScanLoginController(ScanLoginService scanLoginService) {
-        this.scanLoginService = scanLoginService;
+    public ScanLoginController2(ScanLoginService2 scanLoginService2) {
+        this.scanLoginService2 = scanLoginService2;
     }
 
     /**
@@ -34,7 +34,7 @@ public class ScanLoginController {
      */
     @GetMapping("/login/qrcode")
     public ScanLoginResult getQrcodeCredentialBO(@ClientIp String ip) {
-        return scanLoginService.createCredential(ip);
+        return scanLoginService2.createCredential(ip);
     }
 
     /**
@@ -52,7 +52,7 @@ public class ScanLoginController {
     @PostMapping("/login/qrcode")
     public ScanLoginResult loginByTicket(@RequestBody @Validated QrcodeTicketDTO dto, @ClientIp String ip) {
         String ticket = dto.getTicket();
-        return scanLoginService.checkTicket(ticket, ip);
+        return scanLoginService2.checkTicket(ticket, ip);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ScanLoginController {
     @UserPermission
     public ScanLoginResult scan(@RequestBody @Validated QrcodeTicketDTO dto, @UserId int userId) {
         String ticket = dto.getTicket();
-        return scanLoginService.scan(ticket, userId);
+        return scanLoginService2.scan(ticket, userId);
     }
 
     /**
@@ -86,6 +86,6 @@ public class ScanLoginController {
     @UserPermission
     public ScanLoginResult confirm(@RequestBody @Validated QrcodeTicketDTO dto, @UserId int userId) {
         String ticket = dto.getTicket();
-        return scanLoginService.confirm(ticket, userId);
+        return scanLoginService2.confirm(ticket, userId);
     }
 }

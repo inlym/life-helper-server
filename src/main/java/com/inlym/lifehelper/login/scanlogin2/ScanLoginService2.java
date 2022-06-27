@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 @Slf4j
-public class ScanLoginService {
+public class ScanLoginService2 {
     private final QrcodeCredentialService qrcodeCredentialService;
 
     private final JwtService jwtService;
 
-    public ScanLoginService(QrcodeCredentialService qrcodeCredentialService, JwtService jwtService) {
+    public ScanLoginService2(QrcodeCredentialService qrcodeCredentialService, JwtService jwtService) {
         this.qrcodeCredentialService = qrcodeCredentialService;
         this.jwtService = jwtService;
     }
