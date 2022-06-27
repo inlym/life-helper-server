@@ -24,10 +24,15 @@ public class SpringRedisConfig {
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
+
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        // 开启 `Redis Repositories` 需要关闭 Redis 事务
+        template.setEnableTransactionSupport(false);
+
         template.afterPropertiesSet();
 
         return template;
