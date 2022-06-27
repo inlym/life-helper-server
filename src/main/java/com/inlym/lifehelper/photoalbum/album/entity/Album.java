@@ -1,10 +1,9 @@
 package com.inlym.lifehelper.photoalbum.album.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.TableStoreColumn;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.TableStorePartitionKey;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.TableStorePrimaryKey;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.TableStoreTable;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.AttributeColumn;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.PrimaryKey;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.Table;
 import lombok.Data;
 
 /**
@@ -15,44 +14,42 @@ import lombok.Data;
  * @since 1.3.0
  **/
 @Data
-@TableStoreTable("album")
+@Table("album")
 public class Album {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
     @JsonIgnore
-    @TableStorePartitionKey
-    @TableStoreColumn("uid")
+    @PrimaryKey(value = "uid", order = 1)
     private String hashedUserId;
 
     /** 相册 ID */
-    @TableStorePrimaryKey
-    @TableStoreColumn("album_id")
+    @PrimaryKey(order = 2)
     private String albumId;
 
     // ================================= 属性列 =================================
 
     /** 相册名称 */
-    @TableStoreColumn("name")
+    @AttributeColumn("name")
     private String name;
 
     /** 相册描述 */
-    @TableStoreColumn("description")
+    @AttributeColumn("description")
     private String description;
 
     /** 是否被删除 */
-    @TableStoreColumn("deleted")
+    @AttributeColumn("deleted")
     private Boolean deleted;
 
     /** 创建时间 */
-    @TableStoreColumn("create_time")
+    @AttributeColumn("create_time")
     private Long createTime;
 
     /** 更新时间 */
-    @TableStoreColumn("update_time")
+    @AttributeColumn("update_time")
     private Long updateTime;
 
     /** 删除时间 */
-    @TableStoreColumn("delete_time")
+    @AttributeColumn("delete_time")
     private Long deleteTime;
 }

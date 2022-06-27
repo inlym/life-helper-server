@@ -3,19 +3,19 @@ package com.inlym.lifehelper.common.base.aliyun.tablestore.annotation;
 import java.lang.annotation.*;
 
 /**
- * 表格存储列注解
+ * 表格存储的数据表注解
  *
  * <h2>说明
- * <p>本期内将所有列均标注，后期优化成不标注优先使用下划线变量名。
+ * <p>用于注解表格存储的数据表
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/6/21
  * @since 1.3.0
  **/
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface TableStoreColumn {
-    /** 列名 */
+public @interface Table {
+    /** 表名 */
     String value();
 }

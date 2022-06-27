@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.base.aliyun.tablestore;
 
 import com.alicloud.openservices.tablestore.model.*;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.TableStoreColumn;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.AttributeColumn;
 import lombok.SneakyThrows;
 import org.springframework.util.DigestUtils;
 
@@ -74,8 +74,8 @@ public abstract class TableStoreUtils {
             .getPrimaryKeyColumns()) {
             PrimaryKeyValue primaryKeyValue = column.getValue();
             for (Field field : clazz.getDeclaredFields()) {
-                TableStoreColumn tableStoreColumn = field.getDeclaredAnnotation(TableStoreColumn.class);
-                String columnName = tableStoreColumn.value();
+                AttributeColumn attributeColumn = field.getDeclaredAnnotation(AttributeColumn.class);
+                String columnName = attributeColumn.value();
                 if (column
                     .getName()
                     .equals(columnName)) {
@@ -99,7 +99,7 @@ public abstract class TableStoreUtils {
             ColumnValue columnValue = column.getValue();
             for (Field field : clazz.getDeclaredFields()) {
                 String columnName = field
-                    .getDeclaredAnnotation(TableStoreColumn.class)
+                    .getDeclaredAnnotation(AttributeColumn.class)
                     .value();
                 if (column
                     .getName()
