@@ -1,12 +1,10 @@
 package com.inlym.lifehelper.login.scanlogin.credential;
 
-import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-
-import java.util.UUID;
+import org.springframework.data.redis.core.index.Indexed;
 
 /**
  * 登录凭证
@@ -29,6 +27,9 @@ public class LoginCredential {
     /** 生成的小程序码存放在 OSS 的路径 */
     private String path;
 
+    /** 生成的小程序码存放在 OSS 的完整 URL 地址 */
+    private String url;
+
     /**
      * 发起者（Web 端）的 IP 地址
      *
@@ -42,10 +43,14 @@ public class LoginCredential {
     private String region;
 
     /** 凭证状态 */
+    @Indexed
     private Integer status;
 
     /** 创建时间（时间戳） */
     private Long createTime;
+
+    /** 发放时间（时间戳） */
+    private Long offerTime;
 
     /** 扫码时间（时间戳） */
     private Long scanTime;
@@ -58,26 +63,6 @@ public class LoginCredential {
 
     /** 扫码操作者用户 ID */
     private Integer userId;
-
-    /**
-     * 创建一个新的凭证并初始化
-     */
-    public static LoginCredential create() {
-        LoginCredential credential = new LoginCredential();
-
-        String id = UUID
-            .randomUUID()
-            .toString()
-            .toLowerCase()
-            .replaceAll("-", "");
-
-        credential.setId(id);
-        credential.setPath(OssDir.WXACODE + "/" + id + ".png");
-        credential.setStatus(Status.CREATED);
-        credential.setCreateTime(System.currentTimeMillis());
-
-        return credential;
-    }
 
     /** 凭证状态 */
     public static class Status {

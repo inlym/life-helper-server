@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.login.scanlogin;
 
-import com.inlym.lifehelper.login.scanlogin.credential.LoginCredential;
+import com.inlym.lifehelper.login.scanlogin.credential.LoginCredentialRepository;
+import com.inlym.lifehelper.login.scanlogin.pojo.LoginCredentialVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScanLoginController {
     private final ScanLoginService scanLoginService;
 
+    private final LoginCredentialRepository repository;
+
     @GetMapping("/login/credential")
-    public LoginCredential getCredential() {
+    public LoginCredentialVO getCredential() {
         return scanLoginService.getCredential();
     }
 }
