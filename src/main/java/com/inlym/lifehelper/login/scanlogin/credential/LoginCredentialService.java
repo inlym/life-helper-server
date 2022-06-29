@@ -1,14 +1,9 @@
 package com.inlym.lifehelper.login.scanlogin.credential;
 
-import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
-import com.inlym.lifehelper.external.weixin.WeixinService;
+import com.inlym.lifehelper.location.LocationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 /**
  * 登录凭证服务
@@ -20,19 +15,11 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class LoginCredentialService {
-    /** 批量生成数量 */
-    private static final int BATCH_CREATE_QUANTITY = 5;
-
-    /** 未发放的凭证编码列表 */
-    private static final String NOT_OFFERED_CREDENTIAL_LIST = "database:login_credential:not_offered";
-
     private final LoginCredentialRepository repository;
 
-    private final WeixinService weixinService;
+    private final LoginCredentialWxacodeService wxacodeService;
 
-    private final OssService ossService;
-
-    private final StringRedisTemplate stringRedisTemplate;
+    private final LocationService locationService;
 
     /**
      * 创建一个新的登录凭证
@@ -40,32 +27,15 @@ public class LoginCredentialService {
      * @since 1.3.0
      */
     public LoginCredential create() {
-        String id = UUID
-            .randomUUID()
-            .toString()
-            .toLowerCase()
-            .replaceAll("-", "");
+        wxacodeService.batchGenerateIfNeedAsync();
 
-        String path = OssDir.WXACODE + "/" + id + ".png";
+        String id = wxacodeService.getOne();
 
         LoginCredential lc = new LoginCredential();
         lc.setId(id);
-        lc.setPath(path);
-        lc.setUrl(ossService.concatUrl(path));
+        lc.setUrl(wxacodeService.getUrl(id));
         lc.setStatus(LoginCredential.Status.CREATED);
         lc.setCreateTime(System.currentTimeMillis());
-
-        // 小程序码宽度，单位：px
-        int width = 430;
-
-        // 小程序的“扫码登录页”路径
-        String page = "pages/scan/login";
-
-        // 从微信服务器获取小程序码
-        byte[] bytes = weixinService.generateWxacode(page, lc.getId(), width);
-
-        // 将图片上传 OSS
-        ossService.upload(path, bytes);
 
         repository.save(lc);
 
@@ -73,90 +43,82 @@ public class LoginCredentialService {
     }
 
     /**
-     * 根据需要异步生成登录凭证
+     * 获取凭证编码实体
+     *
+     * @param id 凭证编码 ID
+     *
+     * @since 1.3.0
+     */
+    public LoginCredential getEntity(String id) {
+        return repository
+            .findById(id)
+            .orElseThrow(InvalidLoginCredentialException::defaultMessage);
+    }
+
+    /**
+     * 给登录凭证设置 IP 地址和对应地区信息
+     *
+     * <h2>说明
+     * <p>从流程上来讲，这一步不应该分离出来，而应该在方法 {@link LoginCredentialService#create()} 方法中处理的，分离出来异步处理的优缺点是：
+     * <p>优点：更快地返回凭证编码，用于 Web 端展示。
+     * <p>缺点：小程序端扫码展示信息时，根据 IP 获得地区信息不一定已获取，此时展示为空。（由于中间时间差较大，因此发生的概率较小）
+     *
+     * @param id 登录凭证 ID
+     * @param ip 发起者的 IP 地址
      *
      * @since 1.3.0
      */
     @Async
-    public void batchCreateIfNeedAsync() {
-        Long size = stringRedisTemplate
-            .opsForList()
-            .size(NOT_OFFERED_CREDENTIAL_LIST);
+    public void setIpRegionAsync(String id, String ip) {
+        LoginCredential lc = getEntity(id);
 
-        assert size != null;
-        if (size < BATCH_CREATE_QUANTITY) {
-            for (int i = 0; i < BATCH_CREATE_QUANTITY; i++) {
-                LoginCredential credential = create();
-                stringRedisTemplate
-                    .opsForList()
-                    .leftPush(NOT_OFFERED_CREDENTIAL_LIST, credential.getId());
-            }
-        }
+        lc.setIp(ip);
+        lc.setRegion(locationService.getRoughIpRegion(ip));
+
+        repository.save(lc);
     }
 
     /**
-     * 发放一个登录凭证
+     * 对登录凭证进行“扫码”操作
+     *
+     * @param id 登录凭证 ID
      *
      * @since 1.3.0
      */
-    public LoginCredential offer() {
-        String id = stringRedisTemplate
-            .opsForList()
-            .rightPop(NOT_OFFERED_CREDENTIAL_LIST);
-
-        LoginCredential lc;
-
-        if (id != null) {
-            lc = repository
-                .findById(id)
-                .orElseThrow();
-        } else {
-            lc = create();
-        }
-
-        if (lc.getStatus() != LoginCredential.Status.CREATED) {
-            throw InvalidLoginCredentialException.defaultMessage();
-        }
-
-        lc.setStatus(LoginCredential.Status.OFFERED);
-        lc.setOfferTime(System.currentTimeMillis());
-        repository.save(lc);
-
-        return lc;
-    }
-
-    public LoginCredential scan(LoginCredential loginCredential) {
-        LoginCredential lc = repository
-            .findById(loginCredential.getId())
-            .orElseThrow(InvalidLoginCredentialException::defaultMessage);
-
-        if (lc.getStatus() != LoginCredential.Status.OFFERED) {
-            throw InvalidLoginCredentialException.defaultMessage();
-        }
-
+    public void scan(String id) {
+        LoginCredential lc = getEntity(id);
         lc.setStatus(LoginCredential.Status.SCANNED);
         lc.setScanTime(System.currentTimeMillis());
 
         repository.save(lc);
-
-        return lc;
     }
 
-    public LoginCredential confirm(LoginCredential loginCredential) {
-        LoginCredential lc = repository
-            .findById(loginCredential.getId())
-            .orElseThrow(InvalidLoginCredentialException::defaultMessage);
-
-        if (lc.getStatus() != LoginCredential.Status.SCANNED && lc.getStatus() != LoginCredential.Status.OFFERED) {
-            throw InvalidLoginCredentialException.defaultMessage();
-        }
-
+    /**
+     * 对登录凭证进行“确认登录”操作
+     *
+     * @param id     登录凭证 ID
+     * @param userId 操作人用户 ID
+     *
+     * @since 1.3.0
+     */
+    public void confirm(String id, int userId) {
+        LoginCredential lc = getEntity(id);
         lc.setStatus(LoginCredential.Status.CONFIRMED);
         lc.setConfirmTime(System.currentTimeMillis());
-        lc.setUserId(loginCredential.getUserId());
+        lc.setUserId(userId);
 
         repository.save(lc);
+    }
 
-        return lc;
+    /**
+     * 使用登录凭证（只能使用一次）
+     *
+     * @param id 登录凭证 ID
+     *
+     * @since 1.3.0
+     */
+    public void consume(String id) {
+        LoginCredential lc = getEntity(id);
+        repository.delete(lc);
     }
 }

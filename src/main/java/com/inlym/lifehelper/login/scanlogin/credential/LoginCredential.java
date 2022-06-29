@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
+import org.springframework.data.redis.core.TimeToLive;
+
+import java.time.Duration;
 
 /**
  * 登录凭证
@@ -20,12 +22,9 @@ import org.springframework.data.redis.core.index.Indexed;
 @NoArgsConstructor
 @RedisHash("database:login_credential")
 public class LoginCredential {
-    /** 凭证编号，一般是去掉短横线的 UUID */
+    /** 凭证编号，目前为去掉短横线的 UUID */
     @Id
     private String id;
-
-    /** 生成的小程序码存放在 OSS 的路径 */
-    private String path;
 
     /** 生成的小程序码存放在 OSS 的完整 URL 地址 */
     private String url;
@@ -43,14 +42,10 @@ public class LoginCredential {
     private String region;
 
     /** 凭证状态 */
-    @Indexed
     private Integer status;
 
     /** 创建时间（时间戳） */
     private Long createTime;
-
-    /** 发放时间（时间戳） */
-    private Long offerTime;
 
     /** 扫码时间（时间戳） */
     private Long scanTime;
@@ -64,22 +59,26 @@ public class LoginCredential {
     /** 扫码操作者用户 ID */
     private Integer userId;
 
+    @TimeToLive
+    public long getTimeToLive() {
+        return Duration
+            .ofMinutes(30)
+            .toSeconds();
+    }
+
     /** 凭证状态 */
     public static class Status {
         /** 已创建 */
         public static final int CREATED = 0;
 
-        /** 已发放：发放给 Web 端使用 */
-        public static final int OFFERED = 1;
-
         /** 已扫码但未确认 */
-        public static final int SCANNED = 2;
+        public static final int SCANNED = 1;
 
         /** 已扫码确认 */
-        public static final int CONFIRMED = 3;
+        public static final int CONFIRMED = 2;
 
         /** 已使用（用于生成登录凭证） */
-        public static final int CONSUMED = 4;
+        public static final int CONSUMED = 3;
 
         /** 无效的，用于找不到对应的凭证编码情况 */
         public static final int INVALID = -1;

@@ -27,15 +27,17 @@ public class ScanLoginService {
     /**
      * 获取登录凭证
      *
+     * @param ip 发起者的 IP 地址
+     *
      * @since 1.3.0
      */
-    public LoginCredentialVO getCredential() {
-        loginCredentialService.batchCreateIfNeedAsync();
+    public LoginCredentialVO getCredential(String ip) {
+        LoginCredential lc = loginCredentialService.create();
+        loginCredentialService.setIpRegionAsync(lc.getId(), ip);
 
-        LoginCredential credential = loginCredentialService.offer();
         LoginCredentialVO vo = new LoginCredentialVO();
-        vo.setId(credential.getId());
-        vo.setImageUrl(ossService.concatUrl(credential.getPath()));
+        vo.setId(lc.getId());
+        vo.setImageUrl(lc.getUrl());
 
         return vo;
     }

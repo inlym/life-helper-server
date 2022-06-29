@@ -36,6 +36,24 @@ public class LoginCredentialWxacodeService {
     private final StringRedisTemplate stringRedisTemplate;
 
     /**
+     * 获取资源在 OSS 中的存储路径
+     *
+     * @since 1.3.0
+     */
+    private static String getPath(String id) {
+        return OssDir.WXACODE + "/" + id + ".png";
+    }
+
+    /**
+     * 获取资源的完整 URL 地址
+     *
+     * @since 1.3.0
+     */
+    public String getUrl(String id) {
+        return ossService.concatUrl(getPath(id));
+    }
+
+    /**
      * 生成一个可用的小程序码
      *
      * <h2>主要流程
@@ -53,7 +71,7 @@ public class LoginCredentialWxacodeService {
             .replaceAll("-", "");
 
         // 在 OSS 中的存储路径
-        String path = OssDir.WXACODE + "/" + id + ".png";
+        String path = getPath(id);
 
         // 小程序码宽度，单位：px
         int width = 430;
