@@ -4,6 +4,7 @@ import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.login.scanlogin.credential.LoginCredential;
 import com.inlym.lifehelper.login.scanlogin.credential.LoginCredentialService;
 import com.inlym.lifehelper.login.scanlogin.pojo.LoginCredentialVO;
+import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginResultVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,9 @@ public class ScanLoginService {
         vo.setImageUrl(lc.getUrl());
 
         return vo;
+    }
+
+    public ScanLoginResultVO checkCredential(String id) {
+        return null;
     }
 }
