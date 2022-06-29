@@ -1,7 +1,10 @@
 package com.inlym.lifehelper.login.scanlogin.pojo;
 
+import com.inlym.lifehelper.common.auth.core.AuthenticationCredential;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * 扫码登录结果
@@ -14,13 +17,13 @@ import lombok.NoArgsConstructor;
  * @since 1.x.x
  **/
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class ScanLoginResultVO {
+public class ScanLoginResultVO extends AuthenticationCredential {
     /** 是否已操作“扫码” */
     private Boolean scanned;
 
     /** 是否已操作“确认登录” */
     private Boolean confirmed;
-    
-    private String token;
 }
