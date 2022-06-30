@@ -3,9 +3,9 @@ package com.inlym.lifehelper.login.scanlogin;
 import com.inlym.lifehelper.common.auth.core.AuthenticationCredential;
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
-import com.inlym.lifehelper.login.scanlogin.credential.LoginCredential;
-import com.inlym.lifehelper.login.scanlogin.credential.LoginCredentialService;
-import com.inlym.lifehelper.login.scanlogin.pojo.LoginCredentialVO;
+import com.inlym.lifehelper.login.loginticket.LoginTicketService;
+import com.inlym.lifehelper.login.loginticket.entity.LoginTicket;
+import com.inlym.lifehelper.login.scanlogin.pojo.LoginTicketVO;
 import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginResultVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ScanLoginService {
-    private final LoginCredentialService service;
+    private final LoginTicketService loginTicketService;
 
     private final OssService ossService;
 
@@ -37,11 +37,11 @@ public class ScanLoginService {
      *
      * @since 1.3.0
      */
-    public LoginCredentialVO getCredential(String ip) {
-        LoginCredential lc = service.create();
-        service.setIpRegionAsync(lc.getId(), ip);
+    public LoginTicketVO getCredential(String ip) {
+        LoginTicket lc = loginTicketService.create();
+        loginTicketService.setIpRegionAsync(lc.getId(), ip);
 
-        LoginCredentialVO vo = new LoginCredentialVO();
+        LoginTicketVO vo = new LoginTicketVO();
         vo.setId(lc.getId());
         vo.setImageUrl(lc.getUrl());
 
@@ -49,18 +49,18 @@ public class ScanLoginService {
     }
 
     public ScanLoginResultVO checkCredential(String id) {
-        LoginCredential lc = service.getEntity(id);
+        LoginTicket lc = loginTicketService.getEntity(id);
 
-        if (LoginCredential.Status.CONFIRMED == lc.getStatus()) {
+        if (LoginTicket.Status.CONFIRMED == lc.getStatus()) {
             int userId = lc.getUserId();
-            service.consume(id);
+            loginTicketService.consume(id);
 
             AuthenticationCredential ac = jwtService.createAuthenticationCredential(userId);
             ScanLoginResultVO vo = new ScanLoginResultVO();
             BeanUtils.copyProperties(ac, vo);
             vo.setConfirmed(true);
             return vo;
-        } else if (LoginCredential.Status.SCANNED == lc.getStatus()) {
+        } else if (LoginTicket.Status.SCANNED == lc.getStatus()) {
             ScanLoginResultVO vo = new ScanLoginResultVO();
             vo.setScanned(true);
             vo.setConfirmed(false);

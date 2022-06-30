@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.login.scanlogin;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
-import com.inlym.lifehelper.login.scanlogin.pojo.LoginCredentialVO;
+import com.inlym.lifehelper.login.scanlogin.pojo.LoginTicketVO;
 import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginDTO;
 import com.inlym.lifehelper.login.scanlogin.pojo.ScanLoginResultVO;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ScanLoginController {
      * @since 1.3.0
      */
     @GetMapping("/login/credential")
-    public LoginCredentialVO getCredential(@ClientIp String ip) {
+    public LoginTicketVO getCredential(@ClientIp String ip) {
         return scanLoginService.getCredential(ip);
     }
 

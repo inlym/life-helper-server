@@ -13,7 +13,7 @@ import lombok.Data;
  * @since 1.x.x
  **/
 @Data
-public class LoginCredentialVO {
+public class LoginTicketVO {
     /** 凭证编号 */
     private String id;
 

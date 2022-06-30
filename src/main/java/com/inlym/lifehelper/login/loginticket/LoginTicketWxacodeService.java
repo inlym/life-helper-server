@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.scanlogin.credential;
+package com.inlym.lifehelper.login.loginticket;
 
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 /**
- * 登录凭证的小程序码服务
+ * 登录凭据小程序码服务
  *
- * <h2>说明
- * <p>处理用于扫码登录的小程序码的生成、获取等相关事项
+ * <h2>主要用途
+ * <p>生成和维护用于扫码登录的微信小程序码
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/6/29
- * @since 1.3.0
+ * @date 2022/7/1
+ * @since 1.x.x
  **/
 @Service
 @RequiredArgsConstructor
-public class LoginCredentialWxacodeService {
+public class LoginTicketWxacodeService {
     /** 每次批量生成数量 */
     private static final int BATCH_GENERATE_QUANTITY = 5;
 
     /** 未使用的小程序码列表 */
-    private static final String UNUSED_WXACODE_LIST = "weixin:unused_login_credential";
+    private static final String UNUSED_WXACODE_LIST = "weixin:unused_login_tickets";
 
     private final WeixinService weixinService;
 

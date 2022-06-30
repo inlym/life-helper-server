@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.scanlogin.credential;
+package com.inlym.lifehelper.login.loginticket.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,20 +9,22 @@ import org.springframework.data.redis.core.TimeToLive;
 import java.time.Duration;
 
 /**
- * 登录凭证
+ * 登录凭据
  *
  * <h2>说明
- * <li>整个扫码登录流程都是围绕着这个登录凭证进行。
+ * <li>主要用于跨客户端快捷登录使用，一端（发起者）创建“登录凭据”，另一端（授权者）为该“登录凭据”授权，然后发起者使用该“登录凭据”
+ * 获取可用于接口鉴权使用的登录凭证。
+ * <li>目前仅用于扫码登录。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/6/27
+ * @date 2022/7/1
  * @since 1.3.0
  **/
 @Data
 @NoArgsConstructor
-@RedisHash("database:login_credential")
-public class LoginCredential {
-    /** 凭证编号，目前为去掉短横线的 UUID */
+@RedisHash("database:login_ticket")
+public class LoginTicket {
+    /** 凭据编号，目前为去掉短横线的 UUID */
     @Id
     private String id;
 
@@ -59,6 +61,9 @@ public class LoginCredential {
     /** 扫码操作者用户 ID */
     private Integer userId;
 
+    /**
+     * 有效期：30分钟
+     */
     @TimeToLive
     public long getTimeToLive() {
         return Duration
@@ -66,7 +71,7 @@ public class LoginCredential {
             .toSeconds();
     }
 
-    /** 凭证状态 */
+    /** 凭据状态 */
     public static class Status {
         /** 已创建 */
         public static final int CREATED = 0;
