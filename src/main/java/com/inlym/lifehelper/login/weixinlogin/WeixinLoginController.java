@@ -1,12 +1,15 @@
 package com.inlym.lifehelper.login.weixinlogin;
 
 import com.auth0.jwt.JWT;
+import com.inlym.lifehelper.common.auth.core.AuthenticationCredential;
 import com.inlym.lifehelper.login.weixinlogin.pojo.WeixinCodeDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,12 +21,9 @@ import java.util.Map;
  **/
 @RestController
 @Validated
+@RequiredArgsConstructor
 public class WeixinLoginController {
     private final WeixinLoginService weixinLoginService;
-
-    public WeixinLoginController(WeixinLoginService weixinLoginService) {
-        this.weixinLoginService = weixinLoginService;
-    }
 
     /**
      * 微信登录
@@ -44,5 +44,15 @@ public class WeixinLoginController {
             .getTime());
 
         return map;
+    }
+
+    /**
+     * 通过微信 code 登录
+     *
+     * @since 1.3.0
+     */
+    @PostMapping("/login/weixin2")
+    public AuthenticationCredential loginByCode2(@Valid @RequestBody WeixinCodeDTO dto) {
+        return weixinLoginService.loginByCode2(dto.getCode());
     }
 }
