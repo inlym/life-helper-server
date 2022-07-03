@@ -1,10 +1,12 @@
 package com.inlym.lifehelper.photoalbum.album.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.AttributeColumn;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.PrimaryKey;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.Table;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.ColumnName;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.PrimaryKeyColumn;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 相册实体
@@ -14,42 +16,39 @@ import lombok.Data;
  * @since 1.3.0
  **/
 @Data
-@Table("album")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Album {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
     @JsonIgnore
-    @PrimaryKey(value = "uid", order = 1)
+    @PrimaryKeyColumn(order = 1)
+    @ColumnName("uid")
     private String hashedUserId;
 
     /** 相册 ID */
-    @PrimaryKey(order = 2)
+    @PrimaryKeyColumn(order = 2)
     private String albumId;
 
     // ================================= 属性列 =================================
 
     /** 相册名称 */
-    @AttributeColumn("name")
     private String name;
 
     /** 相册描述 */
-    @AttributeColumn("description")
     private String description;
 
     /** 是否被删除 */
-    @AttributeColumn("deleted")
     private Boolean deleted;
 
     /** 创建时间 */
-    @AttributeColumn("create_time")
     private Long createTime;
 
     /** 更新时间 */
-    @AttributeColumn("update_time")
     private Long updateTime;
 
     /** 删除时间 */
-    @AttributeColumn("delete_time")
     private Long deleteTime;
 }

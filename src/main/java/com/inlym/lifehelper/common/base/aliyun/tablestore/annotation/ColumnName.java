@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Column {
+public @interface ColumnName {
     /** 列名 */
     String value() default "";
 }

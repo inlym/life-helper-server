@@ -2,7 +2,7 @@ package com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn;
 
 import com.alicloud.openservices.tablestore.model.*;
 import com.google.common.base.CaseFormat;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.Column;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.ColumnName;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.PrimaryKeyColumn;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.Table;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +30,72 @@ public class WideColumnRepository<T> {
     private final WideColumnClient client;
 
     /**
+     * 从实体中获取主键列字段列表（按 order 升序重排列）
+     *
+     * @param entity 实体
+     *
+     * @since 1.3.0
+     */
+    private List<Field> getPrimaryKeyFieldList(T entity) {
+        List<Field> primaryKeyFields = new ArrayList<>();
+
+        for (Field field : entity
+            .getClass()
+            .getDeclaredFields()) {
+            if (field.getAnnotation(PrimaryKeyColumn.class) != null) {
+                primaryKeyFields.add(field);
+            }
+        }
+
+        // 对列表重排序，按照 `order` 字段升序排列
+        primaryKeyFields.sort(Comparator.comparingInt(o -> o
+            .getAnnotation(PrimaryKeyColumn.class)
+            .order()));
+
+        return primaryKeyFields;
+    }
+
+    /**
+     * 获取属性列字段列表
+     *
+     * @param entity 实体
+     *
+     * @since 1.3.0
+     */
+    private List<Field> getAttributeFieldList(T entity) {
+        List<Field> attributeFields = new ArrayList<>();
+
+        for (Field field : entity
+            .getClass()
+            .getDeclaredFields()) {
+            if (field.getAnnotation(PrimaryKeyColumn.class) == null) {
+                attributeFields.add(field);
+            }
+        }
+
+        return attributeFields;
+    }
+
+    /**
+     * 构建主键
+     *
+     * @param entity 实体
+     *
+     * @since 1.3.0
+     */
+    private PrimaryKey buildPrimaryKey(T entity) {
+        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+
+        for (Field field : getPrimaryKeyFieldList(entity)) {
+            String columnName = getColumnName(field);
+            field.setAccessible(true);
+            primaryKeyBuilder.addPrimaryKeyColumn(columnName, getPrimaryKeyValue(field, entity));
+        }
+
+        return primaryKeyBuilder.build();
+    }
+
+    /**
      * 获取在表格存储中使用的表名
      *
      * <h2>说明
@@ -43,7 +109,7 @@ public class WideColumnRepository<T> {
      * @since 1.3.0
      */
     @SuppressWarnings("unchecked")
-    public String getTableName(T entity) {
+    private String getTableName(T entity) {
         Class<T> clazz = (Class<T>) entity.getClass();
         Table table = clazz.getAnnotation(Table.class);
 
@@ -60,18 +126,18 @@ public class WideColumnRepository<T> {
      * 获取对象字段在表格存储中使用的列名
      *
      * <h2>说明
-     * <p>默认使用类名的下划线模式作为表名，可使用 {@link Column} 注解覆盖默认值。
+     * <p>默认使用类名的下划线模式作为表名，可使用 {@link ColumnName} 注解覆盖默认值。
      *
      * @param field 字段
      *
      * @since 1.3.0
      */
-    public String getColumnName(Field field) {
-        Column column = field.getAnnotation(Column.class);
+    private String getColumnName(Field field) {
+        ColumnName columnName = field.getAnnotation(ColumnName.class);
 
         // 以注解标记的“列名”优先
-        if (column != null) {
-            return column.value();
+        if (columnName != null) {
+            return columnName.value();
         }
 
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName());
@@ -85,7 +151,7 @@ public class WideColumnRepository<T> {
      * @since 1.3.0
      */
     @SneakyThrows
-    public PrimaryKeyValue getPrimaryKeyValue(Field field, T entity) {
+    private PrimaryKeyValue getPrimaryKeyValue(Field field, T entity) {
         Class<?> type = field.getType();
         Object o = field.get(entity);
 
@@ -106,7 +172,7 @@ public class WideColumnRepository<T> {
      * @since 1.3.0
      */
     @SneakyThrows
-    public ColumnValue getColumnValue(Field field, T entity) {
+    private ColumnValue getColumnValue(Field field, T entity) {
         Class<?> type = field.getType();
         Object o = field.get(entity);
 
@@ -130,48 +196,21 @@ public class WideColumnRepository<T> {
     }
 
     /**
-     * 对主键字段进行重排序
+     * 新增
      *
-     * @param list 主键字段列表
+     * @param entity 实体
      *
      * @since 1.3.0
      */
-    private void sortPrimaryKeyFields(List<Field> list) {
-        list.sort(Comparator.comparingInt(o -> o
-            .getAnnotation(PrimaryKeyColumn.class)
-            .order()));
-    }
-
     public T create(T entity) {
         String tableName = getTableName(entity);
 
-        // 主键字段列表
-        List<Field> primaryKeyFields = new ArrayList<>();
+        // 主键
+        PrimaryKey primaryKey = buildPrimaryKey(entity);
 
         // 属性字段列表
-        List<Field> attributeFields = new ArrayList<>();
+        List<Field> attributeFields = getAttributeFieldList(entity);
 
-        for (Field field : entity
-            .getClass()
-            .getDeclaredFields()) {
-            if (field.getAnnotation(PrimaryKeyColumn.class) != null) {
-                primaryKeyFields.add(field);
-            } else {
-                attributeFields.add(field);
-            }
-        }
-
-        // 主键列是有顺序的，进行重排序
-        sortPrimaryKeyFields(primaryKeyFields);
-
-        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        for (Field field : primaryKeyFields) {
-            String columnName = getColumnName(field);
-            field.setAccessible(true);
-            primaryKeyBuilder.addPrimaryKeyColumn(columnName, getPrimaryKeyValue(field, entity));
-        }
-
-        PrimaryKey primaryKey = primaryKeyBuilder.build();
         RowPutChange rowPutChange = new RowPutChange(WideColumnTables.ALBUM, primaryKey);
         for (Field field : attributeFields) {
             String columnName = getColumnName(field);
@@ -183,6 +222,25 @@ public class WideColumnRepository<T> {
         }
 
         client.putRow(new PutRowRequest(rowPutChange));
+
+        return entity;
+    }
+
+    /**
+     * 软删除
+     *
+     * @param entity 实体
+     *
+     * @since 1.3.0
+     */
+    public T softDelete(T entity) {
+        // 主键
+        PrimaryKey primaryKey = buildPrimaryKey(entity);
+
+        RowUpdateChange change = new RowUpdateChange(getTableName(entity), primaryKey);
+        change.put("deleted", ColumnValue.fromBoolean(true));
+
+        client.updateRow(new UpdateRowRequest(change));
 
         return entity;
     }
