@@ -31,11 +31,12 @@ public class ClientIpMethodArgumentResolver implements HandlerMethodArgumentReso
      * <p>在过滤器中已获取客户端 IP 地址，并附在了请求域属性上，直接获取即可。
      */
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(@SuppressWarnings("NullableProblems") MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         String ip = (String) webRequest.getAttribute(CustomRequestAttribute.CLIENT_IP, RequestAttributes.SCOPE_REQUEST);
         if (ip != null) {
             return ip;
         }
-        throw new Exception("未获取到客户端 IP 地址");
+        
+        throw new RuntimeException("未获取到客户端 IP 地址");
     }
 }
