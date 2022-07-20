@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2022/5/9
  * @since 1.2.2
  **/
-public class RedisCacheCollector {
+public abstract class RedisCacheCollector {
     /** 通过 code 获取鉴权信息的键名 */
     public static final String WEIXIN_SESSION = "weixin:session";
 

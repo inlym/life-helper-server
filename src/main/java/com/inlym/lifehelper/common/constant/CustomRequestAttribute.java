@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.constant;
 
 /**
- * 自定义请求属性值
+ * 自定义请求域属性值
  *
  * <h2>注意事项
  * <li>在使用 {@code request.getAttribute} 和 {@code request.setAttribute} 方法时，不要直接操作字符串，应该直接当做常量存于此处。
@@ -14,7 +14,7 @@ package com.inlym.lifehelper.common.constant;
  * @date 2022-01-19
  * @since 1.0.0
  */
-public final class CustomRequestAttribute {
+public abstract class CustomRequestAttribute {
     /** 请求 ID */
     public static final String REQUEST_ID = "REQUEST_ID";
 

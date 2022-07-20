@@ -6,7 +6,7 @@ package com.inlym.lifehelper.common.constant;
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/4/1
  **/
-public class Endpoint {
+public abstract class Endpoint {
     /** 静态资源 OSS 存储空间域名 */
     public static String STATIC_RESOURCE_OSS_BASE_URL = "https://static.lifehelper.com.cn";
 

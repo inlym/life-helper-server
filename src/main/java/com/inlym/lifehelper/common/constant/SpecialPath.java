@@ -10,7 +10,7 @@ package com.inlym.lifehelper.common.constant;
  * @date 2022/5/7
  * @since 1.2.2
  **/
-public class SpecialPath {
+public abstract class SpecialPath {
     /**
      * 用于健康检查的路径
      *

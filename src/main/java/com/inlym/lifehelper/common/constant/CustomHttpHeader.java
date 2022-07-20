@@ -7,13 +7,13 @@ package com.inlym.lifehelper.common.constant;
  * @date 2022-01-19
  * @since 1.0.0
  */
-public final class CustomHttpHeader {
+public abstract class CustomHttpHeader {
     /** 请求 ID，用作全链路追踪 ID */
-    public static final String REQUEST_ID = "X-Ca-Request-Id";
+    public static final String REQUEST_ID = "x-ca-request-id";
 
     /** 客户端 IP 地址，由 API 网关层加入到请求头中 */
-    public static final String CLIENT_IP = "X-Lifehelper-Client-Ip";
+    public static final String CLIENT_IP = "x-lifehelper-client-ip";
 
     /** JWT 字符串 */
-    public static final String JWT_TOKEN = "X-Lifehelper-Auth-Jwt";
+    public static final String JWT_TOKEN = "x-lifehelper-auth-jwt";
 }
