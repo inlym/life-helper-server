@@ -7,6 +7,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss.pojo.GeneratePostCredentialOptions;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -35,17 +36,13 @@ import java.util.Objects;
  * @since 1.0.0
  */
 @Service
+@RequiredArgsConstructor
 public class OssService {
     private final OSS ossClient;
 
     private final OssProperties ossProperties;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public OssService(OssProperties ossProperties, OSS ossClient) {
-        this.ossClient = ossClient;
-        this.ossProperties = ossProperties;
-    }
+    private final RestTemplate restTemplate;
 
     /**
      * 上传文件

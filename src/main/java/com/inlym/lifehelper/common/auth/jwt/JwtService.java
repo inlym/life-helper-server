@@ -44,6 +44,9 @@ public class JwtService {
     /**
      * 为普通用户创建登录凭证（JWT 字符串）
      *
+     * <h2>备注（2022.07.20）
+     * <p>该方法已弃用，待下次上线后可删除。
+     *
      * @param userId 用户 ID
      *
      * @since 1.1.0

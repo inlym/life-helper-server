@@ -1,6 +1,8 @@
 package com.inlym.lifehelper.common.base.aliyun.oss.pojo;
 
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +16,9 @@ import java.time.Duration;
  * @since 1.2.3
  **/
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class GeneratePostCredentialOptions {
     /** 凭证有效时长，默认 2 天 */
     private Duration ttl = Duration.ofHours(2);
