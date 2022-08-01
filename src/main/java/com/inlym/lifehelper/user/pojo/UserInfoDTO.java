@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
  * 用户个人信息请求数据
  *
  * <h2>数据来源
- *
  * <p>微信小程序端通过 {@code wx.getUserProfile} 方法获取用户个人信息，并直接将该结果返回。
  *
  * @author <a href="https://www.inlym.com">inlym</a>

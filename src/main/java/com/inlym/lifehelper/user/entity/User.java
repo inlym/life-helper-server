@@ -11,8 +11,7 @@ import java.util.Date;
  * 用户实体
  *
  * <h2>说明
- *
- * <li>表名：{@code user}
+ * <li>表名：{@code user}，该表存储于 MySQL。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22
@@ -39,8 +38,10 @@ public class User {
      * 用户头像图片路径
      *
      * <h2>说明
+     * <p>从微信侧获取的头像 URL，会将图片转储到我方 OSS 中，最终存储的是在 OSS 中的路径。
      *
-     * <p>从微信侧获取的头像 URL，会将图片内容转储到我方 OSS 中，最终存储的是在 OSS 中的路径。
+     * <h2>备忘（2022.08.01）
+     * <p>目前储存在数据库中的格式示例 `avatar/b8fed49edd294cc08be9eaeed94b8371`。
      */
     private String avatar;
 

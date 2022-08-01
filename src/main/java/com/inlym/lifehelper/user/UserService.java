@@ -6,10 +6,12 @@ import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.common.constant.Endpoint;
 import com.inlym.lifehelper.user.entity.User;
+import com.inlym.lifehelper.user.exception.UserNotExistException;
 import com.inlym.lifehelper.user.mapper.UserMapper;
 import com.inlym.lifehelper.user.pojo.UserInfoBO;
 import com.inlym.lifehelper.user.pojo.UserInfoDTO;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,20 +21,17 @@ import org.springframework.util.StringUtils;
  * 用户账户服务类
  *
  * @author <a href="https://www.inlym.com">inlym</a>
+ * @version 1.3.0
  * @date 2022-01-23
  * @since 1.0.0
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
 
     private final OssService ossService;
-
-    public UserService(UserMapper userMapper, OssService ossService) {
-        this.userMapper = userMapper;
-        this.ossService = ossService;
-    }
 
     /**
      * 通过 openid 获取用户 ID（用户不存在时将自动创建用户）
@@ -52,7 +51,7 @@ public class UserService {
                 .build();
 
             userMapper.insert(newUser);
-            log.info("新注册用户：{}", newUser);
+            log.info("新用户注册，用户 ID：{}，openID：{}", newUser.getId(), newUser.getOpenid());
 
             return newUser.getId();
         }
@@ -73,6 +72,7 @@ public class UserService {
             bo.setAvatarUrl(ossService.concatUrl(user.getAvatar()));
             bo.setEmpty(false);
         } else {
+            // 昵称、头像为空情况，则返回默认文案和 logo
             bo.setNickName("点击更新获取头像");
             bo.setAvatarUrl(Endpoint.LOGO_URL);
             bo.setEmpty(true);
@@ -90,14 +90,16 @@ public class UserService {
     /**
      * 获取用户信息
      *
-     * @param id 用户 ID
+     * @param userId 用户 ID
      *
      * @since 1.0.0
      */
     @SneakyThrows
-    public UserInfoBO getUserInfo(int id) {
-        User user = userMapper.findById(id);
-        assert user != null;
+    public UserInfoBO getUserInfo(int userId) {
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw UserNotExistException.fromUserId(userId);
+        }
 
         return convertToUserInfoBO(user);
     }

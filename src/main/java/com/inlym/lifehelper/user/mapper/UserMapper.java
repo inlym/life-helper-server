@@ -35,10 +35,8 @@ public interface UserMapper {
      * 通过 openid 创建新用户
      *
      * @param user 用户实体
-     *
-     * @return 新创建用户的用户 ID
      */
-    int insert(@Param("user") User user);
+    void insert(@Param("user") User user);
 
     /**
      * 更新用户信息
