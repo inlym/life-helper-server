@@ -3,8 +3,13 @@ package com.inlym.lifehelper.hello;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.constant.SpecialPath;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.InetAddress;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +20,15 @@ import java.util.Map;
  * <p>用于接口调试，用于定义一些与业务无关的接口。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
+ * @version 1.3.0
  * @date 2022-01-22
  * @since 1.0.0
  */
 @RestController
+@RequiredArgsConstructor
 public class HelloController {
+    private final Environment environment;
+
     /**
      * 根路由
      *
@@ -99,5 +108,25 @@ public class HelloController {
     @UserPermission
     public int getUserId(@UserId int userId) {
         return userId;
+    }
+
+    /**
+     * 查看项目配置信息及运行状况
+     *
+     * @since 1.3.0
+     */
+    @GetMapping("/profile")
+    @SneakyThrows
+    public Map<String, Object> getProfile() {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("timestamp", System.currentTimeMillis());
+        map.put("now", new Date());
+        map.put("env", environment.getProperty("spring.profiles.active"));
+
+        InetAddress ia = InetAddress.getLocalHost();
+        map.put("hostname", ia.getHostName());
+        map.put("ip", ia.getHostAddress());
+
+        return map;
     }
 }
