@@ -47,7 +47,7 @@ public class RequestIdFilter extends OncePerRequestFilter {
                     .toString()
                     .toUpperCase();
 
-                log.debug("未从请求头获取请求 ID，自动生成请求 ID 值为：{}", customId);
+                log.trace("未从请求头获取请求 ID，自动生成请求 ID 值为：{}", customId);
                 request.setAttribute(CustomRequestAttribute.REQUEST_ID, customId);
                 response.setHeader(CustomHttpHeader.REQUEST_ID, customId);
             }

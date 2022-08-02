@@ -37,7 +37,7 @@ public class ClientIpFilter extends OncePerRequestFilter {
             // 同时，客户端可能伪造请求，直接传递该字段，在 API 网关做的处理是：
             // 直接该请求头值尾部加上 `, ` 和客户端 IP 地址
             String ipString = request.getHeader(CustomHttpHeader.CLIENT_IP);
-            log.debug("获取的 IP 请求头值：{}", ipString);
+            log.trace("获取的 IP 请求头值：{}", ipString);
 
             if (ipString != null) {
                 // 使用 `,` 分割字符串，取最后一段，就是从 API 网关处获取的客户端 IP 地址
