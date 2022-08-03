@@ -12,7 +12,7 @@ import lombok.Data;
  * @since 1.3.0
  **/
 @Data
-public class WeChatGetAccessTokenResponse {
+public class WeChatGetAccessTokenResponse implements WeChatCommonResponse {
     /** 错误码 */
     @JsonProperty("errcode")
     private Integer errorCode;

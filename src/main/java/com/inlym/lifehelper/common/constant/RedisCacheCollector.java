@@ -16,7 +16,7 @@ import java.util.Map;
  **/
 public abstract class RedisCacheCollector {
     /** 通过 code 获取鉴权信息的键名 */
-    public static final String WEIXIN_SESSION = "weixin:session";
+    public static final String WECHAT_SESSION = "weixin:session";
 
     /** 腾讯位置服务 - IP 定位 */
     public static final String TENCENT_MAP_LOCATE_IP = "lbs:locate-ip";
@@ -52,7 +52,7 @@ public abstract class RedisCacheCollector {
     public static final String HE_AIR_DAILY = "hefeng:air-daily";
 
     public static final Map<String, Duration> CACHE_DURATION_MAP = new HashMap<>(128) {{
-        put(WEIXIN_SESSION, Duration.ofDays(2));
+        put(WECHAT_SESSION, Duration.ofDays(2));
 
         put(TENCENT_MAP_LOCATE_IP, Duration.ofDays(10));
         put(TENCENT_MAP_REVERSE_GEOCODING, Duration.ofDays(10));

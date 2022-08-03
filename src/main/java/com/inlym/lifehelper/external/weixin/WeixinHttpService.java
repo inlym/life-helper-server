@@ -53,7 +53,7 @@ public class WeixinHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.WEIXIN_SESSION)
+    @Cacheable(RedisCacheCollector.WECHAT_SESSION)
     public WeixinCode2SessionResponse code2Session(String code) throws ExternalHttpRequestException {
         String baseUrl = "https://api.weixin.qq.com/sns/jscode2session";
 

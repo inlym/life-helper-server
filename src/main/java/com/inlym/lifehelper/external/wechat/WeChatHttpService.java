@@ -1,9 +1,13 @@
 package com.inlym.lifehelper.external.wechat;
 
+import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.external.wechat.exception.WeChatCommonException;
+import com.inlym.lifehelper.external.wechat.pojo.WeChatCode2SessionResponse;
+import com.inlym.lifehelper.external.wechat.pojo.WeChatCommonResponse;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatGetAccessTokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,6 +31,17 @@ public class WeChatHttpService {
     private final WeChatProperties properties;
 
     /**
+     * 校验相应数据是否正常
+     *
+     * @param data 响应数据
+     *
+     * @since 1.3.0
+     */
+    private boolean validateResponse(WeChatCommonResponse data) {
+        return data != null && (data.getErrorCode() == null || data.getErrorCode() == 0);
+    }
+
+    /**
      * 获取接口调用凭据
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getAccessToken.html">获取接口调用凭据</a>
@@ -46,7 +61,38 @@ public class WeChatHttpService {
         WeChatGetAccessTokenResponse data = restTemplate.getForObject(url, WeChatGetAccessTokenResponse.class);
 
         assert data != null;
-        if (data.getErrorCode() == null || data.getErrorCode() == 0) {
+        if (validateResponse(data)) {
+            return data;
+        }
+
+        throw WeChatCommonException.create(data.getErrorCode(), data.getErrorMessage());
+    }
+
+    /**
+     * 小程序登录，通过在小程序端 `wx.login` 接口获得临时登录凭证 code 获取身份信息
+     *
+     * @param code 临时登录凭证
+     *
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html">小程序登录</a>
+     * @since 1.3.0
+     */
+    @Cacheable(RedisCacheCollector.WECHAT_SESSION)
+    public WeChatCode2SessionResponse code2Session(String code) {
+        String baseUrl = "https://api.weixin.qq.com/sns/jscode2session";
+
+        String url = UriComponentsBuilder
+            .fromHttpUrl(baseUrl)
+            .queryParam("appid", properties.getAppid())
+            .queryParam("secret", properties.getSecret())
+            .queryParam("js_code", code)
+            .queryParam("grant_type", "authorization_code")
+            .build()
+            .toUriString();
+
+        WeChatCode2SessionResponse data = restTemplate.getForObject(url, WeChatCode2SessionResponse.class);
+
+        assert data != null;
+        if (validateResponse(data)) {
             return data;
         }
 
