@@ -2,15 +2,23 @@ package com.inlym.lifehelper.external.wechat;
 
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.external.wechat.exception.WeChatCommonException;
+import com.inlym.lifehelper.external.wechat.exception.WeChatInvalidAccessTokenException;
+import com.inlym.lifehelper.external.wechat.pojo.UnlimitedQrcodeOptions;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatCode2SessionResponse;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatCommonResponse;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatGetAccessTokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 微信小程序服务端 HTTP 请求服务
@@ -97,5 +105,44 @@ public class WeChatHttpService {
         }
 
         throw WeChatCommonException.create(data.getErrorCode(), data.getErrorMessage());
+    }
+
+    /**
+     * @param accessToken 微信服务端接口调用凭证
+     * @param options     小程序码配置信息
+     *
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/qr-code/getUnlimitedQRCode.html">获取不限制的小程序码</a>
+     * @since 1.3.0
+     */
+    public byte[] getUnlimitedQrcode(String accessToken, UnlimitedQrcodeOptions options) {
+        String baseUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
+
+        String url = UriComponentsBuilder
+            .fromHttpUrl(baseUrl)
+            .queryParam("access_token", accessToken)
+            .build()
+            .toUriString();
+
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("scene", options.getScene());
+        map.put("page", options.getPage());
+        map.put("width", options.getWidth());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+
+        byte[] data = restTemplate.postForObject(url, request, byte[].class);
+
+        // 实测 `data.length` 响应正常是 83748，异常是 118
+        // 因此可以判断 `data.length` 是否大于 1000 来判定响应是否正常
+        final int largeEnoughBytes = 1000;
+        assert data != null;
+        if (data.length > largeEnoughBytes) {
+            return data;
+        } else {
+            throw WeChatInvalidAccessTokenException.create(accessToken);
+        }
     }
 }
