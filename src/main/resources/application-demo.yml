@@ -61,7 +61,7 @@ lifehelper:
         pro-key: xxxxxxxxxxxx
 
     # 微信小程序服务端配置
-    weixin:
+    wechat:
         appid: xxxxxxxxxxxx
         secret: xxxxxxxxxxxx
 
