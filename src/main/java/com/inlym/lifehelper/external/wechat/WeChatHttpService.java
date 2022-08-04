@@ -3,7 +3,7 @@ package com.inlym.lifehelper.external.wechat;
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.external.wechat.exception.WeChatCommonException;
 import com.inlym.lifehelper.external.wechat.exception.WeChatInvalidAccessTokenException;
-import com.inlym.lifehelper.external.wechat.pojo.UnlimitedQrcodeOptions;
+import com.inlym.lifehelper.external.wechat.pojo.UnlimitedQrCodeOptions;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatCode2SessionResponse;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatCommonResponse;
 import com.inlym.lifehelper.external.wechat.pojo.WeChatGetAccessTokenResponse;
@@ -108,13 +108,15 @@ public class WeChatHttpService {
     }
 
     /**
+     * 生成小程序码
+     *
      * @param accessToken 微信服务端接口调用凭证
      * @param options     小程序码配置信息
      *
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/qr-code/getUnlimitedQRCode.html">获取不限制的小程序码</a>
      * @since 1.3.0
      */
-    public byte[] getUnlimitedQrcode(String accessToken, UnlimitedQrcodeOptions options) {
+    public byte[] getUnlimitedQrCode(String accessToken, UnlimitedQrCodeOptions options) {
         String baseUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
 
         String url = UriComponentsBuilder

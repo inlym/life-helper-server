@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UnlimitedQrcodeOptions {
+public class UnlimitedQrCodeOptions {
     /** 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符 */
     private String scene;
 

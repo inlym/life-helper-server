@@ -1,11 +1,9 @@
 package com.inlym.lifehelper.external.wechat;
 
-import com.inlym.lifehelper.external.wechat.pojo.UnlimitedQrcodeOptions;
+import com.inlym.lifehelper.external.wechat.pojo.UnlimitedQrCodeOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 /**
  * 微信服务
@@ -39,27 +37,22 @@ public class WeChatService {
     }
 
     /**
-     * 获取随机 scene 值的小程序码
+     * 生成小程序码
      *
-     * @param page 页面路径
+     * @param page  页面
+     * @param scene 场景值
      *
      * @since 1.3.0
      */
-    public byte[] getRandomSceneQrcode(String page) {
-        String token = weChatAccessTokenService.get();
-        String scene = UUID
-            .randomUUID()
-            .toString()
-            .toLowerCase()
-            .replaceAll("-", "");
-
-        UnlimitedQrcodeOptions options = UnlimitedQrcodeOptions
+    public byte[] getUnlimitedQrCode(String page, String scene) {
+        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
             .builder()
             .page(page)
             .scene(scene)
-            .width(430)
             .build();
 
-        return weChatHttpService.getUnlimitedQrcode(token, options);
+        String token = weChatAccessTokenService.get();
+
+        return weChatHttpService.getUnlimitedQrCode(token, options);
     }
 }
