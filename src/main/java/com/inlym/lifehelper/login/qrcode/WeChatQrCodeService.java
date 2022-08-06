@@ -1,35 +1,45 @@
-package com.inlym.lifehelper.login.loginticket;
+package com.inlym.lifehelper.login.qrcode;
 
+import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
-import com.inlym.lifehelper.external.weixin.WeixinService;
+import com.inlym.lifehelper.external.wechat.WeChatService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 /**
- * 登录凭据小程序码服务
+ * 微信小程序码服务
  *
  * <h2>主要用途
- * <p>生成和维护用于扫码登录的微信小程序码
+ * <p>主要用于维护“扫码登录”使用的微信小程序码。
+ *
+ * <h2>说明
+ * <li>小程序码的最终用途只是提供一个 ID，扫码端和被扫码端以及服务器之间通过这个 ID 进行交互。
+ * <li>把这个小程序码替换成普通的二维码，只要能够提供一个 ID，那么逻辑上就不发生变化。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/7/1
- * @since 1.x.x
+ * @date 2022/8/5
+ * @since 1.3.0
  **/
 @Service
+@Slf4j
 @RequiredArgsConstructor
-public class LoginTicketWxacodeService {
+public class WeChatQrCodeService {
+    /**
+     * 用于存储未使用的小程序码列表的 Redis 键名
+     *
+     * <h2>说明
+     * <p>小程序码提前生成好，避免要使用的时候等待太久。
+     */
+    private static final String UNUSED_WECHAT_QRCODE_LIST = "wechat:scan_login_qrcode_list";
+
     /** 每次批量生成数量 */
     private static final int BATCH_GENERATE_QUANTITY = 5;
 
-    /** 未使用的小程序码列表 */
-    private static final String UNUSED_WXACODE_LIST = "weixin:unused_login_tickets";
-
-    private final WeixinService weixinService;
+    private final WeChatService weChatService;
 
     private final OssService ossService;
 
@@ -54,35 +64,19 @@ public class LoginTicketWxacodeService {
     }
 
     /**
-     * 生成一个可用的小程序码
+     * 生成一个用于扫码登录的小程序码
      *
-     * <h2>主要流程
-     * <li>生成一个随机字符串 ID
-     * <li>根据参数向微信服务器发起请求获取小程序码文件
-     * <li>将小程序文件上传至阿里云 OSS 中
+     * <h2>说明
+     * <p>包含了获取小程序码图片以及转储至 OSS 两步。
      *
      * @since 1.3.0
      */
     public String generate() {
-        String id = UUID
-            .randomUUID()
-            .toString()
-            .toLowerCase()
-            .replaceAll("-", "");
-
-        // 在 OSS 中的存储路径
+        String id = IdUtil.objectId();
         String path = getPath(id);
-
-        // 小程序码宽度，单位：px
-        int width = 430;
-
-        // 小程序的“扫码登录页”路径
         String page = "pages/scan/login";
 
-        // 从微信服务器获取小程序码
-        byte[] bytes = weixinService.generateWxacode(page, id, width);
-
-        // 将图片上传 OSS
+        byte[] bytes = weChatService.getUnlimitedQrCode(page, id);
         ossService.upload(path, bytes);
 
         return id;
@@ -96,7 +90,7 @@ public class LoginTicketWxacodeService {
     public String getOne() {
         String id = stringRedisTemplate
             .opsForList()
-            .rightPop(UNUSED_WXACODE_LIST);
+            .rightPop(UNUSED_WECHAT_QRCODE_LIST);
 
         if (id != null) {
             return id;
@@ -114,7 +108,7 @@ public class LoginTicketWxacodeService {
     public void batchGenerateIfNeedAsync() {
         Long size = stringRedisTemplate
             .opsForList()
-            .size(UNUSED_WXACODE_LIST);
+            .size(UNUSED_WECHAT_QRCODE_LIST);
         assert size != null;
 
         if (size < BATCH_GENERATE_QUANTITY) {
@@ -122,7 +116,7 @@ public class LoginTicketWxacodeService {
                 String id = generate();
                 stringRedisTemplate
                     .opsForList()
-                    .leftPush(UNUSED_WXACODE_LIST, id);
+                    .leftPush(UNUSED_WECHAT_QRCODE_LIST, id);
             }
         }
     }
