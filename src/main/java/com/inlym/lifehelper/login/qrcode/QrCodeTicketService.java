@@ -2,6 +2,7 @@ package com.inlym.lifehelper.login.qrcode;
 
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
+import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicketRepository;
 import com.inlym.lifehelper.login.qrcode.exception.InvalidQrCodeTicketException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;

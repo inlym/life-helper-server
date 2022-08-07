@@ -1,6 +1,5 @@
-package com.inlym.lifehelper.login.qrcode;
+package com.inlym.lifehelper.login.qrcode.entity;
 
-import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
 import org.springframework.data.repository.CrudRepository;
 
 /**

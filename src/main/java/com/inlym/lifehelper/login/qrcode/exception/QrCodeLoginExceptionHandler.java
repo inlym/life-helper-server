@@ -1,9 +1,9 @@
-package com.inlym.lifehelper.login.qrcode;
+package com.inlym.lifehelper.login.qrcode.exception;
 
 import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
-import com.inlym.lifehelper.login.qrcode.exception.InvalidQrCodeTicketException;
 import com.inlym.lifehelper.login.qrcode.pojo.QrCodeTicketVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  **/
 @RestControllerAdvice
 @Slf4j
+@Order(1000)
 public class QrCodeLoginExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(InvalidQrCodeTicketException.class)

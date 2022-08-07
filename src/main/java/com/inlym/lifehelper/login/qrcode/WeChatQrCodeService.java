@@ -72,7 +72,7 @@ public class WeChatQrCodeService {
      * @since 1.3.0
      */
     public String generate() {
-        String id = IdUtil.objectId();
+        String id = IdUtil.simpleUUID();
         String path = getPath(id);
         String page = "pages/scan/login";
 
