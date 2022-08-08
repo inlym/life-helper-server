@@ -49,6 +49,18 @@ public class WeChatAccessTokenService {
     }
 
     /**
+     * 异步刷新存储在 Redis 中的凭证
+     *
+     * <h2>说明
+     * <p>用于当检测到凭证错误时，在错误捕获器中异步刷新。
+     *
+     * @since 1.3.0
+     */
+    public void refreshAsync() {
+        refresh();
+    }
+
+    /**
      * 执行强制刷新定时任务
      *
      * <h2>循环周期
