@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.base.aliyun.oss;
 
+import cn.hutool.core.util.IdUtil;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
@@ -68,7 +69,7 @@ public class OssService {
      */
     public String dump(String dirname, String url) {
         // 文件路径
-        String pathname = dirname + "/" + OssUtils.getRandomFilename();
+        String pathname = dirname + "/" + IdUtil.simpleUUID();
 
         ResponseEntity<byte[]> response = restTemplate.getForEntity(url, byte[].class);
 
@@ -112,7 +113,7 @@ public class OssService {
      */
     public Map<String, String> generatePostCredential(GeneratePostCredentialOptions options) {
         // 文件在 OSS 中的完整路径
-        String pathname = options.getDirname() + "/" + OssUtils.getRandomFilename();
+        String pathname = options.getDirname() + "/" + IdUtil.simpleUUID();
 
         // 凭证有效期结束时间（时间戳）
         long expireEndTime = System.currentTimeMillis() + options
