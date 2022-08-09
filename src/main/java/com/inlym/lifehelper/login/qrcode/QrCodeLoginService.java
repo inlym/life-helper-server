@@ -28,6 +28,8 @@ public class QrCodeLoginService {
     /**
      * 获取用于被扫码端扫码登录的相关资源
      *
+     * @param ip 被扫码端的 IP 地址
+     *
      * @since 1.3.0
      */
     public QrCodeTicketVO getQrCodeTicketVO(String ip) {
@@ -79,7 +81,7 @@ public class QrCodeLoginService {
                 .credential(ac)
                 .build();
         } else {
-            throw InvalidQrCodeTicketException.defaultMessage();
+            throw InvalidQrCodeTicketException.fromId(id);
         }
     }
 

@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * 扫码登录控制器
+ * 扫码登录模块控制器
  *
  * <h2>主要用途
- * <p>管理“扫码登录”的相关接口
+ * <p>管理“扫码登录”的相关 API 接口
+ *
+ * <h2>扫码端和被扫码端
+ * <p>被扫码端为“小鸣助手（网页版）”，在登录页面获取小程序码并展示。
+ * <p>扫码端为“小鸣助手（小程序版）”，通过微信扫码直接进入到小程序内的扫码登录页
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/8/6

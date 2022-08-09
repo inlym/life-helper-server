@@ -33,7 +33,8 @@ public class QrCodeTicketService {
      * @since 1.3.0
      */
     public QrCodeTicket create() {
-        // 说明：非本方法内流程，只是放在此处检测比较合适。
+        // 说明：非本方法内流程，只是放在此处检测比较合适
+        // 检测当剩余可用数量较少时，则批量生成一批新的
         weChatQrCodeService.batchGenerateIfNeedAsync();
 
         String id = weChatQrCodeService.getOne();
@@ -61,7 +62,7 @@ public class QrCodeTicketService {
     public QrCodeTicket getEntity(String id) {
         return repository
             .findById(id)
-            .orElseThrow(InvalidQrCodeTicketException::defaultMessage);
+            .orElseThrow(() -> InvalidQrCodeTicketException.fromId(id));
     }
 
     /**
@@ -72,8 +73,8 @@ public class QrCodeTicketService {
      * <p>优点：更快地返回凭证编码，用于 Web 端展示。
      * <p>缺点：小程序端扫码展示信息时，根据 IP 获得地区信息不一定已获取，此时展示为空。（由于中间时间差较大，因此发生的概率较小）
      *
-     * @param id 登录凭证 ID
-     * @param ip 发起者的 IP 地址
+     * @param id 扫码登录凭据 ID
+     * @param ip 发起者（被扫码端）的 IP 地址
      *
      * @since 1.3.0
      */
@@ -105,7 +106,7 @@ public class QrCodeTicketService {
     }
 
     /**
-     * 进行“确认”操作
+     * 进行“确认登录”操作
      *
      * <h2>说明
      * <p>用于扫码端。
