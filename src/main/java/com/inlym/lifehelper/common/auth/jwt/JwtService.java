@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.common.auth.jwt;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -39,37 +38,6 @@ public class JwtService {
 
     public JwtService(JwtProperties jwtProperties) {
         this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
-    }
-
-    /**
-     * 为普通用户创建登录凭证（JWT 字符串）
-     *
-     * <h2>备注（2022.07.20）
-     * <p>该方法已弃用，待下次上线后可删除。
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.1.0
-     */
-    public String createTokenForUser(int userId) {
-        // 当前时间的时间戳
-        long now = System.currentTimeMillis();
-
-        // 到期时间的时间戳
-        long expireTime = now + DEFAULT_JWT_DURATION.toMillis();
-
-        JWTCreator.Builder jwt = JWT
-            .create()
-            .withIssuer(ISSUER)
-            .withIssuedAt(new Date(now))
-            .withJWTId(UUID
-                .randomUUID()
-                .toString()
-                .toLowerCase())
-            .withExpiresAt(new Date(expireTime))
-            .withClaim(USER_ID_FIELD, userId);
-
-        return jwt.sign(algorithm);
     }
 
     /**

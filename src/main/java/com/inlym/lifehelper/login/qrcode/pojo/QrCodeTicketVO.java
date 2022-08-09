@@ -23,6 +23,9 @@ public class QrCodeTicketVO {
     /** 生成的小程序码存放在 OSS 的完整 URL 地址 */
     private String url;
 
+    /** 被扫码端的 IP 地址 */
+    private String ip;
+
     /** IP 地址所在区域，包含省和市，例如：浙江杭州 */
     private String region;
 

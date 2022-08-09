@@ -92,10 +92,14 @@ public class QrCodeLoginService {
      */
     public QrCodeTicketVO scan(String id) {
         qrCodeTicketService.scan(id);
+        QrCodeTicket qt = qrCodeTicketService.getEntity(id);
 
         return QrCodeTicketVO
             .builder()
             .id(id)
+            .status(QrCodeTicket.Status.SCANNED)
+            .ip(qt.getIp())
+            .region(qt.getRegion())
             .build();
     }
 
@@ -112,6 +116,7 @@ public class QrCodeLoginService {
         return QrCodeTicketVO
             .builder()
             .id(id)
+            .status(QrCodeTicket.Status.CONFIRMED)
             .build();
     }
 }
