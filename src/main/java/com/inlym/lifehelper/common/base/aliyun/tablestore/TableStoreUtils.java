@@ -53,6 +53,19 @@ public abstract class TableStoreUtils {
     }
 
     /**
+     * 解析哈希化的字符串主键 ID
+     *
+     * @param hashedId 哈希化的字符串主键 ID
+     *
+     * @since 1.4.0
+     */
+    public static int parseHashedId(String hashedId) {
+        String[] strings = hashedId.split("-");
+        String sid = strings[1];
+        return Integer.parseInt(sid);
+    }
+
+    /**
      * 根据表格存储的行建立一个实体
      *
      * <h2>说明

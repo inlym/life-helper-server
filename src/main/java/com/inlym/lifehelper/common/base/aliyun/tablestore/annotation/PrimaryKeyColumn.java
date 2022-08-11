@@ -15,4 +15,7 @@ import java.lang.annotation.*;
 public @interface PrimaryKeyColumn {
     /** 主键排序 */
     int order();
+
+    /** 是否进行哈希化 */
+    boolean hashed() default false;
 }

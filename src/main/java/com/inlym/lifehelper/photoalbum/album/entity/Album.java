@@ -24,9 +24,9 @@ public class Album {
 
     /** 所属用户 ID - 分区键 */
     @JsonIgnore
-    @PrimaryKeyColumn(order = 1)
+    @PrimaryKeyColumn(order = 1, hashed = true)
     @ColumnName("uid")
-    private String hashedUserId;
+    private Integer userId;
 
     /** 相册 ID */
     @PrimaryKeyColumn(order = 2)
@@ -39,6 +39,8 @@ public class Album {
 
     /** 相册描述 */
     private String description;
+
+    // ======================= 以下列有存储库控制，不要手动修改 =======================
 
     /** 是否被删除 */
     private Boolean deleted;
