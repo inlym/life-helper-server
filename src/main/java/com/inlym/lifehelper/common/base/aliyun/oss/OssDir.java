@@ -19,4 +19,12 @@ public abstract class OssDir {
 
     /** 存在用户头像的目录 */
     public static final String AVATAR = "avatar";
+
+    /** 存储相册中的照片 */
+    public static final String PHOTO = "photo";
+
+    /** 存储相册中的视频 */
+    public static final String VIDEO = "video";
+
+
 }

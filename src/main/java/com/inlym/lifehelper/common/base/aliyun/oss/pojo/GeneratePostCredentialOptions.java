@@ -20,12 +20,15 @@ import java.time.Duration;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeneratePostCredentialOptions {
-    /** 凭证有效时长，默认 2 天 */
+    /** 凭证有效时长，默认 2 小时 */
+    @Builder.Default
     private Duration ttl = Duration.ofHours(2);
 
     /** 上传文件的最大体积，默认 50MB */
+    @Builder.Default
     private Long maxSize = 50L * 1024 * 1024;
 
     /** 上传的目录，为防止误传到根目录，默认临时目录 */
+    @Builder.Default
     private String dirname = OssDir.TEMP;
 }

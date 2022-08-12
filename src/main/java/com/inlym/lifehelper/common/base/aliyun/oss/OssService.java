@@ -8,6 +8,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss.pojo.GeneratePostCredentialOptions;
+import com.inlym.lifehelper.common.base.aliyun.oss.pojo.OssPostCredential;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,21 +17,13 @@ import org.springframework.web.client.RestTemplate;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * OSS 服务类
  *
  * <h2>注意事项
- *
  * <li>当前只用到一个 OSS 储存空间（bucket），使用不同目录存放不同来源的资源。
- *
- * <h2>目录用途
- *
- * <li> 临时调试使用 {@code temp}
- * <li> 微信小程序码图片 {@code wxacode}
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-12
@@ -111,7 +104,7 @@ public class OssService {
      * @see <a href="https://help.aliyun.com/document_detail/91868.html">服务端签名直传</a>
      * @since 1.2.3
      */
-    public Map<String, String> generatePostCredential(GeneratePostCredentialOptions options) {
+    public OssPostCredential generatePostCredential(GeneratePostCredentialOptions options) {
         // 文件在 OSS 中的完整路径
         String pathname = options.getDirname() + "/" + IdUtil.simpleUUID();
 
@@ -134,13 +127,13 @@ public class OssService {
         String policy = BinaryUtil.toBase64String(binaryData);
         String signature = ossClient.calculatePostSignature(postPolicy);
 
-        Map<String, String> map = new LinkedHashMap<>();
-        map.put("OSSAccessKeyId", ossProperties.getAccessKeyId());
-        map.put("url", ossProperties.getAliasUrl());
-        map.put("key", pathname);
-        map.put("policy", policy);
-        map.put("signature", signature);
-
-        return map;
+        return OssPostCredential
+            .builder()
+            .accessKeyId(ossProperties.getAccessKeyId())
+            .url(ossProperties.getAliasUrl())
+            .key(pathname)
+            .policy(policy)
+            .signature(signature)
+            .build();
     }
 }
