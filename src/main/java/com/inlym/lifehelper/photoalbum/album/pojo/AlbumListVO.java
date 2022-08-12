@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.photoalbum.album.pojo;
 
-import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +22,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlbumListVO {
-    private List<Album> list;
+    private List<AlbumVO> list;
 }

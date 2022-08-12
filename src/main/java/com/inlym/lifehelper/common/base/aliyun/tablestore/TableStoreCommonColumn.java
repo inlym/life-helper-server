@@ -1,16 +1,16 @@
 package com.inlym.lifehelper.common.base.aliyun.tablestore;
 
 /**
- * 表格存储特殊列名集合
+ * 表格存储通用列
  *
  * <h2>主要用途
- * <p>将所有表格都可能用到的字段集合在这里。
+ * <p>将所有表格都可能用到的列集合在这里。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/8/10
  * @since 1.4.0
  **/
-public abstract class TableStoreColumnName {
+public abstract class TableStoreCommonColumn {
     /** 哈希化的用户 ID */
     public static final String HASHED_USER_ID = "uid";
 

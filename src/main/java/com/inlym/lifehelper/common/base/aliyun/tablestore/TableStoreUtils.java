@@ -60,7 +60,8 @@ public abstract class TableStoreUtils {
      * @since 1.4.0
      */
     public static int parseHashedId(String hashedId) {
-        String[] strings = hashedId.split("-");
+        String[] strings = hashedId.split("_");
+
         String sid = strings[1];
         return Integer.parseInt(sid);
     }

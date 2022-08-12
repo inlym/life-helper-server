@@ -3,7 +3,7 @@ package com.inlym.lifehelper.photoalbum.album.entity;
 import com.alicloud.openservices.tablestore.model.*;
 import com.alicloud.openservices.tablestore.model.condition.SingleColumnValueCondition;
 import com.alicloud.openservices.tablestore.model.filter.SingleColumnValueFilter;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreColumnName;
+import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreCommonColumn;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreUtils;
 import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnClient;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class AlbumRepository {
         PrimaryKey primaryKey = row.getPrimaryKey();
         for (PrimaryKeyColumn primaryKeyColumn : primaryKey.getPrimaryKeyColumns()) {
             String columnName = primaryKeyColumn.getName();
-            if (columnName.equals(TableStoreColumnName.HASHED_USER_ID)) {
+            if (columnName.equals(TableStoreCommonColumn.HASHED_USER_ID)) {
                 String hashedUserId = primaryKeyColumn
                     .getValue()
                     .asString();
@@ -67,6 +67,10 @@ public class AlbumRepository {
                 album.setDescription(column
                     .getValue()
                     .asString());
+            } else if ("last_upload_time".equals(columnName)) {
+                album.setLastUploadTime(column
+                    .getValue()
+                    .asLong());
             } else if ("create_time".equals(columnName)) {
                 album.setCreateTime(column
                     .getValue()
@@ -96,15 +100,15 @@ public class AlbumRepository {
         album.setUpdateTime(now);
 
         PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        primaryKeyBuilder.addPrimaryKeyColumn(TableStoreColumnName.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
+        primaryKeyBuilder.addPrimaryKeyColumn(TableStoreCommonColumn.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
         primaryKeyBuilder.addPrimaryKeyColumn("album_id", PrimaryKeyValue.fromString(album.getAlbumId()));
         PrimaryKey primaryKey = primaryKeyBuilder.build();
 
         RowPutChange rowPutChange = new RowPutChange("album", primaryKey);
         rowPutChange.addColumn("name", ColumnValue.fromString(album.getName()));
         rowPutChange.addColumn("description", ColumnValue.fromString(album.getDescription()));
-        rowPutChange.addColumn(TableStoreColumnName.CREATE_TIME, ColumnValue.fromLong(now));
-        rowPutChange.addColumn(TableStoreColumnName.UPDATE_TIME, ColumnValue.fromLong(now));
+        rowPutChange.addColumn(TableStoreCommonColumn.CREATE_TIME, ColumnValue.fromLong(now));
+        rowPutChange.addColumn(TableStoreCommonColumn.UPDATE_TIME, ColumnValue.fromLong(now));
         wideColumnClient.putRow(new PutRowRequest(rowPutChange));
 
         return album;
@@ -123,19 +127,19 @@ public class AlbumRepository {
         RangeRowQueryCriteria criteria = new RangeRowQueryCriteria("album");
 
         PrimaryKeyBuilder startPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        startPrimaryKeyBuilder.addPrimaryKeyColumn(TableStoreColumnName.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
+        startPrimaryKeyBuilder.addPrimaryKeyColumn(TableStoreCommonColumn.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
         startPrimaryKeyBuilder.addPrimaryKeyColumn("album_id", PrimaryKeyValue.INF_MIN);
         criteria.setInclusiveStartPrimaryKey(startPrimaryKeyBuilder.build());
 
         PrimaryKeyBuilder endPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        endPrimaryKeyBuilder.addPrimaryKeyColumn(TableStoreColumnName.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
+        endPrimaryKeyBuilder.addPrimaryKeyColumn(TableStoreCommonColumn.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
         endPrimaryKeyBuilder.addPrimaryKeyColumn("album_id", PrimaryKeyValue.INF_MAX);
         criteria.setExclusiveEndPrimaryKey(endPrimaryKeyBuilder.build());
 
         // 设置最大读取半本书为 1
         criteria.setMaxVersions(1);
 
-        SingleColumnValueFilter filter = new SingleColumnValueFilter(TableStoreColumnName.DELETED, SingleColumnValueFilter.CompareOperator.EQUAL, ColumnValue.fromBoolean(false));
+        SingleColumnValueFilter filter = new SingleColumnValueFilter(TableStoreCommonColumn.DELETED, SingleColumnValueFilter.CompareOperator.EQUAL, ColumnValue.fromBoolean(false));
         filter.setLatestVersionsOnly(true);
         filter.setPassIfMissing(true);
         criteria.setFilter(filter);
@@ -164,6 +168,38 @@ public class AlbumRepository {
     }
 
     /**
+     * 更新相册
+     *
+     * @param album 相册实体
+     *
+     * @since 1.4.0
+     */
+    public Album update(Album album) {
+        String hashedUserId = TableStoreUtils.getHashedId(album.getUserId());
+
+        long now = System.currentTimeMillis();
+        album.setUpdateTime(now);
+
+        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+        primaryKeyBuilder.addPrimaryKeyColumn(TableStoreCommonColumn.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
+        primaryKeyBuilder.addPrimaryKeyColumn("album_id", PrimaryKeyValue.fromString(album.getAlbumId()));
+        PrimaryKey primaryKey = primaryKeyBuilder.build();
+
+        RowUpdateChange change = new RowUpdateChange("album", primaryKey);
+        change.put(TableStoreCommonColumn.UPDATE_TIME, ColumnValue.fromLong(now));
+        if (album.getName() != null) {
+            change.put("name", ColumnValue.fromString(album.getName()));
+        }
+        if (album.getDescription() != null) {
+            change.put("description", ColumnValue.fromString(album.getDescription()));
+        }
+
+        wideColumnClient.updateRow(new UpdateRowRequest(change));
+
+        return album;
+    }
+
+    /**
      * 软删除一个相册
      *
      * @param userId  用户 ID
@@ -175,11 +211,11 @@ public class AlbumRepository {
         String hashedUserId = TableStoreUtils.getHashedId(userId);
 
         PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        primaryKeyBuilder.addPrimaryKeyColumn(TableStoreColumnName.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
+        primaryKeyBuilder.addPrimaryKeyColumn(TableStoreCommonColumn.HASHED_USER_ID, PrimaryKeyValue.fromString(hashedUserId));
         primaryKeyBuilder.addPrimaryKeyColumn("album_id", PrimaryKeyValue.fromString(albumId));
         PrimaryKey primaryKey = primaryKeyBuilder.build();
 
-        SingleColumnValueCondition singleColumnValueCondition = new SingleColumnValueCondition(TableStoreColumnName.DELETED,
+        SingleColumnValueCondition singleColumnValueCondition = new SingleColumnValueCondition(TableStoreCommonColumn.DELETED,
             SingleColumnValueCondition.CompareOperator.NOT_EQUAL, ColumnValue.fromBoolean(true));
         singleColumnValueCondition.setLatestVersionsOnly(true);
         singleColumnValueCondition.setPassIfMissing(true);
@@ -190,8 +226,8 @@ public class AlbumRepository {
         RowUpdateChange change = new RowUpdateChange("album", primaryKey);
         change.setCondition(condition);
 
-        change.put(TableStoreColumnName.DELETED, ColumnValue.fromBoolean(true));
-        change.put(TableStoreColumnName.DELETE_TIME, ColumnValue.fromLong(System.currentTimeMillis()));
+        change.put(TableStoreCommonColumn.DELETED, ColumnValue.fromBoolean(true));
+        change.put(TableStoreCommonColumn.DELETE_TIME, ColumnValue.fromLong(System.currentTimeMillis()));
 
         wideColumnClient.updateRow(new UpdateRowRequest(change));
     }

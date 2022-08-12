@@ -40,6 +40,9 @@ public class Album {
     /** 相册描述 */
     private String description;
 
+    /** 最近一次上传照片的时间 */
+    private Long lastUploadTime;
+
     // ======================= 以下列有存储库控制，不要手动修改 =======================
 
     /** 是否被删除 */

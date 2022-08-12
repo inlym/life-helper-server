@@ -1,10 +1,13 @@
 package com.inlym.lifehelper.photoalbum.album;
 
+import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.entity.AlbumRepository;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 相册服务
@@ -28,7 +31,7 @@ public class AlbumService {
      *
      * @since 1.4.0
      */
-    private AlbumVO convert(Album album) {
+    public AlbumVO convert(Album album) {
         return AlbumVO
             .builder()
             .id(album.getAlbumId())
@@ -37,5 +40,53 @@ public class AlbumService {
             .createTime(album.getCreateTime())
             .updateTime(album.getUpdateTime())
             .build();
+    }
+
+    /**
+     * 创建新相册
+     *
+     * @param album 包含部分属性的相册实体
+     *
+     * @since 1.4.0
+     */
+    public Album createAlbum(Album album) {
+        album.setAlbumId(IdUtil.simpleUUID());
+        album.setLastUploadTime(System.currentTimeMillis());
+
+        return albumRepository.create(album);
+    }
+
+    /**
+     * 获取用户的所有相册
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.4.0
+     */
+    public List<Album> listAlbums(int userId) {
+        return albumRepository.findAll(userId);
+    }
+
+    /**
+     * 更新相册信息
+     *
+     * @param album 相册实体
+     *
+     * @since 1.4.0
+     */
+    public Album updateAlbum(Album album) {
+        return albumRepository.update(album);
+    }
+
+    /**
+     * 删除相册
+     *
+     * @param userId  用户 ID
+     * @param albumId 相册 ID
+     *
+     * @since 1.4.0
+     */
+    public void deleteAlbum(int userId, String albumId) {
+        albumRepository.softRemove(userId, albumId);
     }
 }
