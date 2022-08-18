@@ -1,10 +1,10 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn;
+package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
 
 import com.alicloud.openservices.tablestore.model.*;
 import com.google.common.base.CaseFormat;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.ColumnName;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.PrimaryKeyColumn;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.Table;
+import com.inlym.lifehelper.common.base.aliyun.ots.annotation.ColumnName;
+import com.inlym.lifehelper.common.base.aliyun.ots.annotation.PrimaryKeyColumn;
+import com.inlym.lifehelper.common.base.aliyun.ots.annotation.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;

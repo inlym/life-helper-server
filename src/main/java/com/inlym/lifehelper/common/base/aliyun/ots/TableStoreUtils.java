@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore;
+package com.inlym.lifehelper.common.base.aliyun.ots;
 
 import com.alicloud.openservices.tablestore.model.*;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.AttributeColumn;
+import com.inlym.lifehelper.common.base.aliyun.ots.annotation.AttributeColumn;
 import lombok.SneakyThrows;
 import org.springframework.util.DigestUtils;
 

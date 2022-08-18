@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn;
+package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @since 1.3.0
  **/
 @Component
-@ConfigurationProperties(prefix = "aliyun.tablestore.wide-column")
+@ConfigurationProperties(prefix = "aliyun.ots.wide-column")
 @Data
 public class WideColumnProperties {
     /** 访问密钥 ID */

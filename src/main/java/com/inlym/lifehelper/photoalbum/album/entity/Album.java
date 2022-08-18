@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.photoalbum.album.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.ColumnName;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.annotation.PrimaryKeyColumn;
+import com.inlym.lifehelper.common.base.aliyun.ots.annotation.ColumnName;
+import com.inlym.lifehelper.common.base.aliyun.ots.annotation.PrimaryKeyColumn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

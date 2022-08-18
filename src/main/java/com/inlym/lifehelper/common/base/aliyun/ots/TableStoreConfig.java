@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore;
+package com.inlym.lifehelper.common.base.aliyun.ots;
 
-import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnClient;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnProperties;
+import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnClient;
+import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

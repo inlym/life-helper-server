@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore;
+package com.inlym.lifehelper.common.base.aliyun.ots;
 
 /**
  * 表格存储通用列

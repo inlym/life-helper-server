@@ -3,9 +3,9 @@ package com.inlym.lifehelper.photoalbum.album.entity;
 import com.alicloud.openservices.tablestore.model.*;
 import com.alicloud.openservices.tablestore.model.condition.SingleColumnValueCondition;
 import com.alicloud.openservices.tablestore.model.filter.SingleColumnValueFilter;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreCommonColumn;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.TableStoreUtils;
-import com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn.WideColumnClient;
+import com.inlym.lifehelper.common.base.aliyun.ots.TableStoreCommonColumn;
+import com.inlym.lifehelper.common.base.aliyun.ots.TableStoreUtils;
+import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

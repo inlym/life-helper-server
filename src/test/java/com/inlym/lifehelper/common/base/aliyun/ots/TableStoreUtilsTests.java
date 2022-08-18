@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore;
+package com.inlym.lifehelper.common.base.aliyun.ots;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

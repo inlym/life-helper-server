@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.tablestore.widecolumn;
+package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
 
 /**
  * 宽表模型实例数据表
