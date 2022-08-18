@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.annotation;
+package com.inlym.lifehelper.common.base.aliyun.ots.core.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.annotation;
+package com.inlym.lifehelper.common.base.aliyun.ots.core.annotation;
 
 import java.lang.annotation.*;
 
@@ -17,5 +17,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface AttributeColumn {
     /** 列名 */
-    String value() default "";
+    String name() default "";
 }

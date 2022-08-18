@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.annotation;
+package com.inlym.lifehelper.common.base.aliyun.ots.core.annotation;
 
 import java.lang.annotation.*;
 
@@ -7,6 +7,9 @@ import java.lang.annotation.*;
  *
  * <h2>说明
  * <p>用于注解表格存储的数据表
+ *
+ * <h2>什么时候使用？
+ * <p>在表名不是类名的驼峰命名时，使用该注解自定义表名。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/6/21
@@ -17,5 +20,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface Table {
     /** 表名 */
-    String value();
+    String name();
 }
