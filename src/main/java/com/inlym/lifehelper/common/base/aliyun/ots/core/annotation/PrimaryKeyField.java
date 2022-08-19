@@ -3,10 +3,13 @@ package com.inlym.lifehelper.common.base.aliyun.ots.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * 表格存储主键列注解
+ * 表格存储主键列字段的注解
  *
  * <h2>什么时候使用？
- * <p>凡是主键列，均需要使用该注解标注。
+ * <p>凡是主键列字段，均需要使用该注解标注。
+ *
+ * <h2>备注（2022.08.19）
+ * <p>原本命名为 {@code PrimaryKeyColumn}，但是为了避免和 {@link com.alicloud.openservices.tablestore.model.PrimaryKeyColumn} 重名，因此改名。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/6/21
@@ -15,7 +18,7 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface PrimaryKeyColumn {
+public @interface PrimaryKeyField {
     /** 主键排序 */
     int order();
 

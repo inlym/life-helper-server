@@ -1,8 +1,7 @@
 package com.inlym.lifehelper.photoalbum.album.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.ColumnName;
-import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyColumn;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,12 +23,11 @@ public class Album {
 
     /** 所属用户 ID - 分区键 */
     @JsonIgnore
-    @PrimaryKeyColumn(order = 1, hashed = true)
-    @ColumnName("uid")
+    @PrimaryKeyField(order = 1, hashed = true)
     private Integer userId;
 
     /** 相册 ID */
-    @PrimaryKeyColumn(order = 2)
+    @PrimaryKeyField(order = 2)
     private String albumId;
 
     // ================================= 属性列 =================================
