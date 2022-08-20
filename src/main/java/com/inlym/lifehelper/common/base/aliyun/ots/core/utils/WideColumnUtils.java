@@ -1,12 +1,11 @@
 package com.inlym.lifehelper.common.base.aliyun.ots.core.utils;
 
-import com.alicloud.openservices.tablestore.model.ColumnValue;
-import com.alicloud.openservices.tablestore.model.PrimaryKey;
-import com.alicloud.openservices.tablestore.model.PrimaryKeyBuilder;
-import com.alicloud.openservices.tablestore.model.PrimaryKeyValue;
+import cn.hutool.core.util.IdUtil;
+import com.alicloud.openservices.tablestore.model.*;
 import com.google.common.base.CaseFormat;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.AttributeField;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyField;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyMode;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.Table;
 import lombok.SneakyThrows;
 import org.springframework.util.DigestUtils;
@@ -26,7 +25,7 @@ import java.util.List;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/8/20
- * @since 1.x.x
+ * @since 1.4.0
  **/
 public abstract class WideColumnUtils {
     /**
@@ -89,38 +88,56 @@ public abstract class WideColumnUtils {
     }
 
     /**
-     * 获取实体对象主键字段在表格存储中使用的列名
+     * 获取实体的主键列列字段列表（以按照排序字段升序排列）
      *
-     * <h2>备注（2022.08.20）
-     * <h2>在前置环节，已经校验了该注解存在，因此在此处使用时，默认该前提。
-     *
-     * @param field 字段
+     * @param entity 实体对象
      *
      * @since 1.4.0
      */
-    public static String getPrimaryKeyColumnName(Field field) {
-        PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
-        if (StringUtils.hasText(primaryKeyField.name())) {
-            return primaryKeyField.name();
-        } else {
-            return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName());
-        }
+    public static List<Field> getPrimaryKeyFieldList(Object entity) {
+        return Arrays
+            .stream(entity
+                .getClass()
+                .getDeclaredFields())
+            .filter(o -> o.getAnnotation(PrimaryKeyField.class) != null)
+            .sorted(Comparator.comparingInt(o -> o
+                .getAnnotation(PrimaryKeyField.class)
+                .order()))
+            .toList();
     }
 
     /**
-     * 获取属性列的“列名”
+     * 获取实体的属性列（非主键列）字段列表
      *
-     * <h2>备注（2022.08.20）
-     * <h2>标注属性列字段的 {@link com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.AttributeField} 为选填，注意判断。
+     * @param entity 实体对象
+     *
+     * @since 1.4.0
+     */
+    public static List<Field> getAttributeFieldList(Object entity) {
+        return Arrays
+            .stream(entity
+                .getClass()
+                .getDeclaredFields())
+            .filter(o -> o.getAnnotation(PrimaryKeyField.class) == null)
+            .toList();
+    }
+
+    /**
+     * 获取实体对象在表格存储中使用的列名（不区分主键列和属性列）
      *
      * @param field 字段
      *
      * @since 1.4.0
      */
-    public static String getAttributeColumnName(Field field) {
-        AttributeField attributeField = field.getAnnotation(AttributeField.class);
+    public static String getColumnName(Field field) {
+        // 主键列注解
+        PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
+        if (primaryKeyField != null && StringUtils.hasText(primaryKeyField.name())) {
+            return primaryKeyField.name();
+        }
 
-        // 如果使用的该注解且列名（`name`）属性有值，则直接使用该值作为列名
+        // 属性列注解
+        AttributeField attributeField = field.getAnnotation(AttributeField.class);
         if (attributeField != null && StringUtils.hasText(attributeField.name())) {
             return attributeField.name();
         }
@@ -136,7 +153,7 @@ public abstract class WideColumnUtils {
      *
      * @since 1.4.0
      */
-    public static ColumnValue convert(Object obj) {
+    public static ColumnValue convertToColumnValue(Object obj) {
         if (obj == null) {
             return ColumnValue.INTERNAL_NULL_VALUE;
         } else if (obj instanceof String) {
@@ -168,18 +185,7 @@ public abstract class WideColumnUtils {
             obj = getHashedId((Long) obj);
         }
 
-        return PrimaryKeyValue.fromColumn(convert(obj));
-    }
-
-    /**
-     * 将字段值转化为属性列值
-     *
-     * @param obj 字段值
-     *
-     * @since 1.4.0
-     */
-    public static ColumnValue getAttributeColumnValue(Object obj) {
-        return convert(obj);
+        return PrimaryKeyValue.fromColumn(convertToColumnValue(obj));
     }
 
     /**
@@ -208,11 +214,104 @@ public abstract class WideColumnUtils {
             PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
             boolean hashed = primaryKeyField.hashed();
 
-            String name = getPrimaryKeyColumnName(field);
+            String name = getColumnName(field);
             PrimaryKeyValue value = getPrimaryKeyValue(field.get(entity), hashed);
             primaryKeyBuilder.addPrimaryKeyColumn(name, value);
         }
 
         return primaryKeyBuilder.build();
+    }
+
+    /**
+     * 将从表格存储查询获取的行构建实体对象
+     *
+     * @param row   从表格存储查询获取的行
+     * @param clazz 对象实体类型
+     * @param <T>   对象实体类型
+     *
+     * @since 1.4.0
+     */
+    @SneakyThrows
+    public static <T> T buildEntity(Row row, Class<T> clazz) {
+        // 新建一个实例对象
+        T entity = clazz
+            .getDeclaredConstructor()
+            .newInstance();
+
+        // 遍历实例对象的字段，如果该字段对应的列有值，则给字段赋值
+        for (Field field : entity
+            .getClass()
+            .getDeclaredFields()) {
+            String columnName = getColumnName(field);
+
+            PrimaryKeyColumn primaryKeyColumn = row
+                .getPrimaryKey()
+                .getPrimaryKeyColumn(columnName);
+            if (primaryKeyColumn != null) {
+                field.setAccessible(true);
+                if (field.getType() == String.class) {
+                    field.set(entity, primaryKeyColumn
+                        .getValue()
+                        .asString());
+                } else if (field.getType() == Long.class) {
+                    field.set(entity, primaryKeyColumn
+                        .getValue()
+                        .asLong());
+                }
+                continue;
+            }
+
+            Column column = row.getLatestColumn(columnName);
+            if (column != null) {
+                field.setAccessible(true);
+                if (field.getType() == String.class) {
+                    field.set(entity, column
+                        .getValue()
+                        .asString());
+                } else if (field.getType() == Long.class) {
+                    field.set(entity, column
+                        .getValue()
+                        .asLong());
+                } else if (field.getType() == Double.class) {
+                    field.set(entity, column
+                        .getValue()
+                        .asDouble());
+                } else if (field.getType() == Boolean.class) {
+                    field.set(entity, column
+                        .getValue()
+                        .asBoolean());
+                }
+            }
+        }
+
+        return entity;
+    }
+
+    /**
+     * 创建时自动填充一些实体对象字段
+     *
+     * <h2>什么情况下字段会被自动赋值？
+     * <li>（1）标注了 {@link PrimaryKeyField} 注解且 {@link PrimaryKeyField#mode()} 为 {@code PrimaryKeyMode.SIMPLE_UUID}
+     *
+     * @param entity 实体对象
+     *
+     * @since 1.4.0
+     */
+    @SneakyThrows
+    public static void fillEmptyFieldWhenCreate(Object entity) {
+        for (Field field : entity
+            .getClass()
+            .getDeclaredFields()) {
+            PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
+
+            if (primaryKeyField != null && primaryKeyField.mode() == PrimaryKeyMode.SIMPLE_UUID) {
+                field.setAccessible(true);
+                if (field.get(entity) == null) {
+                    // 字段值为空
+                    String id = IdUtil.simpleUUID();
+                    field.set(entity, id);
+                }
+            }
+        }
     }
 }
