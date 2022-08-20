@@ -2,7 +2,6 @@ package com.inlym.lifehelper.photoalbum.album;
 
 import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
-import com.inlym.lifehelper.photoalbum.album.entity.AlbumRepository;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AlbumService {
-    private final AlbumRepository albumRepository;
-
     /**
      * 将相册实体转化为可用于客户端展示使用的对象结构
      *
@@ -53,7 +50,7 @@ public class AlbumService {
         album.setAlbumId(IdUtil.simpleUUID());
         album.setLastUploadTime(System.currentTimeMillis());
 
-        return albumRepository.create(album);
+        return null;
     }
 
     /**
@@ -64,7 +61,7 @@ public class AlbumService {
      * @since 1.4.0
      */
     public List<Album> listAlbums(int userId) {
-        return albumRepository.findAll(userId);
+        return null;
     }
 
     /**
@@ -75,7 +72,7 @@ public class AlbumService {
      * @since 1.4.0
      */
     public Album updateAlbum(Album album) {
-        return albumRepository.update(album);
+        return null;
     }
 
     /**
@@ -87,6 +84,6 @@ public class AlbumService {
      * @since 1.4.0
      */
     public void deleteAlbum(int userId, String albumId) {
-        albumRepository.softRemove(userId, albumId);
+
     }
 }
