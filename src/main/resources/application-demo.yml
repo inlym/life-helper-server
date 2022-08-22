@@ -79,7 +79,7 @@ aliyun:
         alias-url: xxxxxxxxxxxx
 
     # 阿里云表格存储配置
-    tablestore:
+    ots:
         # 宽表模型
         wide-column:
             access-key-id: xxxxxxxxxxxx

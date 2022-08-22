@@ -38,7 +38,7 @@ public abstract class WideColumnUtils {
      *
      * @see <a href="https://help.aliyun.com/document_detail/142533.html">表设计</a>
      */
-    public static String getHashedId(long id) {
+    public static String getHashedId(int id) {
         String sid = String.valueOf(id);
         String prefix = DigestUtils
             .md5DigestAsHex(sid.getBytes(StandardCharsets.UTF_8))
@@ -54,11 +54,11 @@ public abstract class WideColumnUtils {
      *
      * @since 1.4.0
      */
-    public static long parseHashedId(String hashedId) {
+    public static int parseHashedId(String hashedId) {
         String[] strings = hashedId.split("_");
 
         String sid = strings[1];
-        return Long.parseLong(sid);
+        return Integer.parseInt(sid);
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class WideColumnUtils {
      */
     public static PrimaryKeyValue getPrimaryKeyValue(Object obj, boolean hashed) {
         if (hashed) {
-            obj = getHashedId((Long) obj);
+            obj = getHashedId((int) obj);
         }
 
         return PrimaryKeyValue.fromColumn(convertToColumnValue(obj));
@@ -215,6 +215,7 @@ public abstract class WideColumnUtils {
             boolean hashed = primaryKeyField.hashed();
 
             String name = getColumnName(field);
+            field.setAccessible(true);
             PrimaryKeyValue value = getPrimaryKeyValue(field.get(entity), hashed);
             primaryKeyBuilder.addPrimaryKeyColumn(name, value);
         }

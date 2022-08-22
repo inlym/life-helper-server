@@ -41,6 +41,7 @@ public class WideColumnRepository<T> {
     @SneakyThrows
     private ColumnValue getColumnValue(Field field, T entity) {
         Class<?> type = field.getType();
+        field.setAccessible(true);
         Object o = field.get(entity);
 
         return WideColumnUtils.convertToColumnValue(o);
@@ -126,6 +127,7 @@ public class WideColumnRepository<T> {
      * @since 1.4.0
      */
     @SneakyThrows
+    @SuppressWarnings("unchecked")
     public List<T> findAllByPartitionKey(T entity) {
         List<Field> primaryKeyFieldList = WideColumnUtils.getPrimaryKeyFieldList(entity);
         PrimaryKeyBuilder startPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();

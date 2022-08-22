@@ -29,5 +29,5 @@ public @interface PrimaryKeyField {
     String name() default "";
 
     /** 主键列生成模式 */
-    PrimaryKeyMode mode() default PrimaryKeyMode.SIMPLE_UUID;
+    PrimaryKeyMode mode() default PrimaryKeyMode.REQUIRED;
 }
