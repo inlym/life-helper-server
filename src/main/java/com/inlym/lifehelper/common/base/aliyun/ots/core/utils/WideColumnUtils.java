@@ -77,7 +77,7 @@ public abstract class WideColumnUtils {
             .getAnnotation(Table.class);
 
         // 如果使用了 {@link Table} 注解并指定了表名，则取指定的表名
-        if (table != null && StringUtils.hasLength(table.name())) {
+        if (table != null && StringUtils.hasText(table.name())) {
             return table.name();
         }
 
@@ -88,7 +88,7 @@ public abstract class WideColumnUtils {
     }
 
     /**
-     * 获取实体的主键列列字段列表（以按照排序字段升序排列）
+     * 获取实体的主键列字段列表（已按照排序字段升序排列）
      *
      * @param entity 实体对象
      *
@@ -123,7 +123,7 @@ public abstract class WideColumnUtils {
     }
 
     /**
-     * 获取实体对象在表格存储中使用的列名（不区分主键列和属性列）
+     * 获取实体对象在表格存储中使用的列名（已兼容主键列和属性列）
      *
      * @param field 字段
      *
@@ -147,7 +147,7 @@ public abstract class WideColumnUtils {
     }
 
     /**
-     * 将字段值转化为宽表模型中使用的列值类型
+     * 将普通类型的字段值转化为宽表模型中使用的列值类型
      *
      * @param obj 字段值
      *
@@ -199,25 +199,75 @@ public abstract class WideColumnUtils {
     public static PrimaryKey buildPrimaryKey(Object entity) {
         PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
 
-        // 主键列字段的列表
-        List<Field> fields = Arrays
-            .stream(entity
-                .getClass()
-                .getDeclaredFields())
-            .filter(o -> o.getAnnotation(PrimaryKeyField.class) != null)
-            .sorted(Comparator.comparingInt(o -> o
-                .getAnnotation(PrimaryKeyField.class)
-                .order()))
-            .toList();
-
-        for (Field field : fields) {
+        for (Field field : getPrimaryKeyFieldList(entity)) {
             PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
             boolean hashed = primaryKeyField.hashed();
-
             String name = getColumnName(field);
             field.setAccessible(true);
-            PrimaryKeyValue value = getPrimaryKeyValue(field.get(entity), hashed);
-            primaryKeyBuilder.addPrimaryKeyColumn(name, value);
+            Object fieldValue = field.get(entity);
+            System.out.println("== fieldValue == " + fieldValue);
+            if (fieldValue != null) {
+                PrimaryKeyValue value = getPrimaryKeyValue(fieldValue, hashed);
+                primaryKeyBuilder.addPrimaryKeyColumn(name, value);
+            } else {
+                throw new IllegalArgumentException("主键字段不允许为空");
+            }
+        }
+
+        return primaryKeyBuilder.build();
+    }
+
+    /**
+     * 构建最小主键
+     *
+     * @param entity 实体对象
+     *
+     * @since 1.4.0
+     */
+    @SneakyThrows
+    public static PrimaryKey buildMinPrimaryKey(Object entity) {
+        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+
+        for (Field field : getPrimaryKeyFieldList(entity)) {
+            PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
+            boolean hashed = primaryKeyField.hashed();
+            String name = getColumnName(field);
+            field.setAccessible(true);
+            Object fieldValue = field.get(entity);
+            if (fieldValue != null) {
+                PrimaryKeyValue value = getPrimaryKeyValue(fieldValue, hashed);
+                primaryKeyBuilder.addPrimaryKeyColumn(name, value);
+            } else {
+                primaryKeyBuilder.addPrimaryKeyColumn(name, PrimaryKeyValue.INF_MIN);
+            }
+        }
+
+        return primaryKeyBuilder.build();
+    }
+
+    /**
+     * 构建最大主键
+     *
+     * @param entity 实体对象
+     *
+     * @since 1.4.0
+     */
+    @SneakyThrows
+    public static PrimaryKey buildMaxPrimaryKey(Object entity) {
+        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+
+        for (Field field : getPrimaryKeyFieldList(entity)) {
+            PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
+            boolean hashed = primaryKeyField.hashed();
+            String name = getColumnName(field);
+            field.setAccessible(true);
+            Object fieldValue = field.get(entity);
+            if (fieldValue != null) {
+                PrimaryKeyValue value = getPrimaryKeyValue(fieldValue, hashed);
+                primaryKeyBuilder.addPrimaryKeyColumn(name, value);
+            } else {
+                primaryKeyBuilder.addPrimaryKeyColumn(name, PrimaryKeyValue.INF_MAX);
+            }
         }
 
         return primaryKeyBuilder.build();
