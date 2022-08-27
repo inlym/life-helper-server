@@ -35,7 +35,7 @@ public abstract class WideColumnUtils {
      *
      * @see <a href="https://help.aliyun.com/document_detail/142533.html">表设计</a>
      */
-    public static String getHashedId(int id) {
+    private static String getHashedId(int id) {
         String sid = String.valueOf(id);
         String prefix = DigestUtils
             .md5DigestAsHex(sid.getBytes(StandardCharsets.UTF_8))
@@ -51,7 +51,7 @@ public abstract class WideColumnUtils {
      *
      * @since 1.4.0
      */
-    public static int parseHashedId(String hashedId) {
+    private static int parseHashedId(String hashedId) {
         String[] strings = hashedId.split("_");
 
         String sid = strings[1];
@@ -317,10 +317,32 @@ public abstract class WideColumnUtils {
                         .getValue()
                         .asString());
                 } else if (field.getType() == Long.class) {
-                    field.set(entity, primaryKeyColumn
-                        .getValue()
-                        .asLong());
+                    PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
+                    if (primaryKeyField != null && primaryKeyField.hashed()) {
+                        int id = parseHashedId(primaryKeyColumn
+                            .getValue()
+                            .asString());
+                        field.set(entity, (long) id);
+                    } else {
+                        field.set(entity, primaryKeyColumn
+                            .getValue()
+                            .asLong());
+                    }
+                } else if (field.getType() == Integer.class) {
+                    PrimaryKeyField primaryKeyField = field.getAnnotation(PrimaryKeyField.class);
+                    if (primaryKeyField != null && primaryKeyField.hashed()) {
+                        int id = parseHashedId(primaryKeyColumn
+                            .getValue()
+                            .asString());
+                        field.set(entity, id);
+                    } else {
+                        field.set(entity, (int) primaryKeyColumn
+                            .getValue()
+                            .asLong());
+                    }
                 }
+
+                // 备注：能进入这个条件语句，说明该字段是主键字段，就没必要去属性字段再跑一遍了
                 continue;
             }
 
