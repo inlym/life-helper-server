@@ -1,16 +1,14 @@
 package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
 
 import com.alicloud.openservices.tablestore.model.*;
-import com.alicloud.openservices.tablestore.model.filter.SingleColumnValueFilter;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.WideColumnUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 表格存储宽表模型存储库
@@ -23,16 +21,12 @@ import java.util.List;
  * @since 1.4.0
  **/
 @Service
+@RequiredArgsConstructor
 public class WideColumnRepository<T> {
     /** 表示逻辑删除的列的名称，该字段自动化管理 */
     private static final String DELETED_COLUMN_NAME = "_deleted";
 
     private final WideColumnClient client;
-
-    public WideColumnRepository(WideColumnClient client) {
-        super();
-        this.client = client;
-    }
 
     /**
      * 从字段获取在表格存储中的列值
@@ -130,59 +124,5 @@ public class WideColumnRepository<T> {
         client.updateRow(new UpdateRowRequest(change));
 
         return entity;
-    }
-
-    /**
-     * 根据主键列找到一行记录
-     *
-     * @param entity （包含主键列字段的）实体对象
-     *
-     * @since 1.4.0
-     */
-    public T findOne(T entity) {
-        SingleRowQueryCriteria criteria = new SingleRowQueryCriteria(WideColumnUtils.getTableName(entity), WideColumnUtils.buildPrimaryKey(entity));
-        criteria.setMaxVersions(1);
-
-        GetRowResponse response = client.getRow(new GetRowRequest(criteria));
-        Row row = response.getRow();
-
-        return rowToEntity(row);
-    }
-
-    /**
-     * 根据主键查询所有结果
-     *
-     * @param entity 实体对象
-     *
-     * @since 1.4.0
-     */
-    @SneakyThrows
-    public List<T> findAll(T entity) {
-        // 兼容“软删除（逻辑删除）”功能，自定义一个过滤器
-        SingleColumnValueFilter filter = new SingleColumnValueFilter(DELETED_COLUMN_NAME, SingleColumnValueFilter.CompareOperator.EQUAL, ColumnValue.fromBoolean(false));
-        filter.setLatestVersionsOnly(true);
-        filter.setPassIfMissing(true);
-
-        RangeRowQueryCriteria criteria = new RangeRowQueryCriteria(WideColumnUtils.getTableName(entity));
-        criteria.setInclusiveStartPrimaryKey(WideColumnUtils.buildMinPrimaryKey(entity));
-        criteria.setExclusiveEndPrimaryKey(WideColumnUtils.buildMaxPrimaryKey(entity));
-        criteria.setMaxVersions(1);
-        criteria.setFilter(filter);
-
-        List<T> list = new ArrayList<>();
-        while (true) {
-            GetRangeResponse response = client.getRange(new GetRangeRequest(criteria));
-            for (Row row : response.getRows()) {
-                list.add(rowToEntity(row));
-            }
-
-            if (response.getNextStartPrimaryKey() != null) {
-                criteria.setInclusiveStartPrimaryKey(response.getNextStartPrimaryKey());
-            } else {
-                break;
-            }
-        }
-
-        return list;
     }
 }

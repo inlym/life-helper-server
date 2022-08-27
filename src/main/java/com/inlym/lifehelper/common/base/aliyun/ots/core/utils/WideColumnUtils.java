@@ -205,7 +205,7 @@ public abstract class WideColumnUtils {
             String name = getColumnName(field);
             field.setAccessible(true);
             Object fieldValue = field.get(entity);
-            System.out.println("== fieldValue == " + fieldValue);
+
             if (fieldValue != null) {
                 PrimaryKeyValue value = getPrimaryKeyValue(fieldValue, hashed);
                 primaryKeyBuilder.addPrimaryKeyColumn(name, value);
