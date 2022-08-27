@@ -20,9 +20,6 @@ import java.util.List;
 /**
  * 表格存储宽列模型帮助类
  *
- * <h2>主要用途
- * <p>将一些公共工具类方法从 {@link com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnRepository} 冲抽取出来。
- *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/8/20
  * @since 1.4.0
@@ -144,6 +141,21 @@ public abstract class WideColumnUtils {
 
         // 否则直接使用字段名的下划线命名作为列名
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName());
+    }
+
+    /**
+     * 获取字段值转化而成的列值
+     *
+     * @param field  字段
+     * @param entity 实体对象
+     *
+     * @since 1.4.0
+     */
+    @SneakyThrows
+    public static ColumnValue getColumnValue(Field field, Object entity) {
+        field.setAccessible(true);
+        Object value = field.get(entity);
+        return convertToColumnValue(value);
     }
 
     /**

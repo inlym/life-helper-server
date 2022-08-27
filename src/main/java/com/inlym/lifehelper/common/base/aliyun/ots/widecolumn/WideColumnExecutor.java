@@ -6,6 +6,7 @@ import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.WideColumnUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,75 @@ public class WideColumnExecutor {
     private static final String DELETED_COLUMN_NAME = "_deleted";
 
     private final WideColumnClient client;
+
+    /**
+     * 新增一行数据
+     *
+     * @param entity 实体对象
+     * @param <T>    实体类型
+     *
+     * @since 1.4.0
+     */
+    public <T> T create(T entity) {
+        String tableName = WideColumnUtils.getTableName(entity);
+        PrimaryKey primaryKey = WideColumnUtils.buildPrimaryKey(entity);
+
+        WideColumnUtils.fillEmptyFieldWhenCreate(entity);
+        RowPutChange change = new RowPutChange(tableName, primaryKey);
+        for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
+            String name = WideColumnUtils.getColumnName(field);
+            ColumnValue value = WideColumnUtils.getColumnValue(field, entity);
+            if (!ColumnValue.INTERNAL_NULL_VALUE.equals(value)) {
+                // 仅添加非空列
+                change.addColumn(name, value);
+            }
+        }
+
+        client.putRow(new PutRowRequest(change));
+
+        return entity;
+    }
+
+    /**
+     * 删除一行数据
+     *
+     * @param entity 实体对象
+     *
+     * @since 1.4.0
+     */
+    public <T> void delete(T entity) {
+        String tableName = WideColumnUtils.getTableName(entity);
+        PrimaryKey primaryKey = WideColumnUtils.buildPrimaryKey(entity);
+
+        RowDeleteChange change = new RowDeleteChange(tableName, primaryKey);
+        client.deleteRow(new DeleteRowRequest(change));
+    }
+
+    /**
+     * 更新一行数据
+     *
+     * @param entity 实体对象
+     * @param <T>    实体类型
+     *
+     * @since 1.4.0
+     */
+    public <T> T update(T entity) {
+        String tableName = WideColumnUtils.getTableName(entity);
+        PrimaryKey primaryKey = WideColumnUtils.buildPrimaryKey(entity);
+
+        RowUpdateChange change = new RowUpdateChange(tableName, primaryKey);
+        for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
+            ColumnValue columnValue = WideColumnUtils.getColumnValue(field, entity);
+            if (!ColumnValue.INTERNAL_NULL_VALUE.equals(columnValue)) {
+                String name = WideColumnUtils.getColumnName(field);
+                change.put(name, columnValue);
+            }
+        }
+
+        client.updateRow(new UpdateRowRequest(change));
+
+        return entity;
+    }
 
     /**
      * 通过实体对象中的主键进行查找，如果不存在则返回 null
