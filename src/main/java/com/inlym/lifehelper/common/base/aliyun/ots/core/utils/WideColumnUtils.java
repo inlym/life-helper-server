@@ -172,6 +172,8 @@ public abstract class WideColumnUtils {
             return ColumnValue.fromString((String) obj);
         } else if (obj instanceof Long) {
             return ColumnValue.fromLong((Long) obj);
+        } else if (obj instanceof Integer) {
+            return ColumnValue.fromLong(Long.valueOf((Integer) obj));
         } else if (obj instanceof Double) {
             return ColumnValue.fromDouble((Double) obj);
         } else if (obj instanceof Boolean) {
@@ -340,6 +342,8 @@ public abstract class WideColumnUtils {
                             .getValue()
                             .asLong());
                     }
+                } else {
+                    throw new IllegalArgumentException("不支持的数据类型！");
                 }
 
                 // 备注：能进入这个条件语句，说明该字段是主键字段，就没必要去属性字段再跑一遍了
@@ -357,6 +361,10 @@ public abstract class WideColumnUtils {
                     field.set(entity, column
                         .getValue()
                         .asLong());
+                } else if (field.getType() == Integer.class) {
+                    field.set(entity, (int) column
+                        .getValue()
+                        .asLong());
                 } else if (field.getType() == Double.class) {
                     field.set(entity, column
                         .getValue()
@@ -365,6 +373,8 @@ public abstract class WideColumnUtils {
                     field.set(entity, column
                         .getValue()
                         .asBoolean());
+                } else {
+                    throw new IllegalArgumentException("不支持的数据类型！");
                 }
             }
         }

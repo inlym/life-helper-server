@@ -37,10 +37,11 @@ public class WideColumnExecutor {
      * @since 1.4.0
      */
     public <T> T create(T entity) {
+        WideColumnUtils.fillEmptyFieldWhenCreate(entity);
+
         String tableName = WideColumnUtils.getTableName(entity);
         PrimaryKey primaryKey = WideColumnUtils.buildPrimaryKey(entity);
 
-        WideColumnUtils.fillEmptyFieldWhenCreate(entity);
         RowPutChange change = new RowPutChange(tableName, primaryKey);
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
             String name = WideColumnUtils.getColumnName(field);
