@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.photoalbum.album.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyField;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyMode;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,6 @@ public class Album {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
-    @JsonIgnore
     @PrimaryKeyField(name = "uid", order = 1, hashed = true)
     private Integer userId;
 
@@ -39,20 +37,21 @@ public class Album {
     /** 相册描述 */
     private String description;
 
-    /** 最近一次上传照片的时间 */
-    private Long lastUploadTime;
-
-    // ======================= 以下列有存储库控制，不要手动修改 =======================
-
-    /** 是否被删除 */
-    private Boolean deleted;
-
     /** 创建时间 */
     private Long createTime;
 
-    /** 更新时间 */
+    /**
+     * 更新时间
+     *
+     * <h2>哪些操作会被当成“更新”？
+     * <li>1. 修改相册信息。
+     * <li>2. 上传、删除照片等。
+     */
     private Long updateTime;
 
-    /** 删除时间 */
-    private Long deleteTime;
+    // ---------- 以下是“缓存字段”——数据可以通过重新计算获得 ----------
+    // ---------- 为了避免查询时计算压力过大，存入当前实体 ------------
+
+    /** 照片数量 */
+    private Integer photoCount;
 }

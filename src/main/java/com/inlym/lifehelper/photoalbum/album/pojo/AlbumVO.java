@@ -34,4 +34,7 @@ public class AlbumVO {
 
     /** 更新时间 */
     private Long updateTime;
+
+    /** 照片数量 */
+    private Integer photoCount;
 }

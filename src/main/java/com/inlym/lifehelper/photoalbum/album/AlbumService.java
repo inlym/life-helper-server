@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.photoalbum.album;
 
-import cn.hutool.core.util.IdUtil;
+import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AlbumService {
+    private final WideColumnExecutor wideColumnExecutor;
+
     /**
      * 将相册实体转化为可用于客户端展示使用的对象结构
      *
@@ -29,6 +31,7 @@ public class AlbumService {
      * @since 1.4.0
      */
     public AlbumVO convert(Album album) {
+        System.out.println(album);
         return AlbumVO
             .builder()
             .id(album.getAlbumId())
@@ -36,21 +39,26 @@ public class AlbumService {
             .description(album.getDescription())
             .createTime(album.getCreateTime())
             .updateTime(album.getUpdateTime())
+            .photoCount(album.getPhotoCount())
             .build();
     }
 
     /**
      * 创建新相册
      *
-     * @param album 包含部分属性的相册实体
+     * @param album 包含部分属性的相册实体，该实体对象应包含以下属性：`userId`, `name`, `description`
      *
      * @since 1.4.0
      */
-    public Album createAlbum(Album album) {
-        album.setAlbumId(IdUtil.simpleUUID());
-        album.setLastUploadTime(System.currentTimeMillis());
+    public Album create(Album album) {
+        long now = System.currentTimeMillis();
 
-        return null;
+        // 给一些字段赋默认初始值
+        album.setCreateTime(now);
+        album.setUpdateTime(now);
+        album.setPhotoCount(0);
+
+        return wideColumnExecutor.create(album);
     }
 
     /**
@@ -60,8 +68,13 @@ public class AlbumService {
      *
      * @since 1.4.0
      */
-    public List<Album> listAlbums(int userId) {
-        return null;
+    public List<Album> list(int userId) {
+        Album album = Album
+            .builder()
+            .userId(userId)
+            .build();
+
+        return wideColumnExecutor.findAll(album, Album.class);
     }
 
     /**
@@ -71,8 +84,8 @@ public class AlbumService {
      *
      * @since 1.4.0
      */
-    public Album updateAlbum(Album album) {
-        return null;
+    public Album update(Album album) {
+        return wideColumnExecutor.update(album);
     }
 
     /**
@@ -83,7 +96,13 @@ public class AlbumService {
      *
      * @since 1.4.0
      */
-    public void deleteAlbum(int userId, String albumId) {
+    public void delete(int userId, String albumId) {
+        Album album = Album
+            .builder()
+            .userId(userId)
+            .albumId(albumId)
+            .build();
 
+        wideColumnExecutor.delete(album);
     }
 }

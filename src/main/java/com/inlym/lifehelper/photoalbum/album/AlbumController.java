@@ -47,7 +47,7 @@ public class AlbumController {
             .description(dto.getDescription())
             .build();
 
-        return albumService.convert(albumService.createAlbum(album));
+        return albumService.convert(albumService.create(album));
     }
 
     /**
@@ -61,7 +61,7 @@ public class AlbumController {
     @UserPermission
     public AlbumListVO listAlbums(@UserId int userId) {
         List<AlbumVO> list = new ArrayList<>(256);
-        for (Album album : albumService.listAlbums(userId)) {
+        for (Album album : albumService.list(userId)) {
             list.add(albumService.convert(album));
         }
 
@@ -82,7 +82,7 @@ public class AlbumController {
     @DeleteMapping("/albums/{id}")
     @UserPermission
     public AlbumVO deleteAlbum(@UserId int userId, @NotBlank @PathVariable String id) {
-        albumService.deleteAlbum(userId, id);
+        albumService.delete(userId, id);
 
         return AlbumVO
             .builder()
@@ -110,6 +110,6 @@ public class AlbumController {
             .description(dto.getDescription())
             .build();
 
-        return albumService.convert(albumService.updateAlbum(album));
+        return albumService.convert(albumService.update(album));
     }
 }
