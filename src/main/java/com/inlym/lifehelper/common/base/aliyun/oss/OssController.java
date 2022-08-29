@@ -31,10 +31,11 @@ public class OssController {
      */
     @GetMapping("/oss/credential")
     public OssPostCredential getOssPostCredential(@RequestParam(value = "type", required = false, defaultValue = OssDir.TEMP) String type) {
-        if (OssDir.PHOTO.equals(type)) {
+        if (OssDir.IMAGE.equals(type)) {
             GeneratePostCredentialOptions options = GeneratePostCredentialOptions
                 .builder()
-                .dirname(OssDir.PHOTO)
+                .dirname(OssDir.IMAGE)
+                .maxSize(20L * 1024 * 1024)
                 .build();
             return ossService.generatePostCredential(options);
         } else if (OssDir.VIDEO.equals(type)) {

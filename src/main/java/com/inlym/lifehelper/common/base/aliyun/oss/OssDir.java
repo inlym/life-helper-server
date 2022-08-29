@@ -21,10 +21,8 @@ public abstract class OssDir {
     public static final String AVATAR = "avatar";
 
     /** 存储相册中的照片 */
-    public static final String PHOTO = "photo";
+    public static final String IMAGE = "image";
 
     /** 存储相册中的视频 */
     public static final String VIDEO = "video";
-
-
 }
