@@ -36,7 +36,7 @@ public class ClientIpMethodArgumentResolver implements HandlerMethodArgumentReso
         if (ip != null) {
             return ip;
         }
-        
+
         throw new RuntimeException("未获取到客户端 IP 地址");
     }
 }

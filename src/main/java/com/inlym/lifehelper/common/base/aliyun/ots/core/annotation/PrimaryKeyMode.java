@@ -14,5 +14,5 @@ public enum PrimaryKeyMode {
     /** 在创建时，若为空则自动填充“去掉短横线的 UUID” */
     SIMPLE_UUID;
 
-    private PrimaryKeyMode() {}
+    PrimaryKeyMode() {}
 }
