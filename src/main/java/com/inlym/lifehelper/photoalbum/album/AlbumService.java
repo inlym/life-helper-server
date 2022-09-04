@@ -2,6 +2,7 @@ package com.inlym.lifehelper.photoalbum.album;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
+import com.inlym.lifehelper.photoalbum.album.exception.AlbumNotExistException;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -124,15 +125,19 @@ public class AlbumService {
     }
 
     /**
-     * 判断指定相册是否存在
+     * 查找指定相册，若不存在则直接报错
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
      *
      * @since 1.4.0
      */
-    public boolean exist(int userId, String albumId) {
+    public Album findOneOrElseThrow(int userId, String albumId) {
         Album album = findOne(userId, albumId);
-        return album != null;
+        if (album == null) {
+            throw AlbumNotExistException.create(albumId);
+        }
+
+        return album;
     }
 }

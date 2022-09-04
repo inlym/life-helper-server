@@ -2,9 +2,17 @@ package com.inlym.lifehelper.photoalbum.media;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.photoalbum.media.constant.MediaType;
+import com.inlym.lifehelper.photoalbum.media.entity.Media;
 import com.inlym.lifehelper.photoalbum.media.pojo.AddImageDTO;
+import com.inlym.lifehelper.photoalbum.media.pojo.AddVideoDTO;
+import com.inlym.lifehelper.photoalbum.media.pojo.MediaListVO;
 import com.inlym.lifehelper.photoalbum.media.pojo.MediaVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 媒体文件操作控制器
@@ -17,55 +25,104 @@ import org.springframework.web.bind.annotation.*;
  * @since 1.4.0
  **/
 @RestController
+@RequiredArgsConstructor
 public class MediaController {
+    private final MediaService mediaService;
+
     /**
      * 向相册新增图片
      *
      * @param albumId 相册 ID
+     * @param userId  用户 ID
+     * @param dto     请求数据
      *
      * @since 1.4.0
      */
     @PostMapping(path = "/album/{album_id}/media", params = "type=image")
     @UserPermission
-    public MediaVO addMedia(@PathVariable("album_id") String albumId, @UserId int userId, @RequestBody AddImageDTO dto) {
-        return null;
+    public MediaVO addImage(@PathVariable("album_id") String albumId, @UserId int userId, @RequestBody AddImageDTO dto) {
+        Media media = Media
+            .builder()
+            .albumId(albumId)
+            .type(MediaType.IMAGE)
+            .path(dto.getPath())
+            .size(dto.getSize())
+            .uploadTime(dto.getUploadTime())
+            .build();
+
+        return mediaService.convert(mediaService.add(userId, media));
+    }
+
+    /**
+     * 向相册新增视频
+     *
+     * @param albumId 相册 ID
+     * @param userId  用户 ID
+     * @param dto     请求数据
+     *
+     * @since 1.4.0
+     */
+    @PostMapping(path = "/album/{album_id}/media", params = "type=video")
+    @UserPermission
+    public MediaVO addVideo(@PathVariable("album_id") String albumId, @UserId int userId, @RequestBody AddVideoDTO dto) {
+        Media media = Media
+            .builder()
+            .albumId(albumId)
+            .type(MediaType.VIDEO)
+            .path(dto.getPath())
+            .width(dto.getWidth())
+            .height(dto.getHeight())
+            .size(dto.getSize())
+            .uploadTime(dto.getUploadTime())
+            .thumbPath(dto.getThumbPath())
+            .duration(dto.getDuration())
+            .build();
+
+        return mediaService.convert(mediaService.add(userId, media));
+    }
+
+    /**
+     * 删除媒体文件
+     *
+     * @param userId  用户 ID
+     * @param albumId 相册 ID
+     * @param mediaId 媒体文件 ID
+     *
+     * @since 1.4.0
+     */
+    @DeleteMapping("/album/{album_id}/media/{media_id}")
+    @UserPermission
+    public MediaVO delete(@UserId int userId, @PathVariable("album_id") String albumId, @PathVariable("media_id") String mediaId) {
+        Media media = Media
+            .builder()
+            .albumId(albumId)
+            .mediaId(mediaId)
+            .build();
+
+        mediaService.delete(userId, media);
+
+        return mediaService.convert(media);
     }
 
     /**
      * 获取指定相册的所有媒体文件
      *
+     * @param userId  用户 ID
      * @param albumId 相册 ID
      *
      * @since 1.4.0
      */
-    @GetMapping("/albums/{album_id}/medias")
-    public Object getMediaList(@PathVariable("album_id") String albumId) {
-        return null;
-    }
+    @GetMapping("/album/{album_id}/medias")
+    @UserPermission
+    public MediaListVO getMediaList(@UserId int userId, @PathVariable("album_id") String albumId) {
+        List<MediaVO> list = new ArrayList<>();
+        for (Media media : mediaService.list(userId, albumId)) {
+            list.add(mediaService.convert(media));
+        }
 
-    /**
-     * 获取指定媒体文件信息
-     *
-     * @param albumId 相册 ID
-     * @param mediaId 媒体文件 ID
-     *
-     * @since 1.4.0
-     */
-    @GetMapping("/albums/{album_id}/medias/{media_id}")
-    public Object getMediaDetails(@PathVariable("album_id") String albumId, @PathVariable("media_id") String mediaId) {
-        return null;
-    }
-
-    /**
-     * 删除指定媒体文件
-     *
-     * @param albumId 相册 ID
-     * @param mediaId 媒体文件 ID
-     *
-     * @since 1.4.0
-     */
-    @DeleteMapping("/albums/{album_id}/medias/{media_id}")
-    public Object deleteMedia(@PathVariable("album_id") String albumId, @PathVariable("media_id") String mediaId) {
-        return null;
+        return MediaListVO
+            .builder()
+            .list(list)
+            .build();
     }
 }

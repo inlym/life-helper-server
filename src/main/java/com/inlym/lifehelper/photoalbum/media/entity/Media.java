@@ -28,7 +28,7 @@ public class Media {
 
     /** 媒体文件 ID */
     @PrimaryKeyField(order = 2, mode = PrimaryKeyMode.SIMPLE_UUID)
-    private String fileId;
+    private String mediaId;
 
     // ================================= 属性列 =================================
 

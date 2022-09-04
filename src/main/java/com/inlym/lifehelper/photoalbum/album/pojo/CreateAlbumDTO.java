@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 public class CreateAlbumDTO {
     /** 相册名称 */
     @NotBlank
-    @Size(min = 1,max = 20)
+    @Size(min = 1, max = 20)
     private String name;
 
     /** 相册描述 */
