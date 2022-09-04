@@ -34,7 +34,7 @@ public class HeHttpService {
     /** 表示请求成功的 `code` 值 */
     public static final String SUCCESS_CODE = HeConstant.SUCCESS_CODE;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     private final HeProperties heProperties;
 
@@ -44,8 +44,9 @@ public class HeHttpService {
     /** 商业版配置信息 */
     private final Config proConfig;
 
-    public HeHttpService(HeProperties heProperties) {
+    public HeHttpService(HeProperties heProperties, RestTemplate restTemplate) {
         this.heProperties = heProperties;
+        this.restTemplate = restTemplate;
 
         this.devConfig = new Config(HeConstant.DEV_API_BASE_URL, heProperties.getDevKey());
         this.proConfig = new Config(HeConstant.PRO_API_BASE_URL, heProperties.getProKey());
@@ -76,12 +77,7 @@ public class HeHttpService {
 
         // 在 `url` 外面套一层 `new URI()` 的原因是：
         // 这样可以避免请求参数中包含中文时，被默认规则转码变成乱码的问题。
-        HeCityLookupResponse data = restTemplate.getForObject(new URI(url), HeCityLookupResponse.class);
-
-        assert data != null;
-        log.info("[HTTP] [城市信息查询] code={}, url={}", data.getCode(), url);
-
-        return data;
+        return restTemplate.getForObject(new URI(url), HeCityLookupResponse.class);
     }
 
     /**
@@ -110,7 +106,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [实时天气] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("实时天气", url, data.getCode());
@@ -144,7 +139,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [逐天天气预报] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("逐天天气预报", url, data.getCode());
@@ -178,7 +172,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [逐小时天气预报] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("逐小时天气预报", url, data.getCode());
@@ -210,7 +203,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [分钟级降水] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("分钟级降水", url, data.getCode());
@@ -245,7 +237,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [天气生活指数] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("天气生活指数", url, data.getCode());
@@ -277,7 +268,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [天气灾害预警] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("天气灾害预警", url, data.getCode());
@@ -309,7 +299,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [实时空气质量] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("实时空气质量", url, data.getCode());
@@ -341,7 +330,6 @@ public class HeHttpService {
 
         assert data != null;
         if (SUCCESS_CODE.equals(data.getCode())) {
-            log.info("[HTTP] [空气质量预报] url={}", url);
             return data;
         }
         throw new ExternalHttpRequestException("空气质量预报", url, data.getCode());
