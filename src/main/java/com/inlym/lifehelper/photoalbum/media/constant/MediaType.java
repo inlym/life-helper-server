@@ -7,10 +7,10 @@ package com.inlym.lifehelper.photoalbum.media.constant;
  * @date 2022/8/28
  * @since 1.4.0
  **/
-public abstract class MediaFileType {
+public abstract class MediaType {
     /** 图片 */
-    public static final int IMAGE = 1;
+    public static final String IMAGE = "image";
 
     /** 视频 */
-    public static final int VIDEO = 2;
+    public static final String VIDEO = "video";
 }

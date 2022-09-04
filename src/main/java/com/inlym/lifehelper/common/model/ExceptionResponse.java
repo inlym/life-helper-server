@@ -28,15 +28,15 @@ import org.springframework.util.Assert;
  **/
 @Data
 public class ExceptionResponse {
-    private Integer errCode;
+    private Integer errorCode;
 
-    private String errMsg;
+    private String errorMessage;
 
-    public ExceptionResponse(int errCode, String errMsg) {
-        Assert.isTrue(errCode != 0, "错误码不允许为 0");
+    public ExceptionResponse(int errorCode, String errorMessage) {
+        Assert.isTrue(errorCode != 0, "错误码不允许为 0");
 
-        this.errCode = errCode;
-        this.errMsg = errMsg;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
     /**

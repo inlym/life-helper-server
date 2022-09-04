@@ -12,7 +12,7 @@ import java.util.List;
  * 相册服务
  *
  * <h2>主要用途
- * <p>用于对接相册模块控制器 {@link AlbumController}
+ * <p>管理相册数据的增删改查操作。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/8/12
@@ -31,7 +31,6 @@ public class AlbumService {
      * @since 1.4.0
      */
     public AlbumVO convert(Album album) {
-        System.out.println(album);
         return AlbumVO
             .builder()
             .id(album.getAlbumId())
@@ -104,5 +103,36 @@ public class AlbumService {
             .build();
 
         wideColumnExecutor.delete(album);
+    }
+
+    /**
+     * 查找指定相册，若不存在则返回 null
+     *
+     * @param userId  用户 ID
+     * @param albumId 相册 ID
+     *
+     * @since 1.4.0
+     */
+    public Album findOne(int userId, String albumId) {
+        Album album = Album
+            .builder()
+            .userId(userId)
+            .albumId(albumId)
+            .build();
+
+        return wideColumnExecutor.findOne(album, Album.class);
+    }
+
+    /**
+     * 判断指定相册是否存在
+     *
+     * @param userId  用户 ID
+     * @param albumId 相册 ID
+     *
+     * @since 1.4.0
+     */
+    public boolean exist(int userId, String albumId) {
+        Album album = findOne(userId, albumId);
+        return album != null;
     }
 }
