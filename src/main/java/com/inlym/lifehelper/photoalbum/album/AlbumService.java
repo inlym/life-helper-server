@@ -39,7 +39,7 @@ public class AlbumService {
             .description(album.getDescription())
             .createTime(album.getCreateTime())
             .updateTime(album.getUpdateTime())
-            .photoCount(album.getPhotoCount())
+            .total(album.getTotal())
             .build();
     }
 
@@ -56,7 +56,7 @@ public class AlbumService {
         // 给一些字段赋默认初始值
         album.setCreateTime(now);
         album.setUpdateTime(now);
-        album.setPhotoCount(0);
+        album.setTotal(0);
 
         return wideColumnExecutor.create(album);
     }

@@ -6,6 +6,7 @@ import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumListVO;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import com.inlym.lifehelper.photoalbum.album.pojo.CreateAlbumDTO;
+import com.inlym.lifehelper.photoalbum.album.pojo.UpdateAlbumDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class AlbumController {
      *
      * @since 1.4.0
      */
-    @PostMapping("/albums")
+    @PostMapping("/album")
     @UserPermission
     public AlbumVO createAlbum(@UserId int userId, @Valid @RequestBody CreateAlbumDTO dto) {
         Album album = Album
@@ -68,6 +69,7 @@ public class AlbumController {
         return AlbumListVO
             .builder()
             .list(list)
+            .total(list.size())
             .build();
     }
 
@@ -79,7 +81,7 @@ public class AlbumController {
      *
      * @since 1.4.0
      */
-    @DeleteMapping("/albums/{id}")
+    @DeleteMapping("/album/{id}")
     @UserPermission
     public AlbumVO deleteAlbum(@UserId int userId, @NotBlank @PathVariable String id) {
         albumService.delete(userId, id);
@@ -99,9 +101,9 @@ public class AlbumController {
      *
      * @since 1.4.0
      */
-    @PutMapping("/albums/{id}")
+    @PutMapping("/album/{id}")
     @UserPermission
-    public AlbumVO updateAlbum(@UserId int userId, @NotBlank @PathVariable String id, @Valid @RequestBody CreateAlbumDTO dto) {
+    public AlbumVO updateAlbum(@UserId int userId, @NotBlank @PathVariable String id, @Valid @RequestBody UpdateAlbumDTO dto) {
         Album album = Album
             .builder()
             .userId(userId)

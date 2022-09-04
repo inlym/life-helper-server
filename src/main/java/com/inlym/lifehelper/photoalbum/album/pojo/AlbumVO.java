@@ -35,6 +35,6 @@ public class AlbumVO {
     /** 更新时间 */
     private Long updateTime;
 
-    /** 照片数量 */
-    private Integer photoCount;
+    /** 资源（照片和视频）数量 */
+    private Integer total;
 }

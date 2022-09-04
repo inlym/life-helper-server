@@ -22,5 +22,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlbumListVO {
+    /** 相册数据列表 */
     private List<AlbumVO> list;
+
+    /** 列表项个数 */
+    private Integer total;
 }
