@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 媒体文件（包含照片和视频）实体
  *
@@ -19,7 +22,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Media {
+public class Media implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -164216472235127068L;
+    
     // ================================= 主键列 =================================
 
     /** 媒体文件所属的相册 ID */

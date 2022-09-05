@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,6 +20,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MediaListVO {
+public class MediaListVO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6526163732254748661L;
+
     private List<MediaVO> list;
 }

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 相册对象
  *
@@ -19,7 +22,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlbumVO {
+public class AlbumVO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -2452325710093884864L;
+
     /** 相册 ID */
     private String id;
 

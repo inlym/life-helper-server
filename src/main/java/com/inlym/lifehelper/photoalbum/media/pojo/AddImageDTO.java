@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 添加图片的请求数据
@@ -16,7 +18,10 @@ import javax.validation.constraints.NotNull;
  * @since 1.4.0
  **/
 @Data
-public class AddImageDTO {
+public class AddImageDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 4016741230676710981L;
+
     /** 资源路径 */
     @NotBlank
     private String path;

@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 相册实体
  *
@@ -18,7 +21,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Album {
+public class Album implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1766951125718215092L;
+
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
