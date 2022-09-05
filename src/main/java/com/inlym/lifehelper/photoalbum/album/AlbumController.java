@@ -69,7 +69,6 @@ public class AlbumController {
         return AlbumListVO
             .builder()
             .list(list)
-            .total(list.size())
             .build();
     }
 
