@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,13 @@ public class WideColumnExecutor {
 
         RowPutChange change = new RowPutChange(tableName, primaryKey);
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
+            // 静态成员变量不参与该流程
+            if (Modifier
+                .toString(field.getModifiers())
+                .contains("static")) {
+                continue;
+            }
+
             String name = WideColumnUtils.getColumnName(field);
             ColumnValue value = WideColumnUtils.getColumnValue(field, entity);
             if (!ColumnValue.INTERNAL_NULL_VALUE.equals(value)) {
@@ -86,6 +94,13 @@ public class WideColumnExecutor {
 
         RowUpdateChange change = new RowUpdateChange(tableName, primaryKey);
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
+            // 静态成员变量不参与该流程
+            if (Modifier
+                .toString(field.getModifiers())
+                .contains("static")) {
+                continue;
+            }
+
             ColumnValue columnValue = WideColumnUtils.getColumnValue(field, entity);
             if (!ColumnValue.INTERNAL_NULL_VALUE.equals(columnValue)) {
                 String name = WideColumnUtils.getColumnName(field);

@@ -12,6 +12,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -307,6 +308,13 @@ public abstract class WideColumnUtils {
         for (Field field : entity
             .getClass()
             .getDeclaredFields()) {
+            // 静态成员变量不参与该流程
+            if (Modifier
+                .toString(field.getModifiers())
+                .contains("static")) {
+                continue;
+            }
+
             String columnName = getColumnName(field);
 
             PrimaryKeyColumn primaryKeyColumn = row
