@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.photoalbum.album.pojo;
 
+import com.inlym.lifehelper.photoalbum.media.pojo.MediaVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 相册对象
@@ -43,4 +45,12 @@ public class AlbumVO implements Serializable {
 
     /** 资源（照片和视频）数量 */
     private Integer total;
+
+    /**
+     * 媒体文件列表
+     *
+     * <h2>主要用途
+     * <p>在输出相册详情时，会输出该字段。输出相册列表时，不使用该字段。
+     */
+    private List<MediaVO> medias;
 }

@@ -2,17 +2,14 @@ package com.inlym.lifehelper.photoalbum.media;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import com.inlym.lifehelper.photoalbum.media.constant.MediaType;
 import com.inlym.lifehelper.photoalbum.media.entity.Media;
 import com.inlym.lifehelper.photoalbum.media.pojo.AddImageDTO;
 import com.inlym.lifehelper.photoalbum.media.pojo.AddVideoDTO;
-import com.inlym.lifehelper.photoalbum.media.pojo.MediaListVO;
 import com.inlym.lifehelper.photoalbum.media.pojo.MediaVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 媒体文件操作控制器
@@ -105,24 +102,16 @@ public class MediaController {
     }
 
     /**
-     * 获取指定相册的所有媒体文件
+     * 获取带媒体文件列表的相册详情
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
      *
      * @since 1.4.0
      */
-    @GetMapping("/album/{album_id}/medias")
+    @GetMapping("/album/{album_id}")
     @UserPermission
-    public MediaListVO getMediaList(@UserId int userId, @PathVariable("album_id") String albumId) {
-        List<MediaVO> list = new ArrayList<>();
-        for (Media media : mediaService.list(userId, albumId)) {
-            list.add(mediaService.convert(media));
-        }
-
-        return MediaListVO
-            .builder()
-            .list(list)
-            .build();
+    public AlbumVO getAlbumDetail(@UserId int userId, @PathVariable("album_id") String albumId) {
+        return mediaService.getAlbumWithMedias(userId, albumId);
     }
 }
