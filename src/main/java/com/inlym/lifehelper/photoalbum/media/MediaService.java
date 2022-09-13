@@ -111,6 +111,7 @@ public class MediaService {
         // 添加媒体文件，需要更新相册实体的缓存字段
         album.setUpdateTime(now);
         album.setTotal(album.getTotal() + 1);
+        album.setSize(album.getSize() + media.getSize());
         album.setCoverImagePath(calcAlbumCoverImagePath(media));
 
         albumService.update(album);

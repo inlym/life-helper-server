@@ -4,8 +4,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 添加视频的请求数据
@@ -21,10 +19,7 @@ import java.io.Serializable;
  * @since 1.4.0
  **/
 @Data
-public class AddVideoDTO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -2588495636649956390L;
-
+public class AddVideoDTO {
     /** 资源路径 */
     @NotBlank
     private String path;

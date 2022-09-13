@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * 媒体文件模型
  *
@@ -23,10 +20,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MediaVO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 4627304072039120009L;
-
+public class MediaVO {
     /** 媒体文件 ID */
     private String id;
 
