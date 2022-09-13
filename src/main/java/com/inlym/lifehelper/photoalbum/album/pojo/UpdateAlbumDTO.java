@@ -3,8 +3,6 @@ package com.inlym.lifehelper.photoalbum.album.pojo;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 更新相册请求数据
@@ -17,10 +15,7 @@ import java.io.Serializable;
  * @since 1.4.0
  **/
 @Data
-public class UpdateAlbumDTO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 259323035005890926L;
-
+public class UpdateAlbumDTO {
     /** 相册名称 */
     @Size(min = 1, max = 20)
     private String name;

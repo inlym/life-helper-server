@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * 相册实体
  *
@@ -21,10 +18,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Album implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1766951125718215092L;
-
+public class Album {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
@@ -61,6 +55,14 @@ public class Album implements Serializable {
 
     /** 资源数量总计 */
     private Integer total;
+
+    /**
+     * 相册文件总大小（单位：B）
+     *
+     * <h2>备注（2022.09.13）
+     * <p>只将照片和视频本身计入，视频的封面图占用的空间不计入。
+     */
+    private Long size;
 
     /**
      * 封面图的在 OSS 中的存储路径

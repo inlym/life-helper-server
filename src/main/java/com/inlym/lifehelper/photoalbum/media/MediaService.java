@@ -83,7 +83,7 @@ public class MediaService {
         vo.setUrl(ossService.concatUrl(media.getPath()));
         vo.setUploadTime(media.getUploadTime());
         if (StringUtils.hasText(media.getThumbPath())) {
-            vo.setThumbUrl(media.getThumbPath());
+            vo.setThumbUrl(ossService.concatUrl(media.getThumbPath()));
         }
 
         return vo;

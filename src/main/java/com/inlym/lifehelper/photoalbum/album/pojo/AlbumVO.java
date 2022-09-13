@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -24,10 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlbumVO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -2452325710093884864L;
-
+public class AlbumVO {
     /** 相册 ID */
     private String id;
 
@@ -45,6 +40,12 @@ public class AlbumVO implements Serializable {
 
     /** 资源（照片和视频）数量 */
     private Integer total;
+
+    /** 相册文件总大小（单位：B） */
+    private Long size;
+
+    /** 相册封面图地址 */
+    private String coverImageUrl;
 
     /**
      * 媒体文件列表

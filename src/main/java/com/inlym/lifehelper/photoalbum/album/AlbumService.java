@@ -1,11 +1,13 @@
 package com.inlym.lifehelper.photoalbum.album;
 
+import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.exception.AlbumNotExistException;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ import java.util.List;
 public class AlbumService {
     private final WideColumnExecutor wideColumnExecutor;
 
+    private final OssService ossService;
+
     /**
      * 将相册实体转化为可用于客户端展示使用的对象结构
      *
@@ -32,7 +36,7 @@ public class AlbumService {
      * @since 1.4.0
      */
     public AlbumVO convert(Album album) {
-        return AlbumVO
+        AlbumVO vo = AlbumVO
             .builder()
             .id(album.getAlbumId())
             .name(album.getName())
@@ -40,7 +44,14 @@ public class AlbumService {
             .createTime(album.getCreateTime())
             .updateTime(album.getUpdateTime())
             .total(album.getTotal())
+            .size(album.getSize())
             .build();
+
+        if (StringUtils.hasText(album.getCoverImagePath())) {
+            vo.setCoverImageUrl(ossService.concatUrl(album.getCoverImagePath()));
+        }
+
+        return vo;
     }
 
     /**
@@ -57,6 +68,7 @@ public class AlbumService {
         album.setCreateTime(now);
         album.setUpdateTime(now);
         album.setTotal(0);
+        album.setSize(0L);
 
         return wideColumnExecutor.create(album);
     }

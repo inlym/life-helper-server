@@ -5,8 +5,6 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 创建相册请求数据
@@ -19,10 +17,7 @@ import java.io.Serializable;
  * @since 1.3.0
  **/
 @Data
-public class CreateAlbumDTO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 304148674946754017L;
-
+public class CreateAlbumDTO {
     /** 相册名称 */
     @NotBlank
     @Size(min = 1, max = 20)
