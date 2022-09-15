@@ -62,13 +62,20 @@ public class AlbumController {
     @UserPermission
     public AlbumListVO listAlbums(@UserId int userId) {
         List<AlbumVO> list = new ArrayList<>(256);
+        int totalCount = 0;
+        long totalSize = 0L;
+
         for (Album album : albumService.list(userId)) {
             list.add(albumService.convert(album));
+            totalCount += album.getCount();
+            totalSize += album.getSize();
         }
 
         return AlbumListVO
             .builder()
             .list(list)
+            .totalCount(totalCount)
+            .totalSize(totalSize)
             .build();
     }
 

@@ -22,7 +22,7 @@ public class AddImageDTO {
     private String path;
 
     /** 文件大小 */
-    private Integer size;
+    private Long size;
 
     /** 上传时间 */
     @NotNull

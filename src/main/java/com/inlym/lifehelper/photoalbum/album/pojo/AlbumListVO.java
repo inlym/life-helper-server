@@ -24,4 +24,10 @@ import java.util.List;
 public class AlbumListVO {
     /** 相册数据列表 */
     private List<AlbumVO> list;
+
+    /** 所有相册的资源数量之和 */
+    private Integer totalCount;
+
+    /** 所有资源的文件大小之和 */
+    private Long totalSize;
 }
