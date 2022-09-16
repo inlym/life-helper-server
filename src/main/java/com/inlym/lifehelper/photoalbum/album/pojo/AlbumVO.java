@@ -23,6 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class AlbumVO {
+    // =========================== 以下字段来源于实体对象直接复制 ============================
+
     /** 相册 ID */
     private String id;
 
@@ -38,33 +40,25 @@ public class AlbumVO {
     /** 更新时间 */
     private Long updateTime;
 
-    /** 资源（照片和视频）数量 */
-    private Integer count;
-
     /** 相册文件总大小（单位：B） */
     private Long size;
 
+    /** 图片总数 */
+    private Integer imageCount;
+
+    /** 视频总数 */
+    private Integer videoCount;
+
+    // ========================= 以下字段来源于对实体对象字段的处理后获取 =========================
+
     /** 相册封面图地址 */
     private String coverImageUrl;
+
+    /** 资源（照片和视频）数量 */
+    private Integer count;
 
     // ============================ 以下字段仅在获取相册详情时输出 ===========================
 
     /** 媒体文件列表 */
     private List<MediaVO> medias;
-
-    /**
-     * 图片总数
-     *
-     * <h2>备注
-     * <p>该字段仅在获取媒体文件列表后临时计算，未存储在实体对象中。
-     */
-    private Integer imageCount;
-
-    /**
-     * 视频总数
-     *
-     * <h2>备注
-     * <p>该字段仅在获取媒体文件列表后临时计算，未存储在实体对象中。
-     */
-    private Integer videoCount;
 }

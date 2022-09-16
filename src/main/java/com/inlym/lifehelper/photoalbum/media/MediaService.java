@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -62,6 +63,9 @@ public class MediaService {
      */
     private String regainAlbumCoverImagePath(Media media) {
         List<Media> list = wideColumnExecutor.findAll(media, Media.class);
+
+        list.sort(Comparator.comparingLong(Media::getUploadTime));
+
         if (list.size() > 0) {
             return calcAlbumCoverImagePath(list.get(0));
         }
@@ -80,8 +84,10 @@ public class MediaService {
         MediaVO vo = new MediaVO();
         vo.setId(media.getMediaId());
         vo.setType(media.getType());
-        vo.setUrl(ossService.concatUrl(media.getPath()));
         vo.setUploadTime(media.getUploadTime());
+        vo.setDuration(media.getDuration());
+
+        vo.setUrl(ossService.concatUrl(media.getPath()));
         if (StringUtils.hasText(media.getThumbPath())) {
             vo.setThumbUrl(ossService.concatUrl(media.getThumbPath()));
         }
@@ -110,9 +116,14 @@ public class MediaService {
 
         // 添加媒体文件，需要更新相册实体的缓存字段
         album.setUpdateTime(now);
-        album.setCount(album.getCount() + 1);
         album.setSize(album.getSize() + media.getSize());
         album.setCoverImagePath(calcAlbumCoverImagePath(media));
+
+        if (MediaType.IMAGE.equals(media.getType())) {
+            album.setImageCount(album.getImageCount() + 1);
+        } else if (MediaType.VIDEO.equals(media.getType())) {
+            album.setVideoCount(album.getVideoCount() + 1);
+        }
 
         albumService.update(album);
 
@@ -134,8 +145,13 @@ public class MediaService {
         wideColumnExecutor.delete(media);
 
         album.setUpdateTime(System.currentTimeMillis());
-        album.setCount(album.getCount() - 1);
         album.setCoverImagePath(regainAlbumCoverImagePath(media));
+
+        if (MediaType.IMAGE.equals(media.getType())) {
+            album.setImageCount(album.getImageCount() - 1);
+        } else if (MediaType.VIDEO.equals(media.getType())) {
+            album.setVideoCount(album.getVideoCount() - 1);
+        }
 
         albumService.update(album);
     }
@@ -156,22 +172,13 @@ public class MediaService {
             .build();
 
         List<MediaVO> list = new ArrayList<>();
-        int imageCount = 0;
-        int videoCount = 0;
 
         for (Media media : wideColumnExecutor.findAll(mediaSearch, Media.class)) {
             list.add(convert(media));
-            if (MediaType.IMAGE.equals(media.getType())) {
-                imageCount++;
-            } else if (MediaType.VIDEO.equals(media.getType())) {
-                videoCount++;
-            }
         }
 
         AlbumVO vo = albumService.convert(album);
         vo.setMedias(list);
-        vo.setImageCount(imageCount);
-        vo.setVideoCount(videoCount);
 
         return vo;
     }

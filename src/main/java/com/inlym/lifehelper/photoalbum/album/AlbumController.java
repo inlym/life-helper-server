@@ -66,9 +66,10 @@ public class AlbumController {
         long totalSize = 0L;
 
         for (Album album : albumService.list(userId)) {
-            list.add(albumService.convert(album));
-            totalCount += album.getCount();
-            totalSize += album.getSize();
+            AlbumVO vo = albumService.convert(album);
+            list.add(vo);
+            totalCount += vo.getCount();
+            totalSize += vo.getSize();
         }
 
         return AlbumListVO

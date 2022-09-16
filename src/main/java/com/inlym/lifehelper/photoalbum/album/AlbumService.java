@@ -43,12 +43,17 @@ public class AlbumService {
             .description(album.getDescription())
             .createTime(album.getCreateTime())
             .updateTime(album.getUpdateTime())
-            .count(album.getCount())
             .size(album.getSize())
+            .imageCount(album.getImageCount())
+            .videoCount(album.getVideoCount())
             .build();
 
         if (StringUtils.hasText(album.getCoverImagePath())) {
             vo.setCoverImageUrl(ossService.concatUrl(album.getCoverImagePath()));
+        }
+
+        if (album.getImageCount() != null && album.getVideoCount() != null) {
+            vo.setCount(album.getImageCount() + album.getVideoCount());
         }
 
         return vo;
@@ -67,7 +72,8 @@ public class AlbumService {
         // 给一些字段赋默认初始值
         album.setCreateTime(now);
         album.setUpdateTime(now);
-        album.setCount(0);
+        album.setImageCount(0);
+        album.setVideoCount(0);
         album.setSize(0L);
 
         return wideColumnExecutor.create(album);

@@ -36,8 +36,8 @@ public class Media {
      * 媒体文件类型
      *
      * <h2>说明 {@link MediaType}
-     * <li> `image` => 图片
-     * <li> `video` => 视频
+     * <li>1. `image` => 图片
+     * <li>2. `video` => 视频
      */
     private String type;
 
@@ -50,14 +50,14 @@ public class Media {
     /** 高度 */
     private Integer height;
 
-    /** 文件大小 */
+    /** 文件大小，单位：B */
     private Long size;
 
     /**
      * 上传时间
      *
      * <h2>说明
-     * <li>上传时间应该在这条数据库记录创建之前。
+     * <li>该字段由客户端提供，后期再优化为由“上传回调”提供。
      */
     private Long uploadTime;
 
@@ -76,6 +76,6 @@ public class Media {
     /** 视频缩略图路径 */
     private String thumbPath;
 
-    /** 视频时长 */
+    /** 视频时长，单位：秒 */
     private Long duration;
 }
