@@ -112,7 +112,9 @@ public class MediaService {
             .build();
 
         List<Media> mediaList = wideColumnExecutor.findAll(mediaSearch, Media.class);
-        mediaList.sort(Comparator.comparing(Media::getUploadTime));
+        mediaList.sort(Comparator
+            .comparing(Media::getUploadTime)
+            .reversed());
 
         List<MediaVO> list = new ArrayList<>();
 

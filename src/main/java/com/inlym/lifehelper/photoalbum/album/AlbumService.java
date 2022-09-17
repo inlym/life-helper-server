@@ -189,7 +189,9 @@ public class AlbumService {
         List<Media> mediaList = wideColumnExecutor.findAll(mediaSearch, Media.class);
 
         if (mediaList.size() > 0) {
-            mediaList.sort(Comparator.comparing(Media::getUploadTime));
+            mediaList.sort(Comparator
+                .comparing(Media::getUploadTime)
+                .reversed());
 
             int imageCount = 0;
             int videoCount = 0;
@@ -212,7 +214,7 @@ public class AlbumService {
             album.setSize(size);
 
             // 处理相册封面图
-            Media lastMedia = mediaList.get(mediaList.size() - 1);
+            Media lastMedia = mediaList.get(0);
             if (MediaType.IMAGE.equals(lastMedia.getType())) {
                 album.setCoverImagePath(lastMedia.getPath());
             } else if (MediaType.VIDEO.equals(lastMedia.getType())) {
