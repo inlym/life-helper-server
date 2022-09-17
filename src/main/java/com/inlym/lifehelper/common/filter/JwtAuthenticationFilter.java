@@ -5,6 +5,7 @@ import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.constant.SpecialPath;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,22 +28,15 @@ import java.io.IOException;
 @Order(100)
 @WebFilter(urlPatterns = "/*")
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
-        this.jwtService = jwtService;
-    }
-
     @Override
-    @SuppressWarnings("NullableProblems")
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getServletPath())) {
             // 从请求头获取鉴权凭证
-            String token1 = request.getHeader(CustomHttpHeader.JWT_TOKEN);
-            String token2 = request.getHeader("X-Auth-Jwt");
-
-            String token = token1 != null ? token1 : token2;
+            String token = request.getHeader(CustomHttpHeader.JWT_TOKEN);
 
             if (token != null) {
                 try {

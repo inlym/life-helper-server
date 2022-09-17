@@ -32,13 +32,11 @@ import java.util.UUID;
 @WebFilter(urlPatterns = "/*")
 public class RequestIdFilter extends OncePerRequestFilter {
     @Override
-    @SuppressWarnings("NullableProblems")
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getServletPath())) {
             String requestId = request.getHeader(CustomHttpHeader.REQUEST_ID);
 
             if (requestId != null) {
-                log.trace("从请求头获取请求 ID（`X-Ca-Request-Id`）值为：{}", requestId);
                 request.setAttribute(CustomRequestAttribute.REQUEST_ID, requestId);
             } else {
                 // 如果没有从请求头中拿到，则自己生成一个并赋值
@@ -47,7 +45,6 @@ public class RequestIdFilter extends OncePerRequestFilter {
                     .toString()
                     .toUpperCase();
 
-                log.trace("未从请求头获取请求 ID，自动生成请求 ID 值为：{}", customId);
                 request.setAttribute(CustomRequestAttribute.REQUEST_ID, customId);
                 response.setHeader(CustomHttpHeader.REQUEST_ID, customId);
             }
