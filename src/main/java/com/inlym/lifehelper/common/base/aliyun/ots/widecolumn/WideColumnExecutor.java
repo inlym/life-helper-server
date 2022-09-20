@@ -93,9 +93,9 @@ public class WideColumnExecutor {
         PrimaryKey primaryKey = WideColumnUtils.buildPrimaryKey(entity);
 
         RowUpdateChange change = new RowUpdateChange(tableName, primaryKey);
-        Condition condition = new Condition(RowExistenceExpectation.EXPECT_NOT_EXIST);
+        Condition condition = new Condition(RowExistenceExpectation.EXPECT_EXIST);
         change.setCondition(condition);
-        
+
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
             // 静态成员变量不参与该流程
             if (Modifier
