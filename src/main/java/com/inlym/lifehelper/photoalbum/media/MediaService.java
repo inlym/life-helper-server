@@ -50,7 +50,10 @@ public class MediaService {
         vo.setUploadTime(media.getUploadTime());
         vo.setDuration(media.getDuration());
 
-        vo.setUrl(ossService.concatUrl(media.getPath()));
+        if (StringUtils.hasText(media.getPath())) {
+            vo.setUrl(ossService.concatUrl(media.getPath()));
+        }
+
         if (StringUtils.hasText(media.getThumbPath())) {
             vo.setThumbUrl(ossService.concatUrl(media.getThumbPath()));
         }

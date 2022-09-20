@@ -19,8 +19,4 @@ public class UpdateAlbumDTO {
     /** 相册名称 */
     @Size(min = 1, max = 20)
     private String name;
-
-    /** 相册描述 */
-    @Size(max = 200)
-    private String description;
 }

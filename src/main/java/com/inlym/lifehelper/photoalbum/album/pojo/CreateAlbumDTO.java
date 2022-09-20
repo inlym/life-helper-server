@@ -3,7 +3,6 @@ package com.inlym.lifehelper.photoalbum.album.pojo;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -22,9 +21,4 @@ public class CreateAlbumDTO {
     @NotBlank
     @Size(min = 1, max = 20)
     private String name;
-
-    /** 相册描述 */
-    @NotNull
-    @Size(max = 200)
-    private String description;
 }

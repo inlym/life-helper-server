@@ -24,6 +24,6 @@ public class AlbumExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AlbumNotExistException.class)
     public ExceptionResponse handleAlbumNotExistException(AlbumNotExistException e) {
-        return new ExceptionResponse(1, "你操作的相册不存在，刷新后再试！");
+        return new ExceptionResponse(1, "你操作的相册不存在，请刷新后再试！");
     }
 }

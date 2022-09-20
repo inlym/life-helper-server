@@ -45,7 +45,6 @@ public class AlbumService {
             .builder()
             .id(album.getAlbumId())
             .name(album.getName())
-            .description(album.getDescription())
             .createTime(album.getCreateTime())
             .updateTime(album.getUpdateTime())
             .size(album.getSize())

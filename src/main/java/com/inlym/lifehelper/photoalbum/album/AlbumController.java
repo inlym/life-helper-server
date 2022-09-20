@@ -45,7 +45,6 @@ public class AlbumController {
             .builder()
             .userId(userId)
             .name(dto.getName())
-            .description(dto.getDescription())
             .build();
 
         return albumService.convert(albumService.create(album));
@@ -116,7 +115,6 @@ public class AlbumController {
             .userId(userId)
             .albumId(id)
             .name(dto.getName())
-            .description(dto.getDescription())
             .build();
 
         return albumService.convert(albumService.update(album));

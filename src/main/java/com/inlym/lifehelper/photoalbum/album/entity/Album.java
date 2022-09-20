@@ -34,9 +34,6 @@ public class Album {
     /** 相册名称 */
     private String name;
 
-    /** 相册描述 */
-    private String description;
-
     /** 创建时间 */
     private Long createTime;
 
