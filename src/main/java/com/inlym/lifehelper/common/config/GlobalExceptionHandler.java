@@ -5,6 +5,7 @@ import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 @RestControllerAdvice
 @Slf4j
+@Order(1000)
 public class GlobalExceptionHandler {
     /**
      * 对外 HTTP 请求异常处理

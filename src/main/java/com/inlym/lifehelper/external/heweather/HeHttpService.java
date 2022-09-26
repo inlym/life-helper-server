@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.external.heweather;
 
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
-import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
+import com.inlym.lifehelper.external.heweather.exception.HeRequestFailedException;
 import com.inlym.lifehelper.external.heweather.pojo.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -88,7 +88,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_WEATHER_NOW)
     public HeWeatherNowResponse getWeatherNow(String location) {
         String path = "/weather/now";
@@ -108,7 +107,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("实时天气", url, data.getCode());
+        throw HeRequestFailedException.create("实时天气", url, data.getCode());
     }
 
     /**
@@ -120,7 +119,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_WEATHER_DAILY)
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
         Config config = (HeConstant.WeatherDailyDays.DAYS_15.equals(days) || HeConstant.WeatherDailyDays.DAYS_10.equals(days)) ? proConfig : devConfig;
@@ -141,7 +139,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("逐天天气预报", url, data.getCode());
+        throw HeRequestFailedException.create("逐天天气预报", url, data.getCode());
     }
 
     /**
@@ -153,7 +151,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_WEATHER_HOURLY)
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
         Config config = HeConstant.WeatherHourlyHours.HOURS_24.equals(hours) ? devConfig : proConfig;
@@ -174,7 +171,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("逐小时天气预报", url, data.getCode());
+        throw HeRequestFailedException.create("逐小时天气预报", url, data.getCode());
     }
 
     /**
@@ -185,7 +182,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_MINUTELY)
     public HeMinutelyResponse getMinutely(String location) {
         String path = "/minutely/5m";
@@ -205,7 +201,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("分钟级降水", url, data.getCode());
+        throw HeRequestFailedException.create("分钟级降水", url, data.getCode());
     }
 
     /**
@@ -217,7 +213,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/indices/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_INDICES_DAILY)
     public HeIndicesResponse getIndicesDaily(String location, String days) {
         Config config = "1d".equals(days) ? devConfig : proConfig;
@@ -239,7 +234,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("天气生活指数", url, data.getCode());
+        throw HeRequestFailedException.create("天气生活指数", url, data.getCode());
     }
 
     /**
@@ -250,7 +245,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning/">官方文档</a>
      * @since 1.2.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_WARNING_NOW)
     public HeWarningNowResponse getWarningNow(String location) {
         String path = "/warning/now";
@@ -270,7 +264,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("天气灾害预警", url, data.getCode());
+        throw HeRequestFailedException.create("天气灾害预警", url, data.getCode());
     }
 
     /**
@@ -281,7 +275,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_AIR_NOW)
     public HeAirNowResponse getAirNow(String location) {
         String path = "/air/now";
@@ -301,7 +294,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("实时空气质量", url, data.getCode());
+        throw HeRequestFailedException.create("实时空气质量", url, data.getCode());
     }
 
     /**
@@ -312,7 +305,6 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_AIR_DAILY)
     public HeAirDailyResponse getAirDaily(String location) {
         String path = "/air/5d";
@@ -332,7 +324,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw new ExternalHttpRequestException("空气质量预报", url, data.getCode());
+        throw HeRequestFailedException.create("空气质量预报", url, data.getCode());
     }
 
     /**
