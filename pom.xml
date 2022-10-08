@@ -200,31 +200,41 @@
                 </configuration>
             </plugin>
 
-            <!-- Docker 构建插件 -->
+            <!-- 构建 Docker 镜像插件 -->
             <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.13</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>tag</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <!-- 配置项帮助文档 https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#extended-usage -->
                 <configuration>
-                    <!-- 使用阿里云容器镜像服务的镜像仓库 -->
-                    <repository>registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server</repository>
-                    <tag>v${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                    <dockerfile>Dockerfile</dockerfile>
+                    <from>
+                        <!-- 下方基础镜像为 `openjdk:17-alpine3.14` -->
+                        <image>openjdk@sha256:a996cdcc040704ec6badaf5fecf1e144c096e00231a29188596c784bcf858d05</image>
+                    </from>
+                    <to>
+                        <!-- 构建后的 Docker 镜像托管在了阿里云的容器镜像服务（个人版）上 -->
+                        <image>registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server</image>
+                        <tags>
+                            <!-- 镜像标签和项目版本号保持一致 -->
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        <ports>
+                            <port>23030</port>
+                        </ports>
+                        <jvmFlags>
+                            <jvmFlag>-Dmaven.test.skip</jvmFlag>
+                        </jvmFlags>
+                        <args>
+                            <arg>--spring.profiles.active=prod</arg>
+                        </args>
+                        <mainClass>com.inlym.lifehelper.Application</mainClass>
+                    </container>
                 </configuration>
             </plugin>
+
         </plugins>
 
         <resources>
