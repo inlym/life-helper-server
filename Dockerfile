@@ -37,6 +37,8 @@ ENV TZ="Asia/Shanghai"
 
 COPY ${JAR_FILE} /app.jar
 
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
 EXPOSE ${EXPOSE_PORT}
 
 ENTRYPOINT ["java","-jar","/app.jar","--spring.profiles.active=${ACTIVE_PROFILE}"]
