@@ -29,8 +29,8 @@ spring:
         password: xxxxxxxxxxxx
         driver-class-name: com.mysql.cj.jdbc.Driver
 
-    # 阿里云分布式任务调度 SchedulerX 配置
-    # 文档：https://help.aliyun.com/document_detail/161998.html
+    # 阿里云分布式任务调度平台 SchedulerX 配置
+    # 文档：https://help.aliyun.com/document_detail/161998.html?userCode=lzfqdh6g
     schedulerx2:
         endpoint: "acm.aliyun.com"
         namespace: "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"

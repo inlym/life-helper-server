@@ -183,8 +183,8 @@
             <version>31.1-jre</version>
         </dependency>
 
-        <!-- 阿里云分布式任务调度 SchedulerX -->
-        <!-- 文档地址：https://help.aliyun.com/document_detail/161995.html -->
+        <!-- 阿里云分布式任务调度平台 SchedulerX -->
+        <!-- 文档地址：https://help.aliyun.com/document_detail/161995.html?userCode=lzfqdh6g -->
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
             <artifactId>schedulerx2-spring-boot-starter</artifactId>
