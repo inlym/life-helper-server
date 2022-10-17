@@ -8,6 +8,12 @@
 ### 备注
 # 目前项目服务器只需要 Docker 环境即可。
 
+# 在阿里云容器镜像服务中使用的用户名
+echo "${DOCKER_USERNAME}"
+
+# 在阿里云容器镜像服务中使用的密码
+echo "${DOCKER_PASSWORD}"
+
 # 更新软件清单
 apt update
 
@@ -15,4 +21,4 @@ apt update
 apt install -y docker.io
 
 # 登录 Docker（备注：这里用了阿里云容器镜像服务）
-docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" registry-vpc.cn-hangzhou.aliyuncs.com
+echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin registry-vpc.cn-hangzhou.aliyuncs.com
