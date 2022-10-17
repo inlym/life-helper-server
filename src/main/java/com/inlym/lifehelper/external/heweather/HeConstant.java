@@ -7,15 +7,6 @@ package com.inlym.lifehelper.external.heweather;
  * @date 2022/3/26
  **/
 public class HeConstant {
-    /** 开发版 API 请求地址前缀 */
-    public static final String DEV_API_BASE_URL = "https://devapi.qweather.com/v7";
-
-    /** 商业版 API 请求地址前缀 */
-    public static final String PRO_API_BASE_URL = "https://api.qweather.com/v7";
-
-    /** 表示请求成功的 `code` 值 */
-    public static final String SUCCESS_CODE = "200";
-
     /** 存放和风天气图标的目录地址 */
     public static final String ICON_BASE_URL = "https://static.lifehelper.com.cn/qweather/icon/";
 

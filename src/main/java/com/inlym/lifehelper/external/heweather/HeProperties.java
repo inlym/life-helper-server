@@ -9,16 +9,13 @@ import org.springframework.stereotype.Component;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-17
- * @see <a href="https://dev.qweather.com/docs/resource/get-key/">创建应用和KEY</a>
+ * @see <a href="https://dev.qweather.com/docs/configuration/project-and-key/">项目和KEY</a>
  * @since 1.0.0
  **/
 @Data
 @Component
 @ConfigurationProperties(prefix = "lifehelper.he-weather")
 public class HeProperties {
-    /** 开发版密钥 */
-    private String devKey;
-
-    /** 商业版密钥 */
-    private String proKey;
+    /** 密钥 */
+    private String key;
 }

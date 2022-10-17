@@ -3,8 +3,7 @@ package com.inlym.lifehelper.external.heweather;
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.external.heweather.exception.HeRequestFailedException;
 import com.inlym.lifehelper.external.heweather.pojo.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,27 +29,17 @@ import java.net.URI;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class HeHttpService {
     /** 表示请求成功的 `code` 值 */
-    public static final String SUCCESS_CODE = HeConstant.SUCCESS_CODE;
+    public static final String SUCCESS_CODE = "200";
+
+    /** API 请求地址前缀 */
+    public static final String BASE_URL = "https://api.qweather.com/v7";
 
     private final RestTemplate restTemplate;
 
     private final HeProperties heProperties;
-
-    /** 开发版配置信息 */
-    private final Config devConfig;
-
-    /** 商业版配置信息 */
-    private final Config proConfig;
-
-    public HeHttpService(HeProperties heProperties, RestTemplate restTemplate) {
-        this.heProperties = heProperties;
-        this.restTemplate = restTemplate;
-
-        this.devConfig = new Config(HeConstant.DEV_API_BASE_URL, heProperties.getDevKey());
-        this.proConfig = new Config(HeConstant.PRO_API_BASE_URL, heProperties.getProKey());
-    }
 
     /**
      * 城市信息查询
@@ -70,9 +59,8 @@ public class HeHttpService {
         String url = UriComponentsBuilder
             .fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
             .queryParam("location", location)
-            .queryParam("key", heProperties.getDevKey())
+            .queryParam("key", heProperties.getKey())
             .queryParam("range", "cn")
-            .queryParam("gzip", "n")
             .toUriString();
 
         // 在 `url` 外面套一层 `new URI()` 的原因是：
@@ -90,14 +78,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_WEATHER_NOW)
     public HeWeatherNowResponse getWeatherNow(String location) {
-        String path = "/weather/now";
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(devConfig.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/weather/now")
             .queryParam("location", location)
-            .queryParam("key", heProperties.getDevKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -121,15 +105,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_WEATHER_DAILY)
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
-        Config config = (HeConstant.WeatherDailyDays.DAYS_15.equals(days) || HeConstant.WeatherDailyDays.DAYS_10.equals(days)) ? proConfig : devConfig;
-        String path = "/weather/" + days;
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(config.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/weather/" + days)
             .queryParam("location", location)
-            .queryParam("key", config.getKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -153,15 +132,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_WEATHER_HOURLY)
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
-        Config config = HeConstant.WeatherHourlyHours.HOURS_24.equals(hours) ? devConfig : proConfig;
-        String path = "/weather/" + hours;
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(config.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/weather/" + hours)
             .queryParam("location", location)
-            .queryParam("key", config.getKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -184,14 +158,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_MINUTELY)
     public HeMinutelyResponse getMinutely(String location) {
-        String path = "/minutely/5m";
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(proConfig.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/minutely/5m")
             .queryParam("location", location)
-            .queryParam("key", proConfig.getKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -215,16 +185,11 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_INDICES_DAILY)
     public HeIndicesResponse getIndicesDaily(String location, String days) {
-        Config config = "1d".equals(days) ? devConfig : proConfig;
-        String path = "/indices/" + days;
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(config.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/indices/" + days)
             .queryParam("location", location)
-            .queryParam("key", config.getKey())
+            .queryParam("key", heProperties.getKey())
             .queryParam("type", "0")
-            .queryParam("gzip", "n")
             .build()
             .toUriString();
 
@@ -247,14 +212,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_WARNING_NOW)
     public HeWarningNowResponse getWarningNow(String location) {
-        String path = "/warning/now";
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(devConfig.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/warning/now")
             .queryParam("location", location)
-            .queryParam("key", heProperties.getDevKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -277,14 +238,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_AIR_NOW)
     public HeAirNowResponse getAirNow(String location) {
-        String path = "/air/now";
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(devConfig.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/air/now")
             .queryParam("location", location)
-            .queryParam("key", devConfig.getKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -307,14 +264,10 @@ public class HeHttpService {
      */
     @Cacheable(RedisCacheCollector.HE_AIR_DAILY)
     public HeAirDailyResponse getAirDaily(String location) {
-        String path = "/air/5d";
-
-        // 包含请求参数的完整请求地址
         String url = UriComponentsBuilder
-            .fromHttpUrl(proConfig.getBaseUrl() + path)
+            .fromHttpUrl(BASE_URL + "/air/5d")
             .queryParam("location", location)
-            .queryParam("key", proConfig.getKey())
-            .queryParam("gzip", "n")
+            .queryParam("key", heProperties.getKey())
             .build()
             .toUriString();
 
@@ -325,21 +278,5 @@ public class HeHttpService {
             return data;
         }
         throw HeRequestFailedException.create("空气质量预报", url, data.getCode());
-    }
-
-    /**
-     * 和风天气配置信息类
-     *
-     * <h2>主要用途
-     * <p>和风天气开发者密钥分开发版和商业版，两个密钥对应的请求地址，这个类将这两个信息封装起来。
-     */
-    @Data
-    @AllArgsConstructor
-    private static class Config {
-        /** 请求地址前缀部分 */
-        private String baseUrl;
-
-        /** 密钥 */
-        private String key;
     }
 }
