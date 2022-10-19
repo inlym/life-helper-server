@@ -69,7 +69,7 @@ public class HeHttpService {
     }
 
     /**
-     * 获取实时天气
+     * 获取实况天气数据
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      *
@@ -95,10 +95,10 @@ public class HeHttpService {
     }
 
     /**
-     * 获取逐天天气预报
+     * 获取逐日天气预报
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
-     * @param days     天数，支持 `3d`,`7d`,`10d`,`15d`
+     * @param days     天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
      *
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">官方文档</a>
      * @since 1.0.0
@@ -118,7 +118,7 @@ public class HeHttpService {
         if (SUCCESS_CODE.equals(data.getCode())) {
             return data;
         }
-        throw HeRequestFailedException.create("逐天天气预报", url, data.getCode());
+        throw HeRequestFailedException.create("逐日天气预报", url, data.getCode());
     }
 
     /**
