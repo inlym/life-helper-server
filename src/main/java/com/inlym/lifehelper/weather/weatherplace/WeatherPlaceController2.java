@@ -16,11 +16,11 @@ import java.util.Map;
  * @date 2022-02-13
  **/
 @RestController
-public class WeatherPlaceController {
-    private final WeatherPlaceService weatherPlaceService;
+public class WeatherPlaceController2 {
+    private final WeatherPlaceService2 weatherPlaceService2;
 
-    public WeatherPlaceController(WeatherPlaceService weatherPlaceService) {
-        this.weatherPlaceService = weatherPlaceService;
+    public WeatherPlaceController2(WeatherPlaceService2 weatherPlaceService2) {
+        this.weatherPlaceService2 = weatherPlaceService2;
     }
 
     /**
@@ -33,7 +33,7 @@ public class WeatherPlaceController {
     @GetMapping("/weather/places")
     @UserPermission
     public Map<String, Object> list(@UserId int userId) {
-        return Map.of("list", weatherPlaceService.getConvertedWeatherPlaceList(userId));
+        return Map.of("list", weatherPlaceService2.getConvertedWeatherPlaceList(userId));
     }
 
     /**
@@ -47,7 +47,7 @@ public class WeatherPlaceController {
     @PostMapping("/weather/place")
     @UserPermission
     public WeatherPlaceWithWeatherNowBO add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
-        return weatherPlaceService.add(userId, dto);
+        return weatherPlaceService2.add(userId, dto);
     }
 
     /**
@@ -61,7 +61,7 @@ public class WeatherPlaceController {
     @DeleteMapping("/weather/place/{id}")
     @UserPermission
     public Map<String, Object> delete(@PathVariable("id") int id, @UserId int userId) {
-        weatherPlaceService.delete(userId, id);
+        weatherPlaceService2.delete(userId, id);
         return Map.of("id", id);
     }
 }

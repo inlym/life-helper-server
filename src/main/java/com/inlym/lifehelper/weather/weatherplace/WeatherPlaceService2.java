@@ -26,14 +26,14 @@ import java.util.concurrent.CompletableFuture;
  **/
 @Service
 @Slf4j
-public class WeatherPlaceService {
+public class WeatherPlaceService2 {
     private final WeatherPlaceMapper weatherPlaceMapper;
 
     private final LocationService locationService;
 
     private final WeatherDataService weatherDataService;
 
-    public WeatherPlaceService(WeatherPlaceMapper weatherPlaceMapper, LocationService locationService, WeatherDataService weatherDataService) {
+    public WeatherPlaceService2(WeatherPlaceMapper weatherPlaceMapper, LocationService locationService, WeatherDataService weatherDataService) {
         this.weatherPlaceMapper = weatherPlaceMapper;
         this.locationService = locationService;
         this.weatherDataService = weatherDataService;

@@ -5,7 +5,7 @@ import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.IpLocation;
-import com.inlym.lifehelper.weather.weatherplace.WeatherPlaceService;
+import com.inlym.lifehelper.weather.weatherplace.WeatherPlaceService2;
 import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceWithWeatherNowBO;
 import org.springframework.validation.annotation.Validated;
@@ -28,12 +28,12 @@ public class WeatherDataController {
 
     private final LocationService locationService;
 
-    private final WeatherPlaceService weatherPlaceService;
+    private final WeatherPlaceService2 weatherPlaceService2;
 
-    public WeatherDataController(WeatherMixedDataService weatherMixedDataService, LocationService locationService, WeatherPlaceService weatherPlaceService) {
+    public WeatherDataController(WeatherMixedDataService weatherMixedDataService, LocationService locationService, WeatherPlaceService2 weatherPlaceService2) {
         this.weatherMixedDataService = weatherMixedDataService;
         this.locationService = locationService;
-        this.weatherPlaceService = weatherPlaceService;
+        this.weatherPlaceService2 = weatherPlaceService2;
     }
 
     /**
@@ -77,10 +77,10 @@ public class WeatherDataController {
     @GetMapping(path = "/weather", params = "place_id")
     @UserPermission
     public Map<String, Object> getMixedWeatherData(@RequestParam("place_id") int placeId, @UserId int userId) {
-        WeatherPlace place = weatherPlaceService.findById(userId, placeId);
+        WeatherPlace place = weatherPlaceService2.findById(userId, placeId);
         assert place != null;
 
-        WeatherPlaceWithWeatherNowBO bo = weatherPlaceService.convertWeatherPlace(place);
+        WeatherPlaceWithWeatherNowBO bo = weatherPlaceService2.convertWeatherPlace(place);
 
         Map<String, Object> mixedData = weatherMixedDataService.getMixedWeatherData(place.getLongitude(), place.getLatitude());
         mixedData.put("place", bo);
