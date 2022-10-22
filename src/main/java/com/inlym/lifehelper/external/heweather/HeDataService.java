@@ -1,8 +1,9 @@
 package com.inlym.lifehelper.external.heweather;
 
 import com.inlym.lifehelper.external.heweather.pojo.*;
-import com.inlym.lifehelper.weather.weatherdata.pojo.*;
+import com.inlym.lifehelper.weather.data.pojo.*;
 import com.inlym.lifehelper.weather.weatherplace.pojo.HeCity;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -12,19 +13,17 @@ import java.text.SimpleDateFormat;
 /**
  * 和风天气数据服务
  *
- * <h2>说明
- * <p>将从 HTTP 请求获取的数据做二次处理，成为可以内部使用的有效数据。
+ * <h2>主要用途
+ * <p>将从和风天气 API 通过 HTTP 请求获取的数据转化为内部使用的数据格式。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/3/26
+ * @since 1.0.0
  **/
 @Service
+@RequiredArgsConstructor
 public final class HeDataService {
     private final HeHttpService heHttpService;
-
-    public HeDataService(HeHttpService heHttpService) {
-        this.heHttpService = heHttpService;
-    }
 
     /**
      * 生成 icon 图片的 URL 地址
@@ -198,7 +197,6 @@ public final class HeDataService {
      * @see HeHttpService#getWeatherDaily
      * @since 1.0.0
      */
-    @SneakyThrows
     public WeatherDailyItem[] getWeatherDaily(String location, String days) {
         HeWeatherDailyResponse res = heHttpService.getWeatherDaily(location, days);
         HeWeatherDailyResponse.Daily[] daily = res.getDaily();
@@ -298,6 +296,26 @@ public final class HeDataService {
         rain.setMinutely(list);
 
         return rain;
+    }
+
+    /**
+     * 获取格点实时天气
+     *
+     * @param location 需要查询地区的以英文逗号分隔的 经度,纬度 坐标
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-now/">格点实时天气</a>
+     * @since 1.5.0
+     */
+    public GridWeatherNow getGridWeatherNow(String location) {
+        HeGridWeatherNowResponse res = heHttpService.getGridWeatherNow(location);
+
+        GridWeatherNow now = new GridWeatherNow();
+        BeanUtils.copyProperties(res.getNow(), now);
+
+        now.setIconUrl(makeIconUrl(now.getIcon()));
+        now.setType(getWeatherTypeByIconId(now.getIcon()));
+
+        return now;
     }
 
     /**

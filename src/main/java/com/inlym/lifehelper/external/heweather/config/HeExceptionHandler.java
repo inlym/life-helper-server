@@ -1,6 +1,7 @@
-package com.inlym.lifehelper.external.heweather.exception;
+package com.inlym.lifehelper.external.heweather.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
+import com.inlym.lifehelper.external.heweather.exception.HeRequestFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;

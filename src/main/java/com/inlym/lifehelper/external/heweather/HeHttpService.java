@@ -153,7 +153,7 @@ public class HeHttpService {
      *
      * @param location 需要查询地区的以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）
      *
-     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/minutely/">官方文档</a>
+     * @see <a href="https://dev.qweather.com/docs/api/minutely/minutely-precipitation/">分钟级降水</a>
      * @since 1.0.0
      */
     @Cacheable(RedisCacheCollector.HE_MINUTELY)
@@ -172,6 +172,86 @@ public class HeHttpService {
             return data;
         }
         throw HeRequestFailedException.create("分钟级降水", url, data.getCode());
+    }
+
+    /**
+     * 获取格点实时天气
+     *
+     * @param location 需要查询地区的以英文逗号分隔的 经度,纬度 坐标
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-now/">格点实时天气</a>
+     * @since 1.5.0
+     */
+    @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_NOW)
+    public HeGridWeatherNowResponse getGridWeatherNow(String location) {
+        String url = UriComponentsBuilder
+            .fromHttpUrl(BASE_URL + "/grid-weather/now")
+            .queryParam("location", location)
+            .queryParam("key", heProperties.getKey())
+            .build()
+            .toUriString();
+
+        HeGridWeatherNowResponse data = restTemplate.getForObject(url, HeGridWeatherNowResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            return data;
+        }
+        throw HeRequestFailedException.create("格点实时天气", url, data.getCode());
+    }
+
+    /**
+     * 获取格点每日天气预报
+     *
+     * @param location 需要查询地区的以英文逗号分隔的 经度,纬度 坐标
+     * @param days     天数，支持 `3d`,`7d`
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">官方文档</a>
+     * @since 1.5.0
+     */
+    @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_DAILY)
+    public HeGridWeatherDailyResponse getGridWeatherDaily(String location, String days) {
+        String url = UriComponentsBuilder
+            .fromHttpUrl(BASE_URL + "/grid-weather/" + days)
+            .queryParam("location", location)
+            .queryParam("key", heProperties.getKey())
+            .build()
+            .toUriString();
+
+        HeGridWeatherDailyResponse data = restTemplate.getForObject(url, HeGridWeatherDailyResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            return data;
+        }
+        throw HeRequestFailedException.create("格点每日天气预报", url, data.getCode());
+    }
+
+    /**
+     * 获取格点逐小时天气预报
+     *
+     * @param location 需要查询地区的以英文逗号分隔的 经度,纬度 坐标
+     * @param hours    小时数，支持 `24h`,`72h`
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/">官方文档</a>
+     * @since 1.5.0
+     */
+    @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_HOURLY)
+    public HeGridWeatherHourlyResponse getGridWeatherHourly(String location, String hours) {
+        String url = UriComponentsBuilder
+            .fromHttpUrl(BASE_URL + "/grid-weather/" + hours)
+            .queryParam("location", location)
+            .queryParam("key", heProperties.getKey())
+            .build()
+            .toUriString();
+
+        HeGridWeatherHourlyResponse data = restTemplate.getForObject(url, HeGridWeatherHourlyResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            return data;
+        }
+        throw HeRequestFailedException.create("格点逐小时天气预报", url, data.getCode());
     }
 
     /**
