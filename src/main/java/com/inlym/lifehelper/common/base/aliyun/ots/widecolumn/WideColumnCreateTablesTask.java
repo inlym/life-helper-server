@@ -86,6 +86,12 @@ public class WideColumnCreateTablesTask implements ApplicationRunner {
         media.addPrimaryKeyColumn("media_id", PrimaryKeyType.STRING);
         list.add(media);
 
+        // 天气地点
+        TableMeta weatherPlace = new TableMeta("weather_place");
+        weatherPlace.addPrimaryKeyColumn("uid", PrimaryKeyType.STRING);
+        weatherPlace.addPrimaryKeyColumn("place_id", PrimaryKeyType.STRING);
+        list.add(weatherPlace);
+
         return list;
     }
 }

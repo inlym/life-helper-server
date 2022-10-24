@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -187,7 +186,10 @@ public abstract class WideColumnUtils {
             return ColumnValue.fromBinary((byte[]) obj);
         } else if (obj instanceof LocalDateTime) {
             return ColumnValue.fromLong(((LocalDateTime) obj)
-                .toInstant(ZoneOffset.of("+08:00"))
+                .toInstant(ZoneId
+                    .systemDefault()
+                    .getRules()
+                    .getOffset(LocalDateTime.now()))
                 .toEpochMilli());
         } else {
             // 一般实体的数据类型不会弄错，保底错误这里抛出参数错误
@@ -393,7 +395,7 @@ public abstract class WideColumnUtils {
                     long timestamp = column
                         .getValue()
                         .asLong();
-                    field.set(entity, LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("Asia/Shanghai")));
+                    field.set(entity, LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault()));
                 } else {
                     throw new IllegalArgumentException("不支持的数据类型！");
                 }
