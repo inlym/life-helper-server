@@ -14,6 +14,10 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -181,6 +185,10 @@ public abstract class WideColumnUtils {
             return ColumnValue.fromBoolean((Boolean) obj);
         } else if (obj instanceof byte[]) {
             return ColumnValue.fromBinary((byte[]) obj);
+        } else if (obj instanceof LocalDateTime) {
+            return ColumnValue.fromLong(((LocalDateTime) obj)
+                .toInstant(ZoneOffset.of("+08:00"))
+                .toEpochMilli());
         } else {
             // 一般实体的数据类型不会弄错，保底错误这里抛出参数错误
             throw new IllegalArgumentException("宽表模型列赋值错误：未支持的数据类型");
@@ -381,6 +389,11 @@ public abstract class WideColumnUtils {
                     field.set(entity, column
                         .getValue()
                         .asBoolean());
+                } else if (field.getType() == LocalDateTime.class) {
+                    long timestamp = column
+                        .getValue()
+                        .asLong();
+                    field.set(entity, LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("Asia/Shanghai")));
                 } else {
                     throw new IllegalArgumentException("不支持的数据类型！");
                 }
