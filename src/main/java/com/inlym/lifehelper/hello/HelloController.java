@@ -9,6 +9,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.InetAddress;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,6 +128,23 @@ public class HelloController {
         InetAddress ia = InetAddress.getLocalHost();
         map.put("hostname", ia.getHostName());
         map.put("ip", ia.getHostAddress());
+
+        return map;
+    }
+
+    @GetMapping("/time")
+    public Map<String, Object> getTime() {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("System.currentTimeMillis", System.currentTimeMillis());
+        map.put("Date", new Date());
+        map.put("LocalDateTime", LocalDateTime.now());
+        map.put("ZoneId", ZoneId
+            .systemDefault()
+            .getId());
+        map.put("offset", ZoneId
+            .systemDefault()
+            .getRules()
+            .getOffset(LocalDateTime.now()));
 
         return map;
     }
