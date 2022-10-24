@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.weatherdata;
+package com.inlym.lifehelper.weather.data;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * 天气地点实体
  *
@@ -69,5 +71,5 @@ public class WeatherPlace {
     // 其他字段
 
     /** 创建时间 */
-    private Long createTime;
+    private LocalDateTime createTime;
 }

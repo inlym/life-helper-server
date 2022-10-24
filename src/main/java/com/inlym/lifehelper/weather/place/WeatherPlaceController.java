@@ -4,12 +4,15 @@ import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.pojo.WeChatChooseLocationDTO;
+import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceListVO;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 天气地点管理控制器
@@ -36,6 +39,7 @@ public class WeatherPlaceController {
     public WeatherPlaceVO create(@UserId int userId, @Valid @RequestBody WeChatChooseLocationDTO dto) {
         WeatherPlace place = WeatherPlace
             .builder()
+            .userId(userId)
             .name(dto.getName())
             .address(dto.getAddress())
             .longitude(dto.getLongitude())
@@ -64,7 +68,24 @@ public class WeatherPlaceController {
             .build();
     }
 
-    //    @GetMapping("/weather/places")
-    //    @UserPermission
-    //    public
+    /**
+     * 获取天气地点列表
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.5.0
+     */
+    @GetMapping("/weather/places")
+    @UserPermission
+    public WeatherPlaceListVO getList(@UserId int userId) {
+        List<WeatherPlaceVO> list = new ArrayList<>();
+        for (WeatherPlace place : weatherPlaceService.list(userId)) {
+            list.add(weatherPlaceService.convert(place));
+        }
+
+        return WeatherPlaceListVO
+            .builder()
+            .list(list)
+            .build();
+    }
 }

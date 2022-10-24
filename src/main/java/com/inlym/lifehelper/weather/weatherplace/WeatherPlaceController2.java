@@ -30,7 +30,7 @@ public class WeatherPlaceController2 {
      *
      * @since 1.0.0
      */
-    @GetMapping("/weather/places")
+    @GetMapping("/weather/places2")
     @UserPermission
     public Map<String, Object> list(@UserId int userId) {
         return Map.of("list", weatherPlaceService2.getConvertedWeatherPlaceList(userId));
@@ -44,7 +44,7 @@ public class WeatherPlaceController2 {
      *
      * @since 1.0.0
      */
-    @PostMapping("/weather/place")
+    @PostMapping("/weather/place2")
     @UserPermission
     public WeatherPlaceWithWeatherNowBO add(@Validated @RequestBody WeixinChooseLocationDTO dto, @UserId int userId) {
         return weatherPlaceService2.add(userId, dto);
@@ -58,7 +58,7 @@ public class WeatherPlaceController2 {
      *
      * @since 1.0.0
      */
-    @DeleteMapping("/weather/place/{id}")
+    @DeleteMapping("/weather/place2/{id}")
     @UserPermission
     public Map<String, Object> delete(@PathVariable("id") int id, @UserId int userId) {
         weatherPlaceService2.delete(userId, id);

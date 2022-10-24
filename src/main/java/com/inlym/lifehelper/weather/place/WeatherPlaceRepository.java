@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class WeatherPlaceRepository {
         WeatherPlace wp = new WeatherPlace();
         BeanUtils.copyProperties(place, wp);
 
-        wp.setCreateTime(System.currentTimeMillis());
+        wp.setCreateTime(LocalDateTime.now());
 
         return wideColumnExecutor.create(wp);
     }

@@ -1,13 +1,11 @@
-package com.inlym.lifehelper.weather.weatherdata.pojo;
+package com.inlym.lifehelper.weather.data.pojo;
 
 import lombok.Data;
 
 /**
  * 实时天气数据
  * <p>
- * [数据来源]
- * 1. 复用了大部分从和风天气响应获取的数据。
- * 2. 对部分原有数据做了数据处理后返回。
+ * [数据来源] 1. 复用了大部分从和风天气响应获取的数据。 2. 对部分原有数据做了数据处理后返回。
  *
  * @author inlym
  * @date 2022-02-19
