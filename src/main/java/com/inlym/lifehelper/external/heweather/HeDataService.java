@@ -26,28 +26,6 @@ public final class HeDataService {
     private final HeHttpService heHttpService;
 
     /**
-     * 生成 icon 图片的 URL 地址
-     *
-     * @param iconId icon 字段数据
-     *
-     * @since 1.0.0
-     */
-    private static String makeIconUrl(String iconId) {
-        return HeConstant.ICON_BASE_URL + iconId + ".png";
-    }
-
-    /**
-     * 生成天气生活指数图片的 URL 地址
-     *
-     * @param typeId 生活指数类型 ID
-     *
-     * @since 1.0.0
-     */
-    private static String makeLiveImageUrl(String typeId) {
-        return HeConstant.LIVE_IMAGE_BASE_URL + typeId + ".svg";
-    }
-
-    /**
      * 预警等级转换为对应的数字字符串
      *
      * @param level 预警等级
@@ -182,7 +160,7 @@ public final class HeDataService {
         WeatherNow now = new WeatherNow();
         BeanUtils.copyProperties(res.getNow(), now);
 
-        now.setIconUrl(makeIconUrl(now.getIcon()));
+        now.setIconUrl(HeUrlUtils.getIconUrl(now.getIcon()));
         now.setType(getWeatherTypeByIconId(now.getIcon()));
 
         return now;
@@ -208,9 +186,9 @@ public final class HeDataService {
             BeanUtils.copyProperties(source, target);
 
             target.setDate(source.getFxDate());
-            target.setIconDayUrl(makeIconUrl(source.getIconDay()));
-            target.setIconNightUrl(makeIconUrl(source.getIconNight()));
-            target.setMoonPhaseIconUrl(makeIconUrl(source.getMoonPhaseIcon()));
+            target.setIconDayUrl(HeUrlUtils.getIconUrl(source.getIconDay()));
+            target.setIconNightUrl(HeUrlUtils.getIconUrl(source.getIconNight()));
+            target.setMoonPhaseIconUrl(HeUrlUtils.getIconUrl(source.getMoonPhaseIcon()));
 
             // 天气描述
             if (source
@@ -251,7 +229,7 @@ public final class HeDataService {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00");
             target.setTime(sdf.parse(source.getFxTime()));
 
-            target.setIconUrl(makeIconUrl(source.getIcon()));
+            target.setIconUrl(HeUrlUtils.getIconUrl(source.getIcon()));
 
             list[i] = target;
         }
@@ -312,7 +290,7 @@ public final class HeDataService {
         GridWeatherNow now = new GridWeatherNow();
         BeanUtils.copyProperties(res.getNow(), now);
 
-        now.setIconUrl(makeIconUrl(now.getIcon()));
+        now.setIconUrl(HeUrlUtils.getIconUrl(now.getIcon()));
         now.setType(getWeatherTypeByIconId(now.getIcon()));
 
         return now;
@@ -336,7 +314,7 @@ public final class HeDataService {
             HeIndicesResponse.Daily source = daily[i];
             IndicesItem target = new IndicesItem();
             BeanUtils.copyProperties(source, target);
-            target.setImageUrl(makeLiveImageUrl(target.getType()));
+            target.setImageUrl(HeUrlUtils.getLiveImageUrl(target.getType()));
 
             list[i] = target;
         }

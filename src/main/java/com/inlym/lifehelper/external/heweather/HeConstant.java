@@ -18,31 +18,4 @@ public class HeConstant {
 
     /** 存放和风天气灾害预警图片的目录地址 */
     public static final String WARNING_ICON_BASE_URL = "https://static.lifehelper.com.cn/qweather/warning-icon/";
-
-    /** 逐天天气预报可查询天数 */
-    public static final class WeatherDailyDays {
-        /** 3天 */
-        public static final String DAYS_3 = "3d";
-
-        /** 7天 */
-        public static final String DAYS_7 = "7d";
-
-        /** 10天 */
-        public static final String DAYS_10 = "10d";
-
-        /** 15天 */
-        public static final String DAYS_15 = "15d";
-    }
-
-    /** 逐天天气预报可查询天数 */
-    public static final class WeatherHourlyHours {
-        /** 24小时 */
-        public static final String HOURS_24 = "24h";
-
-        /** 72小时 */
-        public static final String HOURS_72 = "72h";
-
-        /** 168小时 */
-        public static final String HOURS_168 = "168h";
-    }
 }

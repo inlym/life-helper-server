@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.weather.data;
 
-import com.inlym.lifehelper.external.heweather.HeConstant;
 import com.inlym.lifehelper.external.heweather.HeDataService;
 import com.inlym.lifehelper.weather.data.pojo.*;
 import org.springframework.stereotype.Service;
@@ -60,7 +59,7 @@ public class WeatherDataService {
      */
     public WeatherDailyItem[] getWeather7D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherDaily(location, HeConstant.WeatherDailyDays.DAYS_7);
+        return heDataService.getWeatherDaily(location, "7d");
     }
 
     /**
@@ -73,7 +72,7 @@ public class WeatherDataService {
      */
     public WeatherDailyItem[] getWeather15D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherDailyWithAqi(location, HeConstant.WeatherDailyDays.DAYS_15);
+        return heDataService.getWeatherDailyWithAqi(location, "15d");
     }
 
     /**
@@ -86,7 +85,7 @@ public class WeatherDataService {
      */
     public WeatherHourlyItem[] getWeather24H(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherHourly(location, HeConstant.WeatherHourlyHours.HOURS_24);
+        return heDataService.getWeatherHourly(location, "24h");
     }
 
     /**
