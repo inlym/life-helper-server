@@ -9,6 +9,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 和风天气数据服务
@@ -160,7 +163,7 @@ public final class HeDataService {
         WeatherNow now = new WeatherNow();
         BeanUtils.copyProperties(res.getNow(), now);
 
-        now.setIconUrl(HeUrlUtils.getIconUrl(now.getIcon()));
+        now.setIconUrl(HeUtils.getIconUrl(now.getIcon()));
         now.setType(getWeatherTypeByIconId(now.getIcon()));
 
         return now;
@@ -186,9 +189,9 @@ public final class HeDataService {
             BeanUtils.copyProperties(source, target);
 
             target.setDate(source.getFxDate());
-            target.setIconDayUrl(HeUrlUtils.getIconUrl(source.getIconDay()));
-            target.setIconNightUrl(HeUrlUtils.getIconUrl(source.getIconNight()));
-            target.setMoonPhaseIconUrl(HeUrlUtils.getIconUrl(source.getMoonPhaseIcon()));
+            target.setIconDayUrl(HeUtils.getIconUrl(source.getIconDay()));
+            target.setIconNightUrl(HeUtils.getIconUrl(source.getIconNight()));
+            target.setMoonPhaseIconUrl(HeUtils.getIconUrl(source.getMoonPhaseIcon()));
 
             // 天气描述
             if (source
@@ -229,7 +232,7 @@ public final class HeDataService {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00");
             target.setTime(sdf.parse(source.getFxTime()));
 
-            target.setIconUrl(HeUrlUtils.getIconUrl(source.getIcon()));
+            target.setIconUrl(HeUtils.getIconUrl(source.getIcon()));
 
             list[i] = target;
         }
@@ -290,7 +293,7 @@ public final class HeDataService {
         GridWeatherNow now = new GridWeatherNow();
         BeanUtils.copyProperties(res.getNow(), now);
 
-        now.setIconUrl(HeUrlUtils.getIconUrl(now.getIcon()));
+        now.setIconUrl(HeUtils.getIconUrl(now.getIcon()));
         now.setType(getWeatherTypeByIconId(now.getIcon()));
 
         return now;
@@ -314,7 +317,7 @@ public final class HeDataService {
             HeIndicesResponse.Daily source = daily[i];
             IndicesItem target = new IndicesItem();
             BeanUtils.copyProperties(source, target);
-            target.setImageUrl(HeUrlUtils.getLiveImageUrl(target.getType()));
+            target.setImageUrl(HeUtils.getLiveImageUrl(target.getType()));
 
             list[i] = target;
         }
@@ -344,6 +347,42 @@ public final class HeDataService {
             target.setIconUrl(makeWarningIconUrl(source.getType(), source.getLevel()));
 
             list[i] = target;
+        }
+
+        return list;
+    }
+
+    /**
+     * 获取天气灾害预警列表
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     *
+     * @since 1.5.0
+     */
+    public List<WarningNow> getWarningNow2(String location) {
+        HeWarningNowResponse res = heHttpService.getWarningNow(location);
+        HeWarningNowResponse.WarningItem[] warningItems = res.getWarning();
+        List<WarningNow> list = new ArrayList<>();
+
+        LocalDateTime updateTime = HeUtils.parseTime(res.getUpdateTime());
+
+        for (HeWarningNowResponse.WarningItem item : warningItems) {
+            WarningNow warningNow = WarningNow
+                .builder()
+                .updateTime(updateTime)
+                .id(item.getId())
+                .pubTime(HeUtils.parseTime(item.getPubTime()))
+                .title(item.getTitle())
+                .startTime(HeUtils.parseTime(item.getStartTime()))
+                .endTime(HeUtils.parseTime(item.getEndTime()))
+                .status(item.getStatus())
+                .type(item.getType())
+                .typeName(item.getTypeName())
+                .text(item.getText())
+                .related(item.getRelated())
+                .build();
+
+            list.add(warningNow);
         }
 
         return list;
