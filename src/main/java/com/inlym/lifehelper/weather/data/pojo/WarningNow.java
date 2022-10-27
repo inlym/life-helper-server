@@ -20,26 +20,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WarningNow {
+    // =============================  数据处理后新增的字段  =============================
+
+    /** 图片的 URL 地址 */
+    private String imageUrl;
+
+    // =============================  和风天气原有的字段  ==============================
+
     /** 当前 API 的最近更新时间 */
     private LocalDateTime updateTime;
 
     /** 本条预警的唯一标识，可判断本条预警是否已经存在 */
     private String id;
 
-    /** 预警发布单位，可能为空 */
-    private String sender;
-
     /** 预警发布时间 */
     private LocalDateTime pubTime;
 
     /** 预警信息标题 */
     private String title;
-
-    /** 预警开始时间，可能为空 */
-    private LocalDateTime startTime;
-
-    /** 预警结束时间，可能为空 */
-    private LocalDateTime endTime;
 
     /** 预警信息的发布状态 */
     private String status;
@@ -55,7 +53,4 @@ public class WarningNow {
 
     /** 预警详细文字描述 */
     private String text;
-
-    /** 与本条预警相关联的预警 ID，当预警状态为 cancel 或 update 时返回。可能为空 */
-    private String related;
 }

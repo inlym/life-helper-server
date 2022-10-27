@@ -326,40 +326,13 @@ public final class HeDataService {
     }
 
     /**
-     * 获取天气灾害预警
-     *
-     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
-     *
-     * @since 1.2.0
-     */
-    public WeatherWarningItem[] getWarningNow(String location) {
-        HeWarningNowResponse res = heHttpService.getWarningNow(location);
-        HeWarningNowResponse.WarningItem[] warningItems = res.getWarning();
-        WeatherWarningItem[] list = new WeatherWarningItem[warningItems.length];
-
-        for (int i = 0; i < warningItems.length; i++) {
-            HeWarningNowResponse.WarningItem source = warningItems[i];
-            WeatherWarningItem target = new WeatherWarningItem();
-            BeanUtils.copyProperties(source, target);
-
-            target.setLevelId(getWarningLevelNum(source.getLevel()));
-            target.setImageUrl(makeWarningImageUrl(source.getType(), source.getLevel()));
-            target.setIconUrl(makeWarningIconUrl(source.getType(), source.getLevel()));
-
-            list[i] = target;
-        }
-
-        return list;
-    }
-
-    /**
      * 获取天气灾害预警列表
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      *
      * @since 1.5.0
      */
-    public List<WarningNow> getWarningNow2(String location) {
+    public List<WarningNow> getWarningNow(String location) {
         HeWarningNowResponse res = heHttpService.getWarningNow(location);
         HeWarningNowResponse.WarningItem[] warningItems = res.getWarning();
         List<WarningNow> list = new ArrayList<>();
@@ -369,17 +342,15 @@ public final class HeDataService {
         for (HeWarningNowResponse.WarningItem item : warningItems) {
             WarningNow warningNow = WarningNow
                 .builder()
+                .imageUrl(HeUtils.getWarningImageUrl(item.getType(), item.getSeverityColor()))
                 .updateTime(updateTime)
                 .id(item.getId())
                 .pubTime(HeUtils.parseTime(item.getPubTime()))
                 .title(item.getTitle())
-                .startTime(HeUtils.parseTime(item.getStartTime()))
-                .endTime(HeUtils.parseTime(item.getEndTime()))
                 .status(item.getStatus())
                 .type(item.getType())
                 .typeName(item.getTypeName())
                 .text(item.getText())
-                .related(item.getRelated())
                 .build();
 
             list.add(warningNow);

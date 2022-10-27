@@ -4,6 +4,8 @@ import com.inlym.lifehelper.external.heweather.HeDataService;
 import com.inlym.lifehelper.weather.data.pojo.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 天气数据服务
  *
@@ -135,9 +137,20 @@ public class WeatherDataService {
      *
      * @since 1.2.0
      */
-    public WeatherWarningItem[] getWarningNow(double longitude, double latitude) {
+    public List<WarningNow> getWarningNow(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWarningNow(location);
+    }
+
+    /**
+     * 获取天气灾害预警列表
+     *
+     * @param locationId 需要查询地区的 LocationID
+     *
+     * @since 1.5.0
+     */
+    public List<WarningNow> getWarningNow(String locationId) {
+        return heDataService.getWarningNow(locationId);
     }
 
     /**

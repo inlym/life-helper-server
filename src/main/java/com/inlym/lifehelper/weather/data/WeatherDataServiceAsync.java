@@ -4,6 +4,7 @@ import com.inlym.lifehelper.weather.data.pojo.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -105,7 +106,7 @@ public class WeatherDataServiceAsync {
      *
      * @since 1.2.0
      */
-    public CompletableFuture<WeatherWarningItem[]> getWarningNow(double longitude, double latitude) {
+    public CompletableFuture<List<WarningNow>> getWarningNow(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getWarningNow(longitude, latitude));
     }
 

@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -35,7 +36,7 @@ public class WeatherMixedDataService {
         CompletableFuture<WeatherHourlyItem[]> f24h = weatherDataServiceAsync.getWeather24H(longitude, latitude);
         CompletableFuture<MinutelyRain> rain = weatherDataServiceAsync.getMinutely(longitude, latitude);
         CompletableFuture<IndicesItem[]> indices3d = weatherDataServiceAsync.getIndices3D(longitude, latitude);
-        CompletableFuture<WeatherWarningItem[]> warnings = weatherDataServiceAsync.getWarningNow(longitude, latitude);
+        CompletableFuture<List<WarningNow>> warnings = weatherDataServiceAsync.getWarningNow(longitude, latitude);
         CompletableFuture<AirNow> airNow = weatherDataServiceAsync.getAirNow(longitude, latitude);
 
         CompletableFuture
