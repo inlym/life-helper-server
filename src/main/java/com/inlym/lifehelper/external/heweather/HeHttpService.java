@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 和风天气 HTTP 请求服务类
@@ -55,17 +57,17 @@ public class HeHttpService {
      */
     @SneakyThrows
     @Cacheable(RedisCacheCollector.HE_SEARCH_CITIES)
-    public HeCityLookupResponse searchCities(String location) {
-        String url = UriComponentsBuilder
+    public HeCityLookupResponse getGeoCityLookup(String location) {
+        URI uri = UriComponentsBuilder
             .fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
-            .queryParam("location", location)
+            // 只有此处查询城市可能用到中文，因此特殊处理一些，对请求参数进行编码
+            .queryParam("location", URLEncoder.encode(location, StandardCharsets.UTF_8))
             .queryParam("key", heProperties.getKey())
             .queryParam("range", "cn")
-            .toUriString();
+            .build(true)
+            .toUri();
 
-        // 在 `url` 外面套一层 `new URI()` 的原因是：
-        // 这样可以避免请求参数中包含中文时，被默认规则转码变成乱码的问题。
-        return restTemplate.getForObject(new URI(url), HeCityLookupResponse.class);
+        return restTemplate.getForObject(uri, HeCityLookupResponse.class);
     }
 
     /**

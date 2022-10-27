@@ -7,7 +7,8 @@ import lombok.Data;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/3/26
- * @see <a href="https://dev.qweather.com/docs/api/geo/city-lookup/">城市信息查询</a>
+ * @see <a href="https://dev.qweather.com/docs/api/geoapi/city-lookup/">城市信息查询</a>
+ * @since 1.4.0
  **/
 @Data
 public class HeCityLookupResponse {

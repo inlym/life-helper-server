@@ -29,98 +29,6 @@ public final class HeDataService {
     private final HeHttpService heHttpService;
 
     /**
-     * 预警等级转换为对应的数字字符串
-     *
-     * @param level 预警等级
-     *
-     * @since 1.2.0
-     */
-    private static String getWarningLevelNum(String level) {
-        String red = "红色";
-        String orange = "橙色";
-        String yellow = "黄色";
-        String blue = "蓝色";
-        String white = "白色";
-
-        if (red.equals(level)) {
-            return "1";
-        } else if (orange.equals(level)) {
-            return "2";
-        } else if (yellow.equals(level)) {
-            return "3";
-        } else if (blue.equals(level)) {
-            return "4";
-        } else if (white.equals(level)) {
-            return "5";
-        } else {
-            return "0";
-        }
-    }
-
-    /**
-     * 生成天气预警图片的 URL 地址
-     *
-     * @param type  预警类型 ID
-     * @param level 预警等级
-     *
-     * @since 1.2.0
-     */
-    private static String makeWarningImageUrl(String type, String level) {
-        String levelNum = getWarningLevelNum(level);
-        return HeConstant.WARNING_IMAGE_BASE_URL + type + "-" + levelNum + ".png";
-    }
-
-    /**
-     * 生成天气预警图标的 URL 地址
-     *
-     * @param type  预警类型 ID
-     * @param level 预警等级
-     *
-     * @since 1.2.1
-     */
-    private static String makeWarningIconUrl(String type, String level) {
-        String levelNum = getWarningLevelNum(level);
-
-        // 备注（2022.05.08）：
-        // 原定此处根据不同等级返回不同颜色的图片，但由于背景色使用了该颜色，因此此处统一返回白色图标。
-        // return HeConstant.WARNING_ICON_BASE_URL + type + "-" + levelNum + ".svg";
-
-        return HeConstant.WARNING_ICON_BASE_URL + type + "-5.svg";
-    }
-
-    /**
-     * 根据 icon 图标的 ID 计算所属的天气类型
-     *
-     * <h2>天气类型（来源于自行归纳）
-     * <li>sun    - 晴 - 100, 150
-     * <li>cloudy - 云 - 101 ~ 104 + 151 ~ 154
-     * <li>rain   - 雨 - 300 ~ 399
-     * <li>snow   - 雪 - 400 ~ 499
-     * <li>haze   - 霾 - 500 ~ 599
-     *
-     * @param iconId icon 字段数据
-     *
-     * @since 1.0.0
-     */
-    private static String getWeatherTypeByIconId(String iconId) {
-        int id = Integer.parseInt(iconId);
-
-        if (id == 100 || id == 150) {
-            return "sun";
-        } else if (id > 100 && id < 200) {
-            return "cloudy";
-        } else if (id >= 300 && id < 400) {
-            return "rain";
-        } else if (id >= 400 && id < 500) {
-            return "snow";
-        } else if (id >= 500 && id < 600) {
-            return "haze";
-        } else {
-            return "unknown";
-        }
-    }
-
-    /**
      * 查询和风天气城市
      *
      * @param location 需要查询地区的名称，支持文字、以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）、LocationID 或 Adcode（仅限中国城市）
@@ -128,7 +36,7 @@ public final class HeDataService {
      * @since 1.0.0
      */
     public HeCity[] searchCities(String location) {
-        HeCityLookupResponse data = heHttpService.searchCities(location);
+        HeCityLookupResponse data = heHttpService.getGeoCityLookup(location);
 
         String successCode = "200";
 
@@ -164,7 +72,7 @@ public final class HeDataService {
         BeanUtils.copyProperties(res.getNow(), now);
 
         now.setIconUrl(HeUtils.getIconUrl(now.getIcon()));
-        now.setType(getWeatherTypeByIconId(now.getIcon()));
+        now.setType(HeUtils.getWeatherType(now.getIcon()));
 
         return now;
     }
@@ -289,14 +197,22 @@ public final class HeDataService {
      */
     public GridWeatherNow getGridWeatherNow(String location) {
         HeGridWeatherNowResponse res = heHttpService.getGridWeatherNow(location);
+        HeGridWeatherNowResponse.Now now = res.getNow();
 
-        GridWeatherNow now = new GridWeatherNow();
-        BeanUtils.copyProperties(res.getNow(), now);
-
-        now.setIconUrl(HeUtils.getIconUrl(now.getIcon()));
-        now.setType(getWeatherTypeByIconId(now.getIcon()));
-
-        return now;
+        return GridWeatherNow
+            .builder()
+            .iconUrl(HeUtils.getIconUrl(now.getIcon()))
+            .type(HeUtils.getWeatherType(now.getIcon()))
+            .updateTime(HeUtils.parseTime(res.getUpdateTime()))
+            .temp(now.getTemp())
+            .text(now.getText())
+            .wind360(now.getWind360())
+            .windDir(now.getWindDir())
+            .windScale(now.getWindScale())
+            .windSpeed(now.getWindSpeed())
+            .humidity(now.getHumidity())
+            .pressure(now.getPressure())
+            .build();
     }
 
     /**
