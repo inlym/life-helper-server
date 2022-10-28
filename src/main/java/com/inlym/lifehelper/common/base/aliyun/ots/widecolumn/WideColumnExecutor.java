@@ -149,6 +149,9 @@ public class WideColumnExecutor {
      * @param entity 实体对象
      * @param clazz  实体类
      * @param <T>    实体类型
+     *
+     * @see <a href="https://help.aliyun.com/document_detail/43017.html">读取数据</a>
+     * @since 1.1.0
      */
     public <T> List<T> findAll(T entity, Class<T> clazz) {
         String tableName = WideColumnUtils.getTableName(entity);
