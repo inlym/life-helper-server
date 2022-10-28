@@ -1,6 +1,9 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -16,11 +19,11 @@ import java.time.LocalDateTime;
  * @since 1.5.0
  **/
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GridWeatherNow {
     // ============================== 二次处理后新增的字段 ==============================
-
-    /** 当前 API 的最近更新时间 */
-    private LocalDateTime updateTime;
 
     /** 图标的 URL 地址 */
     private String iconUrl;
@@ -30,11 +33,11 @@ public class GridWeatherNow {
 
     // =============================== 和风天气原有的字段 ==============================
 
+    /** 当前 API 的最近更新时间 */
+    private LocalDateTime updateTime;
+
     /** 温度，默认单位：摄氏度 */
     private String temp;
-
-    /** 天气状况和图标的代码 */
-    private String icon;
 
     /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
     private String text;

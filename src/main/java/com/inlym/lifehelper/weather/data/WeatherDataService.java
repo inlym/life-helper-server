@@ -2,9 +2,12 @@ package com.inlym.lifehelper.weather.data;
 
 import com.inlym.lifehelper.external.heweather.HeDataService;
 import com.inlym.lifehelper.weather.data.pojo.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 天气数据服务
@@ -14,12 +17,9 @@ import java.util.List;
  * @since 1.0.0
  **/
 @Service
+@RequiredArgsConstructor
 public class WeatherDataService {
     private final HeDataService heDataService;
-
-    public WeatherDataService(HeDataService heDataService) {
-        this.heDataService = heDataService;
-    }
 
     /**
      * 联结经纬度坐标，使其变成 `lng,lat` 的格式
@@ -39,6 +39,24 @@ public class WeatherDataService {
     }
 
     /**
+     * 根据经纬度获取和风天气的 LocationId
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.5.0
+     */
+    public String getUniqueLocationId(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        List<String> locations = heDataService.getGeoLocations(location);
+        if (locations.size() == 1) {
+            return locations.get(0);
+        }
+
+        throw new RuntimeException("经纬度错误，未获取到唯一的 LocationId");
+    }
+
+    /**
      * 获取实时天气
      *
      * @param longitude 经度
@@ -49,6 +67,42 @@ public class WeatherDataService {
     public WeatherNow getWeatherNow(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWeatherNow(location);
+    }
+
+    /**
+     * 获取实时天气
+     *
+     * @param locationId 和风天气中的 LocationId
+     *
+     * @since 1.5.0
+     */
+    public WeatherNow getWeatherNow(String locationId) {
+        return heDataService.getWeatherNow(locationId);
+    }
+
+    /**
+     * 获取实时天气（异步）
+     *
+     * @param locationId 和风天气中的 LocationId
+     *
+     * @since 1.5.0
+     */
+    @Async
+    public CompletableFuture<WeatherNow> getWeatherNowAsync(String locationId) {
+        return CompletableFuture.completedFuture(getWeatherNow(locationId));
+    }
+
+    /**
+     * 获取格点实时天气
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.5.0
+     */
+    public GridWeatherNow getGridWeatherNow(double longitude, double latitude) {
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getGridWeatherNow(location);
     }
 
     /**

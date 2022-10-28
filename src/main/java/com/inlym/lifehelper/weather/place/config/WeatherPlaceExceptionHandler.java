@@ -2,6 +2,7 @@ package com.inlym.lifehelper.weather.place.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
 import com.inlym.lifehelper.weather.place.exception.WeatherPlaceNotFoundException;
+import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -26,5 +27,11 @@ public class WeatherPlaceExceptionHandler {
     @ExceptionHandler(WeatherPlaceNotFoundException.class)
     public ExceptionResponse handleWeatherPlaceNotFoundException(WeatherPlaceNotFoundException e) {
         return new ExceptionResponse(1, "你操作的地点不存在，请刷新后再试！");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(WeatherPlaceOverflowException.class)
+    public ExceptionResponse handleWeatherPlaceOverflowException(WeatherPlaceOverflowException e) {
+        return new ExceptionResponse(1, "您关注的天气地点已超出限制，请删除不需要的地点后再添加！");
     }
 }

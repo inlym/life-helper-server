@@ -23,21 +23,20 @@ public class WeatherPlaceVO {
     /** 地点 ID */
     private String id;
 
-    /** 所属用户 ID */
-    private Integer userId;
-
     /** 位置名称 */
     private String name;
 
-    /** 详细地址 */
-    private String address;
+    /** 所在地区，市 + 区，例如：“杭州市西湖区” */
+    private String region;
 
-    /** 坐标点所在省 */
-    private String province;
+    // ==============================  附带的天气数据  ===============================
 
-    /** 坐标点所在市 */
-    private String city;
+    /** 天气图标的 URL 地址 */
+    private String weatherIconUrl;
 
-    /** 坐标点所在区 */
-    private String district;
+    /** 温度，默认单位：摄氏度 */
+    private String temperature;
+
+    /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
+    private String weatherText;
 }

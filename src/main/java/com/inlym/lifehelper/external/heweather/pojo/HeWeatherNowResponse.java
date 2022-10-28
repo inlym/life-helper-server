@@ -37,7 +37,7 @@ public class HeWeatherNowResponse {
         /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
         private String text;
 
-        /** 风向360角度 */
+        /** 风向角度 */
         private String wind360;
 
         /** 风向 */

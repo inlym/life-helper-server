@@ -95,4 +95,36 @@ public abstract class HeUtils {
 
         return LocalDateTime.parse(timeText, formatter);
     }
+
+    /**
+     * 根据 icon 图标的 ID 计算所属的天气类型
+     *
+     * <h2>天气类型（来源于自行归纳）
+     * <li>sun    - 晴 - 100, 150
+     * <li>cloudy - 云 - 101 ~ 104 + 151 ~ 154
+     * <li>rain   - 雨 - 300 ~ 399
+     * <li>snow   - 雪 - 400 ~ 499
+     * <li>haze   - 霾 - 500 ~ 599
+     *
+     * @param iconId icon 字段数据
+     *
+     * @since 1.0.0
+     */
+    public static String getWeatherType(String iconId) {
+        int id = Integer.parseInt(iconId);
+
+        if (id == 100 || id == 150) {
+            return "sun";
+        } else if (id > 100 && id < 200) {
+            return "cloudy";
+        } else if (id >= 300 && id < 400) {
+            return "rain";
+        } else if (id >= 400 && id < 500) {
+            return "snow";
+        } else if (id >= 500 && id < 600) {
+            return "haze";
+        } else {
+            return "unknown";
+        }
+    }
 }

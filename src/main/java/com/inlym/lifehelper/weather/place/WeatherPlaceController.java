@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 天气地点管理控制器
@@ -78,14 +76,9 @@ public class WeatherPlaceController {
     @GetMapping("/weather/places")
     @UserPermission
     public WeatherPlaceListVO getList(@UserId int userId) {
-        List<WeatherPlaceVO> list = new ArrayList<>();
-        for (WeatherPlace place : weatherPlaceService.list(userId)) {
-            list.add(weatherPlaceService.convert(place));
-        }
-
         return WeatherPlaceListVO
             .builder()
-            .list(list)
+            .list(weatherPlaceService.getList(userId))
             .build();
     }
 }

@@ -1,6 +1,11 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * 实时天气数据
@@ -11,11 +16,11 @@ import lombok.Data;
  * @date 2022-02-19
  **/
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class WeatherNow {
-    // ====================     新增的字段     ====================
-
-    /** 当前 API 的最近更新时间，不是原接口返回的时间节点，而是该时间与当前时间的时间差，单位：分钟 */
-    private String updateMinutesDiff;
+    // =============================  数据处理后新增的字段  =============================
 
     /** 图标的 URL 地址 */
     private String iconUrl;
@@ -23,21 +28,18 @@ public class WeatherNow {
     /** 自行归纳的天气类型 */
     private String type;
 
-    // ====================  和风天气原有的字段  ====================
+    // =============================  和风天气原有的字段  ==============================
+
+    /** 当前 API 的最近更新时间 */
+    private LocalDateTime updateTime;
 
     /** 温度，默认单位：摄氏度 */
     private String temp;
 
-    /** 体感温度，默认单位：摄氏度 */
-    private String feelsLike;
-
-    /** 天气状况和图标的代码 */
-    private String icon;
-
     /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
     private String text;
 
-    /** 风向360角度 */
+    /** 风向角度 */
     private String wind360;
 
     /** 风向 */
@@ -51,9 +53,6 @@ public class WeatherNow {
 
     /** 相对湿度，百分比数值 */
     private String humidity;
-
-    /** 当前小时累计降水量，默认单位：毫米 */
-    private String precip;
 
     /** 大气压强，默认单位：百帕 */
     private String pressure;

@@ -78,6 +78,17 @@ public class WeatherPlaceRepository {
     }
 
     /**
+     * 统计记录行数
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.5.0
+     */
+    public int count(int userId) {
+        return list(userId).size();
+    }
+
+    /**
      * 查找指定天气地点，若未找到则报错
      *
      * @param userId  用户 ID

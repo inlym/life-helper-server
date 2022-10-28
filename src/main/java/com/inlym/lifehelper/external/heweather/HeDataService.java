@@ -2,7 +2,6 @@ package com.inlym.lifehelper.external.heweather;
 
 import com.inlym.lifehelper.external.heweather.pojo.*;
 import com.inlym.lifehelper.weather.data.pojo.*;
-import com.inlym.lifehelper.weather.weatherplace.pojo.HeCity;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
@@ -29,32 +28,23 @@ public final class HeDataService {
     private final HeHttpService heHttpService;
 
     /**
-     * 查询和风天气城市
+     * 查找和风天气城市列表
      *
      * @param location 需要查询地区的名称，支持文字、以英文逗号分隔的经度,纬度坐标（十进制，最多支持小数点后两位）、LocationID 或 Adcode（仅限中国城市）
      *
-     * @since 1.0.0
+     * @since 1.5.0
      */
-    public HeCity[] searchCities(String location) {
+    public List<String> getGeoLocations(String location) {
+        List<String> locations = new ArrayList<>();
         HeCityLookupResponse data = heHttpService.getGeoCityLookup(location);
 
-        String successCode = "200";
-
-        if (!successCode.equals(data.getCode())) {
-            return new HeCity[0];
+        if (HeHttpService.SUCCESS_CODE.equals(data.getCode()) && data.getLocation() != null) {
+            for (HeCityLookupResponse.City city : data.getLocation()) {
+                locations.add(city.getId());
+            }
         }
 
-        HeCity[] cities = new HeCity[data.getLocation().length];
-        for (int i = 0; i < data.getLocation().length; i++) {
-            HeCity target = new HeCity();
-            HeCityLookupResponse.City source = data.getLocation()[i];
-            BeanUtils.copyProperties(source, target);
-            target.setLongitude(Double.valueOf(source.getLon()));
-            target.setLatitude(Double.valueOf(source.getLat()));
-            cities[i] = target;
-        }
-
-        return cities;
+        return locations;
     }
 
     /**
@@ -67,14 +57,23 @@ public final class HeDataService {
      */
     public WeatherNow getWeatherNow(String location) {
         HeWeatherNowResponse res = heHttpService.getWeatherNow(location);
+        HeWeatherNowResponse.Now source = res.getNow();
 
-        WeatherNow now = new WeatherNow();
-        BeanUtils.copyProperties(res.getNow(), now);
-
-        now.setIconUrl(HeUtils.getIconUrl(now.getIcon()));
-        now.setType(HeUtils.getWeatherType(now.getIcon()));
-
-        return now;
+        return WeatherNow
+            .builder()
+            .iconUrl(HeUtils.getIconUrl(source.getIcon()))
+            .type(HeUtils.getWeatherType(source.getIcon()))
+            .updateTime(HeUtils.parseTime(res.getUpdateTime()))
+            .temp(source.getTemp())
+            .text(source.getText())
+            .wind360(source.getWind360())
+            .windDir(source.getWindDir())
+            .windScale(source.getWindScale())
+            .windSpeed(source.getWindSpeed())
+            .humidity(source.getHumidity())
+            .pressure(source.getPressure())
+            .vis(source.getVis())
+            .build();
     }
 
     /**

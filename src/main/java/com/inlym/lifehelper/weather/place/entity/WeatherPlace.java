@@ -68,6 +68,11 @@ public class WeatherPlace {
     /** 坐标点所在区 */
     private String district;
 
+    // 字段说明：以下1个字段通过上面的经纬度字段使用和风天气城市搜索获得
+
+    /** 在和风天气中使用的 LocationID */
+    private String locationId;
+
     // 其他字段
 
     /** 创建时间 */
