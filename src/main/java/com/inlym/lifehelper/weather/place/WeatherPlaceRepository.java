@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -74,7 +75,14 @@ public class WeatherPlaceRepository {
             .userId(userId)
             .build();
 
-        return wideColumnExecutor.findAll(place, WeatherPlace.class);
+        List<WeatherPlace> list = wideColumnExecutor.findAll(place, WeatherPlace.class);
+        if (list.size() > 0) {
+            list.sort(Comparator
+                .comparing(WeatherPlace::getCreateTime)
+                .reversed());
+        }
+
+        return list;
     }
 
     /**

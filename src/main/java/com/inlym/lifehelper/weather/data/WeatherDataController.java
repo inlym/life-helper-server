@@ -5,9 +5,7 @@ import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.IpLocation;
-import com.inlym.lifehelper.weather.weatherplace.WeatherPlaceService2;
-import com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.weatherplace.pojo.WeatherPlaceWithWeatherNowBO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,18 +21,11 @@ import java.util.Map;
  **/
 @RestController
 @Validated
+@RequiredArgsConstructor
 public class WeatherDataController {
     private final WeatherMixedDataService weatherMixedDataService;
 
     private final LocationService locationService;
-
-    private final WeatherPlaceService2 weatherPlaceService2;
-
-    public WeatherDataController(WeatherMixedDataService weatherMixedDataService, LocationService locationService, WeatherPlaceService2 weatherPlaceService2) {
-        this.weatherMixedDataService = weatherMixedDataService;
-        this.locationService = locationService;
-        this.weatherPlaceService2 = weatherPlaceService2;
-    }
 
     /**
      * 获取天气汇总信息（匿名方式）
@@ -77,14 +68,6 @@ public class WeatherDataController {
     @GetMapping(path = "/weather", params = "place_id")
     @UserPermission
     public Map<String, Object> getMixedWeatherData(@RequestParam("place_id") int placeId, @UserId int userId) {
-        WeatherPlace place = weatherPlaceService2.findById(userId, placeId);
-        assert place != null;
-
-        WeatherPlaceWithWeatherNowBO bo = weatherPlaceService2.convertWeatherPlace(place);
-
-        Map<String, Object> mixedData = weatherMixedDataService.getMixedWeatherData(place.getLongitude(), place.getLatitude());
-        mixedData.put("place", bo);
-
-        return mixedData;
+        return null;
     }
 }
