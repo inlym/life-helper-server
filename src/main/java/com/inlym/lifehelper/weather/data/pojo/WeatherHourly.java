@@ -1,6 +1,9 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +14,9 @@ import java.time.LocalDateTime;
  * @date 2022-02-19
  **/
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class WeatherHourly {
     // ====================     新增的字段     ====================
 
@@ -20,6 +26,9 @@ public class WeatherHourly {
     /** 天气状况和图标 URL 地址 */
     private String iconUrl;
 
+    /** 风 */
+    private Wind wind;
+
     // ====================  和风天气原有的字段  ====================
 
     /** 温度，默认单位：摄氏度 */
@@ -27,18 +36,6 @@ public class WeatherHourly {
 
     /** 天气状况的文字描述 */
     private String text;
-
-    /** 风向 360 角度 */
-    private String wind360;
-
-    /** 风向 */
-    private String windDir;
-
-    /** 风力等级 */
-    private String windScale;
-
-    /** 风速，公里/小时 */
-    private String windSpeed;
 
     /** 相对湿度，百分比数值 */
     private String humidity;

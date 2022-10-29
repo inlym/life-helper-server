@@ -35,7 +35,7 @@ public class WeatherMixedDataService {
         CompletableFuture<WeatherDaily[]> f15d = weatherDataServiceAsync.getWeather15D(longitude, latitude);
         CompletableFuture<WeatherHourly[]> f24h = weatherDataServiceAsync.getWeather24H(longitude, latitude);
         CompletableFuture<MinutelyRain> rain = weatherDataServiceAsync.getMinutely(longitude, latitude);
-        CompletableFuture<IndicesItem[]> indices3d = weatherDataServiceAsync.getIndices3D(longitude, latitude);
+        CompletableFuture<LivingIndex[]> indices3d = weatherDataServiceAsync.getIndices3D(longitude, latitude);
         CompletableFuture<List<WarningNow>> warnings = weatherDataServiceAsync.getWarningNow(longitude, latitude);
         CompletableFuture<AirNow> airNow = weatherDataServiceAsync.getAirNow(longitude, latitude);
 

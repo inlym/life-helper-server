@@ -31,6 +31,8 @@ public class GridWeatherNow {
     /** 自行归纳的天气类型 */
     private String type;
 
+    private Wind wind;
+
     // =============================== 和风天气原有的字段 ==============================
 
     /** 当前 API 的最近更新时间 */
@@ -41,18 +43,6 @@ public class GridWeatherNow {
 
     /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
     private String text;
-
-    /** 风向 360 角度 */
-    private String wind360;
-
-    /** 风向 */
-    private String windDir;
-
-    /** 风力等级 */
-    private String windScale;
-
-    /** 风速，公里/小时 */
-    private String windSpeed;
 
     /** 相对湿度，百分比数值 */
     private String humidity;

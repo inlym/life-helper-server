@@ -1,6 +1,12 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author inlym
@@ -19,26 +25,27 @@ public class MinutelyRain {
     private Boolean hasRain = false;
 
     /**
-     * 降水类型: - rain -> 雨 - snow -> 雪
+     * 降水类型: - rain -> 雨 / snow -> 雪
      */
     private String type;
 
-    // ========================== 和风天气原有的字段但是做了数据处理 ===========================
-
-    /** 当前 API 的最近更新时间，格式示例：`07:55` */
-    private String updateTime;
-
     // ============================== 和风天气原有的字段 ===============================
+
+    /** 当前 API 的最近更新时间 */
+    private LocalDateTime updateTime;
 
     /** 分钟降水描述 */
     private String summary;
 
-    private Minutely[] minutely;
+    private List<Minutely> minutely;
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Minutely {
-        /** 预报时间，只保留时和分，格式示例 `19:06` */
-        private String time;
+        /** 预报时间 */
+        private LocalDateTime time;
 
         /** 10分钟累计降水量，单位毫米 */
         private Float precip;

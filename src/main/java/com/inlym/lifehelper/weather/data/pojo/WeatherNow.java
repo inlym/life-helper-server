@@ -22,11 +22,14 @@ import java.time.LocalDateTime;
 public class WeatherNow {
     // =============================  数据处理后新增的字段  =============================
 
-    /** 图标的 URL 地址 */
+    /** 天气图标的 URL 地址 */
     private String iconUrl;
 
     /** 自行归纳的天气类型 */
     private String type;
+
+    /** 风相关元素 */
+    private Wind wind;
 
     // =============================  和风天气原有的字段  ==============================
 
@@ -38,18 +41,6 @@ public class WeatherNow {
 
     /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
     private String text;
-
-    /** 风向角度 */
-    private String wind360;
-
-    /** 风向 */
-    private String windDir;
-
-    /** 风力等级 */
-    private String windScale;
-
-    /** 风速，公里/小时 */
-    private String windSpeed;
 
     /** 相对湿度，百分比数值 */
     private String humidity;

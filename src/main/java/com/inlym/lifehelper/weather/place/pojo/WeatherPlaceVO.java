@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.place.pojo;
 
+import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,14 +30,6 @@ public class WeatherPlaceVO {
     /** 所在地区，市 + 区，例如：“杭州市西湖区” */
     private String region;
 
-    // ==============================  附带的天气数据  ===============================
-
-    /** 天气图标的 URL 地址 */
-    private String weatherIconUrl;
-
-    /** 温度，默认单位：摄氏度 */
-    private String temperature;
-
-    /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
-    private String weatherText;
+    /** 附带的天气数据 */
+    private WeatherNow weatherNow;
 }

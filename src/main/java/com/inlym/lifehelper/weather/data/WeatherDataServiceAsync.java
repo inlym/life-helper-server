@@ -72,7 +72,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<IndicesItem[]> getIndices1D(double longitude, double latitude) {
+    public CompletableFuture<LivingIndex[]> getIndices1D(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getIndices1D(longitude, latitude));
     }
 
@@ -83,7 +83,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<IndicesItem[]> getIndices3D(double longitude, double latitude) {
+    public CompletableFuture<LivingIndex[]> getIndices3D(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getIndices3D(longitude, latitude));
     }
 
@@ -117,7 +117,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<AirDaily[]> getAir5D(double longitude, double latitude) {
-        return CompletableFuture.completedFuture(weatherDataService.getAir5D(longitude, latitude));
+    public CompletableFuture<List<AirDaily>> getAir5D(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(weatherDataService.getAirDaily(longitude, latitude));
     }
 }

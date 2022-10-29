@@ -27,9 +27,6 @@ public class WarningNow {
 
     // =============================  和风天气原有的字段  ==============================
 
-    /** 当前 API 的最近更新时间 */
-    private LocalDateTime updateTime;
-
     /** 本条预警的唯一标识，可判断本条预警是否已经存在 */
     private String id;
 
@@ -39,13 +36,10 @@ public class WarningNow {
     /** 预警信息标题 */
     private String title;
 
-    /** 预警信息的发布状态 */
-    private String status;
-
     /** 预警严重等级颜色，可能为空 */
     private String severityColor;
 
-    /** 预警类型ID */
+    /** 预警类型 ID */
     private String type;
 
     /** 预警类型名称 */

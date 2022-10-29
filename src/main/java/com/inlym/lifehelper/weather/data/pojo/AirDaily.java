@@ -1,6 +1,9 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -11,6 +14,9 @@ import java.time.LocalDate;
  * @date 2022-02-19
  **/
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AirDaily {
     /** 预报日期 */
     private LocalDate date;
@@ -24,6 +30,6 @@ public class AirDaily {
     /** 空气质量指数级别 */
     private String category;
 
-    /** 空气质量的主要污染物，空气质量为优时，返回值为 NA */
+    /** 空气质量的主要污染物，空气质量为优时，返回值为 "NA" */
     private String primary;
 }

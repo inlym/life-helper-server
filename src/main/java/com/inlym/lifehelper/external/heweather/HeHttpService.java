@@ -4,7 +4,6 @@ import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.external.heweather.exception.HeRequestFailedException;
 import com.inlym.lifehelper.external.heweather.pojo.*;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -46,8 +45,7 @@ public class HeHttpService {
     /**
      * 城市信息查询
      *
-     * <h2>说明
-     * <p>实测结果：
+     * <h2>实测结果说明
      * <li>当有结果时，返回 code=200，且 location 为一个列表。
      * <li>当无结果时，返回 code=404，且无 location 字段。 因此这个方法不抛出错误，在下一个环节处理，返回一个空数组。
      *
@@ -55,12 +53,11 @@ public class HeHttpService {
      *
      * @since 1.0.0
      */
-    @SneakyThrows
-    @Cacheable(RedisCacheCollector.HE_SEARCH_CITIES)
+    @Cacheable(RedisCacheCollector.HE_GEO_CITY_LOOKUP)
     public HeCityLookupResponse getGeoCityLookup(String location) {
         URI uri = UriComponentsBuilder
             .fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
-            // 只有此处查询城市可能用到中文，因此特殊处理一些，对请求参数进行编码
+            // 只有此处查询城市可能用到中文，因此进行特殊处理，对请求参数进行编码
             .queryParam("location", URLEncoder.encode(location, StandardCharsets.UTF_8))
             .queryParam("key", heProperties.getKey())
             .queryParam("range", "cn")
@@ -81,7 +78,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_WEATHER_NOW)
     public HeWeatherNowResponse getWeatherNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/weather/now")
+            .fromHttpUrl("https://api.qweather.com/v7/weather/now")
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -108,7 +105,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_WEATHER_DAILY)
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/weather/" + days)
+            .fromHttpUrl("https://api.qweather.com/v7/weather/" + days)
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -135,7 +132,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_WEATHER_HOURLY)
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/weather/" + hours)
+            .fromHttpUrl("https://api.qweather.com/v7/weather/" + hours)
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -158,10 +155,10 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/minutely/minutely-precipitation/">分钟级降水</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_MINUTELY)
+    @Cacheable(RedisCacheCollector.HE_WEATHER_MINUTELY)
     public HeMinutelyResponse getMinutely(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/minutely/5m")
+            .fromHttpUrl("https://api.qweather.com/v7/minutely/5m")
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -187,7 +184,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_NOW)
     public HeGridWeatherNowResponse getGridWeatherNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/grid-weather/now")
+            .fromHttpUrl("https://api.qweather.com/v7/grid-weather/now")
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -214,7 +211,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_DAILY)
     public HeGridWeatherDailyResponse getGridWeatherDaily(String location, String days) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/grid-weather/" + days)
+            .fromHttpUrl("https://api.qweather.com/v7/grid-weather/" + days)
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -241,7 +238,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_HOURLY)
     public HeGridWeatherHourlyResponse getGridWeatherHourly(String location, String hours) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/grid-weather/" + hours)
+            .fromHttpUrl("https://api.qweather.com/v7/grid-weather/" + hours)
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -257,6 +254,56 @@ public class HeHttpService {
     }
 
     /**
+     * 获取天气灾害预警
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning/">官方文档</a>
+     * @since 1.2.0
+     */
+    @Cacheable(RedisCacheCollector.HE_WARNING_NOW)
+    public HeWarningNowResponse getWarningNow(String location) {
+        String url = UriComponentsBuilder
+            .fromHttpUrl("https://api.qweather.com/v7/warning/now")
+            .queryParam("location", location)
+            .queryParam("key", heProperties.getKey())
+            .build()
+            .toUriString();
+
+        HeWarningNowResponse data = restTemplate.getForObject(url, HeWarningNowResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            return data;
+        }
+        throw HeRequestFailedException.create("天气灾害预警", url, data.getCode());
+    }
+
+    /**
+     * 获取天气预警城市列表
+     *
+     * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning-city-list/">官方文档</a>
+     * @since 1.5.0
+     */
+    @Cacheable(RedisCacheCollector.HE_WARNING_LIST)
+    public HeWarningListResponse getWarningList() {
+        String url = UriComponentsBuilder
+            .fromHttpUrl("https://api.qweather.com/v7/warning/list")
+            .queryParam("range", "cn")
+            .queryParam("key", heProperties.getKey())
+            .build()
+            .toUriString();
+
+        HeWarningListResponse data = restTemplate.getForObject(url, HeWarningListResponse.class);
+
+        assert data != null;
+        if (SUCCESS_CODE.equals(data.getCode())) {
+            return data;
+        }
+        throw HeRequestFailedException.create("天气预警城市列表", url, data.getCode());
+    }
+
+    /**
      * 获取天气生活指数
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
@@ -268,7 +315,7 @@ public class HeHttpService {
     @Cacheable(RedisCacheCollector.HE_INDICES_DAILY)
     public HeIndicesResponse getIndicesDaily(String location, String days) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/indices/" + days)
+            .fromHttpUrl("https://api.qweather.com/v7/indices/" + days)
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .queryParam("type", "0")
@@ -285,32 +332,6 @@ public class HeHttpService {
     }
 
     /**
-     * 获取天气灾害预警
-     *
-     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
-     *
-     * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning/">官方文档</a>
-     * @since 1.2.0
-     */
-    @Cacheable(RedisCacheCollector.HE_WARNING_NOW)
-    public HeWarningNowResponse getWarningNow(String location) {
-        String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/warning/now")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
-
-        HeWarningNowResponse data = restTemplate.getForObject(url, HeWarningNowResponse.class);
-
-        assert data != null;
-        if (SUCCESS_CODE.equals(data.getCode())) {
-            return data;
-        }
-        throw HeRequestFailedException.create("天气灾害预警", url, data.getCode());
-    }
-
-    /**
      * 获取实时空气质量
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
@@ -318,10 +339,10 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_AIR_NOW)
+    @Cacheable(RedisCacheCollector.HE_WEATHER_AIR_NOW)
     public HeAirNowResponse getAirNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/air/now")
+            .fromHttpUrl("https://api.qweather.com/v7/air/now")
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()
@@ -344,10 +365,10 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_AIR_DAILY)
+    @Cacheable(RedisCacheCollector.HE_WEATHER_AIR_DAILY)
     public HeAirDailyResponse getAirDaily(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl(BASE_URL + "/air/5d")
+            .fromHttpUrl("https://api.qweather.com/v7/air/5d")
             .queryParam("location", location)
             .queryParam("key", heProperties.getKey())
             .build()

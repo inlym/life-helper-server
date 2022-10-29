@@ -108,42 +108,70 @@ public class WeatherDataService {
     }
 
     /**
-     * 获取格点实时天气
+     * 获取逐天天气预报
      *
      * @param longitude 经度
      * @param latitude  纬度
+     * @param days      天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
      *
      * @since 1.5.0
      */
-    public GridWeatherNow getGridWeatherNow(double longitude, double latitude) {
+    public List<WeatherDaily> getWeatherDaily(double longitude, double latitude, String days) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getGridWeatherNow(location);
+        return heDataService.getWeatherDaily(location, days);
     }
 
     /**
-     * 获取未来15天逐天天气预报
+     * 获取逐天天气预报
      *
      * @param longitude 经度
      * @param latitude  纬度
+     * @param days      天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
      *
-     * @since 1.0.0
+     * @since 1.5.0
      */
-    public WeatherDaily[] getWeather15Days(double longitude, double latitude) {
-        String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherDailyWithAqi(location, "15d");
+    @Async
+    public CompletableFuture<List<WeatherDaily>> getWeatherDailyAsync(double longitude, double latitude, String days) {
+        return CompletableFuture.completedFuture(getWeatherDaily(longitude, latitude, days));
     }
 
     /**
-     * 获取未来24小时逐小时天气预报
+     * 获取逐天天气预报
+     *
+     * @param locationId 和风天气中的 LocationId
+     * @param days       天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
+     *
+     * @since 1.5.0
+     */
+    public List<WeatherDaily> getWeatherDaily(String locationId, String days) {
+        return heDataService.getWeatherDaily(locationId, days);
+    }
+
+    /**
+     * 获取逐天天气预报
+     *
+     * @param locationId 和风天气中的 LocationId
+     * @param days       天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
+     *
+     * @since 1.5.0
+     */
+    @Async
+    public CompletableFuture<List<WeatherDaily>> getWeatherDailyAsync(String locationId, String days) {
+        return CompletableFuture.completedFuture(getWeatherDaily(locationId, days));
+    }
+
+    /**
+     * 获取逐小时天气预报
      *
      * @param longitude 经度
      * @param latitude  纬度
+     * @param hours     小时数，支持 `24h`,`72h`,`168h`
      *
-     * @since 1.0.0
+     * @since 1.5.0
      */
-    public WeatherHourly[] getWeather24H(double longitude, double latitude) {
+    public List<WeatherHourly> getWeatherHourly(double longitude, double latitude, String hours) {
         String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherHourly(location, "24h");
+        return heDataService.getWeatherHourly(location, hours);
     }
 
     /**
@@ -160,38 +188,12 @@ public class WeatherDataService {
     }
 
     /**
-     * 获取当天天气生活指数
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     *
-     * @since 1.0.0
-     */
-    public IndicesItem[] getIndices1D(double longitude, double latitude) {
-        String location = concatLocation(longitude, latitude);
-        return heDataService.getIndicesDaily(location, "1d");
-    }
-
-    /**
-     * 获取未来3天天气生活指数
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     *
-     * @since 1.0.0
-     */
-    public IndicesItem[] getIndices3D(double longitude, double latitude) {
-        String location = concatLocation(longitude, latitude);
-        return heDataService.getIndicesDaily(location, "3d");
-    }
-
-    /**
      * 获取天气灾害预警
      *
      * @param longitude 经度
      * @param latitude  纬度
      *
-     * @since 1.2.0
+     * @since 1.5.0
      */
     public List<WarningNow> getWarningNow(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
@@ -207,6 +209,32 @@ public class WeatherDataService {
      */
     public List<WarningNow> getWarningNow(String locationId) {
         return heDataService.getWarningNow(locationId);
+    }
+
+    /**
+     * 获取天气预警城市列表
+     *
+     * <h2>说明
+     * <p>返回了一个 LocationId 的列表。
+     *
+     * @since 1.5.0
+     */
+    public List<String> getWarningList() {
+        return heDataService.getWarningList();
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param days      小时数，支持 `1d`,`3d`
+     *
+     * @since 1.5.0
+     */
+    public List<LivingIndex> getIndicesDaily(double longitude, double latitude, String days) {
+        String location = concatLocation(longitude, latitude);
+        return heDataService.getIndicesDaily(location, days);
     }
 
     /**
@@ -230,7 +258,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public AirDaily[] getAir5D(double longitude, double latitude) {
+    public List<AirDaily> getAirDaily(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getAirDaily(location);
     }

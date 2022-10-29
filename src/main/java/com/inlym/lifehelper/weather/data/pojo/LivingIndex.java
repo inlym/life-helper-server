@@ -1,6 +1,11 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 /**
  * 天气生活指数中的单个指数详情
@@ -9,7 +14,10 @@ import lombok.Data;
  * @date 2022-02-19
  **/
 @Data
-public class IndicesItem {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LivingIndex {
     // ====================  新增的字段  ====================
 
     /** 图片 URL */
@@ -18,7 +26,7 @@ public class IndicesItem {
     // ====================  原有的字段  ====================
 
     /** 预报日期 */
-    private String date;
+    private LocalDate date;
 
     /** 生活指数类型ID */
     private String type;

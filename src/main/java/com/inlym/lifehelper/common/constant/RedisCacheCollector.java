@@ -18,14 +18,18 @@ public abstract class RedisCacheCollector {
     /** 通过 code 获取鉴权信息的键名 */
     public static final String WECHAT_SESSION = "weixin:session";
 
+    // ===============================  腾讯位置服务  ===============================
+
     /** 腾讯位置服务 - IP 定位 */
     public static final String TENCENT_MAP_LOCATE_IP = "lbs:locate-ip";
 
     /** 腾讯位置服务 - 逆地址解析（坐标位置描述） */
     public static final String TENCENT_MAP_REVERSE_GEOCODING = "lbs:regeo";
 
+    // ================================  和风天气  ================================
+
     /** 和风天气 - 城市信息查询 */
-    public static final String HE_SEARCH_CITIES = "hefeng:city";
+    public static final String HE_GEO_CITY_LOOKUP = "hefeng:geo";
 
     /** 和风天气 - 实时天气 */
     public static final String HE_WEATHER_NOW = "hefeng:now";
@@ -37,7 +41,7 @@ public abstract class RedisCacheCollector {
     public static final String HE_WEATHER_HOURLY = "hefeng:hourly";
 
     /** 和风天气 - 分钟级降水 */
-    public static final String HE_MINUTELY = "hefeng:minutely";
+    public static final String HE_WEATHER_MINUTELY = "hefeng:minutely";
 
     /** 和风天气 - 格点实时天气 */
     public static final String HE_GRID_WEATHER_NOW = "hefeng:grid-now";
@@ -48,38 +52,42 @@ public abstract class RedisCacheCollector {
     /** 和风天气 - 格点逐小时天气预报 */
     public static final String HE_GRID_WEATHER_HOURLY = "hefeng:grid-hourly";
 
-    /** 和风天气 - 天气生活指数 */
-    public static final String HE_INDICES_DAILY = "hefeng:indices";
-
     /** 和风天气 - 天气灾害预警 */
     public static final String HE_WARNING_NOW = "hefeng:warning-now";
 
+    /** 和风天气 - 天气预警城市列表 */
+    public static final String HE_WARNING_LIST = "hefeng:warning-list";
+
+    /** 和风天气 - 天气生活指数 */
+    public static final String HE_INDICES_DAILY = "hefeng:indices";
+
     /** 和风天气 - 实时空气质量 */
-    public static final String HE_AIR_NOW = "hefeng:air-now";
+    public static final String HE_WEATHER_AIR_NOW = "hefeng:air-now";
 
     /** 和风天气 - 空气质量预报 */
-    public static final String HE_AIR_DAILY = "hefeng:air-daily";
+    public static final String HE_WEATHER_AIR_DAILY = "hefeng:air-daily";
 
     public static final Map<String, Duration> CACHE_DURATION_MAP = new HashMap<>(128) {{
-        // 微信小程序服务端 HTTP 请求缓存
+        // =======================  微信小程序服务端 HTTP 请求缓存  =======================
         put(WECHAT_SESSION, Duration.ofDays(2));
 
-        // 腾讯位置服务 HTTP 请求缓存
+        // ========================  腾讯位置服务 HTTP 请求缓存  ========================
         put(TENCENT_MAP_LOCATE_IP, Duration.ofDays(10));
         put(TENCENT_MAP_REVERSE_GEOCODING, Duration.ofDays(10));
 
-        // 和风天气 HTTP 请求缓存
-        put(HE_SEARCH_CITIES, Duration.ofDays(10));
+        // =========================  和风天气 HTTP 请求缓存  =========================
+        put(HE_GEO_CITY_LOOKUP, Duration.ofDays(30));
         put(HE_WEATHER_NOW, Duration.ofMinutes(10));
         put(HE_WEATHER_DAILY, Duration.ofHours(2));
         put(HE_WEATHER_HOURLY, Duration.ofMinutes(10));
         put(HE_GRID_WEATHER_NOW, Duration.ofMinutes(10));
         put(HE_GRID_WEATHER_DAILY, Duration.ofHours(2));
         put(HE_GRID_WEATHER_HOURLY, Duration.ofMinutes(10));
-        put(HE_MINUTELY, Duration.ofMinutes(5));
+        put(HE_WARNING_NOW, Duration.ofMinutes(10));
+        put(HE_WARNING_LIST, Duration.ofMinutes(5));
+        put(HE_WEATHER_MINUTELY, Duration.ofMinutes(5));
         put(HE_INDICES_DAILY, Duration.ofHours(4));
-        put(HE_WARNING_NOW, Duration.ofMinutes(5));
-        put(HE_AIR_NOW, Duration.ofMinutes(10));
-        put(HE_AIR_DAILY, Duration.ofHours(1));
+        put(HE_WEATHER_AIR_NOW, Duration.ofMinutes(10));
+        put(HE_WEATHER_AIR_DAILY, Duration.ofHours(1));
     }};
 }

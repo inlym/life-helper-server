@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,24 +52,28 @@ public final class HeDataService {
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      *
-     * @see HeHttpService#getWeatherNow
      * @since 1.0.0
      */
     public WeatherNow getWeatherNow(String location) {
         HeWeatherNowResponse res = heHttpService.getWeatherNow(location);
         HeWeatherNowResponse.Now source = res.getNow();
 
+        Wind wind = Wind
+            .builder()
+            .angle(source.getWind360())
+            .direction(source.getWindDir())
+            .scale(source.getWindScale())
+            .speed(source.getWindSpeed())
+            .build();
+
         return WeatherNow
             .builder()
-            .iconUrl(HeUtils.getIconUrl(source.getIcon()))
-            .type(HeUtils.getWeatherType(source.getIcon()))
             .updateTime(HeUtils.parseTime(res.getUpdateTime()))
             .temp(source.getTemp())
             .text(source.getText())
-            .wind360(source.getWind360())
-            .windDir(source.getWindDir())
-            .windScale(source.getWindScale())
-            .windSpeed(source.getWindSpeed())
+            .iconUrl(HeUtils.getIconUrl(source.getIcon()))
+            .type(HeUtils.getWeatherType(source.getIcon()))
+            .wind(wind)
             .humidity(source.getHumidity())
             .pressure(source.getPressure())
             .vis(source.getVis())
@@ -80,24 +84,69 @@ public final class HeDataService {
      * 获取逐天天气预报
      *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
-     * @param days     天数，支持 `3d`,`7d`,`10d`,`15d`
+     * @param days     天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
      *
      * @see HeHttpService#getWeatherDaily
      * @since 1.0.0
      */
-    public WeatherDaily[] getWeatherDaily(String location, String days) {
-        HeWeatherDailyResponse res = heHttpService.getWeatherDaily(location, days);
-        HeWeatherDailyResponse.Daily[] daily = res.getDaily();
+    public List<WeatherDaily> getWeatherDaily(String location, String days) {
+        List<WeatherDaily> list = new ArrayList<>();
 
-        WeatherDaily[] list = new WeatherDaily[daily.length];
-        for (int i = 0; i < daily.length; i++) {
-            HeWeatherDailyResponse.Daily source = daily[i];
+        HeWeatherDailyResponse res = heHttpService.getWeatherDaily(location, days);
+
+        for (HeWeatherDailyResponse.Daily source : res.getDaily()) {
             WeatherDaily target = new WeatherDaily();
             BeanUtils.copyProperties(source, target);
 
+            Star sun = Star
+                .builder()
+                .riseTime(LocalTime.parse(source.getSunrise()))
+                .setTime(LocalTime.parse(source.getSunset()))
+                .build();
+
+            Star moon = Star
+                .builder()
+                .riseTime(LocalTime.parse(source.getMoonrise()))
+                .setTime(LocalTime.parse(source.getMoonset()))
+                .build();
+
+            Wind windDay = Wind
+                .builder()
+                .angle(source.getWind360Day())
+                .direction(source.getWindDirDay())
+                .scale(source.getWindScaleDay())
+                .speed(source.getWindSpeedDay())
+                .build();
+
+            Wind windNight = Wind
+                .builder()
+                .angle(source.getWind360Night())
+                .direction(source.getWindDirNight())
+                .scale(source.getWindScaleNight())
+                .speed(source.getWindSpeedNight())
+                .build();
+
+            WeatherDaily.HalfDay day = WeatherDaily.HalfDay
+                .builder()
+                .temp(source.getTempMax())
+                .text(source.getTextDay())
+                .iconUrl(HeUtils.getIconUrl(source.getIconDay()))
+                .wind(windDay)
+                .build();
+
+            WeatherDaily.HalfDay night = WeatherDaily.HalfDay
+                .builder()
+                .temp(source.getTempMin())
+                .text(source.getTextNight())
+                .iconUrl(HeUtils.getIconUrl(source.getIconNight()))
+                .wind(windNight)
+                .build();
+
+            target.setSun(sun);
+            target.setMoon(moon);
+            target.setDay(day);
+            target.setNight(night);
             target.setDate(LocalDate.parse(source.getFxDate()));
-            target.setIconDayUrl(HeUtils.getIconUrl(source.getIconDay()));
-            target.setIconNightUrl(HeUtils.getIconUrl(source.getIconNight()));
             target.setMoonPhaseIconUrl(HeUtils.getIconUrl(source.getMoonPhaseIcon()));
 
             // 天气描述
@@ -109,7 +158,7 @@ public final class HeDataService {
                 target.setText(source.getTextDay() + "转" + source.getTextNight());
             }
 
-            list[i] = target;
+            list.add(target);
         }
 
         return list;
@@ -121,24 +170,34 @@ public final class HeDataService {
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      * @param hours    小时数，支持 `24h`,`72h`,`168h`
      *
-     * @see HeHttpService#getWeatherHourly
      * @since 1.0.0
      */
     @SneakyThrows
-    public WeatherHourly[] getWeatherHourly(String location, String hours) {
+    public List<WeatherHourly> getWeatherHourly(String location, String hours) {
+        List<WeatherHourly> list = new ArrayList<>();
+
         HeWeatherHourlyResponse res = heHttpService.getWeatherHourly(location, hours);
-        HeWeatherHourlyResponse.Hourly[] hourly = res.getHourly();
+        for (HeWeatherHourlyResponse.Hourly source : res.getHourly()) {
+            Wind wind = Wind
+                .builder()
+                .angle(source.getWind360())
+                .direction(source.getWindDir())
+                .scale(source.getWindScale())
+                .speed(source.getWindSpeed())
+                .build();
 
-        WeatherHourly[] list = new WeatherHourly[hourly.length];
-        for (int i = 0; i < hourly.length; i++) {
-            HeWeatherHourlyResponse.Hourly source = hourly[i];
-            WeatherHourly target = new WeatherHourly();
-            BeanUtils.copyProperties(source, target);
-
-            target.setTime(HeUtils.parseTime(source.getFxTime()));
-            target.setIconUrl(HeUtils.getIconUrl(source.getIcon()));
-
-            list[i] = target;
+            list.add(WeatherHourly
+                .builder()
+                .time(HeUtils.parseTime(source.getFxTime()))
+                .iconUrl(HeUtils.getIconUrl(source.getIcon()))
+                .wind(wind)
+                .temp(source.getTemp())
+                .text(source.getText())
+                .humidity(source.getHumidity())
+                .precip(source.getPrecip())
+                .pop(source.getPop())
+                .pressure(source.getPressure())
+                .build());
         }
 
         return list;
@@ -158,26 +217,23 @@ public final class HeDataService {
 
         MinutelyRain rain = new MinutelyRain();
         rain.setSummary(res.getSummary());
-        rain.setUpdateTime(res
-            .getUpdateTime()
-            .substring(11, 16));
+        rain.setUpdateTime(HeUtils.parseTime(res.getUpdateTime()));
         rain.setType(res.getMinutely()[0].getType());
 
-        MinutelyRain.Minutely[] list = new MinutelyRain.Minutely[minutely.length];
-        for (int i = 0; i < minutely.length; i++) {
-            HeMinutelyResponse.Minutely source = minutely[i];
-            MinutelyRain.Minutely target = new MinutelyRain.Minutely();
-            target.setTime(source
-                .getFxTime()
-                .substring(11, 16));
-            target.setPrecip(Float.valueOf(source.getPrecip()));
-
-            if (target.getPrecip() > 0) {
+        List<MinutelyRain.Minutely> list = new ArrayList<>();
+        for (HeMinutelyResponse.Minutely source : res.getMinutely()) {
+            float precip = Float.parseFloat(source.getPrecip());
+            if (precip > 0) {
                 rain.setHasRain(true);
             }
 
-            list[i] = target;
+            list.add(MinutelyRain.Minutely
+                .builder()
+                .time(HeUtils.parseTime(source.getFxTime()))
+                .precip(precip)
+                .build());
         }
+
         rain.setMinutely(list);
 
         return rain;
@@ -195,6 +251,14 @@ public final class HeDataService {
         HeGridWeatherNowResponse res = heHttpService.getGridWeatherNow(location);
         HeGridWeatherNowResponse.Now now = res.getNow();
 
+        Wind wind = Wind
+            .builder()
+            .angle(now.getWind360())
+            .direction(now.getWindDir())
+            .scale(now.getWindScale())
+            .speed(now.getWindSpeed())
+            .build();
+
         return GridWeatherNow
             .builder()
             .iconUrl(HeUtils.getIconUrl(now.getIcon()))
@@ -202,39 +266,10 @@ public final class HeDataService {
             .updateTime(HeUtils.parseTime(res.getUpdateTime()))
             .temp(now.getTemp())
             .text(now.getText())
-            .wind360(now.getWind360())
-            .windDir(now.getWindDir())
-            .windScale(now.getWindScale())
-            .windSpeed(now.getWindSpeed())
+            .wind(wind)
             .humidity(now.getHumidity())
             .pressure(now.getPressure())
             .build();
-    }
-
-    /**
-     * 获取天气生活指数
-     *
-     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
-     * @param days     小时数，支持 `1d`,`3d`
-     *
-     * @see HeHttpService#getIndicesDaily
-     * @since 1.0.0
-     */
-    public IndicesItem[] getIndicesDaily(String location, String days) {
-        HeIndicesResponse res = heHttpService.getIndicesDaily(location, days);
-        HeIndicesResponse.Daily[] daily = res.getDaily();
-        IndicesItem[] list = new IndicesItem[daily.length];
-
-        for (int i = 0; i < daily.length; i++) {
-            HeIndicesResponse.Daily source = daily[i];
-            IndicesItem target = new IndicesItem();
-            BeanUtils.copyProperties(source, target);
-            target.setImageUrl(HeUtils.getLiveImageUrl(target.getType()));
-
-            list[i] = target;
-        }
-
-        return list;
     }
 
     /**
@@ -245,21 +280,16 @@ public final class HeDataService {
      * @since 1.5.0
      */
     public List<WarningNow> getWarningNow(String location) {
-        HeWarningNowResponse res = heHttpService.getWarningNow(location);
-        HeWarningNowResponse.WarningItem[] warningItems = res.getWarning();
         List<WarningNow> list = new ArrayList<>();
 
-        LocalDateTime updateTime = HeUtils.parseTime(res.getUpdateTime());
-
-        for (HeWarningNowResponse.WarningItem item : warningItems) {
+        HeWarningNowResponse res = heHttpService.getWarningNow(location);
+        for (HeWarningNowResponse.WarningItem item : res.getWarning()) {
             WarningNow warningNow = WarningNow
                 .builder()
                 .imageUrl(HeUtils.getWarningImageUrl(item.getType(), item.getSeverityColor()))
-                .updateTime(updateTime)
                 .id(item.getId())
                 .pubTime(HeUtils.parseTime(item.getPubTime()))
                 .title(item.getTitle())
-                .status(item.getStatus())
                 .type(item.getType())
                 .typeName(item.getTypeName())
                 .text(item.getText())
@@ -272,11 +302,57 @@ public final class HeDataService {
     }
 
     /**
+     * 获取天气预警城市列表
+     *
+     * <h2>说明
+     * <p>返回了一个 LocationId 的列表。
+     *
+     * @since 1.5.0
+     */
+    public List<String> getWarningList() {
+        List<String> list = new ArrayList<>();
+
+        HeWarningListResponse res = heHttpService.getWarningList();
+        for (HeWarningListResponse.WarningLocation location : res.getWarningLocList()) {
+            list.add(location.getLocationId());
+        }
+
+        return list;
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
+     * @param days     小时数，支持 `1d`,`3d`
+     *
+     * @since 1.0.0
+     */
+    public List<LivingIndex> getIndicesDaily(String location, String days) {
+        List<LivingIndex> list = new ArrayList<>();
+
+        HeIndicesResponse res = heHttpService.getIndicesDaily(location, days);
+        for (HeIndicesResponse.Daily source : res.getDaily()) {
+            list.add(LivingIndex
+                .builder()
+                .imageUrl(HeUtils.getLiveImageUrl(source.getType()))
+                .date(LocalDate.parse(source.getDate()))
+                .type(source.getType())
+                .name(source.getName())
+                .level(source.getLevel())
+                .category(source.getCategory())
+                .text(source.getText())
+                .build());
+        }
+
+        return list;
+    }
+
+    /**
      * 获取实时空气质量
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
      *
-     * @see HeHttpService#getAirNow
      * @since 1.0.0
      */
     public AirNow getAirNow(String location) {
@@ -291,48 +367,23 @@ public final class HeDataService {
      *
      * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
      *
-     * @see HeHttpService#getAirDaily
      * @since 1.0.0
      */
-    public AirDaily[] getAirDaily(String location) {
+    public List<AirDaily> getAirDaily(String location) {
+        List<AirDaily> list = new ArrayList<>();
+
         HeAirDailyResponse res = heHttpService.getAirDaily(location);
-        HeAirDailyResponse.Daily[] daily = res.getDaily();
-        AirDaily[] list = new AirDaily[daily.length];
-
-        for (int i = 0; i < daily.length; i++) {
-            HeAirDailyResponse.Daily source = daily[i];
-            AirDaily target = new AirDaily();
-            BeanUtils.copyProperties(source, target);
-            target.setDate(LocalDate.parse(source.getFxDate()));
-
-            list[i] = target;
+        for (HeAirDailyResponse.Daily source : res.getDaily()) {
+            list.add(AirDaily
+                .builder()
+                .date(LocalDate.parse(source.getFxDate()))
+                .aqi(source.getAqi())
+                .level(source.getLevel())
+                .category(source.getCategory())
+                .primary(source.getPrimary())
+                .build());
         }
 
         return list;
-    }
-
-    /**
-     * 获取包含空气质量预报的逐天天气预报
-     *
-     * @param location 需要查询地区的LocationID或以英文逗号分隔的经度,纬度坐标
-     *
-     * @since 1.2.0
-     */
-    public WeatherDaily[] getWeatherDailyWithAqi(String location, String days) {
-        WeatherDaily[] weatherDaily = getWeatherDaily(location, days);
-        AirDaily[] airDaily = getAirDaily(location);
-
-        for (WeatherDaily weather : weatherDaily) {
-            for (AirDaily air : airDaily) {
-                if (weather
-                    .getDate()
-                    .equals(air.getDate())) {
-                    weather.setAqiLevel(air.getLevel());
-                    weather.setAqiCategory(air.getCategory());
-                }
-            }
-        }
-
-        return weatherDaily;
     }
 }

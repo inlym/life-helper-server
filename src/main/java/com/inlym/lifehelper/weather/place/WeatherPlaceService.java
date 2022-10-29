@@ -64,9 +64,7 @@ public class WeatherPlaceService {
      */
     public WeatherPlaceVO convert(WeatherPlace place, WeatherNow now) {
         WeatherPlaceVO vo = convert(place);
-        vo.setWeatherIconUrl(now.getIconUrl());
-        vo.setTemperature(now.getTemp());
-        vo.setWeatherText(now.getText());
+        vo.setWeatherNow(now);
 
         return vo;
     }

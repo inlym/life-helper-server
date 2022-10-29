@@ -23,11 +23,9 @@ public class WeatherDaily {
     /** 预报日期，格式示例：2022-04-29 */
     private LocalDate date;
 
-    /** 预报白天天气状况的图标 URL 地址 */
-    private String iconDayUrl;
+    private HalfDay day;
 
-    /** 预报夜间天气状况的图标 URL 地址 */
-    private String iconNightUrl;
+    private HalfDay night;
 
     /** 月相图标 URL 地址 */
     private String moonPhaseIconUrl;
@@ -35,66 +33,19 @@ public class WeatherDaily {
     /** 天气总结，示例：晴转多云 */
     private String text;
 
-    // =========================  从 AirDaily 获取的字段  ===========================
+    /** 日出日落 */
+    private Star sun;
 
-    /** 空气质量指数等级，原字段名 `level` */
-    private String aqiLevel;
+    /** 月升月落 */
+    private Star moon;
 
-    /** 空气质量指数级别，原字段名 `category` */
-    private String aqiCategory;
+    /** 空气质量预报 */
+    private AirDaily air;
 
     // =============================  和风天气原有的字段  ==============================
 
-    /** 日出时间 */
-    private String sunrise;
-
-    /** 日落时间 */
-    private String sunset;
-
-    /** 月升时间 */
-    private String moonrise;
-
-    /** 月落时间 */
-    private String moonset;
-
     /** 月相名称 */
     private String moonPhase;
-
-    /** 预报当天最高温度 */
-    private String tempMax;
-
-    /** 预报当天最低温度 */
-    private String tempMin;
-
-    /** 预报白天天气状况文字描述 */
-    private String textDay;
-
-    /** 预报晚间天气状况文字描述 */
-    private String textNight;
-
-    /** 预报白天风向360角度 */
-    private String wind360Day;
-
-    /** 预报白天风向 */
-    private String windDirDay;
-
-    /** 预报白天风力等级 */
-    private String windScaleDay;
-
-    /** 预报白天风速，公里/小时 */
-    private String windSpeedDay;
-
-    /** 预报夜间风向360角度 */
-    private String wind360Night;
-
-    /** 预报夜间当天风向 */
-    private String windDirNight;
-
-    /** 预报夜间风力等级 */
-    private String windScaleNight;
-
-    /** 预报夜间风速，公里/小时 */
-    private String windSpeedNight;
 
     /** 预报当天总降水量，默认单位：毫米 */
     private String precip;
@@ -110,4 +61,22 @@ public class WeatherDaily {
 
     /** 能见度，默认单位：公里 */
     private String vis;
+
+    /** 将半天作为一个基础天气单元 */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class HalfDay {
+        /** 温度，默认单位：摄氏度 */
+        private String temp;
+
+        /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
+        private String text;
+
+        /** 天气图标的 URL 地址 */
+        private String iconUrl;
+
+        private Wind wind;
+    }
 }
