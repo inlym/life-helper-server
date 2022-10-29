@@ -33,25 +33,14 @@ public class WeatherDataServiceAsync {
     }
 
     /**
-     * 获取未来7天逐天天气预报
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     */
-    @Async
-    public CompletableFuture<WeatherDailyItem[]> getWeather7D(double longitude, double latitude) {
-        return CompletableFuture.completedFuture(weatherDataService.getWeather7D(longitude, latitude));
-    }
-
-    /**
      * 获取未来15天逐天天气预报
      *
      * @param longitude 经度
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<WeatherDailyItem[]> getWeather15D(double longitude, double latitude) {
-        return CompletableFuture.completedFuture(weatherDataService.getWeather15D(longitude, latitude));
+    public CompletableFuture<WeatherDaily[]> getWeather15D(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(weatherDataService.getWeather15Days(longitude, latitude));
     }
 
     /**
@@ -61,7 +50,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<WeatherHourlyItem[]> getWeather24H(double longitude, double latitude) {
+    public CompletableFuture<WeatherHourly[]> getWeather24H(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getWeather24H(longitude, latitude));
     }
 
@@ -128,7 +117,7 @@ public class WeatherDataServiceAsync {
      * @param latitude  纬度
      */
     @Async
-    public CompletableFuture<AirDailyItem[]> getAir5D(double longitude, double latitude) {
+    public CompletableFuture<AirDaily[]> getAir5D(double longitude, double latitude) {
         return CompletableFuture.completedFuture(weatherDataService.getAir5D(longitude, latitude));
     }
 }

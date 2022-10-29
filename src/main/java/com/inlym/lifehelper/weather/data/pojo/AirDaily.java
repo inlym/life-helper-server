@@ -2,6 +2,8 @@ package com.inlym.lifehelper.weather.data.pojo;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 /**
  * 空气质量逐天预报中的单天详情
  *
@@ -9,9 +11,9 @@ import lombok.Data;
  * @date 2022-02-19
  **/
 @Data
-public class AirDailyItem {
+public class AirDaily {
     /** 预报日期 */
-    private String date;
+    private LocalDate date;
 
     /** 空气质量指数 */
     private String aqi;

@@ -29,6 +29,8 @@ public class WeatherDataService {
      *
      * @param longitude 经度
      * @param latitude  纬度
+     *
+     * @since 1.0.0
      */
     private static String concatLocation(double longitude, double latitude) {
         // 将数值向下取整到 2 位小数
@@ -70,6 +72,19 @@ public class WeatherDataService {
     }
 
     /**
+     * 获取实时天气（异步）
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.5.0
+     */
+    @Async
+    public CompletableFuture<WeatherNow> getWeatherNowAsync(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(getWeatherNow(longitude, latitude));
+    }
+
+    /**
      * 获取实时天气
      *
      * @param locationId 和风天气中的 LocationId
@@ -106,19 +121,6 @@ public class WeatherDataService {
     }
 
     /**
-     * 获取未来7天逐天天气预报
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     *
-     * @since 1.0.0
-     */
-    public WeatherDailyItem[] getWeather7D(double longitude, double latitude) {
-        String location = concatLocation(longitude, latitude);
-        return heDataService.getWeatherDaily(location, "7d");
-    }
-
-    /**
      * 获取未来15天逐天天气预报
      *
      * @param longitude 经度
@@ -126,7 +128,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public WeatherDailyItem[] getWeather15D(double longitude, double latitude) {
+    public WeatherDaily[] getWeather15Days(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWeatherDailyWithAqi(location, "15d");
     }
@@ -139,7 +141,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public WeatherHourlyItem[] getWeather24H(double longitude, double latitude) {
+    public WeatherHourly[] getWeather24H(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getWeatherHourly(location, "24h");
     }
@@ -228,7 +230,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
-    public AirDailyItem[] getAir5D(double longitude, double latitude) {
+    public AirDaily[] getAir5D(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getAirDaily(location);
     }

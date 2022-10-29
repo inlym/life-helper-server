@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,17 +85,17 @@ public final class HeDataService {
      * @see HeHttpService#getWeatherDaily
      * @since 1.0.0
      */
-    public WeatherDailyItem[] getWeatherDaily(String location, String days) {
+    public WeatherDaily[] getWeatherDaily(String location, String days) {
         HeWeatherDailyResponse res = heHttpService.getWeatherDaily(location, days);
         HeWeatherDailyResponse.Daily[] daily = res.getDaily();
 
-        WeatherDailyItem[] list = new WeatherDailyItem[daily.length];
+        WeatherDaily[] list = new WeatherDaily[daily.length];
         for (int i = 0; i < daily.length; i++) {
             HeWeatherDailyResponse.Daily source = daily[i];
-            WeatherDailyItem target = new WeatherDailyItem();
+            WeatherDaily target = new WeatherDaily();
             BeanUtils.copyProperties(source, target);
 
-            target.setDate(source.getFxDate());
+            target.setDate(LocalDate.parse(source.getFxDate()));
             target.setIconDayUrl(HeUtils.getIconUrl(source.getIconDay()));
             target.setIconNightUrl(HeUtils.getIconUrl(source.getIconNight()));
             target.setMoonPhaseIconUrl(HeUtils.getIconUrl(source.getMoonPhaseIcon()));
@@ -125,20 +125,17 @@ public final class HeDataService {
      * @since 1.0.0
      */
     @SneakyThrows
-    public WeatherHourlyItem[] getWeatherHourly(String location, String hours) {
+    public WeatherHourly[] getWeatherHourly(String location, String hours) {
         HeWeatherHourlyResponse res = heHttpService.getWeatherHourly(location, hours);
         HeWeatherHourlyResponse.Hourly[] hourly = res.getHourly();
 
-        WeatherHourlyItem[] list = new WeatherHourlyItem[hourly.length];
+        WeatherHourly[] list = new WeatherHourly[hourly.length];
         for (int i = 0; i < hourly.length; i++) {
             HeWeatherHourlyResponse.Hourly source = hourly[i];
-            WeatherHourlyItem target = new WeatherHourlyItem();
+            WeatherHourly target = new WeatherHourly();
             BeanUtils.copyProperties(source, target);
 
-            // 待解析的时间格式示例："2021-02-16T16:00+08:00"
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00");
-            target.setTime(sdf.parse(source.getFxTime()));
-
+            target.setTime(HeUtils.parseTime(source.getFxTime()));
             target.setIconUrl(HeUtils.getIconUrl(source.getIcon()));
 
             list[i] = target;
@@ -297,16 +294,16 @@ public final class HeDataService {
      * @see HeHttpService#getAirDaily
      * @since 1.0.0
      */
-    public AirDailyItem[] getAirDaily(String location) {
+    public AirDaily[] getAirDaily(String location) {
         HeAirDailyResponse res = heHttpService.getAirDaily(location);
         HeAirDailyResponse.Daily[] daily = res.getDaily();
-        AirDailyItem[] list = new AirDailyItem[daily.length];
+        AirDaily[] list = new AirDaily[daily.length];
 
         for (int i = 0; i < daily.length; i++) {
             HeAirDailyResponse.Daily source = daily[i];
-            AirDailyItem target = new AirDailyItem();
+            AirDaily target = new AirDaily();
             BeanUtils.copyProperties(source, target);
-            target.setDate(source.getFxDate());
+            target.setDate(LocalDate.parse(source.getFxDate()));
 
             list[i] = target;
         }
@@ -321,12 +318,12 @@ public final class HeDataService {
      *
      * @since 1.2.0
      */
-    public WeatherDailyItem[] getWeatherDailyWithAqi(String location, String days) {
-        WeatherDailyItem[] weatherDaily = getWeatherDaily(location, days);
-        AirDailyItem[] airDaily = getAirDaily(location);
+    public WeatherDaily[] getWeatherDailyWithAqi(String location, String days) {
+        WeatherDaily[] weatherDaily = getWeatherDaily(location, days);
+        AirDaily[] airDaily = getAirDaily(location);
 
-        for (WeatherDailyItem weather : weatherDaily) {
-            for (AirDailyItem air : airDaily) {
+        for (WeatherDaily weather : weatherDaily) {
+            for (AirDaily air : airDaily) {
                 if (weather
                     .getDate()
                     .equals(air.getDate())) {

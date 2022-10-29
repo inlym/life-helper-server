@@ -1,6 +1,11 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 /**
  * 逐天天气预报中单天的数据详情
@@ -9,11 +14,14 @@ import lombok.Data;
  * @date 2022-02-19
  **/
 @Data
-public class WeatherDailyItem {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WeatherDaily {
     // =============================  数据处理后新增的字段  =============================
 
     /** 预报日期，格式示例：2022-04-29 */
-    private String date;
+    private LocalDate date;
 
     /** 预报白天天气状况的图标 URL 地址 */
     private String iconDayUrl;
