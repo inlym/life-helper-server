@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.weather.place.pojo;
 
-import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
+import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * 天气地点视图对象
- *
- * <h2>主要用途
- * <p>将 {@link com.inlym.lifehelper.weather.weatherplace.entity.WeatherPlace} 转化为客户端可用的视图对象。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/10/21
@@ -31,5 +28,5 @@ public class WeatherPlaceVO {
     private String region;
 
     /** 附带的天气数据 */
-    private WeatherNow weatherNow;
+    private BasicWeather weather;
 }

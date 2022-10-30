@@ -3,6 +3,7 @@ package com.inlym.lifehelper.weather.place;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.AddressComponent;
 import com.inlym.lifehelper.weather.data.WeatherDataService;
+import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
@@ -45,7 +46,7 @@ public class WeatherPlaceService {
      *
      * @since 1.5.0
      */
-    public WeatherPlaceVO convert(WeatherPlace place) {
+    public WeatherPlaceVO convertToViewObject(WeatherPlace place) {
         return WeatherPlaceVO
             .builder()
             .id(place.getPlaceId())
@@ -62,9 +63,9 @@ public class WeatherPlaceService {
      *
      * @since 1.5.0
      */
-    public WeatherPlaceVO convert(WeatherPlace place, WeatherNow now) {
-        WeatherPlaceVO vo = convert(place);
-        vo.setWeatherNow(now);
+    public WeatherPlaceVO convertToViewObject(WeatherPlace place, WeatherNow now) {
+        WeatherPlaceVO vo = convertToViewObject(place);
+        vo.setWeather(BasicWeather.from(now));
 
         return vo;
     }
@@ -126,7 +127,7 @@ public class WeatherPlaceService {
                 .toList();
 
             for (int i = 0; i < places.size(); i++) {
-                list.add(convert(places.get(i), weatherNowList.get(i)));
+                list.add(convertToViewObject(places.get(i), weatherNowList.get(i)));
             }
         }
 

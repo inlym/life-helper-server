@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.place.pojo;
 
+import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeatherPlaceListVO {
-    List<WeatherPlaceVO> list;
+    private List<WeatherPlaceVO> list;
+
+    private IpLocatedPlace ipLocated;
+
+    /** IP 定位地点 */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class IpLocatedPlace {
+        /** 地点名称，取“市”，例如“杭州市” */
+        private String name;
+
+        /** 附带的天气数据 */
+        private BasicWeather weather;
+    }
 }

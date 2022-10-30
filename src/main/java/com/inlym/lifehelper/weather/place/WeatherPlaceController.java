@@ -1,12 +1,19 @@
 package com.inlym.lifehelper.weather.place;
 
+import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.location.LocationService;
+import com.inlym.lifehelper.location.pojo.IpLocation;
+import com.inlym.lifehelper.weather.data.WeatherDataService;
+import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
+import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.pojo.WeChatChooseLocationDTO;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceListVO;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,8 +28,13 @@ import javax.validation.constraints.NotBlank;
  **/
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class WeatherPlaceController {
     private final WeatherPlaceService weatherPlaceService;
+
+    private final LocationService locationService;
+
+    private final WeatherDataService weatherDataService;
 
     /**
      * 新增天气地点
@@ -44,7 +56,7 @@ public class WeatherPlaceController {
             .latitude(dto.getLatitude())
             .build();
 
-        return weatherPlaceService.convert(weatherPlaceService.create(place));
+        return weatherPlaceService.convertToViewObject(weatherPlaceService.create(place));
     }
 
     /**
@@ -75,10 +87,26 @@ public class WeatherPlaceController {
      */
     @GetMapping("/weather/places")
     @UserPermission
-    public WeatherPlaceListVO getList(@UserId int userId) {
-        return WeatherPlaceListVO
-            .builder()
-            .list(weatherPlaceService.getList(userId))
-            .build();
+    public WeatherPlaceListVO getList(@UserId int userId, @ClientIp String ip) {
+        WeatherPlaceListVO vo = new WeatherPlaceListVO();
+
+        // 备注（2022.10.30）
+        // 此处使用 `try...catch...` 的原因是：IP 定位信息属于可有可无，不能因为该 API 无法使用导致整个接口挂。
+        try {
+            IpLocation ipLocation = locationService.locateIpUpToCity(ip);
+            WeatherNow now = weatherDataService.getWeatherNow(ipLocation.getLongitude(), ipLocation.getLatitude());
+            WeatherPlaceListVO.IpLocatedPlace ipLocated = WeatherPlaceListVO.IpLocatedPlace
+                .builder()
+                .name(ipLocation.getCity())
+                .weather(BasicWeather.from(now))
+                .build();
+            vo.setIpLocated(ipLocated);
+        } catch (Exception e) {
+            log.error("该 IP 地址无法使用 IP 定位：{}", ip);
+        }
+
+        vo.setList(weatherPlaceService.getList(userId));
+
+        return vo;
     }
 }
