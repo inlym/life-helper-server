@@ -34,4 +34,25 @@ public class IpLocation {
 
     /** 区 */
     private String district;
+
+    /**
+     * 获取默认 IP 定位
+     *
+     * <h2>主要用途
+     * <li>在无法通过 IP 定位又需要一个定位信息时，使用这个默认 IP 定位。
+     *
+     * @date 2022-10-30
+     * @since 1.5.0
+     */
+    public static IpLocation getDefault() {
+        return IpLocation
+            .builder()
+            .longitude(120.14)
+            .latitude(30.23)
+            .nation("中国")
+            .province("浙江省")
+            .city("杭州市")
+            .district("西湖区")
+            .build();
+    }
 }

@@ -175,6 +175,43 @@ public class WeatherDataService {
     }
 
     /**
+     * 获取逐小时天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param hours     小时数，支持 `24h`,`72h`,`168h`
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<List<WeatherHourly>> getWeatherHourlyAsync(double longitude, double latitude, String hours) {
+        return CompletableFuture.completedFuture(getWeatherHourly(longitude, latitude, hours));
+    }
+
+    /**
+     * 获取逐小时天气预报
+     *
+     * @param locationId 和风天气中的 LocationId
+     * @param hours      小时数，支持 `24h`,`72h`,`168h`
+     *
+     * @since 1.5.0
+     */
+    public List<WeatherHourly> getWeatherHourly(String locationId, String hours) {
+        return heDataService.getWeatherHourly(locationId, hours);
+    }
+
+    /**
+     * 获取逐小时天气预报
+     *
+     * @param locationId 和风天气中的 LocationId
+     * @param hours      小时数，支持 `24h`,`72h`,`168h`
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<List<WeatherHourly>> getWeatherHourlyAsync(String locationId, String hours) {
+        return CompletableFuture.completedFuture(getWeatherHourly(locationId, hours));
+    }
+
+    /**
      * 获取分钟级降水
      *
      * @param longitude 经度
@@ -185,6 +222,18 @@ public class WeatherDataService {
     public MinutelyRain getMinutely(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getMinutely(location);
+    }
+
+    /**
+     * 获取分钟级降水
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<MinutelyRain> getMinutelyAsync(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(getMinutely(longitude, latitude));
     }
 
     /**
@@ -201,6 +250,18 @@ public class WeatherDataService {
     }
 
     /**
+     * 获取天气灾害预警
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<List<WarningNow>> getWarningNowAsync(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(getWarningNow(longitude, latitude));
+    }
+
+    /**
      * 获取天气灾害预警列表
      *
      * @param locationId 需要查询地区的 LocationID
@@ -209,6 +270,17 @@ public class WeatherDataService {
      */
     public List<WarningNow> getWarningNow(String locationId) {
         return heDataService.getWarningNow(locationId);
+    }
+
+    /**
+     * 获取天气灾害预警列表
+     *
+     * @param locationId 需要查询地区的 LocationID
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<List<WarningNow>> getWarningNowAsync(String locationId) {
+        return CompletableFuture.completedFuture(getWarningNow(locationId));
     }
 
     /**
@@ -251,6 +323,40 @@ public class WeatherDataService {
     }
 
     /**
+     * 获取实时空气质量
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<AirNow> getAirNowAsync(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(getAirNow(longitude, latitude));
+    }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param locationId 需要查询地区的 LocationID
+     *
+     * @since 1.5.0
+     */
+    public AirNow getAirNow(String locationId) {
+        return heDataService.getAirNow(locationId);
+    }
+
+    /**
+     * 获取实时空气质量
+     *
+     * @param locationId 需要查询地区的 LocationID
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<AirNow> getAirNowAsync(String locationId) {
+        return CompletableFuture.completedFuture(getAirNow(locationId));
+    }
+
+    /**
      * 获取未来5天空气质量预报
      *
      * @param longitude 经度
@@ -261,5 +367,39 @@ public class WeatherDataService {
     public List<AirDaily> getAirDaily(double longitude, double latitude) {
         String location = concatLocation(longitude, latitude);
         return heDataService.getAirDaily(location);
+    }
+
+    /**
+     * 获取未来5天空气质量预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     *
+     * @since 1.0.0
+     */
+    public CompletableFuture<List<AirDaily>> getAirDailyAsync(double longitude, double latitude) {
+        return CompletableFuture.completedFuture(getAirDaily(longitude, latitude));
+    }
+
+    /**
+     * 获取未来5天空气质量预报
+     *
+     * @param locationId 需要查询地区的 LocationID
+     *
+     * @since 1.5.0
+     */
+    public List<AirDaily> getAirDaily(String locationId) {
+        return heDataService.getAirDaily(locationId);
+    }
+
+    /**
+     * 获取未来5天空气质量预报
+     *
+     * @param locationId 需要查询地区的 LocationID
+     *
+     * @since 1.5.0
+     */
+    public CompletableFuture<List<AirDaily>> getAirDailyAsync(String locationId) {
+        return CompletableFuture.completedFuture(getAirDaily(locationId));
     }
 }
