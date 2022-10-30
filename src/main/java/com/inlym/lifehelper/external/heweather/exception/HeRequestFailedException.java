@@ -6,6 +6,9 @@ package com.inlym.lifehelper.external.heweather.exception;
  * <h2>主要用途
  * <p>在发起和风天气 HTTP 请求时，请求错误则抛出此异常。
  *
+ * <h2>备注
+ * <p>在发起和风天气 HTTP 请求时，请求错误则抛出此异常。
+ *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/9/26
  * @since 1.4.0
