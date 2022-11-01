@@ -91,7 +91,7 @@ public class WeatherPlaceController {
         WeatherPlaceListVO vo = new WeatherPlaceListVO();
 
         // 备注（2022.10.30）
-        // 此处使用 `try...catch...` 的原因是：IP 定位信息属于可有可无，不能因为该 API 无法使用导致整个接口挂。
+        // 此处使用 `try...catch...` 来捕获错误而不是使用全局异常捕获器的原因是：IP 定位信息属于可有可无，不能因为该 API 无法使用导致整个接口挂。
         try {
             IpLocation ipLocation = locationService.locateIpUpToCity(ip);
             WeatherNow now = weatherDataService.getWeatherNow(ipLocation.getLongitude(), ipLocation.getLatitude());
