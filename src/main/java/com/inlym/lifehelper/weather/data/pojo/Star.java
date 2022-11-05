@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,8 +24,10 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class Star {
     /** 升起时间，指日出和月出 */
+    @JsonFormat(pattern = "H:mm")
     private LocalTime riseTime;
 
     /** 落下时间，指日落和月落 */
+    @JsonFormat(pattern = "H:mm")
     private LocalTime setTime;
 }

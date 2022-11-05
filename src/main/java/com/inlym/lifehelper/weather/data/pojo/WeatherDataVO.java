@@ -1,10 +1,12 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -33,8 +35,10 @@ public class WeatherDataVO {
 
     private AirNow airNow;
 
-    private List<AirDaily> airDaily;
-
     /** 用于展示的地点名称 */
     private String locationName;
+
+    /** 当前的日期 */
+    @JsonFormat(pattern = "yyyy年M月d日")
+    private LocalDate date;
 }

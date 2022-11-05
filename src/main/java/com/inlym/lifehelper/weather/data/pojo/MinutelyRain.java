@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +46,7 @@ public class MinutelyRain {
     @AllArgsConstructor
     public static class Minutely {
         /** 预报时间 */
+        @JsonFormat(pattern = "H:mm")
         private LocalDateTime time;
 
         /** 10分钟累计降水量，单位毫米 */

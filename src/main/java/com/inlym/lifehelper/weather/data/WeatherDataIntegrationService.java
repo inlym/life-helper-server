@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -35,15 +36,14 @@ public class WeatherDataIntegrationService {
     @SneakyThrows
     public WeatherDataVO getWeatherData(double longitude, double latitude) {
         CompletableFuture<WeatherNow> now = weatherDataService.getWeatherNowAsync(longitude, latitude);
-        CompletableFuture<List<WeatherDaily>> daily = weatherDataService.getWeatherDailyAsync(longitude, latitude, "30d");
+        CompletableFuture<List<WeatherDaily>> daily = weatherDataService.getWeatherDailyWithAirAsync(longitude, latitude, "15d");
         CompletableFuture<List<WeatherHourly>> hourly = weatherDataService.getWeatherHourlyAsync(longitude, latitude, "24h");
         CompletableFuture<MinutelyRain> rain = weatherDataService.getMinutelyAsync(longitude, latitude);
         CompletableFuture<List<WarningNow>> warnings = weatherDataService.getWarningNowAsync(longitude, latitude);
         CompletableFuture<AirNow> airNow = weatherDataService.getAirNowAsync(longitude, latitude);
-        CompletableFuture<List<AirDaily>> airDaily = weatherDataService.getAirDailyAsync(longitude, latitude);
 
         CompletableFuture
-            .allOf(now, daily, hourly, rain, warnings, airNow, airDaily)
+            .allOf(now, daily, hourly, rain, warnings, airNow)
             .join();
 
         return WeatherDataVO
@@ -54,7 +54,7 @@ public class WeatherDataIntegrationService {
             .rain(rain.get())
             .warnings(warnings.get())
             .airNow(airNow.get())
-            .airDaily(airDaily.get())
+            .date(LocalDate.now())
             .build();
     }
 
@@ -68,15 +68,14 @@ public class WeatherDataIntegrationService {
     @SneakyThrows
     public WeatherDataVO getWeatherData(WeatherPlace place) {
         CompletableFuture<WeatherNow> now = weatherDataService.getWeatherNowAsync(place.getLocationId());
-        CompletableFuture<List<WeatherDaily>> daily = weatherDataService.getWeatherDailyAsync(place.getLocationId(), "30d");
+        CompletableFuture<List<WeatherDaily>> daily = weatherDataService.getWeatherDailyWithAirAsync(place.getLocationId(), "15d");
         CompletableFuture<List<WeatherHourly>> hourly = weatherDataService.getWeatherHourlyAsync(place.getLocationId(), "24h");
         CompletableFuture<MinutelyRain> rain = weatherDataService.getMinutelyAsync(place.getLongitude(), place.getLatitude());
         CompletableFuture<List<WarningNow>> warnings = weatherDataService.getWarningNowAsync(place.getLocationId());
         CompletableFuture<AirNow> airNow = weatherDataService.getAirNowAsync(place.getLocationId());
-        CompletableFuture<List<AirDaily>> airDaily = weatherDataService.getAirDailyAsync(place.getLocationId());
 
         CompletableFuture
-            .allOf(now, daily, hourly, rain, warnings, airNow, airDaily)
+            .allOf(now, daily, hourly, rain, warnings, airNow)
             .join();
 
         return WeatherDataVO
@@ -87,9 +86,9 @@ public class WeatherDataIntegrationService {
             .rain(rain.get())
             .warnings(warnings.get())
             .airNow(airNow.get())
-            .airDaily(airDaily.get())
             // 这一步与上个方法有差异
             .locationName(place.getName())
+            .date(LocalDate.now())
             .build();
     }
 }

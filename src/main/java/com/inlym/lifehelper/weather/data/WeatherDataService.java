@@ -3,6 +3,7 @@ package com.inlym.lifehelper.weather.data;
 import com.inlym.lifehelper.external.heweather.HeDataService;
 import com.inlym.lifehelper.weather.data.pojo.*;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,39 @@ public class WeatherDataService {
         double lat = Math.floor(latitude * 100) / 100;
 
         return lng + "," + lat;
+    }
+
+    /**
+     * 辅助方法：合并（未完成）的逐日天气预报和逐日空气质量预报
+     *
+     * @param weatherDaily （未完成）的逐日天气预报
+     * @param airDaily     （未完成）的逐日空气质量预报
+     *
+     * @since 1.5.0
+     */
+    @SneakyThrows
+    private static List<WeatherDaily> mergeCompletableWeatherDailyAndAir(CompletableFuture<List<WeatherDaily>> weatherDaily, CompletableFuture<List<AirDaily>> airDaily) {
+        CompletableFuture
+            .allOf(weatherDaily, airDaily)
+            .join();
+
+        List<WeatherDaily> daily = weatherDaily.get();
+        List<AirDaily> airDailyList = airDaily.get();
+
+        // 备注（2022.11.05）
+        // 这一段双重循环的含义是将相同日期的空气质量预报附在逐天天气预报上
+        // 应该有优化的空间，后续再考虑
+        for (WeatherDaily weather : daily) {
+            for (AirDaily air : airDailyList) {
+                if (weather
+                    .getDate()
+                    .isEqual(air.getDate())) {
+                    weather.setAir(air);
+                }
+            }
+        }
+
+        return daily;
     }
 
     /**
@@ -183,6 +217,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<List<WeatherHourly>> getWeatherHourlyAsync(double longitude, double latitude, String hours) {
         return CompletableFuture.completedFuture(getWeatherHourly(longitude, latitude, hours));
     }
@@ -207,6 +242,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<List<WeatherHourly>> getWeatherHourlyAsync(String locationId, String hours) {
         return CompletableFuture.completedFuture(getWeatherHourly(locationId, hours));
     }
@@ -232,6 +268,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<MinutelyRain> getMinutelyAsync(double longitude, double latitude) {
         return CompletableFuture.completedFuture(getMinutely(longitude, latitude));
     }
@@ -257,6 +294,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<List<WarningNow>> getWarningNowAsync(double longitude, double latitude) {
         return CompletableFuture.completedFuture(getWarningNow(longitude, latitude));
     }
@@ -279,6 +317,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<List<WarningNow>> getWarningNowAsync(String locationId) {
         return CompletableFuture.completedFuture(getWarningNow(locationId));
     }
@@ -330,6 +369,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<AirNow> getAirNowAsync(double longitude, double latitude) {
         return CompletableFuture.completedFuture(getAirNow(longitude, latitude));
     }
@@ -352,6 +392,7 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<AirNow> getAirNowAsync(String locationId) {
         return CompletableFuture.completedFuture(getAirNow(locationId));
     }
@@ -377,6 +418,7 @@ public class WeatherDataService {
      *
      * @since 1.0.0
      */
+    @Async
     public CompletableFuture<List<AirDaily>> getAirDailyAsync(double longitude, double latitude) {
         return CompletableFuture.completedFuture(getAirDaily(longitude, latitude));
     }
@@ -399,7 +441,68 @@ public class WeatherDataService {
      *
      * @since 1.5.0
      */
+    @Async
     public CompletableFuture<List<AirDaily>> getAirDailyAsync(String locationId) {
         return CompletableFuture.completedFuture(getAirDaily(locationId));
+    }
+
+    /**
+     * 获取包含逐天空气质量预报的逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param days      逐日天气预报的天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
+     *
+     * @since 1.5.0
+     */
+    public List<WeatherDaily> getWeatherDailyWithAir(double longitude, double latitude, String days) {
+        CompletableFuture<List<WeatherDaily>> weatherDaily = getWeatherDailyAsync(longitude, latitude, days);
+        CompletableFuture<List<AirDaily>> airDaily = getAirDailyAsync(longitude, latitude);
+        return mergeCompletableWeatherDailyAndAir(weatherDaily, airDaily);
+    }
+
+    /**
+     * 获取包含逐天空气质量预报的逐天天气预报
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param days      逐日天气预报的天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
+     *
+     * @since 1.5.0
+     */
+    @Async
+    public CompletableFuture<List<WeatherDaily>> getWeatherDailyWithAirAsync(double longitude, double latitude, String days) {
+        CompletableFuture<List<WeatherDaily>> weatherDaily = getWeatherDailyAsync(longitude, latitude, days);
+        CompletableFuture<List<AirDaily>> airDaily = getAirDailyAsync(longitude, latitude);
+        return CompletableFuture.completedFuture(mergeCompletableWeatherDailyAndAir(weatherDaily, airDaily));
+    }
+
+    /**
+     * 获取包含逐天空气质量预报的逐天天气预报
+     *
+     * @param locationId 需要查询地区的 LocationID
+     * @param days       逐日天气预报的天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
+     *
+     * @since 1.5.0
+     */
+    public List<WeatherDaily> getWeatherDailyWithAir(String locationId, String days) {
+        CompletableFuture<List<WeatherDaily>> weatherDaily = getWeatherDailyAsync(locationId, days);
+        CompletableFuture<List<AirDaily>> airDaily = getAirDailyAsync(locationId);
+        return mergeCompletableWeatherDailyAndAir(weatherDaily, airDaily);
+    }
+
+    /**
+     * 获取包含逐天空气质量预报的逐天天气预报
+     *
+     * @param locationId 需要查询地区的 LocationID
+     * @param days       逐日天气预报的天数，支持 `3d`,`7d`,`10d`,`15d`,`30d`
+     *
+     * @since 1.5.0
+     */
+    @Async
+    public CompletableFuture<List<WeatherDaily>> getWeatherDailyWithAirAsync(String locationId, String days) {
+        CompletableFuture<List<WeatherDaily>> weatherDaily = getWeatherDailyAsync(locationId, days);
+        CompletableFuture<List<AirDaily>> airDaily = getAirDailyAsync(locationId);
+        return CompletableFuture.completedFuture(mergeCompletableWeatherDailyAndAir(weatherDaily, airDaily));
     }
 }

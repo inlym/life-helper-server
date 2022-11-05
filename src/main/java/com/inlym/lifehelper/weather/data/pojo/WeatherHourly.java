@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class WeatherHourly {
     // ====================     新增的字段     ====================
 
     /** 预报时间 */
+    @JsonFormat(pattern = "H:mm")
     private LocalDateTime time;
 
     /** 天气状况和图标 URL 地址 */
