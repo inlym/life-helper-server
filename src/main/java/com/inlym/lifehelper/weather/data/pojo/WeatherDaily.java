@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,10 @@ public class WeatherDaily {
 
     /** 预报日期，格式示例：2022-04-29 */
     private LocalDate date;
+
+    /** 缩略日期格式，由于 `date` 字段还有其他用途，因此新增这个字段用于缩略日期显示 */
+    @JsonFormat(pattern = "M/d")
+    private LocalDate simpleDate;
 
     private HalfDay day;
 

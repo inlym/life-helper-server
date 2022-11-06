@@ -147,6 +147,7 @@ public final class HeDataService {
             target.setDay(day);
             target.setNight(night);
             target.setDate(LocalDate.parse(source.getFxDate()));
+            target.setSimpleDate(LocalDate.parse(source.getFxDate()));
             target.setMoonPhaseIconUrl(HeUtils.getIconUrl(source.getMoonPhaseIcon()));
 
             // 天气描述
@@ -213,7 +214,6 @@ public final class HeDataService {
      */
     public MinutelyRain getMinutely(String location) {
         HeMinutelyResponse res = heHttpService.getMinutely(location);
-        HeMinutelyResponse.Minutely[] minutely = res.getMinutely();
 
         MinutelyRain rain = new MinutelyRain();
         rain.setSummary(res.getSummary());

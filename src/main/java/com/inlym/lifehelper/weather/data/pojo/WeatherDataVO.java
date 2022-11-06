@@ -39,6 +39,6 @@ public class WeatherDataVO {
     private String locationName;
 
     /** 当前的日期 */
-    @JsonFormat(pattern = "yyyy年M月d日")
+    @JsonFormat(pattern = "M月d日")
     private LocalDate date;
 }
