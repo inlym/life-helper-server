@@ -286,6 +286,7 @@ public final class HeDataService {
         for (HeWarningNowResponse.WarningItem item : res.getWarning()) {
             WarningNow warningNow = WarningNow
                 .builder()
+                .name(item.getTypeName() + HeUtils.translateWarningColor(item.getSeverityColor()) + "预警")
                 .imageUrl(HeUtils.getWarningImageUrl(item.getType(), item.getSeverityColor()))
                 .id(item.getId())
                 .pubTime(HeUtils.parseTime(item.getPubTime()))

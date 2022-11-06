@@ -127,4 +127,24 @@ public abstract class HeUtils {
             return "unknown";
         }
     }
+
+    /**
+     * 将天气预警颜色的英文转换为中文
+     *
+     * @param color 英文颜色单词
+     *
+     * @since 1.5.0
+     */
+    public static String translateWarningColor(String color) {
+        return switch (color) {
+            case "White" -> "白色";
+            case "Blue" -> "蓝色";
+            case "Green" -> "绿色";
+            case "Yellow" -> "黄色";
+            case "Orange" -> "橙色";
+            case "Red" -> "红色";
+            case "Black" -> "黑色";
+            default -> "";
+        };
+    }
 }
