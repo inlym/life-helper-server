@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
 
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>
@@ -124,7 +124,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.12</version>
+            <version>1.2.14</version>
         </dependency>
 
         <!-- Lombok -->
@@ -138,7 +138,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>4.0.0</version>
+            <version>4.2.1</version>
         </dependency>
 
         <!-- 阿里云对象存储（OSS）SDK -->
@@ -159,7 +159,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.8.8</version>
+            <version>5.8.9</version>
         </dependency>
 
         <!-- ShedLock -->
@@ -188,7 +188,7 @@
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
             <artifactId>schedulerx2-spring-boot-starter</artifactId>
-            <version>1.7.7</version>
+            <version>1.8.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
