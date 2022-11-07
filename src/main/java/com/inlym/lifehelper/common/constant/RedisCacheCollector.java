@@ -72,11 +72,11 @@ public abstract class RedisCacheCollector {
         put(WECHAT_SESSION, Duration.ofDays(2));
 
         // ========================  腾讯位置服务 HTTP 请求缓存  ========================
-        put(TENCENT_MAP_LOCATE_IP, Duration.ofDays(10));
-        put(TENCENT_MAP_REVERSE_GEOCODING, Duration.ofDays(10));
+        put(TENCENT_MAP_LOCATE_IP, Duration.ofDays(30));
+        put(TENCENT_MAP_REVERSE_GEOCODING, Duration.ofDays(30));
 
         // =========================  和风天气 HTTP 请求缓存  =========================
-        put(HE_GEO_CITY_LOOKUP, Duration.ofDays(30));
+        put(HE_GEO_CITY_LOOKUP, Duration.ofDays(100));
         put(HE_WEATHER_NOW, Duration.ofMinutes(10));
         put(HE_WEATHER_DAILY, Duration.ofHours(2));
         put(HE_WEATHER_HOURLY, Duration.ofMinutes(10));

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 天气生活指数中的单个指数详情
@@ -25,21 +26,29 @@ public class LivingIndex {
 
     // ====================  原有的字段  ====================
 
-    /** 预报日期 */
-    private LocalDate date;
-
-    /** 生活指数类型ID */
+    /** 生活指数类型 ID */
     private String type;
 
     /** 生活指数类型的名称 */
     private String name;
 
-    /** 生活指数预报等级 */
-    private String level;
+    private List<DailyIndex> daily;
 
-    /** 生活指数预报级别名称 */
-    private String category;
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DailyIndex {
+        /** 预报日期 */
+        private LocalDate date;
 
-    /** 生活指数预报的详细描述，可能为空 */
-    private String text;
+        /** 生活指数预报等级 */
+        private String level;
+
+        /** 生活指数预报级别名称 */
+        private String category;
+
+        /** 生活指数预报的详细描述，可能为空 */
+        private String text;
+    }
 }

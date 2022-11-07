@@ -40,7 +40,7 @@ public abstract class HeUtils {
      * @since 1.5.0
      */
     public static String getLiveImageUrl(String typeId) {
-        return RESOURCE_BASE_URL + "/qweather/live/" + typeId + ".svg";
+        return RESOURCE_BASE_URL + "/qweather/living/" + typeId + ".svg";
     }
 
     /**

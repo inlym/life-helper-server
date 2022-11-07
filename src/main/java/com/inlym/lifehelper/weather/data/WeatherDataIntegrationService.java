@@ -40,10 +40,11 @@ public class WeatherDataIntegrationService {
         CompletableFuture<List<WeatherHourly>> hourly = weatherDataService.getWeatherHourlyAsync(longitude, latitude, "24h");
         CompletableFuture<MinutelyRain> rain = weatherDataService.getMinutelyAsync(longitude, latitude);
         CompletableFuture<List<WarningNow>> warnings = weatherDataService.getWarningNowAsync(longitude, latitude);
+        CompletableFuture<List<LivingIndex>> indices = weatherDataService.getIndicesDailyAsync(longitude, latitude, "3d");
         CompletableFuture<AirNow> airNow = weatherDataService.getAirNowAsync(longitude, latitude);
 
         CompletableFuture
-            .allOf(now, daily, hourly, rain, warnings, airNow)
+            .allOf(now, daily, hourly, rain, warnings, indices, airNow)
             .join();
 
         return WeatherDataVO
@@ -53,6 +54,7 @@ public class WeatherDataIntegrationService {
             .hourly(hourly.get())
             .rain(rain.get())
             .warnings(warnings.get())
+            .indices(indices.get())
             .airNow(airNow.get())
             .date(LocalDate.now())
             .build();
@@ -72,10 +74,11 @@ public class WeatherDataIntegrationService {
         CompletableFuture<List<WeatherHourly>> hourly = weatherDataService.getWeatherHourlyAsync(place.getLocationId(), "24h");
         CompletableFuture<MinutelyRain> rain = weatherDataService.getMinutelyAsync(place.getLongitude(), place.getLatitude());
         CompletableFuture<List<WarningNow>> warnings = weatherDataService.getWarningNowAsync(place.getLocationId());
+        CompletableFuture<List<LivingIndex>> indices = weatherDataService.getIndicesDailyAsync(place.getLocationId(), "3d");
         CompletableFuture<AirNow> airNow = weatherDataService.getAirNowAsync(place.getLocationId());
 
         CompletableFuture
-            .allOf(now, daily, hourly, rain, warnings, airNow)
+            .allOf(now, daily, hourly, rain, warnings, indices, airNow)
             .join();
 
         return WeatherDataVO
@@ -85,6 +88,7 @@ public class WeatherDataIntegrationService {
             .hourly(hourly.get())
             .rain(rain.get())
             .warnings(warnings.get())
+            .indices(indices.get())
             .airNow(airNow.get())
             // 这一步与上个方法有差异
             .locationName(place.getName())

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -324,26 +325,60 @@ public final class HeDataService {
     /**
      * 获取天气生活指数
      *
+     * <h2>说明
+     * <p>目前只需要4项，分别为：运动（1），洗车（2），穿衣（3），旅游（6）
+     *
      * @param location 需要查询地区的 LocationID 或以英文逗号分隔的经度,纬度坐标
      * @param days     小时数，支持 `1d`,`3d`
      *
      * @since 1.0.0
      */
     public List<LivingIndex> getIndicesDaily(String location, String days) {
-        List<LivingIndex> list = new ArrayList<>();
+        List<String> types = new ArrayList<>();
+        types.add("1");
+        types.add("2");
+        types.add("3");
+        types.add("6");
 
-        HeIndicesResponse res = heHttpService.getIndicesDaily(location, days);
-        for (HeIndicesResponse.Daily source : res.getDaily()) {
+        List<LivingIndex> list = new ArrayList<>();
+        for (String type : types) {
             list.add(LivingIndex
                 .builder()
-                .imageUrl(HeUtils.getLiveImageUrl(source.getType()))
-                .date(LocalDate.parse(source.getDate()))
-                .type(source.getType())
-                .name(source.getName())
-                .level(source.getLevel())
-                .category(source.getCategory())
-                .text(source.getText())
+                .imageUrl(HeUtils.getLiveImageUrl(type))
+                .type(type)
+                .daily(new ArrayList<>())
                 .build());
+        }
+
+        HeIndicesResponse res = heHttpService.getIndicesDaily(location, days);
+        for (HeIndicesResponse.Daily daily : res.getDaily()) {
+            for (LivingIndex item : list) {
+                if (daily
+                    .getType()
+                    .equals(item.getType())) {
+                    // 名称为空则设置上
+                    if (item.getName() == null) {
+                        item.setName(daily.getName());
+                    }
+
+                    item
+                        .getDaily()
+                        .add(LivingIndex.DailyIndex
+                            .builder()
+                            .date(LocalDate.parse(daily.getDate()))
+                            .level(daily.getLevel())
+                            .category(daily.getCategory())
+                            .text(daily.getText())
+                            .build());
+                }
+            }
+        }
+
+        // 对列表中中的子列表再一次重排序
+        for (LivingIndex item : list) {
+            item
+                .getDaily()
+                .sort(Comparator.comparing(LivingIndex.DailyIndex::getDate));
         }
 
         return list;

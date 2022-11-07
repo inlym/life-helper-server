@@ -349,6 +349,46 @@ public class WeatherDataService {
     }
 
     /**
+     * 获取天气生活指数（异步）
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @param days      小时数，支持 `1d`,`3d`
+     *
+     * @since 1.6.0
+     */
+    @Async
+    public CompletableFuture<List<LivingIndex>> getIndicesDailyAsync(double longitude, double latitude, String days) {
+        String location = concatLocation(longitude, latitude);
+        return CompletableFuture.completedFuture(heDataService.getIndicesDaily(location, days));
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param locationId 需要查询地区的 LocationID
+     * @param days       小时数，支持 `1d`,`3d`
+     *
+     * @since 1.5.0
+     */
+    public List<LivingIndex> getIndicesDaily(String locationId, String days) {
+        return heDataService.getIndicesDaily(locationId, days);
+    }
+
+    /**
+     * 获取天气生活指数
+     *
+     * @param locationId 需要查询地区的 LocationID
+     * @param days       小时数，支持 `1d`,`3d`
+     *
+     * @since 1.5.0
+     */
+    @Async
+    public CompletableFuture<List<LivingIndex>> getIndicesDailyAsync(String locationId, String days) {
+        return CompletableFuture.completedFuture(heDataService.getIndicesDaily(locationId, days));
+    }
+
+    /**
      * 获取实时空气质量
      *
      * @param longitude 经度
