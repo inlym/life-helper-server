@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.weather.data.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,17 @@ public class LivingIndex {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DailyIndex {
+        // ====================  新增的字段  ====================
+
+        /** 格式化显示的日期 */
+        @JsonFormat(pattern = "M月d日")
+        private LocalDate formattedDate;
+
+        /** 人性化显示的“周几” */
+        private String optimalDayOfWeek;
+
+        // ====================  原有的字段  ====================
+
         /** 预报日期 */
         private LocalDate date;
 

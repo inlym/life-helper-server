@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.external.heweather;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -146,5 +147,37 @@ public abstract class HeUtils {
             case "Black" -> "黑色";
             default -> "";
         };
+    }
+
+    /**
+     * 计算更人性化的“周几”文案显示
+     *
+     * @param date 日期
+     *
+     * @since 1.6.0
+     */
+    public static String getOptimalDayOfWeek(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        String[] week = new String[]{"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+
+        if (date
+            .plusDays(1L)
+            .isEqual(today)) {
+            return "昨天";
+        }
+
+        if (date.isEqual(today)) {
+            return "今天";
+        }
+
+        if (date
+            .minusDays(1L)
+            .isEqual(today)) {
+            return "明天";
+        }
+
+        return week[date
+            .getDayOfWeek()
+            .getValue() - 1];
     }
 }

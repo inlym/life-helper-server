@@ -338,7 +338,7 @@ public final class HeDataService {
         types.add("1");
         types.add("2");
         types.add("3");
-        types.add("6");
+        types.add("5");
 
         List<LivingIndex> list = new ArrayList<>();
         for (String type : types) {
@@ -358,13 +358,17 @@ public final class HeDataService {
                     .equals(item.getType())) {
                     // 名称为空则设置上
                     if (item.getName() == null) {
-                        item.setName(daily.getName());
+                        item.setName(daily
+                            .getName()
+                            .replace("指数", ""));
                     }
 
                     item
                         .getDaily()
                         .add(LivingIndex.DailyIndex
                             .builder()
+                            .formattedDate(LocalDate.parse(daily.getDate()))
+                            .optimalDayOfWeek(HeUtils.getOptimalDayOfWeek(LocalDate.parse(daily.getDate())))
                             .date(LocalDate.parse(daily.getDate()))
                             .level(daily.getLevel())
                             .category(daily.getCategory())
