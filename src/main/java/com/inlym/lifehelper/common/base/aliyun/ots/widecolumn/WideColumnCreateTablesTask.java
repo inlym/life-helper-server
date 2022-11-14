@@ -1,9 +1,12 @@
 package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
 
 import com.alicloud.openservices.tablestore.model.CreateTableRequest;
-import com.alicloud.openservices.tablestore.model.PrimaryKeyType;
 import com.alicloud.openservices.tablestore.model.TableMeta;
 import com.alicloud.openservices.tablestore.model.TableOptions;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.WideColumnUtils;
+import com.inlym.lifehelper.photoalbum.album.entity.Album;
+import com.inlym.lifehelper.photoalbum.media.entity.Media;
+import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -62,36 +65,18 @@ public class WideColumnCreateTablesTask implements ApplicationRunner {
      * <h2>备注（2022.09.06）
      * <p>后续新建数据表，都需要来这里注册。
      *
-     * <h2>实体类
-     * <li> 1. 相册表 {@link com.inlym.lifehelper.photoalbum.album.entity.Album}
-     * <li> 2. 媒体文件表 {@link com.inlym.lifehelper.photoalbum.media.entity.Media}
-     *
      * @since 1.4.0
      */
     private List<TableMeta> getTableMetaList() {
-        List<TableMeta> list = new ArrayList<>();
+        List<Class<?>> list = new ArrayList<>();
 
-        // 备注（2022.09.06）
-        // 更加自动化的办法是：只引入“实体类”，由反射获取表名和主键，但这里没必要，因为只需要手动添加一次即可。
+        list.add(Album.class);
+        list.add(Media.class);
+        list.add(WeatherPlace.class);
 
-        // 相册表
-        TableMeta album = new TableMeta("album");
-        album.addPrimaryKeyColumn("uid", PrimaryKeyType.STRING);
-        album.addPrimaryKeyColumn("album_id", PrimaryKeyType.STRING);
-        list.add(album);
-
-        // 相册的媒体文件表
-        TableMeta media = new TableMeta("media");
-        media.addPrimaryKeyColumn("album_id", PrimaryKeyType.STRING);
-        media.addPrimaryKeyColumn("media_id", PrimaryKeyType.STRING);
-        list.add(media);
-
-        // 天气地点
-        TableMeta weatherPlace = new TableMeta("weather_place");
-        weatherPlace.addPrimaryKeyColumn("uid", PrimaryKeyType.STRING);
-        weatherPlace.addPrimaryKeyColumn("place_id", PrimaryKeyType.STRING);
-        list.add(weatherPlace);
-
-        return list;
+        return list
+            .stream()
+            .map(WideColumnUtils::buildTableMeta)
+            .toList();
     }
 }

@@ -73,9 +73,18 @@ public abstract class WideColumnUtils {
      * @since 1.4.0
      */
     public static String getTableName(Object entity) {
-        Table table = entity
-            .getClass()
-            .getAnnotation(Table.class);
+        return getTableName(entity.getClass());
+    }
+
+    /**
+     * 获取实体对象在表格存储中使用的表名
+     *
+     * @param clazz 实体类
+     *
+     * @since 1.7.0
+     */
+    public static String getTableName(Class<?> clazz) {
+        Table table = clazz.getAnnotation(Table.class);
 
         // 如果使用了 {@link Table} 注解并指定了表名，则取指定的表名
         if (table != null && StringUtils.hasText(table.name())) {
@@ -83,9 +92,7 @@ public abstract class WideColumnUtils {
         }
 
         // 否则直接使用“类名”的下划线命名作为“表名”
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entity
-            .getClass()
-            .getSimpleName());
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, clazz.getSimpleName());
     }
 
     /**
@@ -96,10 +103,19 @@ public abstract class WideColumnUtils {
      * @since 1.4.0
      */
     public static List<Field> getPrimaryKeyFieldList(Object entity) {
+        return getPrimaryKeyFieldList(entity.getClass());
+    }
+
+    /**
+     * 获取实体的主键列字段列表（已按照排序字段升序排列）
+     *
+     * @param clazz 实体类
+     *
+     * @since 1.7.0
+     */
+    public static List<Field> getPrimaryKeyFieldList(Class<?> clazz) {
         return Arrays
-            .stream(entity
-                .getClass()
-                .getDeclaredFields())
+            .stream(clazz.getDeclaredFields())
             .filter(o -> o.getAnnotation(PrimaryKeyField.class) != null)
             .sorted(Comparator.comparingInt(o -> o
                 .getAnnotation(PrimaryKeyField.class)
@@ -431,5 +447,24 @@ public abstract class WideColumnUtils {
                 }
             }
         }
+    }
+
+    /**
+     * 构建用于建表的元数据信息
+     *
+     * @param clazz 实体类
+     *
+     * @see <a href="https://help.aliyun.com/document_detail/98996.html">创建数据表</a>
+     * @since 1.7.0
+     */
+    public static TableMeta buildTableMeta(Class<?> clazz) {
+        TableMeta tableMeta = new TableMeta(getTableName(clazz));
+        for (Field field : getPrimaryKeyFieldList(clazz)) {
+            // 备注（2022.11.15）
+            // 目前主键类型只用到 `PrimaryKeyType.STRING`，后续有变化了再调整。
+            tableMeta.addPrimaryKeyColumn(getColumnName(field), PrimaryKeyType.STRING);
+        }
+
+        return tableMeta;
     }
 }
