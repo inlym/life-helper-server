@@ -86,6 +86,7 @@ public class WideColumnExecutor {
      * @param entity 实体对象
      * @param <T>    实体类型
      *
+     * @see <a href="https://help.aliyun.com/document_detail/43013.html">写入数据</a>
      * @since 1.4.0
      */
     public <T> T update(T entity) {
@@ -93,7 +94,7 @@ public class WideColumnExecutor {
         PrimaryKey primaryKey = WideColumnUtils.buildPrimaryKey(entity);
 
         RowUpdateChange change = new RowUpdateChange(tableName, primaryKey);
-        Condition condition = new Condition(RowExistenceExpectation.EXPECT_EXIST);
+        Condition condition = new Condition(RowExistenceExpectation.IGNORE);
         change.setCondition(condition);
 
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
