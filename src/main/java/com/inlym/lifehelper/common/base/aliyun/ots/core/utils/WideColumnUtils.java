@@ -175,42 +175,7 @@ public abstract class WideColumnUtils {
     public static ColumnValue getColumnValue(Field field, Object entity) {
         field.setAccessible(true);
         Object value = field.get(entity);
-        return convertToColumnValue(value);
-    }
-
-    /**
-     * 将普通类型的字段值转化为宽表模型中使用的列值类型
-     *
-     * @param obj 字段值
-     *
-     * @since 1.4.0
-     */
-    public static ColumnValue convertToColumnValue(Object obj) {
-        if (obj == null) {
-            return ColumnValue.INTERNAL_NULL_VALUE;
-        } else if (obj instanceof String) {
-            return ColumnValue.fromString((String) obj);
-        } else if (obj instanceof Long) {
-            return ColumnValue.fromLong((Long) obj);
-        } else if (obj instanceof Integer) {
-            return ColumnValue.fromLong(Long.valueOf((Integer) obj));
-        } else if (obj instanceof Double) {
-            return ColumnValue.fromDouble((Double) obj);
-        } else if (obj instanceof Boolean) {
-            return ColumnValue.fromBoolean((Boolean) obj);
-        } else if (obj instanceof byte[]) {
-            return ColumnValue.fromBinary((byte[]) obj);
-        } else if (obj instanceof LocalDateTime) {
-            return ColumnValue.fromLong(((LocalDateTime) obj)
-                .toInstant(ZoneId
-                    .systemDefault()
-                    .getRules()
-                    .getOffset(LocalDateTime.now()))
-                .toEpochMilli());
-        } else {
-            // 一般实体的数据类型不会弄错，保底错误这里抛出参数错误
-            throw new IllegalArgumentException("宽表模型列赋值错误：未支持的数据类型");
-        }
+        return TableStoreUtils.convertToColumnValue(value);
     }
 
     /**
@@ -226,7 +191,7 @@ public abstract class WideColumnUtils {
             obj = getHashedId((int) obj);
         }
 
-        return PrimaryKeyValue.fromColumn(convertToColumnValue(obj));
+        return PrimaryKeyValue.fromColumn(TableStoreUtils.convertToColumnValue(obj));
     }
 
     /**
