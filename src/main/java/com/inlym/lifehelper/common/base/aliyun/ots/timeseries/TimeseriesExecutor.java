@@ -8,6 +8,7 @@ import com.alicloud.openservices.tablestore.model.timeseries.TimeseriesKey;
 import com.alicloud.openservices.tablestore.model.timeseries.TimeseriesRow;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.TimeseriesUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -67,5 +68,10 @@ public class TimeseriesExecutor {
         PutTimeseriesDataResponse response = client.putTimeseriesData(request);
 
         return response.isAllSuccess();
+    }
+
+    @Async
+    public <T> void insertAsync(T entity) {
+        insert(entity);
     }
 }
