@@ -4,6 +4,8 @@ import com.alicloud.openservices.tablestore.TimeseriesClient;
 import com.alicloud.openservices.tablestore.model.TimeseriesTableMeta;
 import com.alicloud.openservices.tablestore.model.TimeseriesTableOptions;
 import com.alicloud.openservices.tablestore.model.timeseries.CreateTimeseriesTableRequest;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.TimeseriesUtils;
+import com.inlym.lifehelper.requestlog.entity.RequestLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -53,20 +55,22 @@ public class TimeseriesCreateTablesTask implements ApplicationRunner {
      * @since 1.7.0
      */
     private List<TimeseriesTableMeta> getTableMetaList() {
-        List<String> tableNames = new ArrayList<>();
-        List<TimeseriesTableMeta> list = new ArrayList<>();
+        List<Class<?>> classList = new ArrayList<>();
+        List<TimeseriesTableMeta> metaList = new ArrayList<>();
 
-        tableNames.add("access");
+        // 新增的时序模型数据表实体在此处注册
+        classList.add(RequestLog.class);
 
-        for (String tableName : tableNames) {
+        for (Class<?> clazz : classList) {
+            String tableName = TimeseriesUtils.getTableName(clazz);
             int timeToLive = -1;
 
             TimeseriesTableMeta meta = new TimeseriesTableMeta(tableName);
             meta.setTimeseriesTableOptions(new TimeseriesTableOptions(timeToLive));
 
-            list.add(meta);
+            metaList.add(meta);
         }
 
-        return list;
+        return metaList;
     }
 }

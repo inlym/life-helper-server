@@ -31,7 +31,7 @@ public abstract class TimeseriesUtils {
      *
      * @since 1.7.0
      */
-    private static String getTableName(Class<?> clazz) {
+    public static String getTableName(Class<?> clazz) {
         TimeseriesTable table = clazz.getAnnotation(TimeseriesTable.class);
 
         // 如果使用了时序模型表注解并指定了表名，则优先级最高

@@ -8,6 +8,7 @@ import com.alicloud.openservices.tablestore.model.timeseries.TimeseriesKey;
 import com.alicloud.openservices.tablestore.model.timeseries.TimeseriesRow;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.TimeseriesUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,6 +29,7 @@ import java.util.Map;
  **/
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TimeseriesExecutor {
     private final TimeseriesClient client;
 
@@ -70,6 +72,14 @@ public class TimeseriesExecutor {
         return response.isAllSuccess();
     }
 
+    /**
+     * 新增一条记录（异步）
+     *
+     * @param entity 实体对象
+     *
+     * @see <a href="https://help.aliyun.com/document_detail/341805.html">写入时序数据</a>
+     * @since 1.7.0
+     */
     @Async
     public <T> void insertAsync(T entity) {
         insert(entity);
