@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.annotation;
 
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -31,10 +32,11 @@ public class ClientIpMethodArgumentResolver implements HandlerMethodArgumentReso
      * <p>在过滤器中已获取客户端 IP 地址，并附在了请求域属性上，直接获取即可。
      */
     @Override
-    public Object resolveArgument(@SuppressWarnings("NullableProblems") MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        String ip = (String) webRequest.getAttribute(CustomRequestAttribute.CLIENT_IP, RequestAttributes.SCOPE_REQUEST);
-        if (ip != null) {
-            return ip;
+    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        if (webRequest.getAttribute(CustomRequestContext.attributeName, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
+            if (context.getClientIp() != null) {
+                return context.getClientIp();
+            }
         }
 
         throw new RuntimeException("未获取到客户端 IP 地址");

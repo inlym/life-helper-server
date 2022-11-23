@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.requestlog.service;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.timeseries.TimeseriesExecutor;
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
 import com.inlym.lifehelper.location.LocationService;
 import com.inlym.lifehelper.location.pojo.IpLocation;
 import com.inlym.lifehelper.requestlog.entity.RequestLog;
@@ -43,11 +43,14 @@ public class RequestLogService {
         String path = request.getRequestURI();
 
         if (!whiteList.contains(path)) {
-            int userId = request.getAttribute(CustomRequestAttribute.USER_ID) != null ? (int) request.getAttribute(CustomRequestAttribute.USER_ID) : 0;
-            String ip = (String) request.getAttribute(CustomRequestAttribute.CLIENT_IP);
+            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+
+            int userId = context.getUserId();
+            String ip = context.getClientIp();
+            String requestId = context.getRequestId();
+
             String method = request.getMethod();
             String querystring = request.getQueryString();
-            String requestId = (String) request.getAttribute(CustomRequestAttribute.REQUEST_ID);
             String url = path + (querystring != null ? "?" + querystring : "");
 
             log.info("{} {} {} {} {}", requestId, ip, userId, method, url);

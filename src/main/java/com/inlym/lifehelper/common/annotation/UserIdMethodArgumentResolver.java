@@ -1,7 +1,8 @@
 package com.inlym.lifehelper.common.annotation;
 
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -25,19 +26,12 @@ public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolv
             .isAssignableFrom(int.class) && parameter.hasParameterAnnotation(UserId.class);
     }
 
-    /**
-     * 解析参数处理
-     *
-     * <h2>处理逻辑
-     *
-     * <p>在过滤器链中，如果鉴权通过，则会在 {@link org.springframework.web.context.request.RequestAttributes RequestAttributes}
-     * 赋值，其中会将解析后的用户 ID 赋值在 {@code CustomRequestAttribute.USER_ID} 参数上，将其获取后进行返回即可。
-     */
     @Override
-    public Object resolveArgument(@SuppressWarnings("NullableProblems") MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws UnauthorizedAccessException {
-        Integer userId = (Integer) webRequest.getAttribute(CustomRequestAttribute.USER_ID, RequestAttributes.SCOPE_REQUEST);
-        if (userId != null && userId > 0) {
-            return userId;
+    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        if (webRequest.getAttribute(CustomRequestContext.attributeName, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
+            if (context.getUserId() != null && context.getUserId() > 0) {
+                return context.getUserId();
+            }
         }
 
         throw new UnauthorizedAccessException("用户未登录");

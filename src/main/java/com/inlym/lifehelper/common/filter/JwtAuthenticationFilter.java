@@ -3,10 +3,11 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.constant.SpecialPath;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -33,8 +34,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getServletPath())) {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
+            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+
             // 从请求头获取鉴权凭证
             String token = request.getHeader(CustomHttpHeader.JWT_TOKEN);
 
@@ -45,11 +48,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .getContext()
                         .setAuthentication(authentication);
 
-                    // 将用户 ID 赋值到请求属性上
-                    request.setAttribute(CustomRequestAttribute.USER_ID, authentication.getPrincipal());
+                    context.setUserId((int) authentication.getPrincipal());
                 } catch (Exception e) {
                     log.trace("[JWT 解析出错] " + e.getMessage());
                 }
+            }
+
+            // 备注（2022.11.24）：
+            // 未鉴权则赋值为 0，方便后续流程统一数据格式好处理。
+            if (context.getUserId() == null) {
+                context.setUserId(0);
             }
         }
 

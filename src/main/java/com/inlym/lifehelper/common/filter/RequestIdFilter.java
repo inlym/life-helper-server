@@ -1,9 +1,10 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.constant.SpecialPath;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,22 +33,26 @@ import java.util.UUID;
 @WebFilter(urlPatterns = "/*")
 public class RequestIdFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getServletPath())) {
-            String requestId = request.getHeader(CustomHttpHeader.REQUEST_ID);
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
+            String requestId;
+            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
 
-            if (requestId != null) {
-                request.setAttribute(CustomRequestAttribute.REQUEST_ID, requestId);
+            String requestIdString = request.getHeader(CustomHttpHeader.REQUEST_ID);
+
+            if (requestIdString != null) {
+                requestId = requestIdString;
             } else {
-                // 如果没有从请求头中拿到，则自己生成一个并赋值
-                String customId = UUID
+                // 如果没有从请求头中拿到，则自己生成一个
+                requestId = UUID
                     .randomUUID()
                     .toString()
                     .toUpperCase();
 
-                request.setAttribute(CustomRequestAttribute.REQUEST_ID, customId);
-                response.setHeader(CustomHttpHeader.REQUEST_ID, customId);
+                response.setHeader(CustomHttpHeader.REQUEST_ID, requestId);
             }
+
+            context.setRequestId(requestId);
         }
 
         chain.doFilter(request, response);

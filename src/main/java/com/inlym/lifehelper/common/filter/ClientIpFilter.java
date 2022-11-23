@@ -1,9 +1,10 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.CustomRequestAttribute;
 import com.inlym.lifehelper.common.constant.SpecialPath;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,8 +31,11 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*")
 public class ClientIpFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getServletPath())) {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
+            String clientIp;
+            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+
             // 在正式环境，请求通过 API 网关时，会在指定字段（`X-Lifehelper-Client-Ip`）添加客户端 IP 地址，
             // 同时，客户端可能伪造请求，直接传递该字段，在 API 网关做的处理是：
             // 直接该请求头值尾部加上 `, ` 和客户端 IP 地址
@@ -40,14 +44,13 @@ public class ClientIpFilter extends OncePerRequestFilter {
             if (ipString != null) {
                 // 使用 `,` 分割字符串，取最后一段，就是从 API 网关处获取的客户端 IP 地址
                 String[] ips = ipString.split(",");
-
-                String clientIp = ips[ips.length - 1].trim();
-                request.setAttribute(CustomRequestAttribute.CLIENT_IP, clientIp);
+                clientIp = ips[ips.length - 1].trim();
             } else {
                 // 该情况用于本地开发环境，兼容无 API 网关情况
-                String mockIp = "0.0.0.0";
-                request.setAttribute(CustomRequestAttribute.CLIENT_IP, mockIp);
+                clientIp = "0.0.0.0";
             }
+
+            context.setClientIp(clientIp);
         }
 
         chain.doFilter(request, response);
