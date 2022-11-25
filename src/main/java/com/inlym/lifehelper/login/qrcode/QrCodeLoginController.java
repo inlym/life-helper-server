@@ -7,8 +7,7 @@ import com.inlym.lifehelper.login.qrcode.pojo.QrCodeTicketDTO;
 import com.inlym.lifehelper.login.qrcode.pojo.QrCodeTicketVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * 扫码登录模块控制器

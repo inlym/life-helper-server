@@ -3,6 +3,7 @@ package com.inlym.lifehelper.common.config;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.ExceptionResponse;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.springframework.core.annotation.Order;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**

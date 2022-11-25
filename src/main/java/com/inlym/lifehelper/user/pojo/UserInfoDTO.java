@@ -1,8 +1,7 @@
 package com.inlym.lifehelper.user.pojo;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-
-import javax.validation.constraints.NotEmpty;
 
 /**
  * 用户个人信息请求数据
