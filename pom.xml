@@ -93,12 +93,6 @@
         </dependency>
 
         <!-- MySQL 驱动 -->
-        <!--        <dependency>-->
-        <!--            <groupId>mysql</groupId>-->
-        <!--            <artifactId>mysql-connector-java</artifactId>-->
-        <!--            <scope>runtime</scope>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -109,13 +103,6 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.2.2</version>
-        </dependency>
-
-        <!-- 分页插件 -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.5</version>
         </dependency>
 
         <!-- Lombok -->
@@ -153,20 +140,6 @@
             <version>5.8.10</version>
         </dependency>
 
-        <!-- ShedLock -->
-        <dependency>
-            <groupId>net.javacrumbs.shedlock</groupId>
-            <artifactId>shedlock-spring</artifactId>
-            <version>4.42.0</version>
-        </dependency>
-
-        <!-- ShedLock for Redis -->
-        <dependency>
-            <groupId>net.javacrumbs.shedlock</groupId>
-            <artifactId>shedlock-provider-redis-spring</artifactId>
-            <version>4.42.0</version>
-        </dependency>
-
         <!-- Google Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -175,7 +148,7 @@
         </dependency>
 
         <!-- 阿里云分布式任务调度平台 SchedulerX -->
-        <!-- 文档地址：https://help.aliyun.com/document_detail/161995.html?userCode=lzfqdh6g -->
+        <!-- 文档地址：https://help.aliyun.com/document_detail/161998.html?userCode=lzfqdh6g -->
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
             <artifactId>schedulerx2-spring-boot-starter</artifactId>
