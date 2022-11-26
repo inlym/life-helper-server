@@ -32,3 +32,9 @@ spring:
             password: NOT_USER
             roles:
                 - NOT_USER
+
+    # Spring Data JPA 配置
+    jpa:
+        generate-ddl: false
+        show-sql: true
+        open-in-view: false
