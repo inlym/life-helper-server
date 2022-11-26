@@ -3,7 +3,7 @@ package com.inlym.lifehelper.login.wechatcode;
 import com.inlym.lifehelper.common.auth.core.AuthenticationCredential;
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.external.wechat.WeChatService;
-import com.inlym.lifehelper.user.UserService;
+import com.inlym.lifehelper.user.account.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class WeChatCodeLoginService {
-    private final UserService userService;
+    private final UserAccountService userAccountService;
 
     private final WeChatService weChatService;
 
@@ -37,7 +37,7 @@ public class WeChatCodeLoginService {
      */
     public AuthenticationCredential loginByCode(String code) {
         String openid = weChatService.getOpenidByCode(code);
-        int userId = userService.getUserIdByOpenid(openid);
+        int userId = userAccountService.getUserIdByOpenid(openid);
         AuthenticationCredential ac = jwtService.createAuthenticationCredential(userId);
 
         log.info("[小程序用户登录] code={}, openid={}, userId={}", code, openid, userId);

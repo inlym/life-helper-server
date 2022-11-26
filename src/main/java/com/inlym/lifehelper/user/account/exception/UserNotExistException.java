@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.user.exception;
+package com.inlym.lifehelper.user.account.exception;
 
 /**
  * 用户不存在异常

@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 类名称
- *
- * <h2>说明
- * <p>
+ * 小程序 code 登录控制器
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/8/4
