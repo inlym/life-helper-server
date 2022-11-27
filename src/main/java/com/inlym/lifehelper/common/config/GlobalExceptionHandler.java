@@ -2,6 +2,7 @@ package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
+import com.inlym.lifehelper.common.model.ErrorResponse;
 import com.inlym.lifehelper.common.model.ExceptionResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExternalHttpRequestException.class)
     public ExceptionResponse handleExternalHttpRequestException(ExternalHttpRequestException e) {
         log.error(String.valueOf(e));
-        return new ExceptionResponse(50001, "内部错误");
+        return new ExceptionResponse(5000, "内部错误");
     }
 
     /**
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ExceptionResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        return new ExceptionResponse(40001, "缺少请求参数 " + e.getParameterName());
+        return new ExceptionResponse(3, "缺少请求参数 " + e.getParameterName());
     }
 
     /**
@@ -74,7 +75,7 @@ public class GlobalExceptionHandler {
             }
         }
 
-        return new ExceptionResponse(40002, "请求数据错误");
+        return new ExceptionResponse(3, "请求数据错误");
     }
 
     /**
@@ -89,42 +90,32 @@ public class GlobalExceptionHandler {
             .getConstraintViolations()
             .toArray()[0];
 
-        String property = String
-            .valueOf(cv.getPropertyPath())
-            .split("\\.")[1];
-
         String message = cv.getMessage();
 
-        return new ExceptionResponse(40002, message);
+        return new ExceptionResponse(3, message);
     }
 
     /**
      * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AccessDeniedException.class)
-    public ExceptionResponse handleAccessDeniedException(AccessDeniedException e) {
-        return new ExceptionResponse(40010, "未登录或登录信息错误");
-    }
-
-    /**
-     * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
-     */
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(UnauthorizedAccessException.class)
-    public ExceptionResponse handleUnauthorizedAccessException(UnauthorizedAccessException e) {
-        return new ExceptionResponse(40010, "未登录或登录信息错误");
+    @ExceptionHandler({AccessDeniedException.class, UnauthorizedAccessException.class})
+    public ErrorResponse handleAccessDeniedException() {
+        return new ErrorResponse(2, "请先登录再操作！");
     }
 
     /**
      * 通用异常处理
+     *
+     * <h2>说明
+     * <p>未被其他处理器捕获时，最终会进入到这里处理。
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ExceptionResponse handler(Exception e) {
+    public ErrorResponse handleException(Exception e) {
         log.debug(e
             .getClass()
             .getName() + ":" + e.getMessage());
-        return new ExceptionResponse(50000, "服务器内部错误");
+        return new ErrorResponse(1);
     }
 }
