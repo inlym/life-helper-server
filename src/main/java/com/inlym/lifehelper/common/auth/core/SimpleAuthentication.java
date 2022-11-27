@@ -49,6 +49,10 @@ public class SimpleAuthentication implements Authentication {
         this.authenticated = true;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

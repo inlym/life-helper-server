@@ -14,6 +14,9 @@ public abstract class CustomHttpHeader {
     /** 客户端 IP 地址，由 API 网关层加入到请求头中 */
     public static final String CLIENT_IP = "x-lifehelper-client-ip";
 
-    /** JWT 字符串 */
+    /** JWT 登录令牌 */
     public static final String JWT_TOKEN = "x-lifehelper-auth-jwt";
+
+    /** 简易登录令牌 */
+    public static final String SIMPLE_TOKEN = "x-lifehelper-auth-st";
 }
