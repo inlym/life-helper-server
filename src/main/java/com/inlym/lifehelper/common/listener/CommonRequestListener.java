@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.listener;
 
+import com.inlym.lifehelper.common.constant.ClientType;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.ServletRequestEvent;
 import jakarta.servlet.ServletRequestListener;
@@ -21,9 +22,14 @@ import java.time.LocalDateTime;
 public class CommonRequestListener implements ServletRequestListener {
     @Override
     public void requestInitialized(ServletRequestEvent sre) {
+        // 给每个字段赋初始值，避免在过滤器中频繁进行判空操作
         CustomRequestContext context = CustomRequestContext
             .builder()
+            .requestId("")
             .requestTime(LocalDateTime.now())
+            .clientIp("0.0.0.0")
+            .userId(0)
+            .clientType(ClientType.UNKNOWN)
             .build();
 
         sre

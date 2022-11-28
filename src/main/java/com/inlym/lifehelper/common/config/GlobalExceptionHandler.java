@@ -3,7 +3,6 @@ package com.inlym.lifehelper.common.config;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.ErrorResponse;
-import com.inlym.lifehelper.common.model.ExceptionResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
@@ -40,9 +39,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ExternalHttpRequestException.class)
-    public ExceptionResponse handleExternalHttpRequestException(ExternalHttpRequestException e) {
+    public ErrorResponse handleExternalHttpRequestException(ExternalHttpRequestException e) {
         log.error(String.valueOf(e));
-        return new ExceptionResponse(5000, "内部错误");
+        return new ErrorResponse(5000, "内部错误");
     }
 
     /**
@@ -50,8 +49,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ExceptionResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        return new ExceptionResponse(3, "缺少请求参数 " + e.getParameterName());
+    public ErrorResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return new ErrorResponse(4, "缺少请求参数 " + e.getParameterName());
     }
 
     /**
@@ -61,7 +60,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ExceptionResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult exceptions = e.getBindingResult();
 
         // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息
@@ -71,11 +70,11 @@ public class GlobalExceptionHandler {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
 
-                return new ExceptionResponse(40002, fieldError.getDefaultMessage());
+                return new ErrorResponse(3, fieldError.getDefaultMessage());
             }
         }
 
-        return new ExceptionResponse(3, "请求数据错误");
+        return new ErrorResponse(3, "请求数据错误");
     }
 
     /**
@@ -85,14 +84,14 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ExceptionResponse handleConstraintViolationException(ConstraintViolationException e) {
+    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
         ConstraintViolationImpl<?> cv = (ConstraintViolationImpl<?>) e
             .getConstraintViolations()
             .toArray()[0];
 
         String message = cv.getMessage();
 
-        return new ExceptionResponse(3, message);
+        return new ErrorResponse(3, message);
     }
 
     /**

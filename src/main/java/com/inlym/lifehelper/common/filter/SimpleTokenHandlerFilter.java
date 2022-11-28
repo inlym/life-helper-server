@@ -38,6 +38,7 @@ public class SimpleTokenHandlerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        // 放过“健康检查”请求，不做任何处理
         if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
             // 从请求头获取鉴权凭证
             String token = request.getHeader(CustomHttpHeader.SIMPLE_TOKEN);

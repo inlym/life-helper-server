@@ -45,7 +45,7 @@ public class RequestLogService {
         if (!whiteList.contains(path)) {
             CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
 
-            int userId = context.getUserId();
+            int userId = context.getUserId() == null ? 0 : context.getUserId();
             String ip = context.getClientIp();
             String requestId = context.getRequestId();
 
