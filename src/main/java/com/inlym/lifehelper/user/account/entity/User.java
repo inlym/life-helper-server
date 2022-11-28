@@ -44,4 +44,14 @@ public class User {
 
     /** 注册时间 */
     private LocalDateTime registerTime;
+
+    // 备注（2022.11.29）
+    // 线上大概还有600多用户设置了昵称头像，直接清空并不合适，因此还是做一次数据迁移到新的数据表
+    // 之后再删除这个字段。
+
+    /** 用户昵称 */
+    private String nickName;
+
+    /** 用户头像图片路径 */
+    private String avatar;
 }
