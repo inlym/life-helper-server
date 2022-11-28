@@ -1,14 +1,20 @@
 package com.inlym.lifehelper.common.auth.jwt;
 
+import cn.hutool.core.util.IdUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.inlym.lifehelper.common.auth.core.AuthenticationCredential;
+import com.inlym.lifehelper.common.auth.core.SecurityToken;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
+import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.SecurityTokenType;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,6 +44,29 @@ public class JwtService {
 
     public JwtService(JwtProperties jwtProperties) {
         this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+    }
+
+    public SecurityToken generateSecurityToken(int userId) {
+        LocalDateTime createTime = LocalDateTime.now();
+        LocalDateTime expireTime = createTime.plusSeconds(DEFAULT_JWT_DURATION.toSeconds());
+
+        String token = JWT
+            .create()
+            .withIssuer(ISSUER)
+            .withJWTId(IdUtil.simpleUUID())
+            .withIssuedAt(createTime.toInstant(ZoneOffset.ofHours(8)))
+            .withExpiresAt(expireTime.toInstant(ZoneOffset.ofHours(8)))
+            .withClaim(USER_ID_FIELD, userId)
+            .sign(algorithm);
+
+        return SecurityToken
+            .builder()
+            .token(token)
+            .type(SecurityTokenType.JSON_WEB_TOKEN)
+            .headerName(CustomHttpHeader.JWT_TOKEN)
+            .createTime(createTime)
+            .expireTime(expireTime)
+            .build();
     }
 
     /**
