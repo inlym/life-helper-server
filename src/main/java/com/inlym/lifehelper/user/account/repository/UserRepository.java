@@ -19,4 +19,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * @return 用户实体
      */
     User findByOpenid(String openid);
+
+    /**
+     * 通过账户 ID 查找用户
+     *
+     * @param accountId 账户 ID
+     *
+     * @return 用户实体
+     */
+    User findByAccountId(int accountId);
 }

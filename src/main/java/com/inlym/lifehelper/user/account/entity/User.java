@@ -34,6 +34,14 @@ public class User {
     /** 微信小程序用户唯一标识 */
     private String openid;
 
+    /**
+     * 账户 ID
+     *
+     * <h2>主要用途
+     * <p>给用户展示的 ID。
+     */
+    private Integer accountId;
+
     /** 注册时间 */
     private LocalDateTime registerTime;
 }

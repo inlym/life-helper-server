@@ -23,7 +23,7 @@ public class UserNotExistException extends RuntimeException {
      *
      * @param userId 用户 ID
      */
-    public static UserNotExistException fromUserId(int userId) {
+    public static UserNotExistException fromId(int userId) {
         String message = "用户 ID 为 " + userId + " 的用户不存在";
         return new UserNotExistException(message);
     }

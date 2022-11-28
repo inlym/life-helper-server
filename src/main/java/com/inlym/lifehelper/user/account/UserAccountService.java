@@ -2,6 +2,7 @@ package com.inlym.lifehelper.user.account;
 
 import com.inlym.lifehelper.user.account.entity.User;
 import com.inlym.lifehelper.user.account.event.NewUserRegistrationEvent;
+import com.inlym.lifehelper.user.account.exception.UserNotExistException;
 import com.inlym.lifehelper.user.account.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * 用户账户服务
@@ -29,6 +32,20 @@ public class UserAccountService {
     private final UserRepository userRepository;
 
     /**
+     * 计算用户的账户 ID
+     *
+     * <h2>说明
+     * <p>仅在账户创建时计算1次并存入。
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.7.0
+     */
+    public int calcAccountId(int userId) {
+        return (1428571 + userId * 17 + new Random().nextInt(10));
+    }
+
+    /**
      * 注册新用户
      *
      * @param openid 微信小程序的用户唯一标识
@@ -43,7 +60,12 @@ public class UserAccountService {
             .build();
 
         userRepository.save(user);
-        log.info("[新用户注册] userId={}, openid={}", user.getId(), user.getOpenid());
+
+        // 数据插入后，获取自增 ID，根据此再计算账户 ID，之后再存入
+        user.setAccountId(calcAccountId(user.getId()));
+        userRepository.save(user);
+
+        log.info("[新用户注册] userId={}, openid={}, accountId={}", user.getId(), user.getOpenid(), user.getAccountId());
 
         // 发布新用户注册事件
         applicationContext.publishEvent(new NewUserRegistrationEvent(user));
@@ -60,11 +82,26 @@ public class UserAccountService {
      */
     public int getUserIdByOpenid(String openid) {
         User user = userRepository.findByOpenid(openid);
-        System.out.println(user);
         if (user != null) {
             return user.getId();
         } else {
             return register(openid).getId();
         }
+    }
+
+    /**
+     * 查找用户
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.7.0
+     */
+    public User findById(int userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw UserNotExistException.fromId(userId);
+        }
+
+        return user.get();
     }
 }
