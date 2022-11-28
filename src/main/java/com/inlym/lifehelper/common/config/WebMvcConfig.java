@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.config;
 
-import com.inlym.lifehelper.common.annotation.ClientIpMethodArgumentResolver;
-import com.inlym.lifehelper.common.annotation.UserIdMethodArgumentResolver;
+import com.inlym.lifehelper.common.annotation.resolver.ClientIpMethodArgumentResolver;
+import com.inlym.lifehelper.common.annotation.resolver.UserIdMethodArgumentResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

@@ -1,5 +1,7 @@
 package com.inlym.lifehelper.common.annotation;
 
+import com.inlym.lifehelper.common.annotation.resolver.UserIdMethodArgumentResolver;
+
 import java.lang.annotation.*;
 
 /**
@@ -15,7 +17,7 @@ import java.lang.annotation.*;
  * <li> 在控制器方法参数注入 {@code @UserId int userId}。
  *
  * <h2>使用示例
- *
+ * <p>
  * <pre class="code">
  * &#064;GetMapping("/userid")
  * &#064;UserPermission

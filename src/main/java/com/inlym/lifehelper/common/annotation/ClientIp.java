@@ -1,5 +1,7 @@
 package com.inlym.lifehelper.common.annotation;
 
+import com.inlym.lifehelper.common.annotation.resolver.ClientIpMethodArgumentResolver;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,7 +11,7 @@ import java.lang.annotation.*;
  * <p>在控制器方法的参数中注入客户端 IP 地址，以便在方法内部快捷获取和使用。
  *
  * <h2>使用示例
- *
+ * <p>
  * <pre class="code">
  * &#064;GetMapping("/abc")
  * public Object someMethod(@ClientIp String ip) {

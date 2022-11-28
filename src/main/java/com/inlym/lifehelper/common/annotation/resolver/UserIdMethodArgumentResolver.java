@@ -1,5 +1,7 @@
-package com.inlym.lifehelper.common.annotation;
+package com.inlym.lifehelper.common.annotation.resolver;
 
+import com.inlym.lifehelper.common.annotation.UserId;
+import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
@@ -10,35 +12,29 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
- * 客户端 IP 地址注入器注解解析器
+ * 用户 ID 注入器注解解析器
  *
- * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/3/27
- * @see ClientIp
+ * @author inlym
+ * @date 2022-02-14
+ * @see UserId
  * @since 1.0.0
  **/
-public class ClientIpMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter
             .getParameterType()
-            .isAssignableFrom(String.class) && parameter.hasParameterAnnotation(ClientIp.class);
+            .isAssignableFrom(int.class) && parameter.hasParameterAnnotation(UserId.class);
     }
 
-    /**
-     * 解析参数处理
-     *
-     * <h2>处理逻辑
-     * <p>在过滤器中已获取客户端 IP 地址，并附在了请求域属性上，直接获取即可。
-     */
     @Override
     public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (webRequest.getAttribute(CustomRequestContext.attributeName, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
-            if (context.getClientIp() != null) {
-                return context.getClientIp();
+            if (context.getUserId() != null && context.getUserId() > 0) {
+                return context.getUserId();
             }
         }
 
-        throw new RuntimeException("未获取到客户端 IP 地址");
+        throw new UnauthorizedAccessException("用户未登录");
     }
 }
