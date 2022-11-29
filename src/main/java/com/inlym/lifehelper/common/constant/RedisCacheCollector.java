@@ -16,7 +16,7 @@ import java.util.Map;
  **/
 public abstract class RedisCacheCollector {
     /** 通过 code 获取鉴权信息的键名 */
-    public static final String WECHAT_SESSION = "weixin:session";
+    public static final String WECHAT_SESSION = "wechat:session";
 
     // ===============================  腾讯位置服务  ===============================
 
