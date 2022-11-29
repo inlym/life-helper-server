@@ -3,7 +3,7 @@ package com.inlym.lifehelper.login.qrcode;
 import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
-import com.inlym.lifehelper.external.wechat.WeChatService;
+import com.inlym.lifehelper.extern.wechat.WeChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;

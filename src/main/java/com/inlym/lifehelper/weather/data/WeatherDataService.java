@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.weather.data;
 
-import com.inlym.lifehelper.external.heweather.HeDataService;
+import com.inlym.lifehelper.extern.heweather.HeDataService;
 import com.inlym.lifehelper.weather.data.pojo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
