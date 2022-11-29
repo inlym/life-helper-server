@@ -5,7 +5,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.inlym.lifehelper.common.auth.core.AuthenticationCredential;
 import com.inlym.lifehelper.common.auth.core.SecurityToken;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * JWT 服务
@@ -66,38 +63,6 @@ public class JwtService {
             .headerName(CustomHttpHeader.JWT_TOKEN)
             .createTime(createTime)
             .expireTime(expireTime)
-            .build();
-    }
-
-    /**
-     * 创建鉴权凭证
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.3.0
-     */
-    public AuthenticationCredential createAuthenticationCredential(int userId) {
-        long createTime = System.currentTimeMillis();
-        long expireTime = createTime + DEFAULT_JWT_DURATION.toMillis();
-
-        String token = JWT
-            .create()
-            .withIssuer(ISSUER)
-            .withIssuedAt(new Date(createTime))
-            .withJWTId(UUID
-                .randomUUID()
-                .toString()
-                .toLowerCase())
-            .withExpiresAt(new Date(expireTime))
-            .withClaim(USER_ID_FIELD, userId)
-            .sign(algorithm);
-
-        return AuthenticationCredential
-            .builder()
-            .token(token)
-            .createTime(createTime)
-            .expireTime(expireTime)
-            .type(AuthenticationCredential.Types.JWT)
             .build();
     }
 
