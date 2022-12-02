@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.auth.st.repository;
 
 import com.inlym.lifehelper.common.auth.st.entity.SimpleToken;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.keyvalue.repository.KeyValueRepository;
 
 /**
  * 简易登录令牌存储库
@@ -13,4 +13,4 @@ import org.springframework.data.repository.CrudRepository;
  * @date 2022/11/24
  * @since 1.7.0
  **/
-public interface SimpleTokenRepository extends CrudRepository<SimpleToken, String> {}
+public interface SimpleTokenRepository extends KeyValueRepository<SimpleToken, String> {}

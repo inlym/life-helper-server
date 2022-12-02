@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
  * 经纬度字符串检验器

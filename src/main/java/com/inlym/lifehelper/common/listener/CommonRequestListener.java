@@ -2,10 +2,10 @@ package com.inlym.lifehelper.common.listener;
 
 import com.inlym.lifehelper.common.constant.ClientType;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
-import jakarta.servlet.ServletRequestEvent;
-import jakarta.servlet.ServletRequestListener;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 import java.time.LocalDateTime;
 
 /**

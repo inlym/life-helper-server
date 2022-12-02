@@ -12,11 +12,12 @@ import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.pojo.WeChatChooseLocationDTO;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceListVO;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 天气地点管理控制器

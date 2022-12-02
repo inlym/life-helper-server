@@ -7,11 +7,11 @@ import com.inlym.lifehelper.photoalbum.album.pojo.AlbumListVO;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
 import com.inlym.lifehelper.photoalbum.album.pojo.CreateAlbumDTO;
 import com.inlym.lifehelper.photoalbum.album.pojo.UpdateAlbumDTO;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
