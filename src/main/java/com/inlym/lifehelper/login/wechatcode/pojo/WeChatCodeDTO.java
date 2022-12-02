@@ -1,7 +1,8 @@
 package com.inlym.lifehelper.login.wechatcode.pojo;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
 
 /**
  * 通过小程序 code 登录的请求数据

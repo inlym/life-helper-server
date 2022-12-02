@@ -3,9 +3,10 @@ package com.inlym.lifehelper.extern.tencentmap;
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.extern.tencentmap.exception.InvalidIpException;
+import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapListRegionResponse;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapLocateIpResponse;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapReverseGeocodingResponse;
-import lombok.SneakyThrows;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -20,20 +21,17 @@ import org.springframework.web.util.UriComponentsBuilder;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TencentMapHttpService {
     /** 表示请求成功的状态码 */
     private static final int SUCCESS_STATUS = 0;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     private final TencentMapProperties properties;
 
     /** 开发者密钥调用次数 */
     private Integer invokeCounter = 0;
-
-    public TencentMapHttpService(TencentMapProperties properties) {
-        this.properties = properties;
-    }
 
     /**
      * 获取开发者调用密钥
@@ -58,7 +56,6 @@ public class TencentMapHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
      * @since 1.0.0
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.TENCENT_MAP_LOCATE_IP)
     public TencentMapLocateIpResponse locateIp(String ip) {
         String baseUrl = "https://apis.map.qq.com/ws/location/v1/ip";
@@ -88,7 +85,6 @@ public class TencentMapHttpService {
      *
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder">逆地址解析（坐标位置描述）</a>
      */
-    @SneakyThrows
     @Cacheable(RedisCacheCollector.TENCENT_MAP_REVERSE_GEOCODING)
     public TencentMapReverseGeocodingResponse reverseGeocoding(String location) {
         String baseUrl = "https://apis.map.qq.com/ws/geocoder/v1/";
@@ -107,5 +103,31 @@ public class TencentMapHttpService {
             return data;
         }
         throw new ExternalHttpRequestException("逆地址解析", url, data.getStatus(), data.getMessage());
+    }
+
+    /**
+     * 获取省市区列表
+     *
+     * <h2>说明
+     * <p>这个接口正常情况下，可能好几个月才调用一次，用于更新地址库，因此不需要做缓存。
+     *
+     * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceDistrict">获取省市区列表</a>
+     */
+    public TencentMapListRegionResponse listRegions() {
+        String baseUrl = "https://apis.map.qq.com/ws/district/v1/list";
+        String url = UriComponentsBuilder
+            .fromHttpUrl(baseUrl)
+            .queryParam("key", getKey())
+            .build()
+            .toUriString();
+
+        TencentMapListRegionResponse data = restTemplate.getForObject(url, TencentMapListRegionResponse.class);
+
+        assert data != null;
+        if (data.getStatus() == SUCCESS_STATUS) {
+            log.debug("[获取省市区列表] 接口调用成功");
+            return data;
+        }
+        throw new ExternalHttpRequestException("获取省市区列表", url, data.getStatus(), data.getMessage());
     }
 }
