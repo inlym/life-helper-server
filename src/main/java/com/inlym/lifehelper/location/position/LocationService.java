@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.location;
+package com.inlym.lifehelper.location.position;
 
 import com.inlym.lifehelper.extern.tencentmap.TencentMapService;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapLocateIpResponse;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapReverseGeocodingResponse;
-import com.inlym.lifehelper.location.pojo.AddressComponent;
-import com.inlym.lifehelper.location.pojo.GeographicCoordinate;
-import com.inlym.lifehelper.location.pojo.IpLocation;
+import com.inlym.lifehelper.location.position.pojo.AddressComponent;
+import com.inlym.lifehelper.location.position.pojo.GeographicCoordinate;
+import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

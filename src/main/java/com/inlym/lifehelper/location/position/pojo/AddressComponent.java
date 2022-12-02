@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.location.pojo;
+package com.inlym.lifehelper.location.position.pojo;
 
 import lombok.Builder;
 import lombok.Data;

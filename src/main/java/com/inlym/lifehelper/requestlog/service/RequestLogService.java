@@ -2,8 +2,8 @@ package com.inlym.lifehelper.requestlog.service;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.timeseries.TimeseriesExecutor;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
-import com.inlym.lifehelper.location.LocationService;
-import com.inlym.lifehelper.location.pojo.IpLocation;
+import com.inlym.lifehelper.location.position.LocationService;
+import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import com.inlym.lifehelper.requestlog.entity.RequestLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

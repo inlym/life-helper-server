@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.weather.place;
 
-import com.inlym.lifehelper.location.LocationService;
-import com.inlym.lifehelper.location.pojo.AddressComponent;
+import com.inlym.lifehelper.location.position.LocationService;
+import com.inlym.lifehelper.location.position.pojo.AddressComponent;
 import com.inlym.lifehelper.weather.data.WeatherDataService;
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
