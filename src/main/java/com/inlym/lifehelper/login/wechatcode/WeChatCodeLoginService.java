@@ -1,8 +1,7 @@
 package com.inlym.lifehelper.login.wechatcode;
 
 import com.inlym.lifehelper.common.auth.core.SecurityToken;
-import com.inlym.lifehelper.common.auth.jwt.JwtService;
-import com.inlym.lifehelper.common.auth.st.SimpleTokenService;
+import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.user.account.UserAccountService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +27,6 @@ public class WeChatCodeLoginService {
     private final WeChatService weChatService;
 
     private final SimpleTokenService simpleTokenService;
-
-    private final JwtService jwtService;
 
     /**
      * 通过微信获取的 code 登录

@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.common.auth.st;
+package com.inlym.lifehelper.common.auth.simpletoken;
 
 import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.common.auth.core.SecurityToken;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
-import com.inlym.lifehelper.common.auth.st.entity.SimpleToken;
-import com.inlym.lifehelper.common.auth.st.exception.InvalidSimpleTokenException;
-import com.inlym.lifehelper.common.auth.st.repository.SimpleTokenRepository;
+import com.inlym.lifehelper.common.auth.simpletoken.entity.SimpleToken;
+import com.inlym.lifehelper.common.auth.simpletoken.exception.InvalidSimpleTokenException;
+import com.inlym.lifehelper.common.auth.simpletoken.repository.SimpleTokenRepository;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.constant.SecurityTokenType;
 import lombok.RequiredArgsConstructor;

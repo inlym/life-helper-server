@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.auth.st.exception;
+package com.inlym.lifehelper.common.auth.simpletoken.exception;
 
 /**
  * 无效令牌异常

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.auth.st.entity;
+package com.inlym.lifehelper.common.auth.simpletoken.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

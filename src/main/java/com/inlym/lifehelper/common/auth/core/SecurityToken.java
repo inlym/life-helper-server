@@ -31,7 +31,7 @@ public class SecurityToken {
      *
      * <h2>说明
      * <p>目前包含2种：
-     * <p>1. `Simple Token` - `st`
+     * <p>1. `Simple Token` - `simpletoken`
      * <p>2. `Json Web Token` - `jwt`
      */
     private SecurityTokenType type;

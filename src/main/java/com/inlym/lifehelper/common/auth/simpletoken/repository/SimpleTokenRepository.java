@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.common.auth.st.repository;
+package com.inlym.lifehelper.common.auth.simpletoken.repository;
 
-import com.inlym.lifehelper.common.auth.st.entity.SimpleToken;
+import com.inlym.lifehelper.common.auth.simpletoken.entity.SimpleToken;
 import org.springframework.data.keyvalue.repository.KeyValueRepository;
 
 /**
