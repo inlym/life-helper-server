@@ -18,5 +18,8 @@ public abstract class CustomHttpHeader {
     public static final String JWT_TOKEN = "x-lifehelper-auth-jwt";
 
     /** 简易登录令牌 */
-    public static final String SIMPLE_TOKEN = "x-lifehelper-auth-simpletoken";
+    public static final String SIMPLE_TOKEN = "x-lifehelper-auth-st";
+
+    /** 超级登录令牌 */
+    public static final String SUPER_TOKEN = "x-lifehelper-auth-super-token";
 }
