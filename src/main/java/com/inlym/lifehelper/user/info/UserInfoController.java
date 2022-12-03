@@ -35,7 +35,7 @@ public class UserInfoController {
     @GetMapping("/userinfo")
     @UserPermission
     public UserInfoVO get(@UserId int userId) {
-        return userInfoService.getViewObject(userId);
+        return userInfoService.getDisplayUserInfo(userId);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UserInfoController {
     @PutMapping("/userinfo")
     @UserPermission
     public UserInfoVO update(@UserId int userId, @RequestBody UpdateUserInfoDTO dto) {
-        userInfoService.resolveModifiedUserInfo(userId, dto);
-        return userInfoService.getViewObject(userId);
+        userInfoService.updateUserInfo(userId, dto);
+        return userInfoService.getDisplayUserInfo(userId);
     }
 }

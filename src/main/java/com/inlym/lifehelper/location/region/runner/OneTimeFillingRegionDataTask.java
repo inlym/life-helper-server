@@ -49,7 +49,7 @@ public class OneTimeFillingRegionDataTask extends JavaProcessor {
         return Region
             .builder()
             .id(Integer.valueOf(item.getId()))
-            .name(item.getName())
+            .shortName(item.getName())
             .fullName(item.getFullName())
             .build();
     }

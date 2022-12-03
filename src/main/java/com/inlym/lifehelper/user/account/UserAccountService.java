@@ -41,7 +41,7 @@ public class UserAccountService {
      *
      * @since 1.7.0
      */
-    public int calcAccountId(int userId) {
+    private static int calcAccountId(int userId) {
         return (1428571 + userId * 17 + new Random().nextInt(10));
     }
 

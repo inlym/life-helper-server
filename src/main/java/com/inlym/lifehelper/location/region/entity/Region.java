@@ -44,7 +44,7 @@ public class Region {
      * <h2>数据示例
      * <p>"浙江"、"广西"、"杭州"……
      */
-    private String name;
+    private String shortName;
 
     /** 地区全称 */
     private String fullName;

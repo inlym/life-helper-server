@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.location.region;
 
 import com.inlym.lifehelper.location.region.entity.Region;
+import com.inlym.lifehelper.location.region.exception.RegionNotFoundException;
 import com.inlym.lifehelper.location.region.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RegionService {
     private final RegionRepository repository;
+
+    /**
+     * 获取地区
+     *
+     * @param id 地区的 adcode
+     *
+     * @since 1.7.2
+     */
+    public Region getById(int id) {
+        return repository
+            .findById(id)
+            .orElseThrow(RegionNotFoundException::new);
+    }
 
     /**
      * 获取省级行政区列表
