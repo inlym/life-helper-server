@@ -11,6 +11,7 @@ import com.inlym.lifehelper.common.base.aliyun.oss.pojo.GeneratePostCredentialOp
 import com.inlym.lifehelper.common.base.aliyun.oss.pojo.OssPostCredential;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,6 +54,9 @@ public class OssService {
     /**
      * 转储文件
      *
+     * <h2>说明
+     * <li>实测客户端将资源直传至 OSS，此时立即访问资源时，会告知资源不存在，然后过一会就正常了，因此此处增加重试机制。
+     *
      * @param dirname 转储的目录（注意不要以 `/` 开头）
      * @param url     资源文件的 URL 地址
      *
@@ -60,6 +64,7 @@ public class OssService {
      *
      * @since 1.0.0
      */
+    @Retryable
     public String dump(String dirname, String url) {
         // 文件路径
         String pathname = dirname + "/" + IdUtil.simpleUUID();
