@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 /**
  * 用户信息实体
  *
@@ -44,9 +42,6 @@ public class UserInfo {
      * <p>从微信侧获取的头像 URL，会将图片转储到我方 OSS 中，最终存储的是在 OSS 中的路径。
      */
     private String avatarPath;
-
-    /** 生日 */
-    private LocalDate birthday;
 
     /**
      * 性别

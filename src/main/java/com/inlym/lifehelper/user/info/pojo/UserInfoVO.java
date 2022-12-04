@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户信息视图对象
@@ -42,7 +43,7 @@ public class UserInfoVO {
     private String gender;
 
     /** 用户所在地区 */
-    private UserRegionBO region;
+    private List<String> region;
 
     /** 用户所在地区名称 */
     private String regionDisplayName;

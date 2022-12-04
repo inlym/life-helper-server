@@ -4,8 +4,6 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.common.constant.Endpoint;
 import com.inlym.lifehelper.common.exception.UnpredictableException;
-import com.inlym.lifehelper.location.region.entity.Region;
-import com.inlym.lifehelper.user.info.pojo.UserRegionBO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -77,7 +75,7 @@ public class UserInfoResolverService {
         final int female = 2;
 
         if (genderType == null) {
-            return "未知";
+            return "保密";
         } else if (genderType == male) {
             return "男";
         } else if (genderType == female) {
@@ -85,23 +83,5 @@ public class UserInfoResolverService {
         } else {
             throw new UnpredictableException("未支持的性别类型！");
         }
-    }
-
-    /**
-     * 获取用户所在地区
-     *
-     * @param admin1 第1级行政区划
-     * @param admin2 第2级行政区划
-     *
-     * @since 1.7.2
-     */
-    public UserRegionBO getUserRegion(Region admin1, Region admin2) {
-        return UserRegionBO
-            .builder()
-            .admin1Id(admin1.getId())
-            .admin1ShortName(admin1.getShortName())
-            .admin2Id(admin2.getId())
-            .admin2ShortName(admin2.getShortName())
-            .build();
     }
 }

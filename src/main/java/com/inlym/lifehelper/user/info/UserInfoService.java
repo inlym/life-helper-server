@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 用户信息服务
  *
@@ -67,8 +70,12 @@ public class UserInfoService {
             try {
                 Region admin2 = regionService.getById(info.getCityId());
                 Region admin1 = regionService.getById(admin2.getParentId());
-                vo.setRegion(userInfoResolverService.getUserRegion(admin1, admin2));
                 vo.setRegionDisplayName(admin1.getShortName() + " " + admin2.getShortName());
+
+                List<String> region = new ArrayList<>();
+                region.add(admin1.getFullName());
+                region.add(admin2.getFullName());
+                vo.setRegion(region);
             } catch (RegionNotFoundException e) {
                 log.trace("地区未找到，未返回地区信息（cityId={}）", info.getCityId());
             }
@@ -90,7 +97,6 @@ public class UserInfoService {
             .builder()
             .userId(userId)
             .nickName(dto.getNickName())
-            .birthday(dto.getBirthday())
             .genderType(dto.getGenderType())
             .cityId(dto.getCityId())
             .build();
