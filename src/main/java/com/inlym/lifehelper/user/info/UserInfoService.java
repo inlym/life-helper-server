@@ -68,6 +68,7 @@ public class UserInfoService {
                 Region admin2 = regionService.getById(info.getCityId());
                 Region admin1 = regionService.getById(admin2.getParentId());
                 vo.setRegion(userInfoResolverService.getUserRegion(admin1, admin2));
+                vo.setRegionDisplayName(admin1.getShortName() + " " + admin2.getShortName());
             } catch (RegionNotFoundException e) {
                 log.trace("地区未找到，未返回地区信息（cityId={}）", info.getCityId());
             }

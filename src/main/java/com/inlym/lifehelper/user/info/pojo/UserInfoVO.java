@@ -43,4 +43,7 @@ public class UserInfoVO {
 
     /** 用户所在地区 */
     private UserRegionBO region;
+
+    /** 用户所在地区名称 */
+    private String regionDisplayName;
 }
