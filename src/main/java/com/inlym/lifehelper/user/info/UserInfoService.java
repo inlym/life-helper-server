@@ -68,13 +68,21 @@ public class UserInfoService {
         if (info.getCityId() != null) {
             // 此处查找地区发生错误，不应阻塞主流程，因此使用 `try` 捕获，而不让全局错误捕获器接管
             try {
-                Region admin2 = regionService.getById(info.getCityId());
-                Region admin1 = regionService.getById(admin2.getParentId());
-                vo.setRegionDisplayName(admin1.getShortName() + " " + admin2.getShortName());
-
                 List<String> region = new ArrayList<>();
-                region.add(admin1.getFullName());
-                region.add(admin2.getFullName());
+
+                Region admin2 = regionService.getById(info.getCityId());
+
+                if (admin2.getParentId() != null) {
+                    Region admin1 = regionService.getById(admin2.getParentId());
+
+                    vo.setRegionDisplayName(admin1.getShortName() + " " + admin2.getShortName());
+                    region.add(admin1.getFullName());
+                    region.add(admin2.getFullName());
+                } else {
+                    vo.setRegionDisplayName(admin2.getShortName());
+                    region.add(admin2.getFullName());
+                }
+
                 vo.setRegion(region);
             } catch (RegionNotFoundException e) {
                 log.trace("地区未找到，未返回地区信息（cityId={}）", info.getCityId());
