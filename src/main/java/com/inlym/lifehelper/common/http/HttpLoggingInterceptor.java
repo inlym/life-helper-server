@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.http;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -22,9 +23,9 @@ import java.nio.charset.StandardCharsets;
  **/
 @Slf4j
 public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
+    @NotNull
     @Override
-    @SuppressWarnings("NullableProblems")
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(@NotNull HttpRequest request, @NotNull byte[] body, ClientHttpRequestExecution execution) throws IOException {
         ClientHttpResponse response = execution.execute(request, body);
 
         log.info("[HTTP] {} {} {}", response.getStatusCode(), request.getMethod(), request.getURI());

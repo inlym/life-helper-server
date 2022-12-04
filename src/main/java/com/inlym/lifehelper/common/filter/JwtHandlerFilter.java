@@ -30,7 +30,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*")
 @Slf4j
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtHandlerFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Override
