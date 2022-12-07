@@ -1,4 +1,6 @@
-package com.inlym.lifehelper.common.validation;
+package com.inlym.lifehelper.common.validation.validator;
+
+import com.inlym.lifehelper.common.validation.LocationString;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

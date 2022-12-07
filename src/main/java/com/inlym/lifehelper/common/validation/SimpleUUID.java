@@ -1,28 +1,27 @@
 package com.inlym.lifehelper.common.validation;
 
-import com.inlym.lifehelper.common.validation.validator.LocationStringValidator;
+import com.inlym.lifehelper.common.validation.validator.SimpleUUIDValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- * 经纬度字符串检验注解
+ * 简易 UUID 字符串校验注解
  *
  * <h2>主要用途
- * <p>校验请求参数是否为指定格式
+ * <p>校验字符串是否是无短横线的 UUID 字符串。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022-01-22
- * @see LocationStringValidator
- * @since 1.0.0
+ * @date 2022/12/7
+ * @since 1.8.0
  **/
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {LocationStringValidator.class})
-public @interface LocationString {
-    String message() default "经纬度字符串的格式应为 `lng,lat`，例如 `120.12,30.45`";
+@Constraint(validatedBy = {SimpleUUIDValidator.class})
+public @interface SimpleUUID {
+    String message() default "ID 格式不正确！";
 
     Class<?>[] groups() default {};
 
