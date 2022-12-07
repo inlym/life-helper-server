@@ -4,6 +4,7 @@ import com.alicloud.openservices.tablestore.model.CreateTableRequest;
 import com.alicloud.openservices.tablestore.model.TableMeta;
 import com.alicloud.openservices.tablestore.model.TableOptions;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.WideColumnUtils;
+import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.media.entity.Media;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
@@ -75,6 +76,7 @@ public class WideColumnCreateTablesTask implements ApplicationRunner {
         list.add(Media.class);
         list.add(WeatherPlace.class);
         list.add(UserInfo.class);
+        list.add(GreatDay.class);
 
         return list
             .stream()
