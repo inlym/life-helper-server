@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.greatday;
 
 import com.inlym.lifehelper.greatday.entity.GreatDay;
+import com.inlym.lifehelper.greatday.exception.GreatDayNotFoundException;
 import com.inlym.lifehelper.greatday.pojo.CreateGreatDayDTO;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
 import com.inlym.lifehelper.greatday.pojo.UpdateGreatDayDTO;
@@ -49,6 +50,21 @@ public class GreatDayService {
     }
 
     /**
+     * 检查对应记录是否存在（若不存在则抛出异常）
+     *
+     * @param userId 用户 ID
+     * @param dayId  纪念日 ID
+     *
+     * @since 1.8.0
+     */
+    private void existOrThrow(int userId, String dayId) {
+        GreatDay day = greatDayRepository.findOne(userId, dayId);
+        if (day == null) {
+            throw new GreatDayNotFoundException();
+        }
+    }
+
+    /**
      * 新增纪念日
      *
      * @param userId 用户 ID
@@ -70,6 +86,19 @@ public class GreatDayService {
     }
 
     /**
+     * 删除一条记录
+     *
+     * @param userId 用户 ID
+     * @param dayId  纪念日 ID
+     *
+     * @since 1.8.0
+     */
+    public void delete(int userId, String dayId) {
+        existOrThrow(userId, dayId);
+        greatDayRepository.delete(userId, dayId);
+    }
+
+    /**
      * 更新纪念日
      *
      * @param userId 用户 ID
@@ -78,6 +107,8 @@ public class GreatDayService {
      * @since 1.8.0
      */
     public GreatDay update(int userId, UpdateGreatDayDTO dto) {
+        existOrThrow(userId, dto.getId());
+
         GreatDay day = GreatDay
             .builder()
             .userId(userId)
@@ -112,7 +143,12 @@ public class GreatDayService {
      *
      * @since 1.8.0
      */
-    public GreatDay findOne(int userId, String dayId) {
-        return greatDayRepository.findOne(userId, dayId);
+    public GreatDay findOneOrThrow(int userId, String dayId) {
+        GreatDay day = greatDayRepository.findOne(userId, dayId);
+        if (day == null) {
+            throw new GreatDayNotFoundException();
+        }
+
+        return day;
     }
 }

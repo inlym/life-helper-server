@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.greatday.pojo;
 
+import com.inlym.lifehelper.common.validation.SimpleUUID;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 @Data
 public class UpdateGreatDayDTO {
     /** 纪念日 ID */
+    @SimpleUUID
     private String id;
 
     /** 纪念日名称 */
