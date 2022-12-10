@@ -2,6 +2,7 @@ package com.inlym.lifehelper.common.base.aliyun.ots.core.utils;
 
 import com.alicloud.openservices.tablestore.model.ColumnValue;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -45,6 +46,8 @@ public abstract class TableStoreUtils {
                     .getRules()
                     .getOffset(LocalDateTime.now()))
                 .toEpochMilli());
+        } else if (obj instanceof LocalDate) {
+            return ColumnValue.fromString(obj.toString());
         } else {
             // 一般实体的数据类型不会弄错，保底错误这里抛出参数错误
             throw new IllegalArgumentException("表格存储列赋值错误：未支持的数据类型");

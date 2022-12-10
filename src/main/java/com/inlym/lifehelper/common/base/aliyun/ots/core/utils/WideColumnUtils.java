@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -377,6 +378,10 @@ public abstract class WideColumnUtils {
                         .getValue()
                         .asLong();
                     field.set(entity, LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault()));
+                } else if (field.getType() == LocalDate.class) {
+                    field.set(entity, LocalDate.parse(column
+                        .getValue()
+                        .asString()));
                 } else {
                     throw new IllegalArgumentException("不支持的数据类型！");
                 }
