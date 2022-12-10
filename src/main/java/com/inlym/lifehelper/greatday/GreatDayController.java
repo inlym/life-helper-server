@@ -3,16 +3,18 @@ package com.inlym.lifehelper.greatday;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.validation.SimpleUUID;
-import com.inlym.lifehelper.greatday.pojo.CreateGreatDayDTO;
+import com.inlym.lifehelper.greatday.entity.GreatDay;
+import com.inlym.lifehelper.greatday.pojo.CreateOrUpdateGreatDayDTO;
+import com.inlym.lifehelper.greatday.pojo.EmojiListResponseVO;
 import com.inlym.lifehelper.greatday.pojo.GreatDayListResponseVO;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
-import com.inlym.lifehelper.greatday.pojo.UpdateGreatDayDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,8 +41,17 @@ public class GreatDayController {
      */
     @PostMapping("/greatday")
     @UserPermission
-    public GreatDayVO create(@UserId int userId, @Valid @RequestBody CreateGreatDayDTO dto) {
-        return greatDayService.display(greatDayService.create(userId, dto));
+    public GreatDayVO create(@UserId int userId, @Valid @RequestBody CreateOrUpdateGreatDayDTO dto) {
+        GreatDay day = GreatDay
+            .builder()
+            .userId(userId)
+            .name(dto.getName())
+            .date(dto.getDate())
+            .icon(dto.getIcon())
+            .comment(dto.getComment())
+            .build();
+
+        return greatDayService.display(greatDayService.create(day));
     }
 
     /**
@@ -71,8 +82,18 @@ public class GreatDayController {
      */
     @PutMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO update(@UserId int userId, @Valid @RequestBody UpdateGreatDayDTO dto) {
-        return greatDayService.display(greatDayService.update(userId, dto));
+    public GreatDayVO update(@UserId int userId, @SimpleUUID @PathVariable("id") String id, @Valid @RequestBody CreateOrUpdateGreatDayDTO dto) {
+        GreatDay day = GreatDay
+            .builder()
+            .userId(userId)
+            .dayId(id)
+            .name(dto.getName())
+            .date(dto.getDate())
+            .icon(dto.getIcon())
+            .comment(dto.getComment())
+            .build();
+
+        return greatDayService.display(greatDayService.update(day));
     }
 
     /**
@@ -106,6 +127,24 @@ public class GreatDayController {
             .toList();
 
         return GreatDayListResponseVO
+            .builder()
+            .list(list)
+            .build();
+    }
+
+    /**
+     * 获取可用的 emoji 列表
+     *
+     * @since 1.8.0
+     */
+    @GetMapping("/greatday-icon")
+    public EmojiListResponseVO getEmojiList() {
+        String[] emojis = {"😀", "🥰", "😛", "🤩", "🥳", "🤓", "😬", "😙", "🤪", "🥺", "🤗"};
+        List<String> list = Arrays
+            .stream(emojis)
+            .toList();
+
+        return EmojiListResponseVO
             .builder()
             .list(list)
             .build();

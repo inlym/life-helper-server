@@ -15,7 +15,7 @@ import java.time.LocalDate;
  * @since 1.8.0
  **/
 @Data
-public class CreateGreatDayDTO {
+public class CreateOrUpdateGreatDayDTO {
     /** 纪念日名称 */
     private String name;
 

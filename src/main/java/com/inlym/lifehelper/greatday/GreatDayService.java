@@ -2,9 +2,7 @@ package com.inlym.lifehelper.greatday;
 
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.greatday.exception.GreatDayNotFoundException;
-import com.inlym.lifehelper.greatday.pojo.CreateGreatDayDTO;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
-import com.inlym.lifehelper.greatday.pojo.UpdateGreatDayDTO;
 import com.inlym.lifehelper.greatday.repository.GreatDayRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,23 +63,13 @@ public class GreatDayService {
     }
 
     /**
-     * 新增纪念日
+     * 创建
      *
-     * @param userId 用户 ID
-     * @param dto    请求数据
+     * @param day 纪念日实体对象
      *
      * @since 1.8.0
      */
-    public GreatDay create(int userId, CreateGreatDayDTO dto) {
-        GreatDay day = GreatDay
-            .builder()
-            .userId(userId)
-            .name(dto.getName())
-            .date(dto.getDate())
-            .icon(dto.getIcon())
-            .comment(dto.getComment())
-            .build();
-
+    public GreatDay create(GreatDay day) {
         return greatDayRepository.create(day);
     }
 
@@ -101,24 +89,12 @@ public class GreatDayService {
     /**
      * 更新纪念日
      *
-     * @param userId 用户 ID
-     * @param dto    请求数据
+     * @param day 纪念日实体对象
      *
      * @since 1.8.0
      */
-    public GreatDay update(int userId, UpdateGreatDayDTO dto) {
-        existOrThrow(userId, dto.getId());
-
-        GreatDay day = GreatDay
-            .builder()
-            .userId(userId)
-            .dayId(dto.getId())
-            .name(dto.getName())
-            .date(dto.getDate())
-            .icon(dto.getIcon())
-            .comment(dto.getComment())
-            .build();
-
+    public GreatDay update(GreatDay day) {
+        existOrThrow(day.getUserId(), day.getDayId());
         greatDayRepository.update(day);
 
         return day;
