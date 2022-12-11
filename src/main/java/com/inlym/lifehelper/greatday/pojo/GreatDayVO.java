@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.greatday.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +29,6 @@ public class GreatDayVO {
     private String name;
 
     /** 日期 */
-    @JsonFormat(pattern = "yyyy年M月d日")
     private LocalDate date;
 
     /** emoji 表情 */

@@ -127,4 +127,35 @@ public class GreatDayService {
 
         return day;
     }
+
+    /**
+     * 生成默认的纪念日
+     *
+     * <h2>说明
+     * <p>主要用于在新用户注册时，给用户生成一些初始化的记录，免得列表为空。
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.8.0
+     */
+    public void generateDefaultGreatDays(int userId) {
+        GreatDay day1 = GreatDay
+            .builder()
+            .userId(userId)
+            .name("小鸣助手上线")
+            .date(LocalDate.of(2019, 7, 6))
+            .icon("\uD83C\uDF89")
+            .build();
+
+        GreatDay day2 = GreatDay
+            .builder()
+            .userId(userId)
+            .name("2023年元旦")
+            .date(LocalDate.of(2023, 1, 1))
+            .icon("\uD83D\uDE80")
+            .build();
+
+        create(day1);
+        create(day2);
+    }
 }
