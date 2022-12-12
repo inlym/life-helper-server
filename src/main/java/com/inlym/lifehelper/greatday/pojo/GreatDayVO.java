@@ -34,9 +34,6 @@ public class GreatDayVO {
     /** emoji 表情 */
     private String icon;
 
-    /** 备注 */
-    private String comment;
-
     /**
      * 今天距离纪念日的天数（纪念日减去今天的天数）
      *

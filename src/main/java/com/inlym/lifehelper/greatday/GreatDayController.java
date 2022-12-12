@@ -5,8 +5,8 @@ import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.model.CommonListResponse;
 import com.inlym.lifehelper.common.validation.SimpleUUID;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
-import com.inlym.lifehelper.greatday.pojo.CreateOrUpdateGreatDayDTO;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
+import com.inlym.lifehelper.greatday.pojo.SaveGreatDayDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -40,14 +40,13 @@ public class GreatDayController {
      */
     @PostMapping("/greatday")
     @UserPermission
-    public GreatDayVO create(@UserId int userId, @Valid @RequestBody CreateOrUpdateGreatDayDTO dto) {
+    public GreatDayVO create(@UserId int userId, @Valid @RequestBody SaveGreatDayDTO dto) {
         GreatDay day = GreatDay
             .builder()
             .userId(userId)
             .name(dto.getName())
             .date(dto.getDate())
             .icon(dto.getIcon())
-            .comment(dto.getComment())
             .build();
 
         return greatDayService.display(greatDayService.create(day));
@@ -81,7 +80,7 @@ public class GreatDayController {
      */
     @PutMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO update(@UserId int userId, @SimpleUUID @PathVariable("id") String id, @Valid @RequestBody CreateOrUpdateGreatDayDTO dto) {
+    public GreatDayVO update(@UserId int userId, @SimpleUUID @PathVariable("id") String id, @Valid @RequestBody SaveGreatDayDTO dto) {
         GreatDay day = GreatDay
             .builder()
             .userId(userId)
@@ -89,7 +88,6 @@ public class GreatDayController {
             .name(dto.getName())
             .date(dto.getDate())
             .icon(dto.getIcon())
-            .comment(dto.getComment())
             .build();
 
         return greatDayService.display(greatDayService.update(day));

@@ -41,7 +41,4 @@ public class GreatDay {
 
     /** emoji 表情 */
     private String icon;
-
-    /** 备注 */
-    private String comment;
 }

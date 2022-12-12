@@ -38,7 +38,6 @@ public class GreatDayService {
             .name(day.getName())
             .date(day.getDate())
             .icon(day.getIcon())
-            .comment(day.getComment())
             .days(day
                 .getDate()
                 .toEpochDay() - LocalDate
