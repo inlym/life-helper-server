@@ -2,11 +2,10 @@ package com.inlym.lifehelper.greatday;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.common.model.CommonListResponse;
 import com.inlym.lifehelper.common.validation.SimpleUUID;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.greatday.pojo.CreateOrUpdateGreatDayDTO;
-import com.inlym.lifehelper.greatday.pojo.EmojiListResponseVO;
-import com.inlym.lifehelper.greatday.pojo.GreatDayListResponseVO;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -119,17 +118,14 @@ public class GreatDayController {
      */
     @GetMapping("/greatdays")
     @UserPermission
-    public GreatDayListResponseVO findAll(@UserId int userId) {
+    public CommonListResponse<GreatDayVO> findAll(@UserId int userId) {
         List<GreatDayVO> list = greatDayService
             .list(userId)
             .stream()
             .map(greatDayService::display)
             .toList();
 
-        return GreatDayListResponseVO
-            .builder()
-            .list(list)
-            .build();
+        return new CommonListResponse<>(list);
     }
 
     /**
@@ -138,15 +134,12 @@ public class GreatDayController {
      * @since 1.8.0
      */
     @GetMapping("/greatday-icon")
-    public EmojiListResponseVO getEmojiList() {
+    public CommonListResponse<String> getEmojiList() {
         String[] emojis = {"😀", "🥰", "😛", "🤩", "🥳", "🤓", "😬", "😙", "🤪", "🥺", "🤗"};
         List<String> list = Arrays
             .stream(emojis)
             .toList();
 
-        return EmojiListResponseVO
-            .builder()
-            .list(list)
-            .build();
+        return new CommonListResponse<>(list);
     }
 }
