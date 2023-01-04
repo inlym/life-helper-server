@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -18,9 +19,10 @@ public class CustomRedisCacheManager extends RedisCacheManager {
         super(cacheWriter, defaultCacheConfiguration);
     }
 
+    @NotNull
     @Override
-    @SuppressWarnings("NullableProblems")
-    protected RedisCache createRedisCache(String name, RedisCacheConfiguration cacheConfig) {
+    protected RedisCache createRedisCache(@NotNull String name, RedisCacheConfiguration cacheConfig) {
+        // 所有的缓存市场都配置在这个 map 中，若未配置，则走默认配置
         if (RedisCacheCollector.CACHE_DURATION_MAP.get(name) != null) {
             cacheConfig = cacheConfig.entryTtl(RedisCacheCollector.CACHE_DURATION_MAP.get(name));
         }
