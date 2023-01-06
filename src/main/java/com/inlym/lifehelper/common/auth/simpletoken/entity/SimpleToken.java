@@ -53,7 +53,7 @@ public class SimpleToken {
     public long getTimeToLive() {
         // 多加了10分钟作为预留时间
         return expiration.toSeconds() + Duration
-            .ofMillis(10L)
+            .ofMinutes(10L)
             .toSeconds();
     }
 }

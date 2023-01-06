@@ -65,7 +65,7 @@ public class ScanLoginQrcodeService {
      * @since 1.9.0
      */
     @Async
-    public void batchGenerateIfLessThan(int n) {
+    public void batchGenerateIfLessThanAsync(int n) {
         Long size = stringRedisTemplate
             .opsForList()
             .size(AVAILABLE_QRCODE_LIST);
