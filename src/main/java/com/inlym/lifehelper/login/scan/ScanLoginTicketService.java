@@ -1,12 +1,13 @@
 package com.inlym.lifehelper.login.scan;
 
+import com.inlym.lifehelper.location.position.LocationService;
 import com.inlym.lifehelper.login.scan.constant.ScanLoginTicketStatus;
 import com.inlym.lifehelper.login.scan.entity.ScanLoginTicket;
-import com.inlym.lifehelper.login.scan.exception.ScanLoginTicketInvalidOperationException;
 import com.inlym.lifehelper.login.scan.exception.ScanLoginTicketNotFoundException;
 import com.inlym.lifehelper.login.scan.repository.ScanLoginTicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,8 @@ public class ScanLoginTicketService {
 
     private final ScanLoginQrcodeService scanLoginQrcodeService;
 
+    private final LocationService locationService;
+
     /**
      * 根据 ID 获取凭据（若不存在则报错）
      *
@@ -43,19 +46,6 @@ public class ScanLoginTicketService {
             throw ScanLoginTicketNotFoundException.of(id);
         } else {
             return result.get();
-        }
-    }
-
-    /**
-     * 检查票据状态（如果是「已使用」状态的票据则报错）
-     *
-     * @param ticket 扫码登录票据
-     *
-     * @since 1.9.0
-     */
-    private void throwIfTicketConsumed(ScanLoginTicket ticket) {
-        if (ticket.getStatus() == ScanLoginTicketStatus.CONSUMED) {
-            throw ScanLoginTicketInvalidOperationException.of(ticket.getId());
         }
     }
 
@@ -87,6 +77,25 @@ public class ScanLoginTicketService {
     }
 
     /**
+     * （异步）根据 IP 地址设置所在地区
+     *
+     * <h2>说明
+     * <p>这个方法实际上应该放在当前服务类的 {@code create} 方法中，但是为了能够更快地给被扫码端返回小程序码，
+     * 将这个方法剥离出来，异步处理。
+     *
+     * @param id 凭据 ID
+     *
+     * @since 1.9.0
+     */
+    @Async
+    public void setRegionAsync(String id) {
+        ScanLoginTicket ticket = getOrElseThrow(id);
+        String region = locationService.getRoughIpRegion(ticket.getIp());
+        ticket.setRegion(region);
+        repository.save(ticket);
+    }
+
+    /**
      * 「扫码」操作
      *
      * @param id 扫码登录凭据 ID
@@ -95,7 +104,6 @@ public class ScanLoginTicketService {
      */
     public ScanLoginTicket scan(String id) {
         ScanLoginTicket ticket = getOrElseThrow(id);
-        throwIfTicketConsumed(ticket);
 
         // 只有「已创建未扫码」状态需要处理，其他状态均不做任何处理
         if (ticket.getStatus() == ScanLoginTicketStatus.CREATED) {
@@ -116,7 +124,6 @@ public class ScanLoginTicketService {
      */
     public ScanLoginTicket confirm(String id, int userId) {
         ScanLoginTicket ticket = getOrElseThrow(id);
-        throwIfTicketConsumed(ticket);
 
         // 只有「已扫码未确认」状态需要处理，其他状态均不做任何处理
         if (ticket.getStatus() == ScanLoginTicketStatus.SCANNED) {

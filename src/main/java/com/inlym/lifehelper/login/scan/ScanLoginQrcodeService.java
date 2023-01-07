@@ -34,7 +34,7 @@ public class ScanLoginQrcodeService {
     private final OssService ossService;
 
     /**
-     * 生成一个小程序码
+     * 生成一个小程序码（并上传至阿里云 OSS）
      *
      * @since 1.9.0
      */
@@ -48,11 +48,6 @@ public class ScanLoginQrcodeService {
 
         // 上传至阿里云 OSS
         ossService.upload(OssDir.WXACODE + "/" + id, qrcode);
-
-        // 将 id 添加至可用列表
-        stringRedisTemplate
-            .opsForList()
-            .rightPush(AVAILABLE_QRCODE_LIST, id);
 
         return id;
     }
@@ -74,7 +69,12 @@ public class ScanLoginQrcodeService {
         // 如果当前数量低于预警值，则批量生成一批新的小程序码
         if (size < n) {
             for (int i = 0; i < n; i++) {
-                generate();
+                String id = generate();
+                
+                // 将 id 添加至可用列表
+                stringRedisTemplate
+                    .opsForList()
+                    .rightPush(AVAILABLE_QRCODE_LIST, id);
             }
         }
     }

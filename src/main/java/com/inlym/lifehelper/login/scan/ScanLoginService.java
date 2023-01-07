@@ -41,6 +41,9 @@ public class ScanLoginService {
     public ScanLoginTicketVO getQrcode(String ip) {
         ScanLoginTicket ticket = scanLoginTicketService.create(ip);
 
+        // 异步处理去获取该 IP 地址的所在区域
+        scanLoginTicketService.setRegionAsync(ticket.getId());
+
         return ScanLoginTicketVO
             .builder()
             .id(ticket.getId())
