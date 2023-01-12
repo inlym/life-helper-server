@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 微信小程序服务端 HTTP 请求服务
  *
@@ -125,15 +122,10 @@ public class WeChatHttpService {
             .build()
             .toUriString();
 
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("scene", options.getScene());
-        map.put("page", options.getPage());
-        map.put("width", options.getWidth());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        HttpEntity<UnlimitedQrCodeOptions> request = new HttpEntity<>(options, headers);
 
         byte[] data = restTemplate.postForObject(url, request, byte[].class);
 

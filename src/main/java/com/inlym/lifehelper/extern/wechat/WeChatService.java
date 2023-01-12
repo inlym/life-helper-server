@@ -39,20 +39,12 @@ public class WeChatService {
     /**
      * 生成小程序码
      *
-     * @param page  页面
-     * @param scene 场景值
+     * @param options 配置选项
      *
      * @since 1.3.0
      */
-    public byte[] getUnlimitedQrCode(String page, String scene) {
-        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
-            .builder()
-            .page(page)
-            .scene(scene)
-            .build();
-
+    public byte[] getUnlimitedQrCode(UnlimitedQrCodeOptions options) {
         String token = weChatAccessTokenService.get();
-
         return weChatHttpService.getUnlimitedQrCode(token, options);
     }
 }
