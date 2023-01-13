@@ -27,6 +27,6 @@ public class ScanLoginExceptionHandler {
     @ExceptionHandler(ScanLoginTicketNotFoundException.class)
     public ErrorResponse handleScanLoginTicketNotFoundException(ScanLoginTicketNotFoundException e) {
         log.trace(e.getMessage());
-        return new ErrorResponse(32001, "你操作的小程序码已失效");
+        return new ErrorResponse(32001, "你操作的小程序码已失效，请刷新后重试！");
     }
 }

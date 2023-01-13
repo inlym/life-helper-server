@@ -62,7 +62,7 @@ public class ScanLoginTicketService {
         // 备注（2023.01.05）
         // 实际上这一步不应该放在这个方法内，但是由于这个方法被设定为异步方法，无法放在原有类中调用，
         // 如果要封装则需要额外增加一个服务类，有点累赘，因此直接放在这里，省事。
-        scanLoginQrcodeService.batchGenerateIfLessThanAsync(10);
+        scanLoginQrcodeService.batchGenerateIfLessThanAsync(1);
 
         ScanLoginTicket ticket = ScanLoginTicket
             .builder()

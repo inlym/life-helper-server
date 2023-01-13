@@ -4,6 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
+import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -42,9 +43,20 @@ public class ScanLoginQrcodeService {
         // 小程序中用于扫码登录页面的路径
         String page = "pages/scan/login";
         String id = IdUtil.simpleUUID();
+        int width = 300;
+
+        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
+            .builder()
+            .scene(id)
+            .page(page)
+            .width(width)
+            // todo
+            // 备注：此处为临时测试添加，后续上线请修改为正式版 "release"
+            .envVersion("develop")
+            .build();
 
         // 向微信服务器获取小程序码
-        byte[] qrcode = weChatService.getUnlimitedQrCode(page, id);
+        byte[] qrcode = weChatService.getUnlimitedQrCode(options);
 
         // 上传至阿里云 OSS
         ossService.upload(OssDir.WXACODE + "/" + id, qrcode);
@@ -70,7 +82,7 @@ public class ScanLoginQrcodeService {
         if (size < n) {
             for (int i = 0; i < n; i++) {
                 String id = generate();
-                
+
                 // 将 id 添加至可用列表
                 stringRedisTemplate
                     .opsForList()
