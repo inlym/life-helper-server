@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.login.scan.entity;
 
 import com.inlym.lifehelper.login.scan.constant.ScanLoginTicketStatus;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
-import javax.persistence.Id;
 import java.time.Duration;
 import java.time.LocalDateTime;
 

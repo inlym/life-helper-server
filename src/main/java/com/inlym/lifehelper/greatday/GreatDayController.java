@@ -7,12 +7,12 @@ import com.inlym.lifehelper.common.validation.SimpleUUID;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
 import com.inlym.lifehelper.greatday.pojo.SaveGreatDayDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 

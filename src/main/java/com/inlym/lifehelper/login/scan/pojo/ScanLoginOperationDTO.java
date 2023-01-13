@@ -1,8 +1,7 @@
 package com.inlym.lifehelper.login.scan.pojo;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * 扫码登录操作请求数据

@@ -9,12 +9,11 @@ import com.inlym.lifehelper.login.scan.pojo.ScanLoginDTO;
 import com.inlym.lifehelper.login.scan.pojo.ScanLoginOperationDTO;
 import com.inlym.lifehelper.login.scan.pojo.ScanLoginResultVO;
 import com.inlym.lifehelper.login.scan.pojo.ScanLoginTicketVO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * 扫码登录控制器

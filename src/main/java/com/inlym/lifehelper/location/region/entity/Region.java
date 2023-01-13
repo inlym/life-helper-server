@@ -1,9 +1,8 @@
 package com.inlym.lifehelper.location.region.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 /**
  * 行政区划地区

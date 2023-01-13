@@ -1,9 +1,8 @@
 package com.inlym.lifehelper.login.scan.pojo;
 
 import com.inlym.lifehelper.common.validation.SimpleUUID;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 扫码登录请求数据

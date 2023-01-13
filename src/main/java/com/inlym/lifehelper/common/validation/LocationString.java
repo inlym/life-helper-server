@@ -1,9 +1,9 @@
 package com.inlym.lifehelper.common.validation;
 
 import com.inlym.lifehelper.common.validation.validator.LocationStringValidator;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**

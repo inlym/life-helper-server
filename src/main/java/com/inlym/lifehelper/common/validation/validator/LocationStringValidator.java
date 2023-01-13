@@ -1,9 +1,8 @@
 package com.inlym.lifehelper.common.validation.validator;
 
 import com.inlym.lifehelper.common.validation.LocationString;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * 经纬度字符串检验器

@@ -1,9 +1,8 @@
 package com.inlym.lifehelper.photoalbum.album.pojo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * 创建相册请求数据

@@ -5,14 +5,15 @@ server:
     port: 8080
 
 spring:
-    # Redis 配置
-    redis:
-        host: xxxxxxxxxxxx
-        database: 0
-        port: 6379
-        password: xxxxxxxxxxxx
-        connect-timeout: 1000
-        timeout: 20000
+    data:
+        # Redis 配置
+        redis:
+            host: xxxxxxxxxxxx
+            database: 0
+            port: 6379
+            password: xxxxxxxxxxxx
+            connect-timeout: 1000
+            timeout: 20000
 
     # MySQL 数据库配置
     datasource:

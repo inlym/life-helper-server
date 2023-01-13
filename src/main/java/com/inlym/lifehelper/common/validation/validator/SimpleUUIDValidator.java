@@ -1,9 +1,8 @@
 package com.inlym.lifehelper.common.validation.validator;
 
 import com.inlym.lifehelper.common.validation.SimpleUUID;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * 简易 UUID 字符串校验器
@@ -19,7 +18,7 @@ public class SimpleUUIDValidator implements ConstraintValidator<SimpleUUID, Stri
         if (s == null) {
             return true;
         }
-        
+
         // 注：字母仅支持小写
         String regex = "[0-9a-f]{32}";
 
