@@ -54,12 +54,15 @@ public class ScanLoginService {
     /**
      * 获取扫码登录结果
      *
+     * <h2>安全校验
+     * <p>会检测发起「获取小程序码」和「检查登录状态」的客户端为同一 IP 地址。
+     *
      * @param id 扫码登录凭据 ID
      *
      * @since 1.9.0
      */
-    public ScanLoginResultVO getScanLoginResult(String id) {
-        ScanLoginTicket ticket = scanLoginTicketService.getOrElseThrow(id);
+    public ScanLoginResultVO getScanLoginResult(String id, String ip) {
+        ScanLoginTicket ticket = scanLoginTicketService.getOrElseThrow(id, ip);
 
         if (ticket.getStatus() == ScanLoginTicketStatus.CREATED) {
             return ScanLoginResultVO

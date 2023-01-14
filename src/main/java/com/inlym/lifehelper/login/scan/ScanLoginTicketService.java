@@ -50,6 +50,24 @@ public class ScanLoginTicketService {
     }
 
     /**
+     * 根据 ID 获取凭据（若不存在则报错），同时对 IP 进行校验，若不同则报错
+     *
+     * @param id 凭据 ID
+     * @param ip 客户端 IP 地址
+     *
+     * @since 1.9.0
+     */
+    public ScanLoginTicket getOrElseThrow(String id, String ip) {
+        ScanLoginTicket ticket = getOrElseThrow(id);
+        if (ticket
+            .getIp()
+            .equals(ip)) {
+            return ticket;
+        }
+        throw ScanLoginTicketNotFoundException.of(id);
+    }
+
+    /**
      * 创建凭据
      *
      * @param ip 被扫码端（Web）的 IP 地址（由控制器传入）

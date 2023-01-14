@@ -61,9 +61,9 @@ public class ScanLoginController {
      * @since 1.9.0
      */
     @PostMapping("/login/qrcode")
-    public ScanLoginResultVO loginByQrcode(@Valid @RequestBody ScanLoginDTO dto) {
+    public ScanLoginResultVO loginByQrcode(@Valid @RequestBody ScanLoginDTO dto, @ClientIp String ip) {
         String id = dto.getId();
-        return scanLoginService.getScanLoginResult(id);
+        return scanLoginService.getScanLoginResult(id, ip);
     }
 
     /**

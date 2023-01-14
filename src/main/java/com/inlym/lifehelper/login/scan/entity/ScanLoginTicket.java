@@ -7,9 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.TimeToLive;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -29,7 +27,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "database:scan-login-ticket")
+@RedisHash(value = "database:scan-login-ticket", timeToLive = 30 * 60)
 public class ScanLoginTicket {
     /**
      * 票据 ID
@@ -47,7 +45,6 @@ public class ScanLoginTicket {
      * <li>[CREATED]   - 已创建
      * <li>[SCANNED]   - 已扫码
      * <li>[CONFIRMED] - 已确认
-     * <li>[CONSUMED]  - 已使用（用于生成登录凭证），后续该实体将会销毁。
      */
     private ScanLoginTicketStatus status;
 
@@ -59,8 +56,9 @@ public class ScanLoginTicket {
     /**
      * 发起「扫码登录」操作的客户端的 IP 地址
      *
-     * <h2>说明
-     * <p>目前仅为 Web 端，IP 地址用于转换为地区信息，用于查看确认。
+     * <h2>主要用途
+     * <p>（1）IP 地址用于转换为地区信息，用于扫码端查看确认。
+     * <p>（2）会检测发起「获取小程序码」和「检查登录状态」的客户端为同一 IP 地址，才允许使用凭据登录。
      */
     private String ip;
 
@@ -95,25 +93,4 @@ public class ScanLoginTicket {
      * <p>扫码端（目前为微信小程序）点击「确认登录」的时间。
      */
     private LocalDateTime confirmTime;
-
-    /**
-     * 使用时间
-     *
-     * <h2>说明
-     * <p>被扫码端（目前为 Web）根据 ID 转换获得登录凭证的时间。
-     */
-    private LocalDateTime consumeTime;
-
-    /**
-     * 获取到期时间
-     *
-     * <h2>说明
-     * <p>当前方法用于配置实体在 Redis 中的有效期。
-     */
-    @TimeToLive
-    public long getTimeToLive() {
-        return Duration
-            .ofMinutes(30L)
-            .toSeconds();
-    }
 }

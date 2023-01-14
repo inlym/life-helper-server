@@ -50,9 +50,7 @@ public class ScanLoginQrcodeService {
             .scene(id)
             .page(page)
             .width(width)
-            // todo
-            // 备注：此处为临时测试添加，后续上线请修改为正式版 "release"
-            .envVersion("develop")
+            .envVersion("release")
             .build();
 
         // 向微信服务器获取小程序码
