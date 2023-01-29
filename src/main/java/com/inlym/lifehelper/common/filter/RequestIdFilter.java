@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -55,6 +56,7 @@ public class RequestIdFilter extends OncePerRequestFilter {
             }
 
             context.setRequestId(requestId);
+            MDC.put("REQUEST_ID", requestId);
         }
 
         chain.doFilter(request, response);

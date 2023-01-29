@@ -53,7 +53,7 @@ public class RequestLogService {
             String querystring = request.getQueryString();
             String url = path + (querystring != null ? "?" + querystring : "");
 
-            log.trace("{} {} {} {} {}", requestId, ip, userId, method, url);
+            log.trace("{} {}", method, url);
 
             IpLocation ipLocation = locationService.locateIpUpToCity(ip);
 

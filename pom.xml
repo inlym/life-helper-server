@@ -260,6 +260,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.yml</include>
+                    <include>**/*.xml</include>
                     <include>static/**</include>
                 </includes>
             </resource>
