@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -21,7 +22,6 @@ import java.util.UUID;
  * 请求 ID 过滤器
  *
  * <h2>说明
- *
  * <p> 线上生产环境使用 <a href="https://www.aliyun.com/product/apigateway?userCode=lzfqdh6g">阿里云 API 网关</a> 承载 HTTP 请求，
  * 会自动生成一个唯一请求 ID 并放置于请求头的 `X-Ca-Request-Id` 字段，一般将该字段用作全链路追踪 ID，开发环境也模拟了这个 ID。
  *
@@ -56,7 +56,7 @@ public class RequestIdFilter extends OncePerRequestFilter {
             }
 
             context.setRequestId(requestId);
-            MDC.put("REQUEST_ID", requestId);
+            MDC.put(LogName.REQUEST_ID, requestId);
         }
 
         chain.doFilter(request, response);

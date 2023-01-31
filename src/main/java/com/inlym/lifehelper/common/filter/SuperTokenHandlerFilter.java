@@ -3,6 +3,7 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.supertoken.SuperTokenService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -65,6 +67,7 @@ public class SuperTokenHandlerFilter extends OncePerRequestFilter {
                         // 这一步是为了方便后续内部调用
                         CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
                         context.setUserId(authentication.getUserId());
+                        MDC.put(LogName.USER_ID, String.valueOf(authentication.getUserId()));
                     } else {
                         log.trace("超级登录令牌（{}）无效！", token);
                     }

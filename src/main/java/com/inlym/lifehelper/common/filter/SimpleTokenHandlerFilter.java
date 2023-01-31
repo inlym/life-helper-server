@@ -4,6 +4,7 @@ import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.common.auth.simpletoken.exception.InvalidSimpleTokenException;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -57,7 +58,7 @@ public class SimpleTokenHandlerFilter extends OncePerRequestFilter {
                     // 这一步是为了方便后续内部调用
                     CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
                     context.setUserId(authentication.getUserId());
-                    MDC.put("USER_ID", String.valueOf(authentication.getUserId()));
+                    MDC.put(LogName.USER_ID, String.valueOf(authentication.getUserId()));
                 } catch (InvalidSimpleTokenException e) {
                     // 用户伪造请求可能进入这一步，因此不要使用强提醒日志
                     log.trace(e.getMessage());

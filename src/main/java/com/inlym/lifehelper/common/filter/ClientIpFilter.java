@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -48,7 +49,7 @@ public class ClientIpFilter extends OncePerRequestFilter {
                 CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
 
                 context.setClientIp(clientIp);
-                MDC.put("CLIENT_IP", clientIp);
+                MDC.put(LogName.CLIENT_IP, clientIp);
             }
         }
 

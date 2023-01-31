@@ -8,11 +8,11 @@
 
     <!-- 控制台彩色日志输出格式 -->
     <property name="CONSOLE_PATTERN"
-              value="%magenta(%d{yyyy-MM-dd HH:mm:ss.SSS}) %yellow(%-5level) %blue(%X{REQUEST_ID}) %green(%X{CLIENT_IP}) %red(%X{USER_ID}) %cyan(%-40.40logger{50}) %yellow(:) %msg%n"/>
+              value="%magenta(%d{yyyy-MM-dd HH:mm:ss.SSS}) %yellow(%-5level) %blue(%X{rid}) %green(%X{ip}) %red(%X{uid}) %cyan(%-40.40logger{50}) %yellow(:) %msg%n"/>
 
     <!--文件日志打印格式 -->
     <property name="FILE_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{REQUEST_ID} %X{CLIENT_IP} %X{USER_ID} %logger{50} - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{rid} %X{ip} %X{uid} %logger{50} - %msg%n"/>
 
     <!-- 日志输出到控制台 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -41,7 +41,6 @@
             <!--日志文档保留天数-->
             <maxHistory>1</maxHistory>
         </rollingPolicy>
-        <!-- 此日志文档只记录debug级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>debug</level>
         </filter>
@@ -50,7 +49,7 @@
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
-            <!--            <appender-ref ref="FILE"/>-->
+            <appender-ref ref="FILE"/>
         </root>
     </springProfile>
 

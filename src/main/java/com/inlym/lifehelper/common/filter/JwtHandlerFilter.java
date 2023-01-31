@@ -3,6 +3,7 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
+import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,6 +37,7 @@ public class JwtHandlerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+        // 放过“健康检查”请求，不做任何处理
         if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
             CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
 
@@ -51,6 +54,7 @@ public class JwtHandlerFilter extends OncePerRequestFilter {
                         .setAuthentication(authentication);
 
                     context.setUserId(authentication.getUserId());
+                    MDC.put(LogName.USER_ID, String.valueOf(authentication.getUserId()));
                 } catch (Exception e) {
                     log.trace("[JWT 解析出错] " + e.getMessage());
                 }
