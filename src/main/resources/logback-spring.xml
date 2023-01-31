@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- 彩色日志依赖的渲染类 -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx"
-                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="XID" value="%X{rid}"/>
 
     <!-- 控制台彩色日志输出格式 -->
     <property name="CONSOLE_PATTERN"
@@ -24,22 +22,20 @@
 
     <!-- 日志输出到文件 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文档的路径及文档名 -->
-        <file>logs/web.log</file>
         <!--日志文档输出格式-->
         <encoder>
             <pattern>${FILE_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
+        <!-- 正在记录的日志文档的路径及文档名 -->
+        <file>logs/spring.log</file>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志归档 -->
-            <fileNamePattern>logs/web-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/spring-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>1MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <!--日志文档保留天数-->
-            <maxHistory>1</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>debug</level>
@@ -51,14 +47,16 @@
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
         </root>
+
+        <logger name="com.inlym.lifehelper" level="TRACE"/>
     </springProfile>
 
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
-    </springProfile>
 
-    <logger name="com.inlym" level="DEBUG"/>
+        <logger name="com.inlym.lifehelper" level="DEBUG"/>
+    </springProfile>
 
 </configuration>
