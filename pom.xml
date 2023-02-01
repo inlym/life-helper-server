@@ -137,6 +137,30 @@
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>tablestore</artifactId>
             <version>5.13.11</version>
+            <classifier>jar-with-dependencies</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.protobuf</groupId>
+                    <artifactId>protobuf-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpasyncclient</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 阿里云日志服务（SLS） -->
+        <!-- 文档地址：https://github.com/aliyun/aliyun-log-logback-appender/blob/master/README_CN.md -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.16.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>aliyun-log-logback-appender</artifactId>
+            <version>0.1.19</version>
         </dependency>
 
         <!-- Hutool -->
@@ -185,12 +209,6 @@
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5-fluent</artifactId>
             <version>5.2.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-properties-migrator</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

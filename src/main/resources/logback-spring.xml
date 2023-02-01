@@ -2,8 +2,6 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <property name="XID" value="%X{rid}"/>
-
     <!-- 控制台彩色日志输出格式 -->
     <property name="CONSOLE_PATTERN"
               value="%magenta(%d{yyyy-MM-dd HH:mm:ss.SSS}) %yellow(%-5level) %blue(%X{rid}) %green(%X{ip}) %red(%X{uid}) %cyan(%-40.40logger{50}) %yellow(:) %msg%n"/>
@@ -11,6 +9,16 @@
     <!--文件日志打印格式 -->
     <property name="FILE_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{rid} %X{ip} %X{uid} %logger{50} - %msg%n"/>
+
+    <!--文件日志打印目录 -->
+    <property name="FILE_DIR" value="logs"/>
+
+    <!-- 阿里云日志服务（SLS）密钥对 -->
+    <springProperty name="ALIYUN_SLS_ACCESS_KEY_ID" source="aliyun.sls.access-key-id"/>
+    <springProperty name="ALIYUN_SLS_ACCESS_KEY_SECRET" source="aliyun.sls.access-key-secret"/>
+
+    <!-- 为了防止进程退出时，内存中的数据丢失 -->
+    <shutdownHook class="ch.qos.logback.core.hook.DefaultShutdownHook"/>
 
     <!-- 日志输出到控制台 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -20,28 +28,37 @@
         </encoder>
     </appender>
 
-    <!-- 日志输出到文件 -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--日志文档输出格式-->
+    <!-- 日志输出到文件（目前仅用于本地测试） -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${FILE_DIR}/app.log</file>
+        <append>true</append>
         <encoder>
             <pattern>${FILE_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
-        <!-- 正在记录的日志文档的路径及文档名 -->
-        <file>logs/spring.log</file>
-        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/spring-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>1MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>debug</level>
-        </filter>
     </appender>
 
+    <!-- 阿里云日志服务（SLS）附加器 -->
+    <!-- 文档地址：https://github.com/aliyun/aliyun-log-logback-appender/blob/master/README_CN.md -->
+    <appender name="ALIYUN_SLS" class="com.aliyun.openservices.log.logback.LoghubAppender">
+        <!-- 内网：cn-hangzhou-intranet.log.aliyuncs.com / 公网：cn-hangzhou.log.aliyuncs.com -->
+        <endpoint>cn-hangzhou-intranet.log.aliyuncs.com</endpoint>
+        <accessKeyId>${ALIYUN_SLS_ACCESS_KEY_ID}</accessKeyId>
+        <accessKeySecret>${ALIYUN_SLS_ACCESS_KEY_SECRET}</accessKeySecret>
+
+        <project>lifehelper</project>
+        <logStore>lifehelper_prod</logStore>
+
+        <encoder>
+            <pattern>%X{rid} %X{ip} %X{uid} : %msg</pattern>
+        </encoder>
+
+        <maxBlockMs>0</maxBlockMs>
+        <timeFormat>yyyy-MM-dd HH:mm:ss</timeFormat>
+        <timeZone>Asia/Shanghai</timeZone>
+    </appender>
+
+    <!-- 开发测试环境配置 -->
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
@@ -51,9 +68,12 @@
         <logger name="com.inlym.lifehelper" level="TRACE"/>
     </springProfile>
 
+    <!-- 生产环境配置 -->
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
+            <!-- 仅在生产环境将日志上传至阿里云日志服务 -->
+            <appender-ref ref="ALIYUN_SLS"/>
         </root>
 
         <logger name="com.inlym.lifehelper" level="DEBUG"/>

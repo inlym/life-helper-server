@@ -87,3 +87,8 @@ aliyun:
             access-key-secret: xxxxxxxxxxxx
             endpoint: xxxxxxxxxxxx
             instance-name: xxxxxxxxxxxx
+
+    # 阿里云日志服务配置
+    sls:
+        access-key-id: xxxxxxxxxxxx
+        access-key-secret: xxxxxxxxxxxx
