@@ -34,7 +34,7 @@
     <!-- 日志输出到文件（目前仅用于本地测试） -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${FILE_DIR}/app.log</file>
-        <append>true</append>
+        <append>false</append>
         <encoder>
             <pattern>${FILE_PATTERN}</pattern>
             <charset>UTF-8</charset>
@@ -44,7 +44,6 @@
     <!-- 阿里云日志服务（SLS）附加器 -->
     <!-- 文档地址：https://github.com/aliyun/aliyun-log-logback-appender/blob/master/README_CN.md -->
     <appender name="ALIYUN_SLS" class="com.aliyun.openservices.log.logback.LoghubAppender">
-        <!-- 内网：cn-hangzhou-intranet.log.aliyuncs.com / 公网：cn-hangzhou.log.aliyuncs.com -->
         <endpoint>${ALIYUN_SLS_ENDPOINT}</endpoint>
         <accessKeyId>${ALIYUN_SLS_ACCESS_KEY_ID}</accessKeyId>
         <accessKeySecret>${ALIYUN_SLS_ACCESS_KEY_SECRET}</accessKeySecret>
@@ -52,7 +51,7 @@
         <logStore>${ALIYUN_SLS_LOG_STORE}</logStore>
 
         <encoder>
-            <!-- 由于阿里云日志本身包含了日志消息，因此此处原有的日志消息就放置一些附加信息 -->
+            <!-- 由于阿里云日志本身包含了日志消息（即 `%msg`），因此此处原有的日志消息就放置一些附加信息 -->
             <pattern>%X{rid} %X{ip} %X{uid} %X{method} %X{url}</pattern>
         </encoder>
 
@@ -66,6 +65,7 @@
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
+            <appender-ref ref="ALIYUN_SLS"/>
         </root>
 
         <logger name="com.inlym.lifehelper" level="TRACE"/>
@@ -75,7 +75,6 @@
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
-            <!-- 仅在生产环境将日志上传至阿里云日志服务 -->
             <appender-ref ref="ALIYUN_SLS"/>
         </root>
 
