@@ -13,9 +13,12 @@
     <!--文件日志打印目录 -->
     <property name="FILE_DIR" value="logs"/>
 
-    <!-- 阿里云日志服务（SLS）密钥对 -->
+    <!-- 阿里云日志服务（SLS）配置 -->
     <springProperty name="ALIYUN_SLS_ACCESS_KEY_ID" source="aliyun.sls.access-key-id"/>
     <springProperty name="ALIYUN_SLS_ACCESS_KEY_SECRET" source="aliyun.sls.access-key-secret"/>
+    <springProperty name="ALIYUN_SLS_ENDPOINT" source="aliyun.sls.endpoint"/>
+    <springProperty name="ALIYUN_SLS_PROJECT" source="aliyun.sls.project"/>
+    <springProperty name="ALIYUN_SLS_LOG_STORE" source="aliyun.sls.log-store"/>
 
     <!-- 为了防止进程退出时，内存中的数据丢失 -->
     <shutdownHook class="ch.qos.logback.core.hook.DefaultShutdownHook"/>
@@ -42,12 +45,11 @@
     <!-- 文档地址：https://github.com/aliyun/aliyun-log-logback-appender/blob/master/README_CN.md -->
     <appender name="ALIYUN_SLS" class="com.aliyun.openservices.log.logback.LoghubAppender">
         <!-- 内网：cn-hangzhou-intranet.log.aliyuncs.com / 公网：cn-hangzhou.log.aliyuncs.com -->
-        <endpoint>cn-hangzhou-intranet.log.aliyuncs.com</endpoint>
+        <endpoint>${ALIYUN_SLS_ENDPOINT}</endpoint>
         <accessKeyId>${ALIYUN_SLS_ACCESS_KEY_ID}</accessKeyId>
         <accessKeySecret>${ALIYUN_SLS_ACCESS_KEY_SECRET}</accessKeySecret>
-
-        <project>lifehelper</project>
-        <logStore>lifehelper_prod</logStore>
+        <project>${ALIYUN_SLS_PROJECT}</project>
+        <logStore>${ALIYUN_SLS_LOG_STORE}</logStore>
 
         <encoder>
             <!-- 由于阿里云日志本身包含了日志消息，因此此处原有的日志消息就放置一些附加信息 -->

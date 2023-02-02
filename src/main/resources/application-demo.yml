@@ -92,3 +92,6 @@ aliyun:
     sls:
         access-key-id: xxxxxxxxxxxx
         access-key-secret: xxxxxxxxxxxx
+        endpoint: xxxxxxxxxxxx
+        project: xxxxxxxxxxxx
+        log-store: xxxxxxxxxxxx
