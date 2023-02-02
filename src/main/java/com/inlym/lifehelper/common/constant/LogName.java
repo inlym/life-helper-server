@@ -11,6 +11,12 @@ package com.inlym.lifehelper.common.constant;
  * @since 1.9.0
  **/
 public abstract class LogName {
+    /** 请求方法 */
+    public final static String METHOD = "method";
+
+    /** 请求地址（路径 + 请求参数） */
+    public final static String URL = "url";
+
     /** 客户端 IP 地址 */
     public final static String CLIENT_IP = "ip";
 

@@ -3,7 +3,6 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -14,8 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.MDC;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,9 +25,8 @@ import java.io.IOException;
  * @date 2022-01-22
  * @since 1.0.0
  */
-@Order(100)
-@WebFilter(urlPatterns = "/*")
 @Slf4j
+@WebFilter(urlPatterns = "/*")
 @RequiredArgsConstructor
 public class JwtHandlerFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
@@ -54,7 +50,6 @@ public class JwtHandlerFilter extends OncePerRequestFilter {
                         .setAuthentication(authentication);
 
                     context.setUserId(authentication.getUserId());
-                    MDC.put(LogName.USER_ID, String.valueOf(authentication.getUserId()));
                 } catch (Exception e) {
                     log.trace("[JWT 解析出错] " + e.getMessage());
                 }

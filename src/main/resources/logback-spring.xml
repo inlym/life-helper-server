@@ -4,11 +4,11 @@
 
     <!-- 控制台彩色日志输出格式 -->
     <property name="CONSOLE_PATTERN"
-              value="%magenta(%d{yyyy-MM-dd HH:mm:ss.SSS}) %yellow(%-5level) %blue(%X{rid}) %green(%X{ip}) %red(%X{uid}) %cyan(%-40.40logger{50}) %yellow(:) %msg%n"/>
+              value="%magenta(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %blue(%X{rid}) %green(%X{ip}) %red(%X{uid}) %cyan(%X{method}) %yellow(%X{url}) %yellow(:) %msg%n"/>
 
     <!--文件日志打印格式 -->
     <property name="FILE_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{rid} %X{ip} %X{uid} %logger{50} - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{rid} %X{ip} %X{uid} %X{method} %X{url} %logger{50} - %msg%n"/>
 
     <!--文件日志打印目录 -->
     <property name="FILE_DIR" value="logs"/>
@@ -50,7 +50,8 @@
         <logStore>lifehelper_prod</logStore>
 
         <encoder>
-            <pattern>%X{rid} %X{ip} %X{uid} : %msg</pattern>
+            <!-- 由于阿里云日志本身包含了日志消息，因此此处原有的日志消息就放置一些附加信息 -->
+            <pattern>%X{rid} %X{ip} %X{uid} %X{method} %X{url}</pattern>
         </encoder>
 
         <maxBlockMs>0</maxBlockMs>

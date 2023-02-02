@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -11,8 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.MDC;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -29,7 +26,6 @@ import java.util.UUID;
  * @date 2022-01-19
  * @since 1.0.0
  */
-@Order(1)
 @Slf4j
 @WebFilter(urlPatterns = "/*")
 public class RequestIdFilter extends OncePerRequestFilter {
@@ -56,7 +52,6 @@ public class RequestIdFilter extends OncePerRequestFilter {
             }
 
             context.setRequestId(requestId);
-            MDC.put(LogName.REQUEST_ID, requestId);
         }
 
         chain.doFilter(request, response);
