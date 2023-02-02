@@ -51,9 +51,6 @@ public class RequestLogService {
 
             String method = request.getMethod();
             String querystring = request.getQueryString();
-            String url = path + (querystring != null ? "?" + querystring : "");
-
-            log.trace("{} {}", method, url);
 
             IpLocation ipLocation = locationService.locateIpUpToCity(ip);
 

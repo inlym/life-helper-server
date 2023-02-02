@@ -30,29 +30,32 @@ import java.util.UUID;
 @WebFilter(urlPatterns = "/*")
 public class RequestIdFilter extends OncePerRequestFilter {
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // “健康检查”请求由负载均衡发起，用于检查服务器是否正常运行，该请求直接放过，不做任何处理。
+        return SpecialPath.HEALTH_CHECK_PATH.equalsIgnoreCase(request.getRequestURI());
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
-        // 放过“健康检查”请求，不做任何处理
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
-            String requestId;
-            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+        String requestId;
+        CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
 
-            String requestIdString = request.getHeader(CustomHttpHeader.REQUEST_ID);
+        String requestIdString = request.getHeader(CustomHttpHeader.REQUEST_ID);
 
-            if (requestIdString != null) {
-                // 在线上生产环境会进入到这里
-                requestId = requestIdString;
-            } else {
-                // 在开发环境会进入到这里，需要自己生成一个请求 ID，模拟线上生产环境行为，方便后续测试。
-                requestId = UUID
-                    .randomUUID()
-                    .toString()
-                    .toUpperCase();
+        if (requestIdString != null) {
+            // 在线上生产环境会进入到这里
+            requestId = requestIdString;
+        } else {
+            // 在开发环境会进入到这里，需要自己生成一个请求 ID，模拟线上生产环境行为，方便后续测试。
+            requestId = UUID
+                .randomUUID()
+                .toString()
+                .toUpperCase();
 
-                response.setHeader(CustomHttpHeader.REQUEST_ID, requestId);
-            }
-
-            context.setRequestId(requestId);
+            response.setHeader(CustomHttpHeader.REQUEST_ID, requestId);
         }
+
+        context.setRequestId(requestId);
 
         chain.doFilter(request, response);
     }

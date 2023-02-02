@@ -36,31 +36,34 @@ public class SimpleTokenHandlerFilter extends OncePerRequestFilter {
     private final SimpleTokenService simpleTokenService;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // “健康检查”请求由负载均衡发起，用于检查服务器是否正常运行，该请求直接放过，不做任何处理。
+        return SpecialPath.HEALTH_CHECK_PATH.equalsIgnoreCase(request.getRequestURI());
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
-        // 放过“健康检查”请求，不做任何处理
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
-            // 从请求头获取鉴权凭证
-            String token = request.getHeader(CustomHttpHeader.SIMPLE_TOKEN);
+        // 从请求头获取鉴权凭证
+        String token = request.getHeader(CustomHttpHeader.SIMPLE_TOKEN);
 
-            if (token != null) {
-                try {
-                    SimpleAuthentication authentication = simpleTokenService.parse(token);
+        if (token != null) {
+            try {
+                SimpleAuthentication authentication = simpleTokenService.parse(token);
 
-                    // 这一步是使用 Spring Security 框架必需的
-                    SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authentication);
+                // 这一步是使用 Spring Security 框架必需的
+                SecurityContextHolder
+                    .getContext()
+                    .setAuthentication(authentication);
 
-                    // 这一步是为了方便后续内部调用
-                    CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
-                    context.setUserId(authentication.getUserId());
-                } catch (InvalidSimpleTokenException e) {
-                    // 用户伪造请求可能进入这一步，因此不要使用强提醒日志
-                    log.trace(e.getMessage());
-                } catch (Exception e) {
-                    // 理论上不会进入到这一步，如果发生，则表示出现了无法预料的错误
-                    log.error("[意料之外的错误]：{}", e.getMessage());
-                }
+                // 这一步是为了方便后续内部调用
+                CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+                context.setUserId(authentication.getUserId());
+            } catch (InvalidSimpleTokenException e) {
+                // 用户伪造请求可能进入这一步，因此不要使用强提醒日志
+                log.trace(e.getMessage());
+            } catch (Exception e) {
+                // 理论上不会进入到这一步，如果发生，则表示出现了无法预料的错误
+                log.error("[意料之外的错误]：{}", e.getMessage());
             }
         }
 

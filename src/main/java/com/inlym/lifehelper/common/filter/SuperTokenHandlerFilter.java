@@ -38,34 +38,37 @@ public class SuperTokenHandlerFilter extends OncePerRequestFilter {
     private final SuperTokenService superTokenService;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // “健康检查”请求由负载均衡发起，用于检查服务器是否正常运行，该请求直接放过，不做任何处理。
+        return SpecialPath.HEALTH_CHECK_PATH.equalsIgnoreCase(request.getRequestURI());
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
-        // 放过“健康检查”请求，不做任何处理
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
-            // 从请求中获取待校验的令牌字符串（包含多个组成部分）
-            String tokenString = request.getHeader(CustomHttpHeader.SUPER_TOKEN);
+        // 从请求中获取待校验的令牌字符串（包含多个组成部分）
+        String tokenString = request.getHeader(CustomHttpHeader.SUPER_TOKEN);
 
-            if (tokenString != null) {
-                // 该字符串中包含了实际的令牌和用户 ID，使用英文逗号（`,`）分隔
-                String[] strings = tokenString.split(",");
-                if (strings.length == TOKEN_STRING_PARTS) {
-                    String token = strings[0];
-                    int userId = Integer.parseInt(strings[1]);
+        if (tokenString != null) {
+            // 该字符串中包含了实际的令牌和用户 ID，使用英文逗号（`,`）分隔
+            String[] strings = tokenString.split(",");
+            if (strings.length == TOKEN_STRING_PARTS) {
+                String token = strings[0];
+                int userId = Integer.parseInt(strings[1]);
 
-                    // 令牌有效则继续
-                    if (superTokenService.check(token)) {
-                        SimpleAuthentication authentication = new SimpleAuthentication(userId);
+                // 令牌有效则继续
+                if (superTokenService.check(token)) {
+                    SimpleAuthentication authentication = new SimpleAuthentication(userId);
 
-                        // 这一步是使用 Spring Security 框架必需的
-                        SecurityContextHolder
-                            .getContext()
-                            .setAuthentication(authentication);
+                    // 这一步是使用 Spring Security 框架必需的
+                    SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(authentication);
 
-                        // 这一步是为了方便后续内部调用
-                        CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
-                        context.setUserId(authentication.getUserId());
-                    } else {
-                        log.trace("超级登录令牌（{}）无效！", token);
-                    }
+                    // 这一步是为了方便后续内部调用
+                    CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+                    context.setUserId(authentication.getUserId());
+                } else {
+                    log.trace("超级登录令牌（{}）无效！", token);
                 }
             }
         }

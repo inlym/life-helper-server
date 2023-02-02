@@ -28,24 +28,26 @@ import java.io.IOException;
 @Slf4j
 public class ClientIpFilter extends OncePerRequestFilter {
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // “健康检查”请求由负载均衡发起，用于检查服务器是否正常运行，该请求直接放过，不做任何处理。
+        return SpecialPath.HEALTH_CHECK_PATH.equalsIgnoreCase(request.getRequestURI());
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
-        // 放过“健康检查”请求，不做任何处理
-        if (!SpecialPath.HEALTH_CHECK_PATH.equals(request.getRequestURI())) {
+        // 在正式环境，请求通过 API 网关时，会在指定字段（`X-Lifehelper-Client-Ip`）添加客户端 IP 地址，
+        // 文档地址：https://help.aliyun.com/document_detail/29478.html，见【配置系统参数】部分。
+        // 同时，客户端可能伪造请求，直接传递该字段，在 API 网关做的处理是：
+        // 直接该请求头值尾部加上 `, ` 和客户端 IP 地址
+        String ipString = request.getHeader(CustomHttpHeader.CLIENT_IP);
 
-            // 在正式环境，请求通过 API 网关时，会在指定字段（`X-Lifehelper-Client-Ip`）添加客户端 IP 地址，
-            // 文档地址：https://help.aliyun.com/document_detail/29478.html，见【配置系统参数】部分。
-            // 同时，客户端可能伪造请求，直接传递该字段，在 API 网关做的处理是：
-            // 直接该请求头值尾部加上 `, ` 和客户端 IP 地址
-            String ipString = request.getHeader(CustomHttpHeader.CLIENT_IP);
+        if (ipString != null) {
+            // 使用 `,` 分割字符串，取最后一段，就是从 API 网关处获取的客户端 IP 地址
+            String[] ips = ipString.split(",");
+            String clientIp = ips[ips.length - 1].trim();
+            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
 
-            if (ipString != null) {
-                // 使用 `,` 分割字符串，取最后一段，就是从 API 网关处获取的客户端 IP 地址
-                String[] ips = ipString.split(",");
-                String clientIp = ips[ips.length - 1].trim();
-                CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
-
-                context.setClientIp(clientIp);
-            }
+            context.setClientIp(clientIp);
         }
 
         chain.doFilter(request, response);
