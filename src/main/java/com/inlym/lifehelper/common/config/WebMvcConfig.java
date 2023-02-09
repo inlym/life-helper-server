@@ -2,10 +2,13 @@ package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.annotation.resolver.ClientIpMethodArgumentResolver;
 import com.inlym.lifehelper.common.annotation.resolver.UserIdMethodArgumentResolver;
+import com.inlym.lifehelper.common.interceptor.LogInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -22,9 +25,26 @@ import java.util.List;
  * @since 1.0.0
  **/
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
+    private final LogInterceptor logInterceptor;
+
     @Value("${lifehelper.web-url}")
     private String webUrl;
+
+    /**
+     * 配置拦截器
+     *
+     * @since 1.9.1
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry
+            .addInterceptor(logInterceptor)
+            .order(1)
+            .addPathPatterns("/**")
+            .excludePathPatterns("/ping");
+    }
 
     /**
      * 跨域资源共享配置
