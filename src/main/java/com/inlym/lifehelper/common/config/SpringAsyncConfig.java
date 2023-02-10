@@ -1,10 +1,12 @@
 package com.inlym.lifehelper.common.config;
 
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -27,8 +29,19 @@ public class SpringAsyncConfig implements AsyncConfigurer {
         executor.setKeepAliveSeconds(300);
         executor.setThreadNamePrefix("async-thread-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setTaskDecorator(runnable -> {
+            Map<String, String> contextMap = MDC.getCopyOfContextMap();
+            return () -> {
+                try {
+                    MDC.setContextMap(contextMap);
+                    runnable.run();
+                } finally {
+                    MDC.clear();
+                }
+            };
+        });
+
         executor.initialize();
-        
         return executor;
     }
 }
