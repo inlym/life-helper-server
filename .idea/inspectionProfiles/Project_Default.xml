@@ -9,6 +9,7 @@
       <option name="customHeaders">
         <set>
           <option value="x-client-ip" />
+          <option value="x-ca-request-id" />
         </set>
       </option>
     </inspection_tool>

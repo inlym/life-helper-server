@@ -21,7 +21,7 @@ public abstract class LogName {
     public final static String CLIENT_IP = "ip";
 
     /** 请求 ID */
-    public final static String REQUEST_ID = "rid";
+    public final static String TRACE_ID = "rid";
 
     /** 用户 ID */
     public final static String USER_ID = "uid";

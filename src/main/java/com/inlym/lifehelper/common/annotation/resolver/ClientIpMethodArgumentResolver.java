@@ -35,7 +35,7 @@ public class ClientIpMethodArgumentResolver implements HandlerMethodArgumentReso
      */
     @Override
     public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (webRequest.getAttribute(CustomRequestContext.attributeName, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
+        if (webRequest.getAttribute(CustomRequestContext.NAME, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
             if (context.getClientIp() != null) {
                 return context.getClientIp();
             }

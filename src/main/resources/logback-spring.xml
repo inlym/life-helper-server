@@ -78,7 +78,7 @@
             <appender-ref ref="ALIYUN_SLS"/>
         </root>
 
-        <logger name="com.inlym.lifehelper" level="DEBUG"/>
+        <logger name="com.inlym.lifehelper" level="TRACE"/>
     </springProfile>
 
 </configuration>

@@ -29,7 +29,7 @@ public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolv
 
     @Override
     public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (webRequest.getAttribute(CustomRequestContext.attributeName, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
+        if (webRequest.getAttribute(CustomRequestContext.NAME, RequestAttributes.SCOPE_REQUEST) instanceof CustomRequestContext context) {
             if (context.getUserId() != null && context.getUserId() > 0) {
                 return context.getUserId();
             }

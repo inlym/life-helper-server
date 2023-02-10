@@ -43,11 +43,11 @@ public class RequestLogService {
         String path = request.getRequestURI();
 
         if (!whiteList.contains(path)) {
-            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+            CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
 
             int userId = context.getUserId() == null ? 0 : context.getUserId();
             String ip = context.getClientIp();
-            String requestId = context.getRequestId();
+            String requestId = context.getTraceId();
 
             String method = request.getMethod();
             String querystring = request.getQueryString();

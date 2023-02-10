@@ -9,7 +9,7 @@ package com.inlym.lifehelper.common.constant;
  */
 public abstract class CustomHttpHeader {
     /** 请求 ID，用作全链路追踪 ID */
-    public static final String REQUEST_ID = "x-ca-request-id";
+    public static final String REQUEST_ID = "x-lifehelper-request-id";
 
     /** 客户端 IP 地址，由 API 网关层加入到请求头中 */
     public static final String CLIENT_IP = "x-lifehelper-client-ip";

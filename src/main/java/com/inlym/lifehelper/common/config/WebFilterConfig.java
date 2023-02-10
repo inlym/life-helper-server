@@ -1,6 +1,8 @@
 package com.inlym.lifehelper.common.config;
 
+import com.inlym.lifehelper.common.filter.ClientIpFilter;
 import com.inlym.lifehelper.common.filter.InitialFilter;
+import com.inlym.lifehelper.common.filter.TraceIdFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,19 +27,56 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class WebFilterConfig {
+    /** 足够小的数，用于排序 */
+    private static final int SMALL_ENOUGH_INTEGER = -9999;
+
     private final InitialFilter initialFilter;
+
+    private final TraceIdFilter traceIdFilter;
+
+    private final ClientIpFilter clientIpFilter;
 
     /**
      * 初始化过滤器
      *
      * <h2>注意事项
      * <p>这个过滤器必须放在所有自定义过滤器的最前面。
+     *
+     * @since 1.9.0
      */
     @Bean
     public FilterRegistrationBean<InitialFilter> initialFilterBean() {
         FilterRegistrationBean<InitialFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(initialFilter);
-        bean.setOrder(-9999);
+        bean.setOrder(SMALL_ENOUGH_INTEGER);
+
+        return bean;
+    }
+
+    /**
+     * 追踪 ID 过滤器
+     *
+     * @since 1.9.1
+     */
+    @Bean
+    public FilterRegistrationBean<TraceIdFilter> traceIdFilterBean() {
+        FilterRegistrationBean<TraceIdFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(traceIdFilter);
+        bean.setOrder(SMALL_ENOUGH_INTEGER + 1);
+
+        return bean;
+    }
+
+    /**
+     * 客户端 IP 地址过滤器
+     *
+     * @since 1.9.1
+     */
+    @Bean
+    public FilterRegistrationBean<ClientIpFilter> clientIpFilterBean() {
+        FilterRegistrationBean<ClientIpFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(clientIpFilter);
+        bean.setOrder(SMALL_ENOUGH_INTEGER + 2);
 
         return bean;
     }

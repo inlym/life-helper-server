@@ -27,7 +27,7 @@ public class LogInterceptor implements HandlerInterceptor {
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
         Map<String, String> map = MDC.getCopyOfContextMap();
         if (map != null) {
-            log.trace("MDC={}", map);
+            log.debug("MDC={}", map);
         }
 
         return true;

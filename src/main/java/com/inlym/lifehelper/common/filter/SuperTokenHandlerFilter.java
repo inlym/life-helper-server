@@ -3,7 +3,7 @@ package com.inlym.lifehelper.common.filter;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.supertoken.SuperTokenService;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.SpecialPath;
+import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.MDC;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,6 +33,9 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class SuperTokenHandlerFilter extends OncePerRequestFilter {
+    /** 传递超级登录令牌的请求头字段名 */
+    private static final String HEADER_NAME = CustomHttpHeader.SUPER_TOKEN;
+
     /** 令牌字符串的组成部分 */
     private static final int TOKEN_STRING_PARTS = 2;
 
@@ -39,14 +43,15 @@ public class SuperTokenHandlerFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        // “健康检查”请求由负载均衡发起，用于检查服务器是否正常运行，该请求直接放过，不做任何处理。
-        return SpecialPath.HEALTH_CHECK_PATH.equalsIgnoreCase(request.getRequestURI());
+        // 包含指定的请求头字段才进入过滤器处理
+        return request.getHeader(HEADER_NAME) == null;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
         // 从请求中获取待校验的令牌字符串（包含多个组成部分）
-        String tokenString = request.getHeader(CustomHttpHeader.SUPER_TOKEN);
+        String tokenString = request.getHeader(HEADER_NAME);
+        log.trace("[Header] {}={}", HEADER_NAME, tokenString);
 
         if (tokenString != null) {
             // 该字符串中包含了实际的令牌和用户 ID，使用英文逗号（`,`）分隔
@@ -65,8 +70,9 @@ public class SuperTokenHandlerFilter extends OncePerRequestFilter {
                         .setAuthentication(authentication);
 
                     // 这一步是为了方便后续内部调用
-                    CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.attributeName);
+                    CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
                     context.setUserId(authentication.getUserId());
+                    MDC.put(LogName.USER_ID, String.valueOf(authentication.getUserId()));
                 } else {
                     log.trace("超级登录令牌（{}）无效！", token);
                 }
