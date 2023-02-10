@@ -8,7 +8,7 @@
 
     <!--文件日志打印格式 -->
     <property name="FILE_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %X{rid} %X{ip} %X{uid} %X{method} %X{url} %logger{50} - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %level %X{rid} %X{ip} %X{uid} %X{method} %X{url} %logger - %msg%n"/>
 
     <!--文件日志打印目录 -->
     <property name="FILE_DIR" value="logs"/>
