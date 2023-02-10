@@ -69,6 +69,7 @@
         </root>
 
         <logger name="com.inlym.lifehelper" level="TRACE"/>
+        <logger name="org.hibernate" level="INFO"/>
     </springProfile>
 
     <!-- 生产环境配置 -->
@@ -79,6 +80,7 @@
         </root>
 
         <logger name="com.inlym.lifehelper" level="TRACE"/>
+        <logger name="org.hibernate" level="INFO"/>
     </springProfile>
 
 </configuration>
