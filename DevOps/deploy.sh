@@ -12,14 +12,18 @@
 # 1. 云效-环境变量 -> https://help.aliyun.com/document_detail/153688.html?userCode=lzfqdh6g
 # 2. 阿里云-容器镜像服务 -> https://www.aliyun.com/product/acr?userCode=lzfqdh6g
 
+# 镜像仓库地址
+echo "${DOCKER_REPOSITORY}"
+
 # 之前构建使用的 Git Commit 的标签名，例如 `1.0.0`
 echo "${CI_COMMIT_REF_NAME}"
 
 # 需要先拉取镜像再停止容器，否则中断时间会很久
-docker pull "registry-vpc.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server:${CI_COMMIT_REF_NAME}"
+docker pull "${DOCKER_REPOSITORY}:${CI_COMMIT_REF_NAME}"
 
 # 停止运行并删除旧的容器
 docker rm -f lifehelper_server
 
 # 运行新的容器
-docker run -e ACTIVE_PROFILE=prod -d -p 23030:23030 --name=lifehelper_server "registry-vpc.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server:${CI_COMMIT_REF_NAME}"
+# 注意：因为网络模式指定了 `host`，因此 `-p` 参数是无效的，所以去掉了。
+docker run -e ACTIVE_PROFILE=prod -d --name=lifehelper_server --network=host --restart=always "${DOCKER_REPOSITORY}:${CI_COMMIT_REF_NAME}"

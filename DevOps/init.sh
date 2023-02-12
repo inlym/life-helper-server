@@ -14,6 +14,9 @@
 # 1. 云效-环境变量 -> https://help.aliyun.com/document_detail/153688.html?userCode=lzfqdh6g
 # 2. 阿里云-容器镜像服务 -> https://www.aliyun.com/product/acr?userCode=lzfqdh6g
 
+# 阿里云容器镜像服务的 Docker Registry，为方便运行，从环境变量获取
+echo "${DOCKER_REGISTRY}"
+
 # 在阿里云容器镜像服务中使用的用户名
 echo "${DOCKER_USERNAME}"
 
@@ -26,5 +29,5 @@ apt update
 # 安装 Docker
 apt install -y docker.io
 
-# 登录 Docker（备注：这里用了阿里云容器镜像服务）
-echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin registry-vpc.cn-hangzhou.aliyuncs.com
+# 登录 Docker
+echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin "${DOCKER_REGISTRY}"
