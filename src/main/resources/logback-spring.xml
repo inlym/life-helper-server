@@ -60,16 +60,21 @@
         <timeZone>Asia/Shanghai</timeZone>
     </appender>
 
+    <!-- 阿里云分布式任务调度 SchedulerX 日志 -->
+    <!-- 文档地址：https://help.aliyun.com/document_detail/405090.html#p-82e-1lf-8ku -->
+    <appender name="SCHEDULER_LOG" class="com.alibaba.schedulerx.worker.log.appender.SchedulerxLogbackAppender">
+        <timeFormat>yyyy-MM-dd HH:mm:ss</timeFormat>
+        <timeZone>Asia/Shanghai</timeZone>
+    </appender>
+
     <!-- 开发测试环境配置 -->
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
-            <appender-ref ref="ALIYUN_SLS"/>
         </root>
 
         <logger name="com.inlym.lifehelper" level="TRACE"/>
-        <logger name="org.hibernate.SQL" level="TRACE"/>
     </springProfile>
 
     <!-- 生产环境配置 -->
@@ -80,7 +85,12 @@
         </root>
 
         <logger name="com.inlym.lifehelper" level="TRACE"/>
-        <logger name="org.hibernate.SQL" level="TRACE"/>
     </springProfile>
+
+    <logger name="schedulerx" level="INFO">
+        <appender-ref ref="SCHEDULER_LOG"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="TRACE"/>
 
 </configuration>
