@@ -21,6 +21,10 @@ public class TencentMapListRegionResponse {
     /** 对 status 的描述 */
     private String message;
 
+    /** 数据版本，用于判断更新 */
+    @JsonProperty("data_version")
+    private String dataVersion;
+
     private List<List<Region>> result;
 
     @Data

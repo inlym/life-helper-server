@@ -11,7 +11,7 @@
 
     <groupId>com.inlym</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
 
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>

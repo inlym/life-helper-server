@@ -2,6 +2,7 @@ package com.inlym.lifehelper.extern.tencentmap;
 
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
+import com.inlym.lifehelper.extern.tencentmap.config.TencentMapProperties;
 import com.inlym.lifehelper.extern.tencentmap.exception.InvalidIpException;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapListRegionResponse;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapLocateIpResponse;
@@ -14,7 +15,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * 腾讯位置服务 - HTTP 请求封装类
+ * 腾讯位置服务 - HTTP 请求调用服务
+ *
+ * <h2>主要用途
+ * <p>仅用于封装处理 HTTP 请求，不做数据处理。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-02-14
@@ -125,7 +129,7 @@ public class TencentMapHttpService {
 
         assert data != null;
         if (data.getStatus() == SUCCESS_STATUS) {
-            log.debug("[获取省市区列表] 接口调用成功");
+            log.info("[获取省市区列表] 接口调用成功");
             return data;
         }
         throw new ExternalHttpRequestException("获取省市区列表", url, data.getStatus(), data.getMessage());
