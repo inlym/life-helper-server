@@ -230,37 +230,38 @@
                 </configuration>
             </plugin>
 
-            <!-- 构建 Docker 镜像插件 -->
+            <!-- Google 容器构建工具 - Jib -->
+            <!-- 文档地址：https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin -->
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.3.1</version>
-                <!-- 配置项帮助文档 https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#extended-usage -->
                 <configuration>
                     <from>
                         <!-- 下方基础镜像为 `openjdk:17-alpine3.14` -->
+                        <!-- 官网地址：https://hub.docker.com/layers/library/openjdk/17-alpine3.14/images/sha256-a996cdcc040704ec6badaf5fecf1e144c096e00231a29188596c784bcf858d05 -->
                         <image>openjdk@sha256:a996cdcc040704ec6badaf5fecf1e144c096e00231a29188596c784bcf858d05</image>
                     </from>
+                    <!-- 备注：`image`, `image`, `image` 三个参数在命令运行时注入 -->
                     <to>
-                        <!-- 构建后的 Docker 镜像托管在了阿里云的容器镜像服务（个人版）上 -->
-                        <image>registry.cn-hangzhou.aliyuncs.com/inlym/lifehelper_server</image>
                         <tags>
                             <!-- 镜像标签和项目版本号保持一致 -->
                             <tag>${project.version}</tag>
                         </tags>
                     </to>
                     <container>
+                        <mainClass>com.inlym.lifehelper.Application</mainClass>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         <ports>
                             <port>23030</port>
                         </ports>
-                        <jvmFlags>
-                            <jvmFlag>-Dmaven.test.skip</jvmFlag>
-                        </jvmFlags>
                         <args>
                             <arg>--spring.profiles.active=prod</arg>
                         </args>
-                        <mainClass>com.inlym.lifehelper.Application</mainClass>
+                        <volumes>
+                            <!-- 传递时区，在 Docker 中使用宿主机的时区 -->
+                            <volume>/etc/timezone:/etc/timezone:ro</volume>
+                        </volumes>
                     </container>
                 </configuration>
             </plugin>

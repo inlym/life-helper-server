@@ -18,12 +18,15 @@ echo "${DOCKER_REPOSITORY}"
 # 之前构建使用的 Git Commit 的标签名，例如 `1.0.0`
 echo "${CI_COMMIT_REF_NAME}"
 
+# 镜像名称
+IMAGE_NAME="${DOCKER_REPOSITORY}:${CI_COMMIT_REF_NAME}"
+
 # 需要先拉取镜像再停止容器，否则中断时间会很久
-docker pull "${DOCKER_REPOSITORY}:${CI_COMMIT_REF_NAME}"
+docker pull "${IMAGE_NAME}"
 
 # 停止运行并删除旧的容器
 docker rm -f lifehelper_server
 
 # 运行新的容器
 # 注意：因为网络模式指定了 `host`，因此 `-p` 参数是无效的，所以去掉了。
-docker run -e ACTIVE_PROFILE=prod -d --name=lifehelper_server --network=host --restart=always "${DOCKER_REPOSITORY}:${CI_COMMIT_REF_NAME}"
+docker run -d --name=lifehelper_server --network=host --restart=always "${IMAGE_NAME}"
