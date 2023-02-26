@@ -15,7 +15,10 @@
 # 2. 阿里云-容器镜像服务 -> https://www.aliyun.com/product/acr?userCode=lzfqdh6g
 
 # 阿里云容器镜像服务的 Docker Registry，为方便运行，从环境变量获取
-echo "${DOCKER_REGISTRY}"
+# 由于服务器处理 VPC 环境内，在获取镜像时，从 VPC 获取更稳定，网速更快
+# DOCKER_REGISTRY=registry.cn-hangzhou.aliyuncs.com
+# DOCKER_REGISTRY_VPC=registry-vpc.cn-hangzhou.aliyuncs.com
+echo "${DOCKER_REGISTRY_VPC}"
 
 # 在阿里云容器镜像服务中使用的用户名
 echo "${DOCKER_USERNAME}"
@@ -30,4 +33,4 @@ apt update
 apt install -y docker.io
 
 # 登录 Docker
-echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin "${DOCKER_REGISTRY}"
+echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin "${DOCKER_REGISTRY_VPC}"

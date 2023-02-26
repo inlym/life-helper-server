@@ -257,6 +257,7 @@
                         </ports>
                         <args>
                             <arg>--spring.profiles.active=prod</arg>
+                            <arg>--lifehelper.version=${project.version}</arg>
                         </args>
                         <volumes>
                             <!-- 传递时区，在 Docker 中使用宿主机的时区 -->
