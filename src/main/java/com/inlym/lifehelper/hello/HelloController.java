@@ -5,6 +5,7 @@ import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.constant.SpecialPath;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class HelloController {
     private final Environment environment;
+
+    @Value("${lifehelper.version}")
+    private String version;
 
     /**
      * 根路由
@@ -128,6 +132,8 @@ public class HelloController {
         InetAddress ia = InetAddress.getLocalHost();
         map.put("hostname", ia.getHostName());
         map.put("ip", ia.getHostAddress());
+
+        map.put("version", version);
 
         return map;
     }
