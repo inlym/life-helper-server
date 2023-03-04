@@ -1,20 +1,8 @@
 package com.inlym.lifehelper.hello;
 
-import com.inlym.lifehelper.common.annotation.UserId;
-import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.common.constant.SpecialPath;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.InetAddress;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 通用接口调试控制器
@@ -30,11 +18,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class HelloController {
-    private final Environment environment;
-
-    @Value("${lifehelper.version}")
-    private String version;
-
     /**
      * 根路由
      *
@@ -55,103 +38,8 @@ public class HelloController {
      * <h2>注意事项
      * <p>项目内部进行日志记录时，不要记录当前接口，因为负载均衡的健康检查频率为1次/秒，记录日志会造成大量无效日志。
      */
-    @GetMapping(SpecialPath.HEALTH_CHECK_PATH)
+    @GetMapping("/ping")
     public String ping() {
         return "pong";
-    }
-
-    /**
-     * 等待 n 秒后返回结果
-     *
-     * <h2>主要用途
-     * <p>用于客户端调试网络请求超时的情况
-     *
-     * @param n 等待时间，单位：秒
-     *
-     * @since 1.1.2
-     */
-    @GetMapping("/sleep")
-    public Map<String, Object> sleep(@RequestParam(defaultValue = "1") int n) {
-        try {
-            Thread.sleep(n * 1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return Map.of("n", n);
-    }
-
-    /**
-     * 原样返回请求内容
-     *
-     * <h2>主要用途
-     * <p>用于将请求内容解析并作为响应数据返回。
-     *
-     * @param params  请求参数
-     * @param headers 请求头
-     * @param body    请求数据
-     */
-    @RequestMapping("/debug")
-    public Map<String, Object> debug(@RequestParam Map<String, String> params, @RequestHeader Map<String, String> headers, @RequestBody(required = false) Object body) {
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("params", params);
-        map.put("headers", headers);
-
-        if (body != null) {
-            map.put("body", body);
-        }
-
-        return map;
-    }
-
-    /**
-     * 用户登录鉴权调试
-     *
-     * <h2>说明
-     * <p>携带鉴权信息访问时，如果鉴权通过会返回用户 ID，否则报错。
-     */
-    @GetMapping("/userid")
-    @UserPermission
-    public int getUserId(@UserId int userId) {
-        return userId;
-    }
-
-    /**
-     * 查看项目配置信息及运行状况
-     *
-     * @since 1.3.0
-     */
-    @GetMapping("/profile")
-    @SneakyThrows
-    public Map<String, Object> getProfile() {
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("timestamp", System.currentTimeMillis());
-        map.put("now", new Date());
-        map.put("env", environment.getProperty("spring.profiles.active"));
-
-        InetAddress ia = InetAddress.getLocalHost();
-        map.put("hostname", ia.getHostName());
-        map.put("ip", ia.getHostAddress());
-
-        map.put("version", version);
-
-        return map;
-    }
-
-    @GetMapping("/time")
-    public Map<String, Object> getTime() {
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("System.currentTimeMillis", System.currentTimeMillis());
-        map.put("Date", new Date());
-        map.put("LocalDateTime", LocalDateTime.now());
-        map.put("ZoneId", ZoneId
-            .systemDefault()
-            .getId());
-        map.put("offset", ZoneId
-            .systemDefault()
-            .getRules()
-            .getOffset(LocalDateTime.now()));
-
-        return map;
     }
 }
