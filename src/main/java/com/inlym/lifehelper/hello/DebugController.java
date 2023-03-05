@@ -57,8 +57,19 @@ public class DebugController {
             .getTimeZone());
 
         map.put("LocalDateTime.now()", LocalDateTime.now());
+        map.put("LocalDateTime.now().toString()", LocalDateTime
+            .now()
+            .toString());
+
         map.put("LocalDate.now()", LocalDate.now());
+        map.put("LocalDate.now().toString()", LocalDate
+            .now()
+            .toString());
+
         map.put("LocalTime.now()", LocalTime.now());
+        map.put("LocalTime.now().toString()", LocalTime
+            .now()
+            .toString());
 
         return map;
     }
@@ -112,7 +123,6 @@ public class DebugController {
         map.put("getParameterMap", request.getParameterMap());
         map.put("getQueryString", request.getQueryString());
         map.put("getAuthType", request.getAuthType());
-
         map.put("headers", headers);
         map.put("body", body);
 
