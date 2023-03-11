@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.model;
 
+import com.inlym.lifehelper.common.constant.ClientType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,4 +58,17 @@ public class CustomRequestContext {
      * <p>务必在鉴权通过后再存入。
      */
     private Integer userId;
+
+    /**
+     * 客户端类型
+     *
+     * <h2>说明
+     * <p>目前就2个：小程序、Web
+     */
+    private ClientType clientType;
+
+    /**
+     * 客户端版本号
+     */
+    private String clientVersion;
 }

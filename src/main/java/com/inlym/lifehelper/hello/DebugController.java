@@ -2,6 +2,7 @@ package com.inlym.lifehelper.hello;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
+import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -127,5 +128,20 @@ public class DebugController {
         map.put("body", body);
 
         return map;
+    }
+
+    /**
+     * 查看自定义请求上下文
+     *
+     * @param request 请求
+     *
+     * @since 1.9.5
+     */
+    @GetMapping("/debug/ctx")
+    public CustomRequestContext getCustomRequestContext(HttpServletRequest request) {
+        CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
+        log.debug("context={}", context);
+
+        return context;
     }
 }

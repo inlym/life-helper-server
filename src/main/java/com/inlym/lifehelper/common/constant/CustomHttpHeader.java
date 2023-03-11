@@ -19,4 +19,7 @@ public abstract class CustomHttpHeader {
 
     /** 超级登录令牌 */
     public static final String SUPER_TOKEN = "x-lifehelper-auth-super-token";
+
+    /** 客户端信息 */
+    public static final String CLIENT_INFO = "x-lifehelper-client-info";
 }

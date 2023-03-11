@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.filter;
 
+import com.inlym.lifehelper.common.constant.ClientType;
 import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -45,6 +46,7 @@ public class InitialFilter extends OncePerRequestFilter {
             .requestTime(LocalDateTime.now())
             .method(method)
             .url(url)
+            .clientType(ClientType.UNKNOWN)
             .build());
 
         // 第3步：初始化自定义的 logback 日志变量
