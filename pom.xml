@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
         <relativePath/>
     </parent>
 
     <groupId>com.inlym</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>1.9.4</version>
+    <version>1.9.5</version>
 
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
             <artifactId>schedulerx2-spring-boot-starter</artifactId>
-            <version>1.8.3</version>
+            <version>1.8.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
