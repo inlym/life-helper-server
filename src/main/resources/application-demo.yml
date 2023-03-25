@@ -69,6 +69,16 @@ lifehelper:
         appid: xxxxxxxxxxxx
         secret: xxxxxxxxxxxx
 
+    # ChatGPT
+    chatgpt:
+        # 代理 HTTP 请求地址
+        proxy-url: xxxxxxxxxxxx
+        # 开发者密钥
+        keys:
+            - xxxxxxxxxxxx
+            - xxxxxxxxxxxx
+            - xxxxxxxxxxxx
+
 # 阿里云资源配置
 aliyun:
     # 阿里云 OSS 配置
