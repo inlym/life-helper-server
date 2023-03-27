@@ -27,7 +27,7 @@ public class CreateCompletionResponse {
     private Choice[] choices;
 
     /** 发生错误时的字段 */
-    private Error error;
+    private ApiError error;
 
     @Data
     public static class Choice {
@@ -36,14 +36,5 @@ public class CreateCompletionResponse {
 
         /** 索引顺序 */
         private Integer index;
-    }
-
-    @Data
-    public static class Error {
-        /** 错误消息 */
-        private String message;
-
-        /** 错误类型 */
-        private Integer type;
     }
 }

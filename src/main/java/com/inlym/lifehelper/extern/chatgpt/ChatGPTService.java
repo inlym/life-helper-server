@@ -1,10 +1,15 @@
 package com.inlym.lifehelper.extern.chatgpt;
 
+import com.inlym.lifehelper.extern.chatgpt.pojo.ChatCompletionMessage;
+import com.inlym.lifehelper.extern.chatgpt.pojo.CreateChatCompletionOptions;
+import com.inlym.lifehelper.extern.chatgpt.pojo.CreateChatCompletionResponse;
 import com.inlym.lifehelper.extern.chatgpt.pojo.CreateCompletionResponse;
 import com.inlym.lifehelper.extern.chatgpt.service.ChatGPTHttpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * ChatGPT 服务
@@ -32,5 +37,27 @@ public class ChatGPTService {
     public String createCompletion(String prompt) {
         CreateCompletionResponse response = chatGPTHttpService.createCompletion(prompt);
         return response.getChoices()[0].getText();
+    }
+
+    /**
+     * 创建会话消息补全
+     *
+     * @param messages 已发生的消息列表
+     *
+     * @see <a href="https://platform.openai.com/docs/api-reference/chat/create">Create chat completion</a>
+     * @since 1.9.6
+     */
+    public ChatCompletionMessage createChatCompletion(List<ChatCompletionMessage> messages) {
+        CreateChatCompletionOptions options = CreateChatCompletionOptions
+            .builder()
+            .model("gpt-3.5-turbo")
+            .messages(messages)
+            .build();
+
+        CreateChatCompletionResponse response = chatGPTHttpService.createChatCompletion(options);
+        return response
+            .getChoices()
+            .get(0)
+            .getMessage();
     }
 }

@@ -2,9 +2,7 @@ package com.inlym.lifehelper.extern.chatgpt.service;
 
 import com.inlym.lifehelper.extern.chatgpt.config.ChatGPTProperties;
 import com.inlym.lifehelper.extern.chatgpt.exception.ChatGPTCommonException;
-import com.inlym.lifehelper.extern.chatgpt.pojo.CreateCompletionRequestData;
-import com.inlym.lifehelper.extern.chatgpt.pojo.CreateCompletionResponse;
-import com.inlym.lifehelper.extern.chatgpt.pojo.ProxyRequest;
+import com.inlym.lifehelper.extern.chatgpt.pojo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,6 +38,19 @@ public class ChatGPTHttpService {
     }
 
     /**
+     * 构建请求头
+     *
+     * @since 1.9.6
+     */
+    private Map<String, String> buildHeaderMap() {
+        Map<String, String> headers = new HashMap<>(16);
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + getKey());
+
+        return headers;
+    }
+
+    /**
      * 会话补全
      *
      * @param prompt 提示语
@@ -48,14 +59,11 @@ public class ChatGPTHttpService {
      * @since 1.9.5
      */
     public CreateCompletionResponse createCompletion(String prompt) {
-        String key = getKey();
-        Map<String, String> headers = new HashMap<>(16);
-        headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + key);
+        Map<String, String> headers = buildHeaderMap();
 
         CreateCompletionRequestData requestData = CreateCompletionRequestData
             .builder()
-            .model("text-davinci-003")
+            .model("gpt-3.5-turbo")
             .prompt(prompt)
             .maxTokens(1000)
             .suffix("")
@@ -80,5 +88,37 @@ public class ChatGPTHttpService {
         }
 
         return responseData;
+    }
+
+    /**
+     * 创建会话消息补全
+     *
+     * @param options 请求数据
+     *
+     * @see <a href="https://platform.openai.com/docs/api-reference/chat/create">Create chat completion</a>
+     * @since 1.9.6
+     */
+    public CreateChatCompletionResponse createChatCompletion(CreateChatCompletionOptions options) {
+        Map<String, String> headers = buildHeaderMap();
+        String proxyUrl = properties.getProxyUrl();
+
+        ProxyRequest request = ProxyRequest
+            .builder()
+            .method("POST")
+            .url("https://api.openai.com/v1/chat/completions")
+            .headers(headers)
+            .data(options)
+            .build();
+
+        CreateChatCompletionResponse response = restTemplate.postForObject(proxyUrl, request, CreateChatCompletionResponse.class);
+
+        assert response != null;
+        if (response.getError() != null) {
+            throw new ChatGPTCommonException(response
+                .getError()
+                .getMessage());
+        }
+
+        return response;
     }
 }
