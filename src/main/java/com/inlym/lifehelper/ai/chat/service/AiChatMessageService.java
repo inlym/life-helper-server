@@ -1,5 +1,7 @@
 package com.inlym.lifehelper.ai.chat.service;
 
+import cn.hutool.core.util.IdUtil;
+import com.inlym.lifehelper.ai.chat.constant.AiChatRole;
 import com.inlym.lifehelper.ai.chat.entity.AiChatMessage;
 import com.inlym.lifehelper.ai.chat.pojo.AiChatMessageVO;
 import com.inlym.lifehelper.extern.chatgpt.pojo.ChatCompletionMessage;
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,13 +37,11 @@ public class AiChatMessageService {
         return messages
             .stream()
             .filter(AiChatMessage::getApiValid)
-            .map(p -> {
-                return ChatCompletionMessage
-                    .builder()
-                    .role(p.getRole())
-                    .content(p.getContent())
-                    .build();
-            })
+            .map(p -> ChatCompletionMessage
+                .builder()
+                .role(p.getRole())
+                .content(p.getContent())
+                .build())
             .toList();
     }
 
@@ -55,14 +56,69 @@ public class AiChatMessageService {
         return messages
             .stream()
             .filter(AiChatMessage::getClientVisible)
-            .map(p -> {
-                return AiChatMessageVO
-                    .builder()
-                    .id(p.getId())
-                    .role(p.getRole())
-                    .content(p.getContent())
-                    .build();
-            })
+            .map(p -> AiChatMessageVO
+                .builder()
+                .id(p.getId())
+                .role(p.getRole())
+                .content(p.getContent())
+                .build())
             .toList();
+    }
+
+    /**
+     * 根据文本内容创建智能对话消息实体
+     *
+     * @param content 用途提交的内容
+     *
+     * @since 1.9.6
+     */
+    public AiChatMessage createForUser(String content) {
+        return AiChatMessage
+            .builder()
+            .id(IdUtil.simpleUUID())
+            .role(AiChatRole.USER)
+            .content(content)
+            .createTime(LocalDateTime.now())
+            .clientVisible(true)
+            .apiValid(true)
+            .build();
+    }
+
+    /**
+     * 根据文本内容创建智能对话消息实体
+     *
+     * @param content 请求返回的内容
+     *
+     * @since 1.9.6
+     */
+    public AiChatMessage createForAssistant(String content) {
+        return AiChatMessage
+            .builder()
+            .id(IdUtil.simpleUUID())
+            .role(AiChatRole.ASSISTANT)
+            .content(content)
+            .createTime(LocalDateTime.now())
+            .clientVisible(true)
+            .apiValid(true)
+            .build();
+    }
+
+    /**
+     * 根据文本内容创建智能对话消息实体
+     *
+     * @param content 预定义的文本内容
+     *
+     * @since 1.9.6
+     */
+    public AiChatMessage createForSystem(String content) {
+        return AiChatMessage
+            .builder()
+            .id(IdUtil.simpleUUID())
+            .role(AiChatRole.SYSTEM)
+            .content(content)
+            .createTime(LocalDateTime.now())
+            .clientVisible(false)
+            .apiValid(false)
+            .build();
     }
 }

@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.ai.chat;
 
 import cn.hutool.core.util.IdUtil;
-import com.inlym.lifehelper.ai.chat.constant.AiChatRole;
 import com.inlym.lifehelper.ai.chat.entity.AiChat;
 import com.inlym.lifehelper.ai.chat.entity.AiChatMessage;
 import com.inlym.lifehelper.ai.chat.repository.AiChatRepository;
@@ -13,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,24 +39,23 @@ public class AiChatService {
      * @since 1.9.6
      */
     public AiChat create() {
+        AiChatMessage message1 = aiChatMessageService.createForSystem("请你记住你叫“小鸣助手”，我们现在开始！");
+        message1.setApiValid(true);
+
+        AiChatMessage message2 = aiChatMessageService.createForSystem("你可以问我问题，我会尽量回答你！");
+        message2.setClientVisible(true);
+
+        List<AiChatMessage> messages = new ArrayList<>(16);
+        messages.add(message1);
+        messages.add(message2);
+
         LocalDateTime now = LocalDateTime.now();
-
-        AiChatMessage reservedMessage = AiChatMessage
-            .builder()
-            .id(IdUtil.simpleUUID())
-            .role(AiChatRole.SYSTEM)
-            .content("请你记住你叫“小鸣助手”，我们现在开始！")
-            .createTime(now)
-            .clientVisible(false)
-            .apiValid(true)
-            .build();
-
         AiChat chat = AiChat
             .builder()
             .id(IdUtil.simpleUUID())
             .createTime(now)
             .updateTime(now)
-            .messages(List.of(reservedMessage))
+            .messages(messages)
             .build();
 
         log.trace("创建智能会话对象 -> {}", chat);
@@ -78,19 +77,9 @@ public class AiChatService {
         // 如果不存在则直接创建一个新的，不报错
         AiChat chat = result.orElseGet(this::create);
 
-        LocalDateTime now = LocalDateTime.now();
+        AiChatMessage message = aiChatMessageService.createForUser(userPrompt);
 
-        AiChatMessage message = AiChatMessage
-            .builder()
-            .id(IdUtil.simpleUUID())
-            .role(AiChatRole.USER)
-            .content(userPrompt)
-            .createTime(now)
-            .clientVisible(true)
-            .apiValid(true)
-            .build();
-
-        chat.setUpdateTime(now);
+        chat.setUpdateTime(LocalDateTime.now());
         chat
             .getMessages()
             .add(message);
@@ -101,25 +90,10 @@ public class AiChatService {
 
         try {
             ChatCompletionMessage reply = chatGPTService.createChatCompletion(completionMessages);
-            replyMessage = AiChatMessage
-                .builder()
-                .id(IdUtil.simpleUUID())
-                .role(AiChatRole.ASSISTANT)
-                .content(reply.getContent())
-                .createTime(LocalDateTime.now())
-                .clientVisible(true)
-                .apiValid(true)
-                .build();
+            replyMessage = aiChatMessageService.createForAssistant(reply.getContent());
         } catch (Exception e) {
-            replyMessage = AiChatMessage
-                .builder()
-                .id(IdUtil.simpleUUID())
-                .role(AiChatRole.ASSISTANT)
-                .content("我不知道你在说什么！")
-                .createTime(LocalDateTime.now())
-                .clientVisible(true)
-                .apiValid(false)
-                .build();
+            replyMessage = aiChatMessageService.createForAssistant("我不知道你在说什么！");
+            replyMessage.setApiValid(false);
         }
 
         chat
