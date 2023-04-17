@@ -40,7 +40,7 @@ public class SpringSecurityConfig {
 
         // 默认所有 API 均免鉴权，需要鉴权的 API 再额外使用 @Secured 注解声明需要的角色
         http
-            .authorizeRequests()
+            .authorizeHttpRequests()
             .anyRequest()
             .permitAll();
 
