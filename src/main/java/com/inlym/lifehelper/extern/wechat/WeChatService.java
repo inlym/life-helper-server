@@ -1,6 +1,8 @@
 package com.inlym.lifehelper.extern.wechat;
 
 import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;
+import com.inlym.lifehelper.extern.wechat.service.WeChatAccessTokenService;
+import com.inlym.lifehelper.extern.wechat.service.WeChatHttpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

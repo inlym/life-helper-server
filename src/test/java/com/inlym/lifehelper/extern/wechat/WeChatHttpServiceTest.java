@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.extern.wechat;
 
 import com.inlym.lifehelper.extern.wechat.pojo.WeChatGetAccessTokenResponse;
+import com.inlym.lifehelper.extern.wechat.service.WeChatHttpService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

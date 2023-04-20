@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.wechat;
+package com.inlym.lifehelper.extern.wechat.config;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

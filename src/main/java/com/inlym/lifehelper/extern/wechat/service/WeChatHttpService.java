@@ -1,6 +1,7 @@
-package com.inlym.lifehelper.extern.wechat;
+package com.inlym.lifehelper.extern.wechat.service;
 
 import com.inlym.lifehelper.common.constant.RedisCacheCollector;
+import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
 import com.inlym.lifehelper.extern.wechat.exception.WeChatCommonException;
 import com.inlym.lifehelper.extern.wechat.exception.WeChatInvalidAccessTokenException;
 import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;
@@ -16,6 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 微信小程序服务端 HTTP 请求服务
@@ -64,6 +68,30 @@ public class WeChatHttpService {
             .toUriString();
 
         WeChatGetAccessTokenResponse data = restTemplate.getForObject(url, WeChatGetAccessTokenResponse.class);
+
+        assert data != null;
+        if (validateResponse(data)) {
+            return data;
+        }
+
+        throw WeChatCommonException.create(data.getErrorCode(), data.getErrorMessage());
+    }
+
+    /**
+     * 获取稳定版接口调用凭据
+     *
+     * @date 2023-04-20
+     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getStableAccessToken.html">文档地址</a>
+     * @since 2.0.0
+     */
+    public WeChatGetAccessTokenResponse getStableAccessToken() {
+        String url = "https://api.weixin.qq.com/cgi-bin/stable_token";
+        Map<String, Object> options = new HashMap<>(16);
+        options.put("grant_type", "client_credential");
+        options.put("appid", properties.getAppid());
+        options.put("secret", properties.getSecret());
+
+        WeChatGetAccessTokenResponse data = restTemplate.postForObject(url, options, WeChatGetAccessTokenResponse.class);
 
         assert data != null;
         if (validateResponse(data)) {

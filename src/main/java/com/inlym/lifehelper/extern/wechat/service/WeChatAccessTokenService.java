@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.wechat;
+package com.inlym.lifehelper.extern.wechat.service;
 
 import com.inlym.lifehelper.extern.wechat.pojo.WeChatGetAccessTokenResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,8 @@
-package com.inlym.lifehelper.extern.wechat.exception;
+package com.inlym.lifehelper.extern.wechat.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
-import com.inlym.lifehelper.extern.wechat.WeChatAccessTokenService;
+import com.inlym.lifehelper.extern.wechat.exception.WeChatInvalidAccessTokenException;
+import com.inlym.lifehelper.extern.wechat.service.WeChatAccessTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
