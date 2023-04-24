@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.extern.wechat;
 
 import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;
-import com.inlym.lifehelper.extern.wechat.service.WeChatAccessTokenService;
 import com.inlym.lifehelper.extern.wechat.service.WeChatHttpService;
+import com.inlym.lifehelper.extern.wechat.service.WeChatStableAccessTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class WeChatService {
     private final WeChatHttpService weChatHttpService;
 
-    private final WeChatAccessTokenService weChatAccessTokenService;
+    private final WeChatStableAccessTokenService weChatStableAccessTokenService;
 
     /**
      * 通过从微信小程序中获取的 code 换取用户对应的 openid
@@ -46,7 +46,7 @@ public class WeChatService {
      * @since 1.3.0
      */
     public byte[] getUnlimitedQrCode(UnlimitedQrCodeOptions options) {
-        String token = weChatAccessTokenService.get();
+        String token = weChatStableAccessTokenService.get();
         return weChatHttpService.getUnlimitedQrCode(token, options);
     }
 }

@@ -2,7 +2,7 @@ package com.inlym.lifehelper.extern.wechat.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
 import com.inlym.lifehelper.extern.wechat.exception.WeChatInvalidAccessTokenException;
-import com.inlym.lifehelper.extern.wechat.service.WeChatAccessTokenService;
+import com.inlym.lifehelper.extern.wechat.service.WeChatStableAccessTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(20)
 @RequiredArgsConstructor
 public class WeChatExceptionHandler {
-    private final WeChatAccessTokenService weChatAccessTokenService;
+    private final WeChatStableAccessTokenService weChatStableAccessTokenService;
 
     /**
      * 处理微信服务端接口调用凭证异常
@@ -37,7 +37,7 @@ public class WeChatExceptionHandler {
     @ExceptionHandler(WeChatInvalidAccessTokenException.class)
     public ExceptionResponse handleWeChatInvalidAccessTokenException(WeChatInvalidAccessTokenException e) {
         log.error(e.getMessage());
-        weChatAccessTokenService.refreshAsync();
+        weChatStableAccessTokenService.refresh();
         return ExceptionResponse.forServerError();
     }
 }
