@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.greatday.repository;
+package com.inlym.lifehelper.greatday.service;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
@@ -28,7 +28,6 @@ public class GreatDayRepository {
      * 新增
      *
      * @param greatDay 纪念日实体
-     *
      * @since 1.8.0
      */
     public GreatDay create(GreatDay greatDay) {
@@ -39,7 +38,6 @@ public class GreatDayRepository {
      * 更新（编辑）
      *
      * @param greatDay 纪念日实体
-     *
      * @since 1.8.0
      */
     public void update(GreatDay greatDay) {
@@ -51,15 +49,14 @@ public class GreatDayRepository {
      *
      * @param userId 用户 ID
      * @param dayId  纪念日 ID
-     *
      * @since 1.8.0
      */
     public void delete(int userId, String dayId) {
         GreatDay greatDay = GreatDay
-            .builder()
-            .userId(userId)
-            .dayId(dayId)
-            .build();
+                .builder()
+                .userId(userId)
+                .dayId(dayId)
+                .build();
 
         wideColumnExecutor.delete(greatDay);
     }
@@ -68,14 +65,13 @@ public class GreatDayRepository {
      * 通过用户 ID 查找所有记录
      *
      * @param userId 用户 ID
-     *
      * @since 1.8.0
      */
     public List<GreatDay> findAll(int userId) {
         GreatDay greatDay = GreatDay
-            .builder()
-            .userId(userId)
-            .build();
+                .builder()
+                .userId(userId)
+                .build();
 
         return wideColumnExecutor.findAll(greatDay, GreatDay.class);
     }
@@ -85,15 +81,14 @@ public class GreatDayRepository {
      *
      * @param userId 用户 ID
      * @param dayId  纪念日 ID
-     *
      * @since 1.8.0
      */
     public GreatDay findOne(int userId, String dayId) {
         GreatDay greatDay = GreatDay
-            .builder()
-            .userId(userId)
-            .dayId(dayId)
-            .build();
+                .builder()
+                .userId(userId)
+                .dayId(dayId)
+                .build();
 
         return wideColumnExecutor.findOne(greatDay, GreatDay.class);
     }

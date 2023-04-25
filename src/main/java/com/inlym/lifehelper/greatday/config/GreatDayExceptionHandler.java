@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.greatday.common;
+package com.inlym.lifehelper.greatday.config;
 
 import com.inlym.lifehelper.common.model.ErrorResponse;
 import com.inlym.lifehelper.greatday.exception.GreatDayNotFoundException;
