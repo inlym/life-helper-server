@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.weather.place;
 
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.exception.WeatherPlaceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,6 @@ public class WeatherPlaceRepository {
      * 新增
      *
      * @param place 天气地点
-     *
      * @since 1.5.0
      */
     public WeatherPlace create(WeatherPlace place) {
@@ -49,15 +48,14 @@ public class WeatherPlaceRepository {
      *
      * @param userId  用户 ID
      * @param placeId 天气地点 ID
-     *
      * @since 1.5.0
      */
     public void delete(int userId, String placeId) {
         WeatherPlace place = WeatherPlace
-            .builder()
-            .userId(userId)
-            .placeId(placeId)
-            .build();
+                .builder()
+                .userId(userId)
+                .placeId(placeId)
+                .build();
 
         wideColumnExecutor.delete(place);
     }
@@ -66,20 +64,19 @@ public class WeatherPlaceRepository {
      * 获取所有记录
      *
      * @param userId 用户 ID
-     *
      * @since 1.5.0
      */
     public List<WeatherPlace> list(int userId) {
         WeatherPlace place = WeatherPlace
-            .builder()
-            .userId(userId)
-            .build();
+                .builder()
+                .userId(userId)
+                .build();
 
         List<WeatherPlace> list = wideColumnExecutor.findAll(place, WeatherPlace.class);
         if (list.size() > 0) {
             list.sort(Comparator
-                .comparing(WeatherPlace::getCreateTime)
-                .reversed());
+                    .comparing(WeatherPlace::getCreateTime)
+                    .reversed());
         }
 
         return list;
@@ -89,7 +86,6 @@ public class WeatherPlaceRepository {
      * 统计记录行数
      *
      * @param userId 用户 ID
-     *
      * @since 1.5.0
      */
     public int count(int userId) {
@@ -101,15 +97,14 @@ public class WeatherPlaceRepository {
      *
      * @param userId  用户 ID
      * @param placeId 天气地点 ID
-     *
      * @since 1.5.0
      */
     public WeatherPlace findOneOrElseThrow(int userId, String placeId) {
         WeatherPlace placeSearch = WeatherPlace
-            .builder()
-            .userId(userId)
-            .placeId(placeId)
-            .build();
+                .builder()
+                .userId(userId)
+                .placeId(placeId)
+                .build();
 
         WeatherPlace place = wideColumnExecutor.findOne(placeSearch, WeatherPlace.class);
 

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.timeseries;
+package com.inlym.lifehelper.common.base.aliyun.ots.runner;
 
 import com.alicloud.openservices.tablestore.TimeseriesClient;
 import com.alicloud.openservices.tablestore.model.TimeseriesTableMeta;
@@ -35,8 +35,8 @@ public class TimeseriesCreateTablesTask implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         // 数据库中的表名列表
         List<String> tableNames = client
-            .listTimeseriesTable()
-            .getTimeseriesTableNames();
+                .listTimeseriesTable()
+                .getTimeseriesTableNames();
 
         for (TimeseriesTableMeta meta : getTableMetaList()) {
             String tableName = meta.getTimeseriesTableName();

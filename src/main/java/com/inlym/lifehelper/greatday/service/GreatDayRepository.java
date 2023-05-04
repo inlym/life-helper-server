@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.greatday.service;
 
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

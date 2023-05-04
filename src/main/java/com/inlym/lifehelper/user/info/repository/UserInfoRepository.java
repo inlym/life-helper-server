@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.user.info.repository;
 
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,6 @@ public class UserInfoRepository {
      * 保存用户信息
      *
      * @param info 用户信息
-     *
      * @since 1.7.0
      */
     public void save(UserInfo info) {
@@ -37,14 +36,13 @@ public class UserInfoRepository {
      * 通过用户 ID 获取用户信息
      *
      * @param userId 用户 ID
-     *
      * @since 1.7.0
      */
     public UserInfo findByUserId(int userId) {
         UserInfo info = UserInfo
-            .builder()
-            .userId(userId)
-            .build();
+                .builder()
+                .userId(userId)
+                .build();
 
         return wideColumnExecutor.findOne(info, UserInfo.class);
     }

@@ -12,7 +12,6 @@ import java.lang.annotation.*;
  * <p>原本命名为 {@code PrimaryKeyColumn}，但是为了避免和 {@link com.alicloud.openservices.tablestore.model.PrimaryKeyColumn} 重名，因此改名。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/6/21
  * @since 1.3.0
  **/
 @Target(ElementType.FIELD)

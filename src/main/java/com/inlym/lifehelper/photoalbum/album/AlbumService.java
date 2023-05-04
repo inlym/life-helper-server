@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.photoalbum.album;
 
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.exception.AlbumNotExistException;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
@@ -37,20 +37,19 @@ public class AlbumService {
      * 将相册实体转化为可用于客户端展示使用的对象结构
      *
      * @param album 相册实体
-     *
      * @since 1.4.0
      */
     public AlbumVO convert(Album album) {
         AlbumVO vo = AlbumVO
-            .builder()
-            .id(album.getAlbumId())
-            .name(album.getName())
-            .createTime(album.getCreateTime())
-            .updateTime(album.getUpdateTime())
-            .size(album.getSize())
-            .imageCount(album.getImageCount())
-            .videoCount(album.getVideoCount())
-            .build();
+                .builder()
+                .id(album.getAlbumId())
+                .name(album.getName())
+                .createTime(album.getCreateTime())
+                .updateTime(album.getUpdateTime())
+                .size(album.getSize())
+                .imageCount(album.getImageCount())
+                .videoCount(album.getVideoCount())
+                .build();
 
         if (StringUtils.hasText(album.getCoverImagePath())) {
             vo.setCoverImageUrl(ossService.concatUrl(album.getCoverImagePath()));
@@ -67,7 +66,6 @@ public class AlbumService {
      * 创建新相册
      *
      * @param album 包含部分属性的相册实体，该实体对象应包含以下属性：`userId`, `name`, `description`
-     *
      * @since 1.4.0
      */
     public Album create(Album album) {
@@ -87,14 +85,13 @@ public class AlbumService {
      * 获取用户的所有相册
      *
      * @param userId 用户 ID
-     *
      * @since 1.4.0
      */
     public List<Album> list(int userId) {
         Album album = Album
-            .builder()
-            .userId(userId)
-            .build();
+                .builder()
+                .userId(userId)
+                .build();
 
         return wideColumnExecutor.findAll(album, Album.class);
     }
@@ -103,7 +100,6 @@ public class AlbumService {
      * 更新相册信息
      *
      * @param album 相册实体
-     *
      * @since 1.4.0
      */
     public Album update(Album album) {
@@ -115,15 +111,14 @@ public class AlbumService {
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
-     *
      * @since 1.4.0
      */
     public void delete(int userId, String albumId) {
         Album album = Album
-            .builder()
-            .userId(userId)
-            .albumId(albumId)
-            .build();
+                .builder()
+                .userId(userId)
+                .albumId(albumId)
+                .build();
 
         wideColumnExecutor.delete(album);
     }
@@ -133,15 +128,14 @@ public class AlbumService {
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
-     *
      * @since 1.4.0
      */
     public Album findOne(int userId, String albumId) {
         Album album = Album
-            .builder()
-            .userId(userId)
-            .albumId(albumId)
-            .build();
+                .builder()
+                .userId(userId)
+                .albumId(albumId)
+                .build();
 
         return wideColumnExecutor.findOne(album, Album.class);
     }
@@ -151,7 +145,6 @@ public class AlbumService {
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
-     *
      * @since 1.4.0
      */
     public Album findOneOrElseThrow(int userId, String albumId) {
@@ -174,7 +167,6 @@ public class AlbumService {
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
-     *
      * @since 1.4.0
      */
     public void refresh(int userId, String albumId) {
@@ -182,15 +174,15 @@ public class AlbumService {
         Album album = findOneOrElseThrow(userId, albumId);
 
         Media mediaSearch = Media
-            .builder()
-            .albumId(albumId)
-            .build();
+                .builder()
+                .albumId(albumId)
+                .build();
         List<Media> mediaList = wideColumnExecutor.findAll(mediaSearch, Media.class);
 
         if (mediaList.size() > 0) {
             mediaList.sort(Comparator
-                .comparing(Media::getUploadTime)
-                .reversed());
+                    .comparing(Media::getUploadTime)
+                    .reversed());
 
             int imageCount = 0;
             int videoCount = 0;

@@ -3,7 +3,7 @@ package com.inlym.lifehelper.greatday.once;
 import com.alibaba.schedulerx.worker.domain.JobContext;
 import com.alibaba.schedulerx.worker.processor.JavaProcessor;
 import com.alibaba.schedulerx.worker.processor.ProcessResult;
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnClient;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.model.WideColumnClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

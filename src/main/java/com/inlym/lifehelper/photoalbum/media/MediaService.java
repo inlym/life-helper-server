@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.photoalbum.media;
 
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnExecutor;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
 import com.inlym.lifehelper.photoalbum.album.AlbumService;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
 import com.inlym.lifehelper.photoalbum.album.pojo.AlbumVO;
@@ -40,7 +40,6 @@ public class MediaService {
      * 将实体转化为客户端使用的视图对象
      *
      * @param media 媒体文件实体
-     *
      * @since 1.4.0
      */
     public MediaVO convert(Media media) {
@@ -66,7 +65,6 @@ public class MediaService {
      *
      * @param userId 用户 ID
      * @param media  媒体文件实体
-     *
      * @since 1.4.0
      */
     public Media add(int userId, Media media) {
@@ -88,7 +86,6 @@ public class MediaService {
      *
      * @param userId 用户 ID
      * @param media  媒体文件实体
-     *
      * @since 1.4.0
      */
     public void delete(int userId, Media media) {
@@ -104,20 +101,19 @@ public class MediaService {
      *
      * @param userId  用户 ID
      * @param albumId 相册 ID
-     *
      * @since 1.4.0
      */
     public AlbumVO getAlbumWithMedias(int userId, String albumId) {
         Album album = albumService.findOneOrElseThrow(userId, albumId);
         Media mediaSearch = Media
-            .builder()
-            .albumId(albumId)
-            .build();
+                .builder()
+                .albumId(albumId)
+                .build();
 
         List<Media> mediaList = wideColumnExecutor.findAll(mediaSearch, Media.class);
         mediaList.sort(Comparator
-            .comparing(Media::getUploadTime)
-            .reversed());
+                .comparing(Media::getUploadTime)
+                .reversed());
 
         List<MediaVO> list = new ArrayList<>();
 

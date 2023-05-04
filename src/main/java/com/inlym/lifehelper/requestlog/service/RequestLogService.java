@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.requestlog.service;
 
-import com.inlym.lifehelper.common.base.aliyun.ots.timeseries.TimeseriesExecutor;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.TimeseriesExecutor;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import com.inlym.lifehelper.location.position.LocationService;
 import com.inlym.lifehelper.location.position.pojo.IpLocation;
@@ -35,7 +35,6 @@ public class RequestLogService {
      * 处理请求日志信息
      *
      * @param request 请求对象
-     *
      * @since 1.7.0
      */
     public void resolveRequest(HttpServletRequest request) {
@@ -55,18 +54,18 @@ public class RequestLogService {
             IpLocation ipLocation = locationService.locateIpUpToCity(ip);
 
             RequestLog requestLog = RequestLog
-                .builder()
-                .userId(userId)
-                .date(LocalDate.now())
-                .requestId(requestId)
-                .method(method)
-                .path(path)
-                .querystring(querystring)
-                .ip(ip)
-                .province(ipLocation.getProvince())
-                .city(ipLocation.getCity())
-                .district(ipLocation.getDistrict())
-                .build();
+                    .builder()
+                    .userId(userId)
+                    .date(LocalDate.now())
+                    .requestId(requestId)
+                    .method(method)
+                    .path(path)
+                    .querystring(querystring)
+                    .ip(ip)
+                    .province(ipLocation.getProvince())
+                    .city(ipLocation.getCity())
+                    .district(ipLocation.getDistrict())
+                    .build();
 
             timeseriesExecutor.insertAsync(requestLog);
         }

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.timeseries;
+package com.inlym.lifehelper.common.base.aliyun.ots.core;
 
 import com.alicloud.openservices.tablestore.TimeseriesClient;
 import com.alicloud.openservices.tablestore.model.ColumnValue;
@@ -37,7 +37,6 @@ public class TimeseriesExecutor {
      * 新增一条记录
      *
      * @param entity 实体对象
-     *
      * @see <a href="https://help.aliyun.com/document_detail/341805.html">写入时序数据</a>
      * @since 1.7.0
      */
@@ -76,7 +75,6 @@ public class TimeseriesExecutor {
      * 新增一条记录（异步）
      *
      * @param entity 实体对象
-     *
      * @see <a href="https://help.aliyun.com/document_detail/341805.html">写入时序数据</a>
      * @since 1.7.0
      */

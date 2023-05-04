@@ -1,9 +1,11 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
+package com.inlym.lifehelper.common.base.aliyun.ots.core;
 
 import com.alicloud.openservices.tablestore.model.*;
 import com.alicloud.openservices.tablestore.model.filter.SingleColumnValueFilter;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.model.WideColumnClient;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.WideColumnUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -23,8 +25,11 @@ import java.util.List;
  **/
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WideColumnExecutor {
-    /** 表示逻辑删除的列的名称，该字段自动化管理 */
+    /**
+     * 表示逻辑删除的列的名称，该字段自动化管理
+     */
     private static final String DELETED_COLUMN_NAME = "_deleted";
 
     private final WideColumnClient client;
@@ -34,7 +39,7 @@ public class WideColumnExecutor {
      *
      * @param entity 实体对象
      * @param <T>    实体类型
-     *
+     * @see <a href="https://help.aliyun.com/document_detail/43013.htm">写入数据</a>
      * @since 1.4.0
      */
     public <T> T create(T entity) {
@@ -47,8 +52,8 @@ public class WideColumnExecutor {
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
             // 静态成员变量不参与该流程
             if (Modifier
-                .toString(field.getModifiers())
-                .contains("static")) {
+                    .toString(field.getModifiers())
+                    .contains("static")) {
                 continue;
             }
 
@@ -69,7 +74,6 @@ public class WideColumnExecutor {
      * 删除一行数据
      *
      * @param entity 实体对象
-     *
      * @since 1.4.0
      */
     public <T> void delete(T entity) {
@@ -85,7 +89,6 @@ public class WideColumnExecutor {
      *
      * @param entity 实体对象
      * @param <T>    实体类型
-     *
      * @see <a href="https://help.aliyun.com/document_detail/43013.html">写入数据</a>
      * @since 1.4.0
      */
@@ -100,8 +103,8 @@ public class WideColumnExecutor {
         for (Field field : WideColumnUtils.getAttributeFieldList(entity)) {
             // 静态成员变量不参与该流程
             if (Modifier
-                .toString(field.getModifiers())
-                .contains("static")) {
+                    .toString(field.getModifiers())
+                    .contains("static")) {
                 continue;
             }
 
@@ -126,7 +129,6 @@ public class WideColumnExecutor {
      * @param entity 实体对象
      * @param clazz  实体类
      * @param <T>    实体类型
-     *
      * @since 1.4.0
      */
     public <T> T findOne(T entity, Class<T> clazz) {
@@ -150,7 +152,6 @@ public class WideColumnExecutor {
      * @param entity 实体对象
      * @param clazz  实体类
      * @param <T>    实体类型
-     *
      * @see <a href="https://help.aliyun.com/document_detail/43017.html">读取数据</a>
      * @since 1.1.0
      */

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
+package com.inlym.lifehelper.common.base.aliyun.ots.core.model;
 
 import com.alicloud.openservices.tablestore.SyncClient;
 

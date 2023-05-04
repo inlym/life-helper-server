@@ -1,8 +1,7 @@
-package com.inlym.lifehelper.common.base.aliyun.ots;
+package com.inlym.lifehelper.common.base.aliyun.ots.config;
 
 import com.alicloud.openservices.tablestore.TimeseriesClient;
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnClient;
-import com.inlym.lifehelper.common.base.aliyun.ots.widecolumn.WideColumnProperties;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.model.WideColumnClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

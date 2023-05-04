@@ -1,8 +1,9 @@
-package com.inlym.lifehelper.common.base.aliyun.ots.widecolumn;
+package com.inlym.lifehelper.common.base.aliyun.ots.runner;
 
 import com.alicloud.openservices.tablestore.model.CreateTableRequest;
 import com.alicloud.openservices.tablestore.model.TableMeta;
 import com.alicloud.openservices.tablestore.model.TableOptions;
+import com.inlym.lifehelper.common.base.aliyun.ots.core.model.WideColumnClient;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.utils.WideColumnUtils;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.photoalbum.album.entity.Album;
@@ -38,8 +39,8 @@ public class WideColumnCreateTablesTask implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         // 数据库中的表名列表
         List<String> tableNames = client
-            .listTable()
-            .getTableNames();
+                .listTable()
+                .getTableNames();
 
         for (TableMeta tableMeta : getTableMetaList()) {
             String tableName = tableMeta.getTableName();
@@ -79,8 +80,8 @@ public class WideColumnCreateTablesTask implements ApplicationRunner {
         list.add(GreatDay.class);
 
         return list
-            .stream()
-            .map(WideColumnUtils::buildTableMeta)
-            .toList();
+                .stream()
+                .map(WideColumnUtils::buildTableMeta)
+                .toList();
     }
 }

@@ -21,7 +21,6 @@ public abstract class TableStoreUtils {
      * 将普通类型的字段值转化为宽表模型中使用的列值类型
      *
      * @param obj 字段值
-     *
      * @since 1.7.0
      */
     public static ColumnValue convertToColumnValue(Object obj) {
@@ -41,11 +40,11 @@ public abstract class TableStoreUtils {
             return ColumnValue.fromBinary((byte[]) obj);
         } else if (obj instanceof LocalDateTime) {
             return ColumnValue.fromLong(((LocalDateTime) obj)
-                .toInstant(ZoneId
-                    .systemDefault()
-                    .getRules()
-                    .getOffset(LocalDateTime.now()))
-                .toEpochMilli());
+                    .toInstant(ZoneId
+                            .systemDefault()
+                            .getRules()
+                            .getOffset(LocalDateTime.now()))
+                    .toEpochMilli());
         } else if (obj instanceof LocalDate) {
             return ColumnValue.fromString(obj.toString());
         } else {
