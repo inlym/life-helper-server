@@ -6,7 +6,7 @@ import com.alibaba.schedulerx.worker.processor.ProcessResult;
 import com.inlym.lifehelper.extern.tencentmap.TencentMapHttpService;
 import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapListRegionResponse;
 import com.inlym.lifehelper.location.region.entity.Region;
-import com.inlym.lifehelper.location.region.repository.RegionRepository;
+import com.inlym.lifehelper.location.region.service.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,22 +39,6 @@ public class OneTimeFillingRegionDataTask extends JavaProcessor {
     }
 
     /**
-     * 构建地区实体
-     *
-     * @param item 响应数据获取的地区列表项
-     *
-     * @since 1.7.2
-     */
-    private Region buildBaseEntity(TencentMapListRegionResponse.Region item) {
-        return Region
-            .builder()
-            .id(Integer.valueOf(item.getId()))
-            .shortName(item.getName())
-            .fullName(item.getFullName())
-            .build();
-    }
-
-    /**
      * 初始化地区数据
      *
      * <h2>主要流程
@@ -64,25 +48,21 @@ public class OneTimeFillingRegionDataTask extends JavaProcessor {
      */
     private void execTask() {
         // 开始前检查数据库中是否有数据，如果有则停止
-        if (regionRepository
-            .findAll()
-            .size() > 0) {
+        if (regionRepository.findAll()
+                            .size() > 0) {
             throw new RuntimeException("地区数据库中有值，请先清空后再开始任务！");
         }
 
         TencentMapListRegionResponse data = tencentMapHttpService.listRegions();
 
-        List<TencentMapListRegionResponse.Region> provinceList = data
-            .getResult()
-            .get(0);
+        List<TencentMapListRegionResponse.Region> provinceList = data.getResult()
+                                                                     .get(0);
 
-        List<TencentMapListRegionResponse.Region> cityList = data
-            .getResult()
-            .get(1);
+        List<TencentMapListRegionResponse.Region> cityList = data.getResult()
+                                                                 .get(1);
 
-        List<TencentMapListRegionResponse.Region> districtList = data
-            .getResult()
-            .get(2);
+        List<TencentMapListRegionResponse.Region> districtList = data.getResult()
+                                                                     .get(2);
 
         for (TencentMapListRegionResponse.Region item : provinceList) {
             Region province = buildBaseEntity(item);
@@ -91,12 +71,10 @@ public class OneTimeFillingRegionDataTask extends JavaProcessor {
             regionRepository.save(province);
 
             // 处理“市”级
-            int cityStart = item
-                .getChildrenIndex()
-                .get(0);
-            int cityEnd = item
-                .getChildrenIndex()
-                .get(1);
+            int cityStart = item.getChildrenIndex()
+                                .get(0);
+            int cityEnd = item.getChildrenIndex()
+                              .get(1);
 
             for (int i = cityStart; i < cityEnd + 1; i++) {
                 TencentMapListRegionResponse.Region cityItem = cityList.get(i);
@@ -108,13 +86,11 @@ public class OneTimeFillingRegionDataTask extends JavaProcessor {
 
                 // 处理“区县”级
                 if (cityItem.getChildrenIndex() != null) {
-                    int districtStart = cityItem
-                        .getChildrenIndex()
-                        .get(0);
+                    int districtStart = cityItem.getChildrenIndex()
+                                                .get(0);
 
-                    int districtEnd = cityItem
-                        .getChildrenIndex()
-                        .get(1);
+                    int districtEnd = cityItem.getChildrenIndex()
+                                              .get(1);
 
                     for (int j = districtStart; j < districtEnd + 1; j++) {
                         TencentMapListRegionResponse.Region districtItem = districtList.get(j);
@@ -127,5 +103,20 @@ public class OneTimeFillingRegionDataTask extends JavaProcessor {
                 }
             }
         }
+    }
+
+    /**
+     * 构建地区实体
+     *
+     * @param item 响应数据获取的地区列表项
+     *
+     * @since 1.7.2
+     */
+    private Region buildBaseEntity(TencentMapListRegionResponse.Region item) {
+        return Region.builder()
+                     .id(Integer.valueOf(item.getId()))
+                     .shortName(item.getName())
+                     .fullName(item.getFullName())
+                     .build();
     }
 }
