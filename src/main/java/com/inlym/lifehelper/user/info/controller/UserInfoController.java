@@ -1,9 +1,10 @@
-package com.inlym.lifehelper.user.info;
+package com.inlym.lifehelper.user.info.controller;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.user.info.pojo.UpdateUserInfoDTO;
 import com.inlym.lifehelper.user.info.pojo.UserInfoVO;
+import com.inlym.lifehelper.user.info.service.UserInfoAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class UserInfoController {
-    private final UserInfoService userInfoService;
+    private final UserInfoAdapter userInfoAdapter;
 
     /**
      * 获取用户信息
@@ -35,7 +36,7 @@ public class UserInfoController {
     @GetMapping("/userinfo")
     @UserPermission
     public UserInfoVO get(@UserId int userId) {
-        return userInfoService.getDisplayUserInfo(userId);
+        return userInfoAdapter.getMixedUserInfo(userId);
     }
 
     /**
@@ -49,7 +50,6 @@ public class UserInfoController {
     @PutMapping("/userinfo")
     @UserPermission
     public UserInfoVO update(@UserId int userId, @RequestBody UpdateUserInfoDTO dto) {
-        userInfoService.updateUserInfo(userId, dto);
-        return userInfoService.getDisplayUserInfo(userId);
+        return userInfoAdapter.update(userId, dto);
     }
 }

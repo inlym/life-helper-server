@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.user.info.entity;
 
-import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +26,6 @@ public class UserInfo {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
-    @PrimaryKeyField(name = "uid", order = 1, hashed = true)
     private Integer userId;
 
     // ================================= 属性列 =================================
