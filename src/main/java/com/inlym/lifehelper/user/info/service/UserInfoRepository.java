@@ -2,7 +2,7 @@ package com.inlym.lifehelper.user.info.service;
 
 import com.alicloud.openservices.tablestore.model.*;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.model.WideColumnClient;
-import com.inlym.lifehelper.common.util.IdUtil;
+import com.inlym.lifehelper.common.util.HashedIdUtil;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class UserInfoRepository {
      * @since 1.7.0
      */
     public void save(UserInfo info) {
-        String hashedId = IdUtil.getHashedId(info.getUserId());
+        String hashedId = HashedIdUtil.create(info.getUserId());
 
         // 构造主键
         PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
@@ -83,7 +83,7 @@ public class UserInfoRepository {
 
         // 构造主键
         PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        primaryKeyBuilder.addPrimaryKeyColumn("uid", PrimaryKeyValue.fromString(IdUtil.getHashedId(userId)));
+        primaryKeyBuilder.addPrimaryKeyColumn("uid", PrimaryKeyValue.fromString(HashedIdUtil.create(userId)));
         PrimaryKey primaryKey = primaryKeyBuilder.build();
 
         // 设置单行查询条件
