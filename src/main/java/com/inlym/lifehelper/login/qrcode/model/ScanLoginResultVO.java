@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.scan.pojo;
+package com.inlym.lifehelper.login.qrcode.model;
 
 import com.inlym.lifehelper.common.auth.core.SecurityToken;
 import lombok.AllArgsConstructor;

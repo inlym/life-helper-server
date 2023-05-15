@@ -1,13 +1,16 @@
-package com.inlym.lifehelper.login.scan.constant;
+package com.inlym.lifehelper.login.qrcode.constant;
 
 /**
- * 扫码登录凭据状态
+ * 二维码凭据状态
+ *
+ * <h2>说明
+ * <p>当前模块中提到的「二维码」均为「微信小程序码」。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2023/1/5
- * @since 1.9.0
+ * @date 2023/5/15
+ * @since 2.0.0
  **/
-public enum ScanLoginTicketStatus {
+public enum QrCodeTicketStatus {
     /**
      * 已创建
      *
@@ -40,5 +43,13 @@ public enum ScanLoginTicketStatus {
      * <p>（1）「使用」指的是消耗该「扫码登录凭据」用于生成登录凭证。
      * <p>（2）目前，该状态实际上未用到，因为发生「使用」行为后，「扫码登录凭据」直接被销毁了。
      */
-    CONSUMED
+    CONSUMED,
+
+    /**
+     * 已失效
+     *
+     * <h2>状态说明
+     * <p>仅用于返回给客户端使用。
+     */
+    INVALID
 }
