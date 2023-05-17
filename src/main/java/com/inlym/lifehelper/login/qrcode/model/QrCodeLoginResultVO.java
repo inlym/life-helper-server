@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScanLoginResultVO {
+public class QrCodeLoginResultVO {
     /** 是否已扫码，该状态仅用于页面展示 */
     private Boolean scanned;
 

@@ -42,7 +42,7 @@ public class LoginQrCodeGenerator {
     private final OssService ossService;
 
     /**
-     * 封装用于外部调用的获取小程序码 ID 的方法
+     * 封装用于外部调用的获取二维码 ID 的方法
      *
      * @date 2023/5/15
      * @since 2.0.0
@@ -65,7 +65,7 @@ public class LoginQrCodeGenerator {
         String id = getRandomId();
         // 小程序中用于扫码登录页面的路径
         String page = "pages/scan/login";
-        // 小程序码宽度
+        // 二维码宽度
         int width = 300;
 
         UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
@@ -76,11 +76,11 @@ public class LoginQrCodeGenerator {
                                              .envVersion("release")
                                              .build();
 
-        // 向微信服务器获取小程序码
+        // 向微信服务器获取二维码
         byte[] qrcode = weChatService.getUnlimitedQrCode(options);
 
         // 上传至阿里云 OSS
-        ossService.upload(OssDir.WXACODE + "/" + id, qrcode);
+        ossService.upload(getOssPath(id), qrcode);
 
         return id;
     }
@@ -110,6 +110,18 @@ public class LoginQrCodeGenerator {
     }
 
     /**
+     * 获取二维码资源在 OSS 中的路径地址
+     *
+     * @param id 凭据 ID
+     *
+     * @date 2023/5/16
+     * @since 2.0.0
+     */
+    public String getOssPath(String id) {
+        return OssDir.WXACODE + "/" + id + ".png";
+    }
+
+    /**
      * 当数量较少时，异步批量生成一批新的
      *
      * @date 2023/5/15
@@ -125,7 +137,7 @@ public class LoginQrCodeGenerator {
                         .size(AVAILABLE_QRCODE_LIST);
         assert size != null;
 
-        // 如果当前数量低于预警值，则批量生成一批新的小程序码
+        // 如果当前数量低于预警值，则批量生成一批新的二维码
         if (size < n) {
             for (int i = 0; i < n; i++) {
                 String id = generate();

@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.login.qrcode.model;
 
-import com.inlym.lifehelper.common.validation.SimpleUUID;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -15,9 +14,8 @@ import lombok.Data;
  * @since 1.9.0
  **/
 @Data
-public class ScanLoginDTO {
+public class QrCodeLoginDTO {
     /** 扫码登录票据 ID */
     @NotNull
-    @SimpleUUID
     private String id;
 }
