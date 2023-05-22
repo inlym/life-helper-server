@@ -6,6 +6,8 @@ import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringBootVersion;
+import org.springframework.core.SpringVersion;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,31 +48,31 @@ public class DebugController {
         map.put("new Date()", new Date());
 
         map.put("ZoneId.systemDefault().getId()", ZoneId
-            .systemDefault()
-            .getId());
+                                                      .systemDefault()
+                                                      .getId());
         map.put("ZoneId.systemDefault().toString()", ZoneId
-            .systemDefault()
-            .toString());
+                                                         .systemDefault()
+                                                         .toString());
 
         map.put("Calendar.getInstance()", Calendar.getInstance());
         map.put("Calendar.getInstance().getTimeZone()", Calendar
-            .getInstance()
-            .getTimeZone());
+                                                            .getInstance()
+                                                            .getTimeZone());
 
         map.put("LocalDateTime.now()", LocalDateTime.now());
         map.put("LocalDateTime.now().toString()", LocalDateTime
-            .now()
-            .toString());
+                                                      .now()
+                                                      .toString());
 
         map.put("LocalDate.now()", LocalDate.now());
         map.put("LocalDate.now().toString()", LocalDate
-            .now()
-            .toString());
+                                                  .now()
+                                                  .toString());
 
         map.put("LocalTime.now()", LocalTime.now());
         map.put("LocalTime.now().toString()", LocalTime
-            .now()
-            .toString());
+                                                  .now()
+                                                  .toString());
 
         return map;
     }
@@ -116,7 +118,8 @@ public class DebugController {
      * @since 1.9.4
      */
     @RequestMapping("/debug/request")
-    public Map<String, Object> getRequestDetail(HttpServletRequest request, @RequestHeader Map<String, String> headers, @RequestBody(required = false) String body) {
+    public Map<String, Object> getRequestDetail(HttpServletRequest request, @RequestHeader Map<String, String> headers,
+                                                @RequestBody(required = false) String body) {
         Map<String, Object> map = new HashMap<>(16);
         map.put("getRequestURI", request.getRequestURI());
         map.put("getServletPath", request.getServletPath());
@@ -143,5 +146,20 @@ public class DebugController {
         log.debug("context={}", context);
 
         return context;
+    }
+
+    /**
+     * 查看框架版本号
+     *
+     * @date 2023/5/22
+     * @since 2.0.0
+     */
+    @GetMapping("/debug/version")
+    public Map<String, String> getVersion() {
+        Map<String, String> map = new HashMap<>(16);
+        map.put("SpringVersion", SpringVersion.getVersion());
+        map.put("SpringBootVersion", SpringBootVersion.getVersion());
+
+        return map;
     }
 }
