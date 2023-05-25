@@ -16,13 +16,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * 扫码登录二维码生成器
+ * 扫码登录二维码（微信小程序码）生成器
  *
  * <h2>主要用途
  * <p>用于管理扫码登录使用的二维码的生成和获取服务。
  *
  * <h2>注意事项
- * <p>当前服务不负责二维码凭据的生命状态管理。
+ * <p>1. 当前服务不负责二维码凭据的生命状态管理。
+ * <p>2. 当前模块所有的「二维码」均特指「微信小程序码」。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/5/15
@@ -49,8 +50,8 @@ public class LoginQrCodeGenerator {
      */
     public String getOne() {
         String id = stringRedisTemplate
-                        .opsForList()
-                        .leftPop(AVAILABLE_QRCODE_LIST);
+            .opsForList()
+            .leftPop(AVAILABLE_QRCODE_LIST);
 
         return Objects.requireNonNullElseGet(id, this::generate);
     }
@@ -69,12 +70,12 @@ public class LoginQrCodeGenerator {
         int width = 300;
 
         UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
-                                             .builder()
-                                             .scene(id)
-                                             .page(page)
-                                             .width(width)
-                                             .envVersion("release")
-                                             .build();
+            .builder()
+            .scene(id)
+            .page(page)
+            .width(width)
+            .envVersion("release")
+            .build();
 
         // 向微信服务器获取二维码
         byte[] qrcode = weChatService.getUnlimitedQrCode(options);
@@ -96,17 +97,17 @@ public class LoginQrCodeGenerator {
      */
     private String getRandomId() {
         String id = UUID
-                        .randomUUID()
-                        .toString()
-                        .toLowerCase()
-                        .replace("-", "");
+            .randomUUID()
+            .toString()
+            .toLowerCase()
+            .replace("-", "");
 
         return Base64
-                   .getEncoder()
-                   .encodeToString(HexUtil.decodeHex(id))
-                   .replace("+", "")
-                   .replace("/", "")
-                   .replace("=", "");
+            .getEncoder()
+            .encodeToString(HexUtil.decodeHex(id))
+            .replace("+", "")
+            .replace("/", "")
+            .replace("=", "");
     }
 
     /**
@@ -133,8 +134,8 @@ public class LoginQrCodeGenerator {
         int n = 10;
 
         Long size = stringRedisTemplate
-                        .opsForList()
-                        .size(AVAILABLE_QRCODE_LIST);
+            .opsForList()
+            .size(AVAILABLE_QRCODE_LIST);
         assert size != null;
 
         // 如果当前数量低于预警值，则批量生成一批新的二维码

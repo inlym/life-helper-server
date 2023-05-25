@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  **/
 @RestControllerAdvice
 @Slf4j
-@Order(32)
+@Order(301)
 public class QrCodeLoginExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(QrCodeTicketNotFoundException.class)
     public ExceptionResponse handle(QrCodeTicketNotFoundException exception) {
         log.trace(exception.getMessage());
-        return new ExceptionResponse(32001, "你操作的小程序码已失效，请刷新后重试！");
+        return new ExceptionResponse(30101, "你操作的小程序码已失效，请刷新后重试！");
     }
 }

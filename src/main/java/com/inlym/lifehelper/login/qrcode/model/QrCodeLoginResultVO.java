@@ -11,13 +11,16 @@ import lombok.NoArgsConstructor;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/1/6
- * @since 1.x.x
+ * @since 2.0.0
  **/
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class QrCodeLoginResultVO {
+    /** 是否已失效 */
+    private Boolean invalid;
+
     /** 是否已扫码，该状态仅用于页面展示 */
     private Boolean scanned;
 

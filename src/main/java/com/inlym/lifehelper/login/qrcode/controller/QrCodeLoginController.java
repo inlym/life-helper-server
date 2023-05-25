@@ -40,7 +40,7 @@ public class QrCodeLoginController {
      */
     @GetMapping("/login/qrcode")
     public QrCodeTicketVO getQrCode() {
-        return qrCodeLoginService.getQrCodeTicket();
+        return qrCodeLoginService.createQrCodeTicket();
     }
 
     /**
@@ -49,8 +49,8 @@ public class QrCodeLoginController {
      * <h2>操作端
      * <p>被扫码端（Web）
      *
-     * <h2>主要逻辑
-     * <p>扫码端（小程序）点击「确认登录」，这里就会发放登录凭证。
+     * <h2>可能的业务异常
+     * <p>由于客户端采用“轮询”请求，可能中途凭据已使用变成了已失效状态，对于该情况的处理是：不报错，使用响应的 `invalid` 字段表示。
      *
      * @date 2023/5/16
      * @since 2.0.0

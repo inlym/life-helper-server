@@ -38,24 +38,13 @@ public class QrCodeTicket {
     @Id
     private String id;
 
-    /**
-     * 凭据状态
-     *
-     * <h2>状态值
-     * <li>[CREATED]   - 已创建
-     * <li>[SCANNED]   - 已扫码
-     * <li>[CONFIRMED] - 已确认
-     */
+    /** 凭据状态 */
     private QrCodeTicketStatus status;
 
-    /**
-     * 扫码端操作「确认登录」的用户 ID
-     */
+    /** 扫码端操作「确认登录」的用户 ID */
     private Integer userId;
 
-    /**
-     * 创建时间
-     */
+    /** 创建时间 */
     private LocalDateTime createdTime;
 
     /**

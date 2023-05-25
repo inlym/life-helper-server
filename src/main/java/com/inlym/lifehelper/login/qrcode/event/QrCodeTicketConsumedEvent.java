@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEvent;
  * 二维码凭据消费事件
  *
  * <h2>事件说明
- * <p>当二维码凭据被消费使用后，抛出此事件。
+ * <p>当二维码凭据被消费使用后，抛出此事件。该事件可以等同于“登录”事件。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/5/16

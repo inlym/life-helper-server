@@ -47,11 +47,11 @@ public class QrCodeTicketManager {
         loginQrCodeGenerator.batchGenerateIfNeedAsync();
 
         QrCodeTicket ticket = QrCodeTicket
-                                  .builder()
-                                  .id(id)
-                                  .status(QrCodeTicketStatus.CREATED)
-                                  .createdTime(LocalDateTime.now())
-                                  .build();
+            .builder()
+            .id(id)
+            .status(QrCodeTicketStatus.CREATED)
+            .createdTime(LocalDateTime.now())
+            .build();
 
         repository.save(ticket);
         return ticket;
@@ -66,12 +66,7 @@ public class QrCodeTicketManager {
      * @since 2.0.0
      */
     public QrCodeTicket scan(String ticketId) {
-        Optional<QrCodeTicket> result = repository.findById(ticketId);
-        if (result.isEmpty()) {
-            throw new QrCodeTicketNotFoundException(ticketId);
-        }
-
-        QrCodeTicket ticket = result.get();
+        QrCodeTicket ticket = getOrThrow(ticketId);
 
         // 只有「已创建未扫码」状态需要处理，其他状态均不做任何处理
         if (ticket.getStatus() == QrCodeTicketStatus.CREATED) {
@@ -84,6 +79,21 @@ public class QrCodeTicketManager {
     }
 
     /**
+     * 通过凭据 ID 获取凭据实体（若不存在则报错）
+     *
+     * @date 2023/5/25
+     * @since 2.0.0
+     */
+    public QrCodeTicket getOrThrow(String ticketId) {
+        Optional<QrCodeTicket> result = repository.findById(ticketId);
+        if (result.isEmpty()) {
+            throw new QrCodeTicketNotFoundException(ticketId);
+        }
+
+        return result.get();
+    }
+
+    /**
      * 「确认登录」操作
      *
      * @param ticketId 二维码凭据 ID
@@ -93,12 +103,7 @@ public class QrCodeTicketManager {
      * @since 2.0.0
      */
     public QrCodeTicket confirm(String ticketId, int userId) {
-        Optional<QrCodeTicket> result = repository.findById(ticketId);
-        if (result.isEmpty()) {
-            throw new QrCodeTicketNotFoundException(ticketId);
-        }
-
-        QrCodeTicket ticket = result.get();
+        QrCodeTicket ticket = getOrThrow(ticketId);
 
         // 只有「已扫码未确认」状态需要处理，其他状态均不做任何处理
         if (ticket.getStatus() == QrCodeTicketStatus.SCANNED) {
@@ -120,12 +125,8 @@ public class QrCodeTicketManager {
      * @since 2.0.0
      */
     public QrCodeTicket consume(String ticketId) {
-        Optional<QrCodeTicket> result = repository.findById(ticketId);
-        if (result.isEmpty()) {
-            throw new QrCodeTicketNotFoundException(ticketId);
-        }
+        QrCodeTicket ticket = getOrThrow(ticketId);
 
-        QrCodeTicket ticket = result.get();
         if (ticket.getStatus() == QrCodeTicketStatus.CONFIRMED) {
             ticket.setStatus(QrCodeTicketStatus.CONSUMED);
             // 发布「二维码凭据消费事件」
