@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @Slf4j
-@Order(30)
+@Order(700)
 public class GreatDayExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(GreatDayNotFoundException.class)
     public ErrorResponse handleGreatDayNotFoundException() {
-        return new ErrorResponse(12001, "你操作的纪念日不存在！");
+        return new ErrorResponse(70001, "你操作的内容不存在！");
     }
 }

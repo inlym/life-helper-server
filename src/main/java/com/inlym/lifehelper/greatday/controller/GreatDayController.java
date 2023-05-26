@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.greatday;
+package com.inlym.lifehelper.greatday.controller;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
@@ -7,11 +7,11 @@ import com.inlym.lifehelper.common.validation.SimpleUUID;
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
 import com.inlym.lifehelper.greatday.pojo.SaveGreatDayDTO;
-import com.inlym.lifehelper.greatday.service.GreatDayDataConversionService;
-import com.inlym.lifehelper.greatday.service.GreatDayDefaultDataService;
+import com.inlym.lifehelper.greatday.service.GreatDayDefaultDataProvider;
+import com.inlym.lifehelper.greatday.service.GreatDayService;
+import com.inlym.lifehelper.greatday.service.GreatDayViewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,33 +26,35 @@ import java.util.List;
  * @since 1.8.0
  **/
 @RestController
-@Slf4j
 @RequiredArgsConstructor
 @Validated
 public class GreatDayController {
     private final GreatDayService greatDayService;
-    private final GreatDayDataConversionService greatDayDataConversionService;
-    private final GreatDayDefaultDataService greatDayDefaultDataService;
+
+    private final GreatDayViewService greatDayViewService;
+
+    private final GreatDayDefaultDataProvider greatDayDefaultDataProvider;
 
     /**
      * 新增
      *
      * @param userId 用户 ID
      * @param dto    请求数据
+     *
      * @since 1.8.0
      */
     @PostMapping("/greatday")
     @UserPermission
     public GreatDayVO create(@UserId int userId, @Valid @RequestBody SaveGreatDayDTO dto) {
         GreatDay day = GreatDay
-                .builder()
-                .userId(userId)
-                .name(dto.getName())
-                .date(dto.getDate())
-                .icon(dto.getIcon())
-                .build();
+            .builder()
+            .userId(userId)
+            .name(dto.getName())
+            .date(dto.getDate())
+            .icon(dto.getIcon())
+            .build();
 
-        return greatDayDataConversionService.convertToVO(greatDayService.create(day));
+        return greatDayViewService.convert(greatDayService.create(day));
     }
 
     /**
@@ -60,16 +62,17 @@ public class GreatDayController {
      *
      * @param userId 用户 ID
      * @param id     纪念日 ID
+     *
      * @since 1.8.0
      */
     @DeleteMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO delete(@UserId int userId, @SimpleUUID @PathVariable("id") String id) {
+    public GreatDayVO delete(@UserId int userId, @PathVariable("id") Long id) {
         greatDayService.delete(userId, id);
         return GreatDayVO
-                .builder()
-                .id(id)
-                .build();
+            .builder()
+            .id(id)
+            .build();
     }
 
     /**
@@ -77,21 +80,22 @@ public class GreatDayController {
      *
      * @param userId 用户 ID
      * @param dto    请求数据
+     *
      * @since 1.8.0
      */
     @PutMapping("/greatday/{id}")
     @UserPermission
     public GreatDayVO update(@UserId int userId, @SimpleUUID @PathVariable("id") String id, @Valid @RequestBody SaveGreatDayDTO dto) {
         GreatDay day = GreatDay
-                .builder()
-                .userId(userId)
-                .dayId(id)
-                .name(dto.getName())
-                .date(dto.getDate())
-                .icon(dto.getIcon())
-                .build();
+            .builder()
+            .userId(userId)
+            .dayId(999L)
+            .name(dto.getName())
+            .date(dto.getDate())
+            .icon(dto.getIcon())
+            .build();
 
-        return greatDayDataConversionService.convertToVO(greatDayService.update(day));
+        return greatDayViewService.convert(greatDayService.update(day));
     }
 
     /**
@@ -99,30 +103,32 @@ public class GreatDayController {
      *
      * @param userId 用户 ID
      * @param id     纪念日 ID
+     *
      * @since 1.8.0
      */
     @GetMapping("/greatday/{id}")
     @UserPermission
     public GreatDayVO findOne(@UserId int userId, @SimpleUUID @PathVariable("id") String id) {
-        return greatDayDataConversionService.convertToVO(greatDayService.findOneOrThrow(userId, id));
+        return greatDayViewService.convert(greatDayService.findOneOrThrow(userId, id));
     }
 
     /**
      * 获取列表
      *
      * @param userId 用户 ID
+     *
      * @since 1.8.0
      */
     @GetMapping("/greatdays")
     @UserPermission
     public CommonListResponse<GreatDayVO> findAll(@UserId int userId) {
         List<GreatDay> list1 = greatDayService.list(userId);
-        List<GreatDay> list2 = greatDayDefaultDataService.getDefaultData();
+        List<GreatDay> list2 = greatDayDefaultDataProvider.getDefaultData();
 
         List<GreatDayVO> list = (list1.size() != 0 ? list1 : list2)
-                .stream()
-                .map(greatDayDataConversionService::convertToVO)
-                .toList();
+            .stream()
+            .map(greatDayViewService::convert)
+            .toList();
 
         return new CommonListResponse<>(list);
     }
@@ -136,8 +142,8 @@ public class GreatDayController {
     public CommonListResponse<String> getEmojiList() {
         String[] emojis = {"😀", "🥰", "😛", "🤩", "🥳", "🤓", "😬", "😙", "🤪", "🥺", "🤗"};
         List<String> list = Arrays
-                .stream(emojis)
-                .toList();
+            .stream(emojis)
+            .toList();
 
         return new CommonListResponse<>(list);
     }

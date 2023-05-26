@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class GreatDayVO {
     /** 纪念日 ID */
-    private String id;
+    private Long id;
 
     /** 纪念日名称 */
     private String name;

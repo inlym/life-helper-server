@@ -29,7 +29,7 @@ public class GreatDay {
 
     /** 纪念日 ID */
     @PrimaryKeyField(order = 2, mode = PrimaryKeyMode.SIMPLE_UUID)
-    private String dayId;
+    private Long dayId;
 
     // ================================= 属性列 =================================
 

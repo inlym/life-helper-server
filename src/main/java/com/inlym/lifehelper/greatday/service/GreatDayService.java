@@ -1,8 +1,7 @@
-package com.inlym.lifehelper.greatday;
+package com.inlym.lifehelper.greatday.service;
 
 import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.greatday.exception.GreatDayNotFoundException;
-import com.inlym.lifehelper.greatday.service.GreatDayRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,25 +21,11 @@ import java.util.List;
 public class GreatDayService {
     private final GreatDayRepository greatDayRepository;
 
-
-    /**
-     * 检查对应记录是否存在（若不存在则抛出异常）
-     *
-     * @param userId 用户 ID
-     * @param dayId  纪念日 ID
-     * @since 1.8.0
-     */
-    private void existOrThrow(int userId, String dayId) {
-        GreatDay day = greatDayRepository.findOne(userId, dayId);
-        if (day == null) {
-            throw new GreatDayNotFoundException();
-        }
-    }
-
     /**
      * 创建
      *
      * @param day 纪念日实体对象
+     *
      * @since 1.8.0
      */
     public GreatDay create(GreatDay day) {
@@ -52,6 +37,7 @@ public class GreatDayService {
      *
      * @param userId 用户 ID
      * @param dayId  纪念日 ID
+     *
      * @since 1.8.0
      */
     public void delete(int userId, String dayId) {
@@ -60,14 +46,30 @@ public class GreatDayService {
     }
 
     /**
+     * 检查对应记录是否存在（若不存在则抛出异常）
+     *
+     * @param userId 用户 ID
+     * @param dayId  纪念日 ID
+     *
+     * @since 1.8.0
+     */
+    private void existOrThrow(int userId, String dayId) {
+        GreatDay day = greatDayRepository.findOne(userId, dayId);
+        if (day == null) {
+            throw new GreatDayNotFoundException();
+        }
+    }
+
+    /**
      * 更新纪念日
      *
      * @param day 纪念日实体对象
+     *
      * @since 1.8.0
      */
     public GreatDay update(GreatDay day) {
-        existOrThrow(day.getUserId(), day.getDayId());
-        greatDayRepository.update(day);
+        //        existOrThrow(day.getUserId(), day.getDayId());
+        //        greatDayRepository.update(day);
 
         return day;
     }
@@ -76,6 +78,7 @@ public class GreatDayService {
      * 获取所有的纪念日
      *
      * @param userId 用户 ID
+     *
      * @since 1.8.0
      */
     public List<GreatDay> list(int userId) {
@@ -87,6 +90,7 @@ public class GreatDayService {
      *
      * @param userId 用户 ID
      * @param dayId  纪念日 ID
+     *
      * @since 1.8.0
      */
     public GreatDay findOneOrThrow(int userId, String dayId) {
