@@ -186,7 +186,10 @@ public class GreatDayRepository {
         String hashedId = HashedIdUtil.create(userId);
 
         RangeRowQueryCriteria criteria = new RangeRowQueryCriteria(TABLE_NAME);
+        // 设置最大版本数为 1
         criteria.setMaxVersions(1);
+        // 设置为“逆序”读取（即后加的放前面）
+        criteria.setDirection(Direction.BACKWARD);
         // 设置起始主键
         PrimaryKeyBuilder startPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
         startPrimaryKeyBuilder.addPrimaryKeyColumn("uid", PrimaryKeyValue.fromString(hashedId));
@@ -196,7 +199,7 @@ public class GreatDayRepository {
         PrimaryKeyBuilder endPrimaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
         endPrimaryKeyBuilder.addPrimaryKeyColumn("uid", PrimaryKeyValue.fromString(hashedId));
         endPrimaryKeyBuilder.addPrimaryKeyColumn("dayId", PrimaryKeyValue.INF_MIN);
-        criteria.setInclusiveStartPrimaryKey(endPrimaryKeyBuilder.build());
+        criteria.setExclusiveEndPrimaryKey(endPrimaryKeyBuilder.build());
 
         List<GreatDay> list = new ArrayList<>();
 
