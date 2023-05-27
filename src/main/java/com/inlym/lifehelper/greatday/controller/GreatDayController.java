@@ -3,12 +3,8 @@ package com.inlym.lifehelper.greatday.controller;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.model.CommonListResponse;
-import com.inlym.lifehelper.common.validation.SimpleUUID;
-import com.inlym.lifehelper.greatday.entity.GreatDay;
 import com.inlym.lifehelper.greatday.pojo.GreatDayVO;
 import com.inlym.lifehelper.greatday.pojo.SaveGreatDayDTO;
-import com.inlym.lifehelper.greatday.service.GreatDayDefaultDataProvider;
-import com.inlym.lifehelper.greatday.service.GreatDayService;
 import com.inlym.lifehelper.greatday.service.GreatDayViewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class GreatDayController {
-    private final GreatDayService greatDayService;
 
     private final GreatDayViewService greatDayViewService;
-
-    private final GreatDayDefaultDataProvider greatDayDefaultDataProvider;
 
     /**
      * 新增
@@ -46,15 +39,7 @@ public class GreatDayController {
     @PostMapping("/greatday")
     @UserPermission
     public GreatDayVO create(@UserId int userId, @Valid @RequestBody SaveGreatDayDTO dto) {
-        GreatDay day = GreatDay
-            .builder()
-            .userId(userId)
-            .name(dto.getName())
-            .date(dto.getDate())
-            .icon(dto.getIcon())
-            .build();
-
-        return greatDayViewService.convert(greatDayService.create(day));
+        return greatDayViewService.create(userId, dto);
     }
 
     /**
@@ -68,11 +53,7 @@ public class GreatDayController {
     @DeleteMapping("/greatday/{id}")
     @UserPermission
     public GreatDayVO delete(@UserId int userId, @PathVariable("id") Long id) {
-        greatDayService.delete(userId, id);
-        return GreatDayVO
-            .builder()
-            .id(id)
-            .build();
+        return greatDayViewService.delete(userId, id);
     }
 
     /**
@@ -85,17 +66,8 @@ public class GreatDayController {
      */
     @PutMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO update(@UserId int userId, @SimpleUUID @PathVariable("id") String id, @Valid @RequestBody SaveGreatDayDTO dto) {
-        GreatDay day = GreatDay
-            .builder()
-            .userId(userId)
-            .dayId(999L)
-            .name(dto.getName())
-            .date(dto.getDate())
-            .icon(dto.getIcon())
-            .build();
-
-        return greatDayViewService.convert(greatDayService.update(day));
+    public GreatDayVO update(@UserId int userId, @PathVariable("id") long id, @Valid @RequestBody SaveGreatDayDTO dto) {
+        return greatDayViewService.update(userId, id, dto);
     }
 
     /**
@@ -108,8 +80,8 @@ public class GreatDayController {
      */
     @GetMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO findOne(@UserId int userId, @SimpleUUID @PathVariable("id") String id) {
-        return greatDayViewService.convert(greatDayService.findOneOrThrow(userId, id));
+    public GreatDayVO findOne(@UserId int userId, @PathVariable("id") long id) {
+        return greatDayViewService.findOne(userId, id);
     }
 
     /**
@@ -122,15 +94,7 @@ public class GreatDayController {
     @GetMapping("/greatdays")
     @UserPermission
     public CommonListResponse<GreatDayVO> findAll(@UserId int userId) {
-        List<GreatDay> list1 = greatDayService.list(userId);
-        List<GreatDay> list2 = greatDayDefaultDataProvider.getDefaultData();
-
-        List<GreatDayVO> list = (list1.size() != 0 ? list1 : list2)
-            .stream()
-            .map(greatDayViewService::convert)
-            .toList();
-
-        return new CommonListResponse<>(list);
+        return greatDayViewService.findAll(userId);
     }
 
     /**

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +202,9 @@ public class GreatDayRepository {
 
         while (true) {
             GetRangeResponse response = client.getRange(new GetRangeRequest(criteria));
-            System.out.println(response.getRows());
+            for (Row row : response.getRows()) {
+                list.add(convert(row));
+            }
 
             if (response.getNextStartPrimaryKey() != null) {
                 log.trace("列表未完成，下一主键 {}", response.getNextStartPrimaryKey());
@@ -212,5 +215,91 @@ public class GreatDayRepository {
         }
 
         return list;
+    }
+
+    /**
+     * 将宽表模型查询到的“行记录”转化为实体对象
+     *
+     * @param row 宽表模型的行记录
+     *
+     * @return 实体对象
+     *
+     * @date 2023/5/27
+     * @since 2.0.0
+     */
+    private GreatDay convert(Row row) {
+        GreatDay day = new GreatDay();
+
+        // 先处理主键列，一定不为空，直接按列名取值
+        String uid = row
+            .getPrimaryKey()
+            .getPrimaryKeyColumn("uid")
+            .getValue()
+            .asString();
+
+        long dayId = row
+            .getPrimaryKey()
+            .getPrimaryKeyColumn("dayId")
+            .getValue()
+            .asLong();
+
+        day.setUserId(HashedIdUtil.parse(uid));
+        day.setDayId(dayId);
+
+        // 属性列和实体对象的字段比较，很可能不一定，使用循环
+        for (Column column : row.getColumns()) {
+            if ("name".equals(column.getName())) {
+                day.setName(column
+                                .getValue()
+                                .asString());
+            } else if ("date".equals(column.getName())) {
+                day.setDate(LocalDate.parse(column
+                                                .getValue()
+                                                .asString()));
+            } else if ("icon".equals(column.getName())) {
+                day.setIcon(column
+                                .getValue()
+                                .asString());
+            } else {
+                log.trace("未使用到的列，列名={}，值={}", column.getName(), column
+                    .getValue()
+                    .asString());
+            }
+        }
+
+        return day;
+    }
+
+    /**
+     * 通过主键列找到对应实体对象数据
+     *
+     * @param userId 用户 ID
+     * @param dayId  纪念日 ID
+     *
+     * @return 查找到的实体对象（若不存在则返回 `null`）
+     *
+     * @date 2023/5/27
+     * @since 2.0.0
+     */
+    public GreatDay findOne(int userId, long dayId) {
+        // 以哈希化的用户 ID 作为分区键
+        String hashedId = HashedIdUtil.create(userId);
+
+        // 构造主键
+        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
+        primaryKeyBuilder.addPrimaryKeyColumn("uid", PrimaryKeyValue.fromString(hashedId));
+        primaryKeyBuilder.addPrimaryKeyColumn("dayId", PrimaryKeyValue.fromLong(dayId));
+        PrimaryKey primaryKey = primaryKeyBuilder.build();
+
+        SingleRowQueryCriteria criteria = new SingleRowQueryCriteria(TABLE_NAME, primaryKey);
+        criteria.setMaxVersions(1);
+
+        GetRowResponse response = client.getRow(new GetRowRequest(criteria));
+        Row row = response.getRow();
+        if (row == null) {
+            return null;
+        }
+
+        return convert(row);
     }
 }

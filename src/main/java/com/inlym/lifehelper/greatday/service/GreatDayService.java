@@ -1,104 +1,104 @@
 package com.inlym.lifehelper.greatday.service;
 
 import com.inlym.lifehelper.greatday.entity.GreatDay;
-import com.inlym.lifehelper.greatday.exception.GreatDayNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * 纪念日服务
+ * 纪念日模块服务
+ *
+ * <h2>主要用途
+ * <p>处理该模块业务逻辑层面上的增删改查。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/12/7
- * @since 1.8.0
+ * @date 2023/5/27
+ * @since 2.0.0
  **/
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class GreatDayService {
-    private final GreatDayRepository greatDayRepository;
+    private final GreatDayRepository repository;
 
     /**
-     * 创建
+     * 添加一条新的纪念日
      *
      * @param day 纪念日实体对象
      *
-     * @since 1.8.0
+     * @return 附加了自增 ID 的实体对象
+     *
+     * @date 2023/5/27
+     * @since 2.0.0
      */
     public GreatDay create(GreatDay day) {
-        return greatDayRepository.create(day);
-    }
-
-    /**
-     * 删除一条记录
-     *
-     * @param userId 用户 ID
-     * @param dayId  纪念日 ID
-     *
-     * @since 1.8.0
-     */
-    public void delete(int userId, String dayId) {
-        existOrThrow(userId, dayId);
-        greatDayRepository.delete(userId, dayId);
-    }
-
-    /**
-     * 检查对应记录是否存在（若不存在则抛出异常）
-     *
-     * @param userId 用户 ID
-     * @param dayId  纪念日 ID
-     *
-     * @since 1.8.0
-     */
-    private void existOrThrow(int userId, String dayId) {
-        GreatDay day = greatDayRepository.findOne(userId, dayId);
-        if (day == null) {
-            throw new GreatDayNotFoundException();
+        // 必要性检查和处理
+        if (day.getDayId() != null) {
+            day.setDayId(null);
         }
+
+        // 业务逻辑处理：
+        // 之后引入 VIP 后会限定最大创建条数，本次不限定
+
+        return repository.create(day);
     }
 
     /**
-     * 更新纪念日
+     * 更新操作
+     *
+     * <h2>使用备忘
+     * <p>只有不为 null 的字段会被修改，为 null 的字段不做任何处理。
      *
      * @param day 纪念日实体对象
      *
-     * @since 1.8.0
+     * @date 2023/5/27
+     * @since 2.0.0
      */
-    public GreatDay update(GreatDay day) {
-        //        existOrThrow(day.getUserId(), day.getDayId());
-        //        greatDayRepository.update(day);
-
-        return day;
+    public void update(GreatDay day) {
+        repository.update(day);
     }
 
     /**
-     * 获取所有的纪念日
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.8.0
-     */
-    public List<GreatDay> list(int userId) {
-        return greatDayRepository.findAll(userId);
-    }
-
-    /**
-     * 查找唯一记录
+     * 删除一条纪念日
      *
      * @param userId 用户 ID
      * @param dayId  纪念日 ID
      *
-     * @since 1.8.0
+     * @date 2023/5/27
+     * @since 2.0.0
      */
-    public GreatDay findOneOrThrow(int userId, String dayId) {
-        GreatDay day = greatDayRepository.findOne(userId, dayId);
-        if (day == null) {
-            throw new GreatDayNotFoundException();
-        }
+    public void delete(int userId, long dayId) {
+        // （待补充）删除前的判断
 
-        return day;
+        repository.delete(userId, dayId);
+    }
+
+    /**
+     * 获取指定用户的所有记录
+     *
+     * @param userId 用户 ID
+     *
+     * @return 属于该用户的纪念日列表
+     *
+     * @date 2023/5/27
+     * @since 2.0.0
+     */
+    public List<GreatDay> findAll(int userId) {
+        return repository.findAll(userId);
+    }
+
+    /**
+     * 根据 ID 查找
+     *
+     * @param userId 用户 ID
+     * @param dayId  纪念日 ID
+     *
+     * @return 实体对象或为 null
+     *
+     * @date 2023/5/27
+     * @since 2.0.0
+     */
+    public GreatDay findOne(int userId, long dayId) {
+        return repository.findOne(userId, dayId);
     }
 }
