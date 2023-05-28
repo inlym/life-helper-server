@@ -30,7 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GreatDayRepository {
     /** 数据表名 */
-    public static final String TABLE_NAME = "great_day_2";
+    public static final String TABLE_NAME = "great_day";
 
     private final WideColumnClient client;
 
