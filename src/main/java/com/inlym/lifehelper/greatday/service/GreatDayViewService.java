@@ -7,7 +7,6 @@ import com.inlym.lifehelper.greatday.pojo.SaveGreatDayDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -153,11 +152,7 @@ public class GreatDayViewService {
             .name(day.getName())
             .date(day.getDate())
             .icon(day.getIcon())
-            .days(day
-                      .getDate()
-                      .toEpochDay() - LocalDate
-                .now()
-                .toEpochDay())
+            .days(greatDayService.calcDaysInterval(day.getDate()))
             .build();
     }
 }

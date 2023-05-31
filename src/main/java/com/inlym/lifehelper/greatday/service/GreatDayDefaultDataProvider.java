@@ -24,23 +24,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GreatDayDefaultDataProvider {
-    private static final GreatDayVO DEFAULT_DAY1 = GreatDayVO
-        .builder()
-        .id(1L)
-        .name("小鸣助手上线")
-        .date(LocalDate.of(2019, 7, 6))
-        .icon("\uD83C\uDF89")
-        .systemCreated(true)
-        .build();
-
-    private static final GreatDayVO DEFAULT_DAY2 = GreatDayVO
-        .builder()
-        .id(2L)
-        .name("2024年元旦")
-        .date(LocalDate.of(2024, 1, 1))
-        .icon("\uD83D\uDE80")
-        .systemCreated(true)
-        .build();
+    private final GreatDayService greatDayService;
 
     /**
      * 获取默认列表
@@ -52,7 +36,28 @@ public class GreatDayDefaultDataProvider {
      * @since 2.0.1
      */
     public List<GreatDayVO> getDefaultList() {
-        return List.of(DEFAULT_DAY1, DEFAULT_DAY2);
+        GreatDayVO day1 = GreatDayVO
+            .builder()
+            .id(1L)
+            .name("小鸣助手上线")
+            .date(LocalDate.of(2019, 7, 6))
+            .icon("\uD83C\uDF89")
+            .systemCreated(true)
+            .build();
+
+        GreatDayVO day2 = GreatDayVO
+            .builder()
+            .id(2L)
+            .name("2024年元旦")
+            .date(LocalDate.of(2024, 1, 1))
+            .icon("\uD83D\uDE80")
+            .systemCreated(true)
+            .build();
+
+        day1.setDays(greatDayService.calcDaysInterval(day1.getDate()));
+        day2.setDays(greatDayService.calcDaysInterval(day2.getDate()));
+
+        return List.of(day1, day2);
     }
 
     /**
@@ -67,12 +72,14 @@ public class GreatDayDefaultDataProvider {
      * @since 2.0.1
      */
     public GreatDayVO getById(long id) {
-        if (id == DEFAULT_DAY1.getId()) {
-            return DEFAULT_DAY1;
-        } else if (id == DEFAULT_DAY2.getId()) {
-            return DEFAULT_DAY2;
-        } else {
-            return null;
+        for (GreatDayVO vo : getDefaultList()) {
+            if (vo
+                .getId()
+                .equals(id)) {
+                return vo;
+            }
         }
+
+        return null;
     }
 }

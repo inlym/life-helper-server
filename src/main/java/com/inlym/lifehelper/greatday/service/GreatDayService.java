@@ -4,6 +4,7 @@ import com.inlym.lifehelper.greatday.entity.GreatDay;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -100,5 +101,23 @@ public class GreatDayService {
      */
     public GreatDay findOne(int userId, long dayId) {
         return repository.findOne(userId, dayId);
+    }
+
+    /**
+     * 计算天数间隔
+     *
+     * <h2>说明
+     * <p>若返回值 >0 ，说明目标日期在未来。
+     * <p>若返回值 <0 ，说明目标日期已过去。
+     *
+     * @param day 目标日期
+     *
+     * @date 2023/5/31
+     * @since 2.0.2
+     */
+    public long calcDaysInterval(LocalDate day) {
+        return day.toEpochDay() - LocalDate
+            .now()
+            .toEpochDay();
     }
 }
