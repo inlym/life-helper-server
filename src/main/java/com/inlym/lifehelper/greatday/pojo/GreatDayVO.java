@@ -15,7 +15,7 @@ import java.time.LocalDate;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/12/7
- * @since 1.x.x
+ * @since 2.0.0
  **/
 @Data
 @Builder
@@ -43,4 +43,19 @@ public class GreatDayVO {
      * <li>[ <0 ]：纪念日已过去。
      */
     private Long days;
+
+    /**
+     * 是否是系统创建的
+     *
+     * <h2>主要用途
+     * <p>用户数据为空时，将返回由系统提供的默认数据，该类数据不允许用户操作（编辑/删除）。因此使用该字段标记该类数据。
+     *
+     * <h2>字段说明
+     * <p>（1）若为系统创建的，则该字段将返回 `true` 值。
+     * <p>（2）若为用户本身的数据，则不返回该字段。
+     *
+     * @date 2023/5/31
+     * @since 2.0.1
+     */
+    private Boolean systemCreated;
 }

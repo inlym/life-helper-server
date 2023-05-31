@@ -1,7 +1,5 @@
 package com.inlym.lifehelper.greatday.entity;
 
-import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyField;
-import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,11 +22,9 @@ public class GreatDay {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
-    @PrimaryKeyField(name = "uid", order = 1, hashed = true)
     private Integer userId;
 
     /** 纪念日 ID */
-    @PrimaryKeyField(order = 2, mode = PrimaryKeyMode.SIMPLE_UUID)
     private Long dayId;
 
     // ================================= 属性列 =================================
