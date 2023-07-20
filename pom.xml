@@ -172,6 +172,15 @@
             </exclusions>
         </dependency>
 
+
+        <!-- 阿里云短信服务（sms）SDK -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>2.0.24</version>
+        </dependency>
+
+
         <!-- 阿里云日志服务（SLS） -->
         <!-- 文档地址：https://github.com/aliyun/aliyun-log-logback-appender/blob/master/README_CN.md -->
         <dependency>

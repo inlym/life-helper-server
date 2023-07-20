@@ -108,3 +108,8 @@ aliyun:
         endpoint: xxxxxxxxxxxx
         project: xxxxxxxxxxxx
         log-store: xxxxxxxxxxxx
+
+    # 短信服务
+    sms:
+        access-key-id: xxxxxxxxxxxx
+        access-key-secret: xxxxxxxxxxxx
