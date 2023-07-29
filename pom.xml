@@ -220,11 +220,11 @@
             <version>5.2.1</version>
         </dependency>
 
-        <!-- MyBatis -->
+        <!-- MyBatis-Flex -->
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.2</version>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
+            <version>1.5.4</version>
         </dependency>
 
     </dependencies>
