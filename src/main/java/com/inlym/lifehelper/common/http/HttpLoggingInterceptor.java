@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * HTTP 请求日志拦截器
- *
+ * <p>
  * <h2>主要用途
  * <p>在文件 {@link com.inlym.lifehelper.common.config.RestTemplateConfig} 中导入用于配置 {@link org.springframework.web.client.RestTemplate}。
  *
@@ -30,7 +30,7 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
 
         log.info("[HTTP] {} {} {}", response.getStatusCode(), request.getMethod(), request.getURI());
 
-        if (HttpMethod.POST.matches(request.getMethodValue())) {
+        if (HttpMethod.POST == request.getMethod()) {
             log.trace("[HTTP] Request Body: {}", new String(body, StandardCharsets.UTF_8));
         }
 
