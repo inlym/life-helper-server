@@ -7,8 +7,8 @@ import com.inlym.lifehelper.common.exception.UnpredictableException;
 import com.inlym.lifehelper.location.region.entity.Region;
 import com.inlym.lifehelper.location.region.exception.RegionNotFoundException;
 import com.inlym.lifehelper.location.region.service.RegionService;
-import com.inlym.lifehelper.user.account.UserAccountService;
 import com.inlym.lifehelper.user.account.entity.User;
+import com.inlym.lifehelper.user.account.service.UserAccountService;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.inlym.lifehelper.user.info.pojo.UpdateUserInfoDTO;
 import com.inlym.lifehelper.user.info.pojo.UserInfoVO;
@@ -54,12 +54,13 @@ public class UserInfoAdapter {
      * @since 2.0.0
      */
     public UserInfoVO update(int userId, UpdateUserInfoDTO dto) {
-        UserInfo info = UserInfo.builder()
-                                .userId(userId)
-                                .nickName(dto.getNickName())
-                                .genderType(dto.getGenderType())
-                                .cityId(dto.getCityId())
-                                .build();
+        UserInfo info = UserInfo
+            .builder()
+            .userId(userId)
+            .nickName(dto.getNickName())
+            .genderType(dto.getGenderType())
+            .cityId(dto.getCityId())
+            .build();
 
         if (dto.getAvatarUrl() != null) {
             info.setAvatarPath(ossService.dump(OssDir.AVATAR, dto.getAvatarUrl()));
@@ -71,7 +72,7 @@ public class UserInfoAdapter {
     }
 
     public UserInfoVO getMixedUserInfo(int userId) {
-        User user = userAccountService.findById(userId);
+        User user = userAccountService.getById(userId);
         UserInfo info = userInfoService.get(userId);
         UserInfoVO vo = convert(info);
         vo.setAccountId(user.getAccountId());
@@ -141,8 +142,9 @@ public class UserInfoAdapter {
      */
     private int calcRegisteredDays(LocalDateTime registerTime) {
         LocalDateTime now = LocalDateTime.now();
-        return (int) LocalDateTimeUtil.between(registerTime, now)
-                                      .toDays();
+        return (int) LocalDateTimeUtil
+            .between(registerTime, now)
+            .toDays();
     }
 
     /**

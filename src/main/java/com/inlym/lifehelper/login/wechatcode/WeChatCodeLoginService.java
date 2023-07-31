@@ -3,7 +3,7 @@ package com.inlym.lifehelper.login.wechatcode;
 import com.inlym.lifehelper.common.auth.core.SecurityToken;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
-import com.inlym.lifehelper.user.account.UserAccountService;
+import com.inlym.lifehelper.user.account.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
