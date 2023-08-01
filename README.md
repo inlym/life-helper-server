@@ -1,7 +1,6 @@
 <div align="center">
   <br>
   <img alt="小鸣助手 Logo" src="https://static.lifehelper.com.cn/static/project/logo.png" style="height:120px;" />
-  <br>
   <h1>小鸣助手</h1>
   <h5>让生活更简单一些</h5>
 </div>
@@ -33,23 +32,23 @@
 
 ## 🗂️ 目录结构
 
-当前项目（[life-helper-server](https://github.com/inlym/life-helper-server)）是一个标准的 Spring Boot 项目，几乎遵照了所有的 Spring Boot
+当前项目（[life-helper-server](https://github.com/inlym/life-helper-server)）是一个标准的 Spring Boot 项目，几乎遵照了所有的
+Spring Boot
 最佳实践（至少笔者认为自己执行了最严格的标准）。
 
 关于项目的目录结构，一般有2种常见的思路：
 
 1.
-
 方案一：以定位划分。这种方案的核心点在于以“代码”的角度，将同功能的代码文件放在一起，例如在电商项目中，商品、订单模块都有控制器，那么所有的控制器文件都放在 `controllers`
 目录下，所有的服务类都放在 `services` 目录下。
 
 2.
-
 方案二：以功能划分。这种方案的核心点在于以“功能”的角度，将同业务模块的代码文件放在一起，例如不管是控制器还是服务类，只要是商品模块的代码文件，都放到 `goods`
 目录下。
 
 笔者在项目实践中，采用的是“**方案二**
-”，笔者认为在大型项目中，方案二更容易维护。以下是当前项目（[life-helper-server](https://github.com/inlym/life-helper-server)）的目录结构（_todo_）。
+”，笔者认为在大型项目中，方案二更容易维护。以下是当前项目（[life-helper-server](https://github.com/inlym/life-helper-server)
+）的目录结构（_todo_）。
 
 ```
 life-helper-server
@@ -86,9 +85,9 @@ life-helper-server
 
 ## ❓ 常见问题
 
-| 序号  | 问题                                                     |
-|-----|--------------------------------------------------------|
-| 1   | [如何启动项目？](https://github.com/inlym/life-helper-server) |
+| 序号 | 问题                                                     |
+|----|--------------------------------------------------------|
+| 1  | [如何启动项目？](https://github.com/inlym/life-helper-server) |
 
 ## 📞 交流沟通
 
