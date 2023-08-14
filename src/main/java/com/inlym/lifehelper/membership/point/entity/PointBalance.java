@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * 积分余额
  * <p>
@@ -59,4 +61,20 @@ public class PointBalance {
      * 积分收入总额
      */
     private Long income;
+
+    /**
+     * 创建时间
+     * <p>
+     * <h2>字段说明
+     * <p>1. 该字段由数据库自行维护，不在代码层修改。
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 最近更新时间
+     * <p>
+     * <h2>字段说明
+     * <p>1. 该字段由数据库自行维护，不在代码层修改。
+     */
+    private LocalDateTime updateTime;
 }
