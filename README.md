@@ -11,7 +11,7 @@
 
 读者可直接扫描以下小程序码进行体验：
 
-![image](https://static.lifehelper.com.cn/static/project/qrcode.jpg)
+![小程序码](https://static.lifehelper.com.cn/static/project/qrcode.jpg)
 
 ## 💡 项目特点
 
@@ -33,22 +33,7 @@
 ## 🗂️ 目录结构
 
 当前项目（[life-helper-server](https://github.com/inlym/life-helper-server)）是一个标准的 Spring Boot 项目，几乎遵照了所有的
-Spring Boot
-最佳实践（至少笔者认为自己执行了最严格的标准）。
-
-关于项目的目录结构，一般有2种常见的思路：
-
-1.
-方案一：以定位划分。这种方案的核心点在于以“代码”的角度，将同功能的代码文件放在一起，例如在电商项目中，商品、订单模块都有控制器，那么所有的控制器文件都放在 `controllers`
-目录下，所有的服务类都放在 `services` 目录下。
-
-2.
-方案二：以功能划分。这种方案的核心点在于以“功能”的角度，将同业务模块的代码文件放在一起，例如不管是控制器还是服务类，只要是商品模块的代码文件，都放到 `goods`
-目录下。
-
-笔者在项目实践中，采用的是“**方案二**
-”，笔者认为在大型项目中，方案二更容易维护。以下是当前项目（[life-helper-server](https://github.com/inlym/life-helper-server)
-）的目录结构（_todo_）。
+*Spring Boot* 最佳实践（至少笔者认为自己执行了最严格的标准）。
 
 ```
 life-helper-server
