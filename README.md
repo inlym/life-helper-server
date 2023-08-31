@@ -74,6 +74,14 @@ life-helper-server
 |----|--------------------------------------------------------|
 | 1  | [如何启动项目？](https://github.com/inlym/life-helper-server) |
 
+## 📸 开发实录
+
+| 序号 | 文章                                                         |
+|----|------------------------------------------------------------|
+| 01 | [服务器架构](https://mp.weixin.qq.com/s/JqMJuR-T42FfpdDfOozoig) |
+| 02 | [项目架构](https://mp.weixin.qq.com/s/Ya9PTqg2O94uwKcfSm0ROg)  |
+| 03 | [CI/CD](https://mp.weixin.qq.com/s/lnC3zmNJWUKoUteQdAPjHw) |
+
 ## 📞 交流沟通
 
 如果你在使用「小鸣助手」小程序过程中，遇到任何问题，或者有任何意见建议，你可以通过以下方式联系我：
