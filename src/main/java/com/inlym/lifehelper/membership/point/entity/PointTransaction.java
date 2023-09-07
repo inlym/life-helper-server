@@ -35,13 +35,14 @@ public class PointTransaction {
     private Integer id;
 
     /**
-     * 交易单号
+     * 交易订单号
      * <p>
      * <h2>字段说明
      * <p>1. 建立唯一索引。
      * <p>2. 仅使用当前字段查找行。
+     * <p>3. 订单号由 {@link com.inlym.lifehelper.membership.point.service.TransactionIdGenerator} 生成。
      */
-    private Long number;
+    private String transactionId;
 
     /**
      * 归属的用户 ID

@@ -5,6 +5,9 @@ import lombok.Getter;
 
 /**
  * 积分变动类型
+ * <p>
+ * <h2>说明
+ * <p>目前限定取值范围 1~9999
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/8/15
