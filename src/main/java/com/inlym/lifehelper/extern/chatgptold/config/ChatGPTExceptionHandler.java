@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.extern.chatgpt.config;
+package com.inlym.lifehelper.extern.chatgptold.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
-import com.inlym.lifehelper.extern.chatgpt.exception.ChatGPTCommonException;
+import com.inlym.lifehelper.extern.chatgptold.exception.ChatGPTCommonException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;

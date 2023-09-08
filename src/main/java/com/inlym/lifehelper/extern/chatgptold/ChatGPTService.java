@@ -1,10 +1,10 @@
-package com.inlym.lifehelper.extern.chatgpt;
+package com.inlym.lifehelper.extern.chatgptold;
 
-import com.inlym.lifehelper.extern.chatgpt.pojo.ChatCompletionMessage;
-import com.inlym.lifehelper.extern.chatgpt.pojo.CreateChatCompletionOptions;
-import com.inlym.lifehelper.extern.chatgpt.pojo.CreateChatCompletionResponse;
-import com.inlym.lifehelper.extern.chatgpt.pojo.CreateCompletionResponse;
-import com.inlym.lifehelper.extern.chatgpt.service.ChatGPTHttpService;
+import com.inlym.lifehelper.extern.chatgptold.pojo.ChatCompletionMessage;
+import com.inlym.lifehelper.extern.chatgptold.pojo.CreateChatCompletionOptions;
+import com.inlym.lifehelper.extern.chatgptold.pojo.CreateChatCompletionResponse;
+import com.inlym.lifehelper.extern.chatgptold.pojo.CreateCompletionResponse;
+import com.inlym.lifehelper.extern.chatgptold.service.ChatGPTHttpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

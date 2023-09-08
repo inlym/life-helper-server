@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.chatgpt.config;
+package com.inlym.lifehelper.extern.chatgptold.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @since 1.9.5
  **/
 @Component
-@ConfigurationProperties(prefix = "lifehelper.chatgpt")
+@ConfigurationProperties(prefix = "lifehelper.chatgptold")
 @Data
 public class ChatGPTProperties {
     /**

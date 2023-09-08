@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.chatgpt.pojo;
+package com.inlym.lifehelper.extern.chatgptold.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

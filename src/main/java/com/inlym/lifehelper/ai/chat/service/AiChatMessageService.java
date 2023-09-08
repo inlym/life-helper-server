@@ -4,7 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.ai.chat.constant.AiChatRole;
 import com.inlym.lifehelper.ai.chat.entity.AiChatMessage;
 import com.inlym.lifehelper.ai.chat.pojo.AiChatMessageVO;
-import com.inlym.lifehelper.extern.chatgpt.pojo.ChatCompletionMessage;
+import com.inlym.lifehelper.extern.chatgptold.pojo.ChatCompletionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

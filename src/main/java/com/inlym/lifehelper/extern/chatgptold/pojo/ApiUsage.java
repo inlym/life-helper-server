@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.chatgpt.pojo;
+package com.inlym.lifehelper.extern.chatgptold.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

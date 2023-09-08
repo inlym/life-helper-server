@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.chatgpt.exception;
+package com.inlym.lifehelper.extern.chatgptold.exception;
 
 /**
  * ChatGPT 通用异常

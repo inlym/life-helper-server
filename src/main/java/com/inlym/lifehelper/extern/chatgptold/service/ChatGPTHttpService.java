@@ -1,8 +1,8 @@
-package com.inlym.lifehelper.extern.chatgpt.service;
+package com.inlym.lifehelper.extern.chatgptold.service;
 
-import com.inlym.lifehelper.extern.chatgpt.config.ChatGPTProperties;
-import com.inlym.lifehelper.extern.chatgpt.exception.ChatGPTCommonException;
-import com.inlym.lifehelper.extern.chatgpt.pojo.*;
+import com.inlym.lifehelper.extern.chatgptold.config.ChatGPTProperties;
+import com.inlym.lifehelper.extern.chatgptold.exception.ChatGPTCommonException;
+import com.inlym.lifehelper.extern.chatgptold.pojo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,27 +28,6 @@ public class ChatGPTHttpService {
     private final ChatGPTProperties properties;
 
     private final RestTemplate restTemplate;
-
-    private String getKey() {
-        String[] keys = properties.getKeys();
-        // 每隔100秒换一个 key
-        int seq = ((int) Math.floor(System.currentTimeMillis() / 100000.0)) % keys.length;
-
-        return keys[seq];
-    }
-
-    /**
-     * 构建请求头
-     *
-     * @since 1.9.6
-     */
-    private Map<String, String> buildHeaderMap() {
-        Map<String, String> headers = new HashMap<>(16);
-        headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + getKey());
-
-        return headers;
-    }
 
     /**
      * 会话补全
@@ -83,8 +62,8 @@ public class ChatGPTHttpService {
         assert responseData != null;
         if (responseData.getError() != null) {
             throw new ChatGPTCommonException(responseData
-                .getError()
-                .getMessage());
+                                                 .getError()
+                                                 .getMessage());
         }
 
         return responseData;
@@ -115,10 +94,31 @@ public class ChatGPTHttpService {
         assert response != null;
         if (response.getError() != null) {
             throw new ChatGPTCommonException(response
-                .getError()
-                .getMessage());
+                                                 .getError()
+                                                 .getMessage());
         }
 
         return response;
+    }
+
+    private String getKey() {
+        String[] keys = properties.getKeys();
+        // 每隔100秒换一个 key
+        int seq = ((int) Math.floor(System.currentTimeMillis() / 100000.0)) % keys.length;
+
+        return keys[seq];
+    }
+
+    /**
+     * 构建请求头
+     *
+     * @since 1.9.6
+     */
+    private Map<String, String> buildHeaderMap() {
+        Map<String, String> headers = new HashMap<>(16);
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + getKey());
+
+        return headers;
     }
 }
