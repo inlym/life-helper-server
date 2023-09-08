@@ -4,39 +4,31 @@ import com.mybatisflex.annotation.EnumValue;
 import lombok.Getter;
 
 /**
- * 积分交易渠道
+ * 积分变化模式
  * <p>
  * <h2>说明
- * <p>目前限定取值范围 1~9
+ * <p>收入和支出，两者数据均可能为 0。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/9/8
  * @since 2.0.2
  **/
 @Getter
-public enum PointTransactionChannel {
+public enum PointChangeMode {
     /**
-     * 微信小程序
+     * 收入
      */
-    MINI_PROGRAM(1),
+    INCOME(1),
 
     /**
-     * 网页
+     * 支出
      */
-    WEB(2),
-
-    /**
-     * 未知的
-     * <p>
-     * <h2>说明
-     * <p>正常情况下不会出现，作为保底。
-     */
-    UNKNOWN(0);
+    EXPENSE(2);
 
     @EnumValue
     private final int code;
 
-    PointTransactionChannel(int code) {
+    PointChangeMode(int code) {
         this.code = code;
     }
 }

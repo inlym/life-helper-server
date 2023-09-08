@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.membership.point.entity;
 
+import com.inlym.lifehelper.membership.point.constant.PointChangeMode;
 import com.inlym.lifehelper.membership.point.constant.PointTransactionChannel;
 import com.inlym.lifehelper.membership.point.constant.PointTransactionType;
 import com.mybatisflex.annotation.Id;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * 积分交易记录
@@ -72,12 +75,25 @@ public class PointTransaction {
     private PointTransactionChannel channel;
 
     /**
-     * 变动的积分数值
+     * 积分变化模式（收支类型）
      * <p>
      * <h2>字段说明
-     * <p>1. 该值可能为负数、0、正数。
+     * <p>当数值为0时，按照实际业务含义标记为收入或支出。
+     */
+    private PointChangeMode changeMode;
+
+    /**
+     * 变动的积分数值（非负数）
+     * <p>
+     * <h2>字段说明
+     * <p>1. 正负根据收支类型判断。
      */
     private Long amount;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 
     /**
      * 客户端的 IP 地址

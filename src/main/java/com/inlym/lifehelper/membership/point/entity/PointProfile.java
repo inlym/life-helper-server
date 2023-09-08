@@ -74,6 +74,14 @@ public class PointProfile {
     private Long incomeCounter;
 
     /**
+     * 是否被封禁
+     * <p>
+     * <h2>字段说明
+     * <p>被封禁后无法进行任何积分操作。
+     */
+    private Boolean blocked;
+
+    /**
      * 创建时间
      * <p>
      * <h2>字段说明

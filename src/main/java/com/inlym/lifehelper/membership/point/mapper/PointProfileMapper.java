@@ -12,4 +12,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2.0.2
  **/
 @Mapper
-public interface PointBalanceMapper extends BaseMapper<PointProfile> {}
+public interface PointProfileMapper extends BaseMapper<PointProfile> {}

@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.membership.point.service;
 
-import com.inlym.lifehelper.membership.point.model.TransactionIdSeed;
+import com.inlym.lifehelper.membership.point.entity.PointTransaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,23 +31,23 @@ public class TransactionIdGenerator {
     /**
      * 生成新的订单号
      *
-     * @param seed 订单号生成种子
+     * @param transaction 订单号生成种子
      *
      * @date 2023/9/6
      * @since 2.0.2
      */
-    public String generate(TransactionIdSeed seed) {
-        String s1 = formatCreateTime(seed.getCreateTime());
-        String s2 = String.valueOf(seed
+    public String generate(PointTransaction transaction) {
+        String s1 = formatCreateTime(transaction.getCreateTime());
+        String s2 = String.valueOf(transaction
                                        .getChannel()
                                        .getCode());
-        String s3 = String.format("%04d", seed
+        String s3 = String.format("%04d", transaction
             .getType()
             .getCode());
-        String s4 = String.format("%02d", seed.getUserId() % 100);
+        String s4 = String.format("%02d", transaction.getUserId() % 100);
         String s5 = String.format("%02d", new Random().nextInt(999));
 
-        log.trace("创建新订单号 - {} {} {} {} {} ", s1, s2, s3, s4, s5);
+        log.trace("生成交易订单号 - {} {} {} {} {} ", s1, s2, s3, s4, s5);
         return s1 + s2 + s3 + s4 + s5;
     }
 
