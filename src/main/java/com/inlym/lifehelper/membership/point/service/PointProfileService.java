@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.membership.point.service;
 
-import com.inlym.lifehelper.membership.point.entity.PointBalance;
+import com.inlym.lifehelper.membership.point.entity.PointProfile;
 import com.inlym.lifehelper.membership.point.entity.table.PointBalanceTableDef;
 import com.inlym.lifehelper.membership.point.mapper.PointBalanceMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 @RequiredArgsConstructor
-public class PointBalanceService {
+public class PointProfileService {
     private final PointBalanceMapper pointBalanceMapper;
 
     /**
@@ -32,7 +32,7 @@ public class PointBalanceService {
      * @since 2.0.2
      */
     public long getBalance(int userId) {
-        PointBalance entity = getEntity(userId);
+        PointProfile entity = getEntity(userId);
         return entity.getBalance();
     }
 
@@ -46,14 +46,14 @@ public class PointBalanceService {
      * @date 2023/8/15
      * @since 2.0.2
      */
-    private PointBalance getEntity(int userId) {
-        PointBalance result = pointBalanceMapper.selectOneByCondition(PointBalanceTableDef.POINT_BALANCE.USER_ID.eq(userId));
+    private PointProfile getEntity(int userId) {
+        PointProfile result = pointBalanceMapper.selectOneByCondition(PointBalanceTableDef.POINT_BALANCE.USER_ID.eq(userId));
         if (result != null) {
             return result;
         }
 
         // 每个用户的数据默认是空的，查询不存在时增增加对应记录
-        PointBalance entity = PointBalance
+        PointProfile entity = PointProfile
             .builder()
             .userId(userId)
             .build();

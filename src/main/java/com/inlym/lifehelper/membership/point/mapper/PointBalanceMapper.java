@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.membership.point.mapper;
 
-import com.inlym.lifehelper.membership.point.entity.PointBalance;
+import com.inlym.lifehelper.membership.point.entity.PointProfile;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +12,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2.0.2
  **/
 @Mapper
-public interface PointBalanceMapper extends BaseMapper<PointBalance> {}
+public interface PointBalanceMapper extends BaseMapper<PointProfile> {}

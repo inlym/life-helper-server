@@ -11,21 +11,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 积分余额
+ * 积分信息表
  * <p>
  * <h2>实体含义
  * <p>1. 每个用户仅1条记录，在该记录上改动。
+ * <p>2. 表中所有字段数据均可以通过对“积分交易记录表”统计重新计算。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/8/14
  * @since 2.0.2
  **/
-@Table("point_balance")
+@Table("point_profile")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PointBalance {
+public class PointProfile {
     /**
      * 主键 ID
      * <p>
@@ -63,10 +64,20 @@ public class PointBalance {
     private Long income;
 
     /**
+     * 支出次数
+     */
+    private Long expenseCounter;
+
+    /**
+     * 收入次数
+     */
+    private Long incomeCounter;
+
+    /**
      * 创建时间
      * <p>
      * <h2>字段说明
-     * <p>1. 该字段由数据库自行维护，不在代码层修改。
+     * <p>1. 当前行记录的创建时间。
      */
     private LocalDateTime createTime;
 
@@ -74,7 +85,7 @@ public class PointBalance {
      * 最近更新时间
      * <p>
      * <h2>字段说明
-     * <p>1. 该字段由数据库自行维护，不在代码层修改。
+     * <p>1. 当前行记录的最后一次修改时间。
      */
     private LocalDateTime updateTime;
 }

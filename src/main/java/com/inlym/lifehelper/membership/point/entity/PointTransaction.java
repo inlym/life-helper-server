@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.membership.point.entity;
 
+import com.inlym.lifehelper.membership.point.constant.PointTransactionChannel;
 import com.inlym.lifehelper.membership.point.constant.PointTransactionType;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -66,10 +67,23 @@ public class PointTransaction {
     private PointTransactionType type;
 
     /**
+     * 交易渠道（指客户端）
+     */
+    private PointTransactionChannel channel;
+
+    /**
      * 变动的积分数值
      * <p>
      * <h2>字段说明
      * <p>1. 该值可能为负数、0、正数。
      */
     private Long amount;
+
+    /**
+     * 客户端的 IP 地址
+     * <p>
+     * <h2>字段说明
+     * <p>1. 该字段目前无任何用途，后期用于风控使用。
+     */
+    private String ip;
 }
