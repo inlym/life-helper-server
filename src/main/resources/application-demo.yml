@@ -70,7 +70,7 @@ lifehelper:
         secret: xxxxxxxxxxxx
 
     # ChatGPT
-    chatgpt:
+    openai:
         # 代理 HTTP 请求地址
         proxy-url: xxxxxxxxxxxx
         # 开发者密钥
@@ -78,6 +78,7 @@ lifehelper:
             - xxxxxxxxxxxx
             - xxxxxxxxxxxx
             - xxxxxxxxxxxx
+
 
 # 阿里云资源配置
 aliyun:

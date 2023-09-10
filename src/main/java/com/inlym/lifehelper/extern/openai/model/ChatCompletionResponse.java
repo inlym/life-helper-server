@@ -46,7 +46,7 @@ public class ChatCompletionResponse {
         private Integer index;
 
         /** 会话补全的回复消息 */
-        private Message message;
+        private ChatCompletionMessage message;
 
         /** 结束原因 */
         @JsonProperty("finish_reason")
