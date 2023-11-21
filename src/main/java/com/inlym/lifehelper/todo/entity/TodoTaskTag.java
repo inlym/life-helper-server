@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 项目，即清单
+ * 任务标签记录
  * <p>
- * <h2>实体关系
- * <p>（1）项目和任务是一对多关系，任何一个任务至多从属于一个项目
+ * <h2>主要用途
+ * <p>记录给任务打标签的操作，一个操作一条记录。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2023/10/9
+ * @date 2023/11/21
  * @since 2.0.3
  **/
-@Table("todo_project")
+@Table("todo_task_tag")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoProject {
+public class TodoTaskTag {
     // ================================= 公共字段 =================================
 
     /** 自增主键 */
@@ -54,15 +54,9 @@ public class TodoProject {
     /** 所属用户 ID */
     private Integer userId;
 
-    /** 项目名称 */
-    private String name;
+    /** 对应的任务 ID */
+    private Long taskId;
 
-    /**
-     * 置顶时间
-     * <p>
-     * <h2>字段说明
-     * <p>（1）置顶：更新该字段，按照时间降序排列。
-     * <p>（2）取消置顶：将该字段置空。
-     */
-    private LocalDateTime pinTime;
+    /** 对应的标签 ID */
+    private Long tagId;
 }

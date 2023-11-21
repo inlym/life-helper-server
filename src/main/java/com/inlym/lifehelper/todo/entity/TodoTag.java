@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 项目，即清单
+ * 标签
  * <p>
  * <h2>实体关系
- * <p>（1）项目和任务是一对多关系，任何一个任务至多从属于一个项目
+ * <p>标签（tag）是作用在任务（task）上，两者是多对多关系。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2023/10/9
+ * @date 2023/11/21
  * @since 2.0.3
  **/
-@Table("todo_project")
+@Table("todo_tag")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoProject {
+public class TodoTag {
     // ================================= 公共字段 =================================
 
     /** 自增主键 */
@@ -54,7 +54,7 @@ public class TodoProject {
     /** 所属用户 ID */
     private Integer userId;
 
-    /** 项目名称 */
+    /** 标签名称 */
     private String name;
 
     /**

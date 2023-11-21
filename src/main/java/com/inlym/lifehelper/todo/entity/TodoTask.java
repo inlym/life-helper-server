@@ -1,5 +1,7 @@
 package com.inlym.lifehelper.todo.entity;
 
+import com.inlym.lifehelper.todo.constant.TaskPriority;
+import com.inlym.lifehelper.todo.constant.TaskStatus;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -9,24 +11,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 项目，即清单
+ * 任务
  * <p>
  * <h2>实体关系
- * <p>（1）项目和任务是一对多关系，任何一个任务至多从属于一个项目
+ * <p>项目和任务是一对多关系。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2023/10/9
+ * @date 2023/11/21
  * @since 2.0.3
  **/
-@Table("todo_project")
+@Table("todo_task")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoProject {
+public class TodoTask {
     // ================================= 公共字段 =================================
 
     /** 自增主键 */
@@ -54,15 +57,21 @@ public class TodoProject {
     /** 所属用户 ID */
     private Integer userId;
 
-    /** 项目名称 */
-    private String name;
+    /** 所属项目 ID */
+    private Long projectId;
 
-    /**
-     * 置顶时间
-     * <p>
-     * <h2>字段说明
-     * <p>（1）置顶：更新该字段，按照时间降序排列。
-     * <p>（2）取消置顶：将该字段置空。
-     */
-    private LocalDateTime pinTime;
+    /** 任务标题 */
+    private String title;
+
+    /** 任务描述 */
+    private String description;
+
+    /** 任务优先级 */
+    private TaskPriority priority;
+
+    /** 任务状态 */
+    private TaskStatus status;
+
+    /** 截止日期 */
+    private LocalDate dueDate;
 }
