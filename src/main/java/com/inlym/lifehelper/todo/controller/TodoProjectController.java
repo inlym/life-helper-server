@@ -83,6 +83,8 @@ public class TodoProjectController {
      * @date 2023/11/22
      * @since 2.0.3
      */
+    @GetMapping("/todo/projects")
+    @UserPermission
     public List<TodoProject> list(@UserId int userId) {
         return todoProjectService.list(userId);
     }
