@@ -3,7 +3,7 @@ package com.inlym.lifehelper.membership.point.service;
 import com.inlym.lifehelper.membership.point.constant.PointChangeMode;
 import com.inlym.lifehelper.membership.point.entity.PointProfile;
 import com.inlym.lifehelper.membership.point.entity.PointTransaction;
-import com.inlym.lifehelper.membership.point.entity.table.PointBalanceTableDef;
+import com.inlym.lifehelper.membership.point.entity.table.PointProfileTableDef;
 import com.inlym.lifehelper.membership.point.exception.PointAccountBlockedException;
 import com.inlym.lifehelper.membership.point.exception.PointNotEnoughException;
 import com.inlym.lifehelper.membership.point.mapper.PointProfileMapper;
@@ -101,7 +101,7 @@ public class PointProfileService {
      * @since 2.0.2
      */
     private PointProfile getEntity(int userId) {
-        PointProfile result = pointProfileMapper.selectOneByCondition(PointBalanceTableDef.POINT_BALANCE.USER_ID.eq(userId));
+        PointProfile result = pointProfileMapper.selectOneByCondition(PointProfileTableDef.POINT_PROFILE.USER_ID.eq(userId));
         if (result != null) {
             return result;
         }

@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.todo.constant;
 
 import com.mybatisflex.annotation.EnumValue;
+import lombok.Getter;
 
 /**
  * 任务状态
@@ -9,6 +10,7 @@ import com.mybatisflex.annotation.EnumValue;
  * @date 2023/11/21
  * @since 2.0.3
  **/
+@Getter
 public enum TaskStatus {
     /** 未完成（默认值） */
     UNCOMPLETED(0),

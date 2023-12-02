@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.todo.constant;
 
 import com.mybatisflex.annotation.EnumValue;
+import lombok.Getter;
 
 /**
  * 任务优先级
@@ -9,6 +10,7 @@ import com.mybatisflex.annotation.EnumValue;
  * @date 2023/11/21
  * @since 2.0.3
  **/
+@Getter
 public enum TaskPriority {
     /** 无优先级（默认值） */
     NONE(0),
