@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddOrEditTodoProjectDTO {
+public class SaveTodoProjectDTO {
     /** 项目名称 */
     @NotBlank
     private String name;

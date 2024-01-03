@@ -3,7 +3,7 @@ package com.inlym.lifehelper.todo.controller;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.todo.entity.TodoProject;
-import com.inlym.lifehelper.todo.model.AddOrEditTodoProjectDTO;
+import com.inlym.lifehelper.todo.model.SaveTodoProjectDTO;
 import com.inlym.lifehelper.todo.service.TodoProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class TodoProjectController {
      */
     @PostMapping("/todo/project")
     @UserPermission
-    public TodoProject add(@UserId int userId, @Valid @RequestBody AddOrEditTodoProjectDTO dto) {
+    public TodoProject add(@UserId int userId, @Valid @RequestBody SaveTodoProjectDTO dto) {
         String name = dto.getName();
         return todoProjectService.add(userId, name);
     }
@@ -71,7 +71,7 @@ public class TodoProjectController {
      */
     @PutMapping("/todo/project/{id}")
     @UserPermission
-    public TodoProject edit(@UserId int userId, @PathVariable("id") long projectId, @Valid @RequestBody AddOrEditTodoProjectDTO dto) {
+    public TodoProject edit(@UserId int userId, @PathVariable("id") long projectId, @Valid @RequestBody SaveTodoProjectDTO dto) {
         return todoProjectService.editName(userId, projectId, dto.getName());
     }
 
