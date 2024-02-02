@@ -37,7 +37,7 @@ public class PointProfileService {
      * @date 2023/8/15
      * @since 2.0.2
      */
-    public long getBalance(int userId) {
+    public long getBalance(long userId) {
         PointProfile entity = getEntity(userId);
         return entity.getBalance();
     }
@@ -100,7 +100,7 @@ public class PointProfileService {
      * @date 2023/8/15
      * @since 2.0.2
      */
-    private PointProfile getEntity(int userId) {
+    private PointProfile getEntity(long userId) {
         PointProfile result = pointProfileMapper.selectOneByCondition(PointProfileTableDef.POINT_PROFILE.USER_ID.eq(userId));
         if (result != null) {
             return result;
@@ -120,7 +120,7 @@ public class PointProfileService {
      * @date 2023/9/8
      * @since 2.0.3
      */
-    private PointProfile getInitEntity(int userId) {
+    private PointProfile getInitEntity(long userId) {
         return PointProfile
             .builder()
             .userId(userId)

@@ -37,7 +37,7 @@ public class WeChatCodeLoginService {
      */
     public SecurityToken loginByCode(String code) {
         String openid = weChatService.getOpenidByCode(code);
-        int userId = userAccountService.getUserIdByOpenid(openid);
+        long userId = userAccountService.getUserIdByOpenid(openid);
         SecurityToken securityToken = simpleTokenService.generateSecurityToken(userId);
 
         log.info("[小程序用户登录] code={}, openid={}, userId={}", code, openid, userId);

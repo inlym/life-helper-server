@@ -39,7 +39,7 @@ public class UserAccountService {
      * @date 2023/7/31
      * @since 2.0.2
      */
-    private static int generateAccountId(int userId) {
+    private static long generateAccountId(long userId) {
         return (1428571 + userId * 17 + new Random().nextInt(10));
     }
 
@@ -63,7 +63,7 @@ public class UserAccountService {
         log.info("[新用户注册] userId={}, openid={}", user.getId(), user.getOpenid());
 
         // 数据插入后，获取自增 ID，根据此再计算账户 ID，之后再存入（更新操作）
-        int accountId = generateAccountId(user.getId());
+        long accountId = generateAccountId(user.getId());
         userMapper.update(User
                               .builder()
                               .id(user.getId())
@@ -86,7 +86,7 @@ public class UserAccountService {
      * @date 2023/7/31
      * @since 2.0.2
      */
-    public int getUserIdByOpenid(String openid) {
+    public long getUserIdByOpenid(String openid) {
         User user = userMapper.selectOneByCondition(UserTableDef.USER.OPENID.eq(openid));
 
         if (user != null) {
@@ -105,7 +105,7 @@ public class UserAccountService {
      * @date 2023/7/31
      * @since 2.0.2
      */
-    public User getById(int userId) {
+    public User getById(long userId) {
         User user = userMapper.selectOneById(userId);
 
         if (user != null) {

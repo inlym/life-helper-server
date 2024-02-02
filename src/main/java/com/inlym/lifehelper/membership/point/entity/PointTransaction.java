@@ -54,7 +54,7 @@ public class PointTransaction {
      * <h2>字段说明
      * <p>1. 建立索引。
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 交易标题

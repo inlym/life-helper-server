@@ -76,7 +76,7 @@ public class UserInfoRepository {
      *
      * @since 1.7.0
      */
-    public UserInfo findByUserId(int userId) {
+    public UserInfo findByUserId(long userId) {
         UserInfo info = UserInfo.builder()
                                 .userId(userId)
                                 .build();

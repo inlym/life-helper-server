@@ -42,7 +42,7 @@ public class QrCodeTicket {
     private QrCodeTicketStatus status;
 
     /** 扫码端操作「确认登录」的用户 ID */
-    private Integer userId;
+    private Long userId;
 
     /** 创建时间 */
     private LocalDateTime createdTime;

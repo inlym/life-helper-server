@@ -27,7 +27,7 @@ import java.time.LocalDate;
 public class RequestLog {
     /** 用户 ID */
     @Tag
-    private Integer userId;
+    private Long userId;
 
     /** 当前日期 */
     @Tag

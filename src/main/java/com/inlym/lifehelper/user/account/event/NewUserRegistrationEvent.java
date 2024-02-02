@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 public class NewUserRegistrationEvent extends ApplicationEvent {
     /** 用户 ID */
-    private final Integer userId;
+    private final Long userId;
 
     /** 微信小程序用户唯一标识 */
     private final String openid;
@@ -25,7 +25,7 @@ public class NewUserRegistrationEvent extends ApplicationEvent {
     private final LocalDateTime registerTime;
 
     /** 账户 ID */
-    private final Integer accountId;
+    private final Long accountId;
 
     public NewUserRegistrationEvent(User user) {
         super(user);

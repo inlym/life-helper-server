@@ -58,7 +58,7 @@ public class SuperTokenHandlerFilter extends OncePerRequestFilter {
             String[] strings = tokenString.split(",");
             if (strings.length == TOKEN_STRING_PARTS) {
                 String token = strings[0];
-                int userId = Integer.parseInt(strings[1]);
+                long userId = Integer.parseInt(strings[1]);
 
                 // 令牌有效则继续
                 if (superTokenService.check(token)) {

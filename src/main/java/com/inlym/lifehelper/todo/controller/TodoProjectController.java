@@ -34,7 +34,7 @@ public class TodoProjectController {
      */
     @PostMapping("/todo/project")
     @UserPermission
-    public TodoProject add(@UserId int userId, @Valid @RequestBody SaveTodoProjectDTO dto) {
+    public TodoProject add(@UserId long userId, @Valid @RequestBody SaveTodoProjectDTO dto) {
         String name = dto.getName();
         return todoProjectService.add(userId, name);
     }
@@ -50,7 +50,7 @@ public class TodoProjectController {
      */
     @DeleteMapping("/todo/project/{id}")
     @UserPermission
-    public TodoProject delete(@UserId int userId, @PathVariable("id") long projectId) {
+    public TodoProject delete(@UserId long userId, @PathVariable("id") long projectId) {
         todoProjectService.delete(userId, projectId);
 
         return TodoProject
@@ -71,7 +71,7 @@ public class TodoProjectController {
      */
     @PutMapping("/todo/project/{id}")
     @UserPermission
-    public TodoProject edit(@UserId int userId, @PathVariable("id") long projectId, @Valid @RequestBody SaveTodoProjectDTO dto) {
+    public TodoProject edit(@UserId long userId, @PathVariable("id") long projectId, @Valid @RequestBody SaveTodoProjectDTO dto) {
         return todoProjectService.editName(userId, projectId, dto.getName());
     }
 
@@ -85,7 +85,7 @@ public class TodoProjectController {
      */
     @GetMapping("/todo/projects")
     @UserPermission
-    public List<TodoProject> list(@UserId int userId) {
+    public List<TodoProject> list(@UserId long userId) {
         return todoProjectService.list(userId);
     }
 }

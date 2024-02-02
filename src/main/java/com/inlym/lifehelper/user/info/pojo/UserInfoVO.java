@@ -23,7 +23,7 @@ public class UserInfoVO {
     // ============================== 数据源来自用户账户实体 =============================
 
     /** 账户 ID */
-    private Integer accountId;
+    private Long accountId;
 
     /** 注册时间 */
     private LocalDateTime registerTime;

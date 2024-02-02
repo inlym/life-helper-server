@@ -52,7 +52,7 @@ public class TodoProject {
     // ================================= 业务字段 =================================
 
     /** 所属用户 ID */
-    private Integer userId;
+    private Long userId;
 
     /** 项目名称 */
     private String name;

@@ -27,19 +27,19 @@ import java.util.List;
  * @since 1.0.0
  */
 public class SimpleAuthentication implements Authentication {
-    private final Integer userId;
+    private final Long userId;
 
     private final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
     private Boolean authenticated;
 
-    public SimpleAuthentication(int userId) {
+    public SimpleAuthentication(long userId) {
         this.userId = userId;
         this.authorities.add(new SimpleGrantedAuthority(Role.USER));
         this.authenticated = true;
     }
 
-    public SimpleAuthentication(int userId, String[] roles) {
+    public SimpleAuthentication(long userId, String[] roles) {
         for (String role : roles) {
             this.authorities.add(new SimpleGrantedAuthority(role));
         }
@@ -49,7 +49,7 @@ public class SimpleAuthentication implements Authentication {
         this.authenticated = true;
     }
 
-    public Integer getUserId() {
+    public long getUserId() {
         return userId;
     }
 

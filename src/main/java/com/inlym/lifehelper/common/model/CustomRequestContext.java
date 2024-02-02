@@ -57,7 +57,7 @@ public class CustomRequestContext {
      * <h2>说明
      * <p>务必在鉴权通过后再存入。
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 客户端类型

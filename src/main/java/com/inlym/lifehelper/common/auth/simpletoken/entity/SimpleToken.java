@@ -41,7 +41,7 @@ public class SimpleToken {
     private LocalDateTime expireTime;
 
     /** 用户 ID */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 获取到期时间

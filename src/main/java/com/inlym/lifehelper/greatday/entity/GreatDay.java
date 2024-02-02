@@ -22,7 +22,7 @@ public class GreatDay {
     // ================================= 主键列 =================================
 
     /** 所属用户 ID - 分区键 */
-    private Integer userId;
+    private Long userId;
 
     /** 纪念日 ID */
     private Long dayId;

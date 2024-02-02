@@ -87,7 +87,7 @@ public class AlbumService {
      * @param userId 用户 ID
      * @since 1.4.0
      */
-    public List<Album> list(int userId) {
+    public List<Album> list(long userId) {
         Album album = Album
                 .builder()
                 .userId(userId)
@@ -113,7 +113,7 @@ public class AlbumService {
      * @param albumId 相册 ID
      * @since 1.4.0
      */
-    public void delete(int userId, String albumId) {
+    public void delete(long userId, String albumId) {
         Album album = Album
                 .builder()
                 .userId(userId)
@@ -130,7 +130,7 @@ public class AlbumService {
      * @param albumId 相册 ID
      * @since 1.4.0
      */
-    public Album findOne(int userId, String albumId) {
+    public Album findOne(long userId, String albumId) {
         Album album = Album
                 .builder()
                 .userId(userId)
@@ -147,7 +147,7 @@ public class AlbumService {
      * @param albumId 相册 ID
      * @since 1.4.0
      */
-    public Album findOneOrElseThrow(int userId, String albumId) {
+    public Album findOneOrElseThrow(long userId, String albumId) {
         Album album = findOne(userId, albumId);
         if (album == null) {
             throw AlbumNotExistException.create(albumId);
@@ -169,7 +169,7 @@ public class AlbumService {
      * @param albumId 相册 ID
      * @since 1.4.0
      */
-    public void refresh(int userId, String albumId) {
+    public void refresh(long userId, String albumId) {
         // 首先判断要操作的相册是否存在，如果不存在就不需要继续了
         Album album = findOneOrElseThrow(userId, albumId);
 

@@ -35,7 +35,7 @@ public class UserInfoController {
      */
     @GetMapping("/userinfo")
     @UserPermission
-    public UserInfoVO get(@UserId int userId) {
+    public UserInfoVO get(@UserId long userId) {
         return userInfoAdapter.getMixedUserInfo(userId);
     }
 
@@ -49,7 +49,7 @@ public class UserInfoController {
      */
     @PutMapping("/userinfo")
     @UserPermission
-    public UserInfoVO update(@UserId int userId, @RequestBody UpdateUserInfoDTO dto) {
+    public UserInfoVO update(@UserId long userId, @RequestBody UpdateUserInfoDTO dto) {
         return userInfoAdapter.update(userId, dto);
     }
 }

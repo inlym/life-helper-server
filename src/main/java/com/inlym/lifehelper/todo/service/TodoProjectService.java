@@ -34,7 +34,7 @@ public class TodoProjectService {
      * @date 2023/11/22
      * @since 2.0.3
      */
-    public TodoProject add(int userId, String name) {
+    public TodoProject add(long userId, String name) {
         TodoProject project = TodoProject
             .builder()
             .userId(userId)
@@ -56,7 +56,7 @@ public class TodoProjectService {
      * @date 2023/11/22
      * @since 2.0.3
      */
-    public boolean delete(int userId, long projectId) {
+    public boolean delete(long userId, long projectId) {
         TodoProject project = todoProjectMapper.selectOneById(projectId);
         if (project != null && project.getUserId() == userId) {
             todoProjectMapper.deleteById(projectId);
@@ -73,7 +73,7 @@ public class TodoProjectService {
      * @date 2023/11/22
      * @since 2.0.3
      */
-    public List<TodoProject> list(int userId) {
+    public List<TodoProject> list(long userId) {
         return todoProjectMapper.selectListByCondition(QueryCondition.create(TODO_PROJECT.USER_ID, userId));
     }
 
@@ -87,7 +87,7 @@ public class TodoProjectService {
      * @date 2023/11/22
      * @since 2.0.3
      */
-    public TodoProject editName(int userId, long projectId, String name) {
+    public TodoProject editName(long userId, long projectId, String name) {
         TodoProject project = todoProjectMapper.selectOneById(projectId);
         if (project != null && project.getUserId() == userId) {
             TodoProject updated = TodoProject

@@ -12,13 +12,13 @@ import java.lang.annotation.*;
  *
  * <h2>注意事项
  * <li> 需要结合 {@link UserPermission @UserPermission} 注解使用（登录鉴权通过才会有用户 ID）。
- * <li> 在控制器方法参数注入 {@code @UserId int userId}。
+ * <li> 在控制器方法参数注入 {@code @UserId long userId}。
  *
  * <h2>使用示例
  * <pre class="code">
  * &#064;GetMapping("/userid")
  * &#064;UserPermission
- * public int getUserId(@UserId int userId) {
+ * public int getUserId(@UserId long userId) {
  *     return userId;
  * }
  * </pre>

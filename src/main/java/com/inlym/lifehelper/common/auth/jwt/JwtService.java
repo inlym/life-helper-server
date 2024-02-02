@@ -43,7 +43,7 @@ public class JwtService {
         this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
     }
 
-    public SecurityToken generateSecurityToken(int userId) {
+    public SecurityToken generateSecurityToken(long userId) {
         LocalDateTime createTime = LocalDateTime.now();
         LocalDateTime expireTime = createTime.plusSeconds(DEFAULT_JWT_DURATION.toSeconds());
 
@@ -82,7 +82,7 @@ public class JwtService {
         DecodedJWT jwt = verifier.verify(token);
 
         // 用户 ID
-        int userId = jwt
+        long userId = jwt
             .getClaim(USER_ID_FIELD)
             .asInt();
 

@@ -38,7 +38,7 @@ public class GreatDayViewService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public GreatDayVO create(int userId, SaveGreatDayDTO dto) {
+    public GreatDayVO create(long userId, SaveGreatDayDTO dto) {
         GreatDay day = GreatDay
             .builder()
             .userId(userId)
@@ -59,7 +59,7 @@ public class GreatDayViewService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public GreatDayVO delete(int userId, Long dayId) {
+    public GreatDayVO delete(long userId, Long dayId) {
         greatDayService.delete(userId, dayId);
         return GreatDayVO
             .builder()
@@ -77,7 +77,7 @@ public class GreatDayViewService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public GreatDayVO update(int userId, long dayId, SaveGreatDayDTO dto) {
+    public GreatDayVO update(long userId, long dayId, SaveGreatDayDTO dto) {
         GreatDay day = GreatDay
             .builder()
             .userId(userId)
@@ -100,7 +100,7 @@ public class GreatDayViewService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public GreatDayVO findOne(int userId, long dayId) {
+    public GreatDayVO findOne(long userId, long dayId) {
         // 优先从默认数据找，因为大多数用户数据为空
         GreatDayVO vo = greatDayDefaultDataProvider.getById(dayId);
         if (vo != null) {
@@ -118,7 +118,7 @@ public class GreatDayViewService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public CommonListResponse<GreatDayVO> findAll(int userId) {
+    public CommonListResponse<GreatDayVO> findAll(long userId) {
         List<GreatDay> list = greatDayService.findAll(userId);
 
         if (list.size() == 0) {

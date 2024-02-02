@@ -104,7 +104,7 @@ public class DebugController {
      */
     @GetMapping("/debug/userid")
     @UserPermission
-    public Map<String, Object> getUserId(@UserId int userId) {
+    public Map<String, Object> getUserId(@UserId long userId) {
         return Map.of("userId", userId);
     }
 

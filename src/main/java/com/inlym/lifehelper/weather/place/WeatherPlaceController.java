@@ -45,7 +45,7 @@ public class WeatherPlaceController {
      */
     @PostMapping("/weather/place")
     @UserPermission
-    public WeatherPlaceVO create(@UserId int userId, @Valid @RequestBody WeChatChooseLocationDTO dto) {
+    public WeatherPlaceVO create(@UserId long userId, @Valid @RequestBody WeChatChooseLocationDTO dto) {
         WeatherPlace place = WeatherPlace
             .builder()
             .userId(userId)
@@ -68,7 +68,7 @@ public class WeatherPlaceController {
      */
     @DeleteMapping("/weather/place/{id}")
     @UserPermission
-    public WeatherPlaceVO delete(@UserId int userId, @NotBlank @PathVariable("id") String placeId) {
+    public WeatherPlaceVO delete(@UserId long userId, @NotBlank @PathVariable("id") String placeId) {
         weatherPlaceService.delete(userId, placeId);
 
         return WeatherPlaceVO
@@ -86,7 +86,7 @@ public class WeatherPlaceController {
      */
     @GetMapping("/weather/places")
     @UserPermission
-    public WeatherPlaceListVO getList(@UserId int userId, @ClientIp String ip) {
+    public WeatherPlaceListVO getList(@UserId long userId, @ClientIp String ip) {
         WeatherPlaceListVO vo = new WeatherPlaceListVO();
 
         // 备注（2022.10.30）

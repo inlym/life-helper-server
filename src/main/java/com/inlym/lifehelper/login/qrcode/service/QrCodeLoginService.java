@@ -78,7 +78,7 @@ public class QrCodeLoginService {
      * @date 2023/5/16
      * @since 2.0.0
      */
-    public QrCodeTicketVO confirm(String ticketId, int userId) {
+    public QrCodeTicketVO confirm(String ticketId, long userId) {
         QrCodeTicket ticket = qrCodeTicketManager.confirm(ticketId, userId);
 
         return QrCodeTicketVO

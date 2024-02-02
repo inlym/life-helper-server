@@ -25,7 +25,7 @@ public abstract class HashedIdUtil {
      *
      * @see <a href="https://help.aliyun.com/document_detail/142533.html">表设计</a>
      */
-    public static String create(int id) {
+    public static String create(long id) {
         String sid = String.valueOf(id);
         String prefix = DigestUtils.md5DigestAsHex(sid.getBytes(StandardCharsets.UTF_8))
                                    .substring(0, 8);
@@ -43,7 +43,7 @@ public abstract class HashedIdUtil {
      *
      * @since 1.4.0
      */
-    public static int parse(String hashedId) {
+    public static long parse(String hashedId) {
         String[] strings = hashedId.split("_");
 
         String sid = strings[1];

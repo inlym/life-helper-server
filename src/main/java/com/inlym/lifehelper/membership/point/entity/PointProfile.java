@@ -43,7 +43,7 @@ public class PointProfile {
      * <p>1. 建立唯一索引。
      * <p>2. 仅使用当前字段查找行。
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 当前积分余额

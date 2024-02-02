@@ -40,7 +40,7 @@ public class AlbumController {
      */
     @PostMapping("/album")
     @UserPermission
-    public AlbumVO createAlbum(@UserId int userId, @Valid @RequestBody CreateAlbumDTO dto) {
+    public AlbumVO createAlbum(@UserId long userId, @Valid @RequestBody CreateAlbumDTO dto) {
         Album album = Album
             .builder()
             .userId(userId)
@@ -59,7 +59,7 @@ public class AlbumController {
      */
     @GetMapping("/albums")
     @UserPermission
-    public AlbumListVO listAlbums(@UserId int userId) {
+    public AlbumListVO listAlbums(@UserId long userId) {
         List<AlbumVO> list = new ArrayList<>(256);
         int totalCount = 0;
         long totalSize = 0L;
@@ -89,7 +89,7 @@ public class AlbumController {
      */
     @DeleteMapping("/album/{id}")
     @UserPermission
-    public AlbumVO deleteAlbum(@UserId int userId, @NotBlank @PathVariable String id) {
+    public AlbumVO deleteAlbum(@UserId long userId, @NotBlank @PathVariable String id) {
         albumService.delete(userId, id);
 
         return AlbumVO
@@ -109,7 +109,7 @@ public class AlbumController {
      */
     @PutMapping("/album/{id}")
     @UserPermission
-    public AlbumVO updateAlbum(@UserId int userId, @NotBlank @PathVariable String id, @Valid @RequestBody UpdateAlbumDTO dto) {
+    public AlbumVO updateAlbum(@UserId long userId, @NotBlank @PathVariable String id, @Valid @RequestBody UpdateAlbumDTO dto) {
         Album album = Album
             .builder()
             .userId(userId)

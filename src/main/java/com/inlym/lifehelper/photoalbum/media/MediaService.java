@@ -67,7 +67,7 @@ public class MediaService {
      * @param media  媒体文件实体
      * @since 1.4.0
      */
-    public Media add(int userId, Media media) {
+    public Media add(long userId, Media media) {
         // 首先判断要操作的相册是否存在，如果不存在就不需要继续了
         albumService.findOneOrElseThrow(userId, media.getAlbumId());
 
@@ -88,7 +88,7 @@ public class MediaService {
      * @param media  媒体文件实体
      * @since 1.4.0
      */
-    public void delete(int userId, Media media) {
+    public void delete(long userId, Media media) {
         // 首先判断要操作的相册是否存在，如果不存在就不需要继续了
         albumService.findOneOrElseThrow(userId, media.getAlbumId());
 
@@ -103,7 +103,7 @@ public class MediaService {
      * @param albumId 相册 ID
      * @since 1.4.0
      */
-    public AlbumVO getAlbumWithMedias(int userId, String albumId) {
+    public AlbumVO getAlbumWithMedias(long userId, String albumId) {
         Album album = albumService.findOneOrElseThrow(userId, albumId);
         Media mediaSearch = Media
                 .builder()

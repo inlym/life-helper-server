@@ -104,7 +104,7 @@ public class WeatherPlaceService {
      *
      * @since 1.5.0
      */
-    public void delete(int userId, String placeId) {
+    public void delete(long userId, String placeId) {
         weatherPlaceRepository.delete(userId, placeId);
     }
 
@@ -115,7 +115,7 @@ public class WeatherPlaceService {
      *
      * @since 1.5.0
      */
-    public List<WeatherPlaceVO> getList(int userId) {
+    public List<WeatherPlaceVO> getList(long userId) {
         List<WeatherPlaceVO> list = new ArrayList<>();
         List<WeatherPlace> places = weatherPlaceRepository.list(userId);
 

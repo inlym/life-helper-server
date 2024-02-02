@@ -155,7 +155,7 @@ public class GreatDayRepository {
      * @date 2023/5/26
      * @since 2.0.0
      */
-    public void delete(int userId, long dayId) {
+    public void delete(long userId, long dayId) {
         // 以哈希化的用户 ID 作为分区键
         String hashedId = HashedIdUtil.create(userId);
 
@@ -181,7 +181,7 @@ public class GreatDayRepository {
      * @date 2023/5/26
      * @since 2.0.0
      */
-    public List<GreatDay> findAll(int userId) {
+    public List<GreatDay> findAll(long userId) {
         // 以哈希化的用户 ID 作为分区键
         String hashedId = HashedIdUtil.create(userId);
 
@@ -284,7 +284,7 @@ public class GreatDayRepository {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public GreatDay findOne(int userId, long dayId) {
+    public GreatDay findOne(long userId, long dayId) {
         // 以哈希化的用户 ID 作为分区键
         String hashedId = HashedIdUtil.create(userId);
 

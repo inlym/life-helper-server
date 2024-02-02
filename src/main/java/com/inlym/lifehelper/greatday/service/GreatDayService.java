@@ -68,7 +68,7 @@ public class GreatDayService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public void delete(int userId, long dayId) {
+    public void delete(long userId, long dayId) {
         // （待补充）删除前的判断
 
         repository.delete(userId, dayId);
@@ -84,7 +84,7 @@ public class GreatDayService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public List<GreatDay> findAll(int userId) {
+    public List<GreatDay> findAll(long userId) {
         return repository.findAll(userId);
     }
 
@@ -99,7 +99,7 @@ public class GreatDayService {
      * @date 2023/5/27
      * @since 2.0.0
      */
-    public GreatDay findOne(int userId, long dayId) {
+    public GreatDay findOne(long userId, long dayId) {
         return repository.findOne(userId, dayId);
     }
 

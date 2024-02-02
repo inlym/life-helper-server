@@ -64,7 +64,7 @@ public class WeatherDataController {
      */
     @GetMapping(path = "/weather", params = "place_id")
     @UserPermission
-    public WeatherDataVO getWeatherData(@UserId int userId, @RequestParam("place_id") String placeId) {
+    public WeatherDataVO getWeatherData(@UserId long userId, @RequestParam("place_id") String placeId) {
         WeatherPlace place = weatherPlaceRepository.findOneOrElseThrow(userId, placeId);
         return weatherDataIntegrationService.getWeatherData(place);
     }

@@ -50,7 +50,7 @@ public class WeatherPlaceRepository {
      * @param placeId 天气地点 ID
      * @since 1.5.0
      */
-    public void delete(int userId, String placeId) {
+    public void delete(long userId, String placeId) {
         WeatherPlace place = WeatherPlace
                 .builder()
                 .userId(userId)
@@ -66,7 +66,7 @@ public class WeatherPlaceRepository {
      * @param userId 用户 ID
      * @since 1.5.0
      */
-    public List<WeatherPlace> list(int userId) {
+    public List<WeatherPlace> list(long userId) {
         WeatherPlace place = WeatherPlace
                 .builder()
                 .userId(userId)
@@ -88,7 +88,7 @@ public class WeatherPlaceRepository {
      * @param userId 用户 ID
      * @since 1.5.0
      */
-    public int count(int userId) {
+    public int count(long userId) {
         return list(userId).size();
     }
 
@@ -99,7 +99,7 @@ public class WeatherPlaceRepository {
      * @param placeId 天气地点 ID
      * @since 1.5.0
      */
-    public WeatherPlace findOneOrElseThrow(int userId, String placeId) {
+    public WeatherPlace findOneOrElseThrow(long userId, String placeId) {
         WeatherPlace placeSearch = WeatherPlace
                 .builder()
                 .userId(userId)

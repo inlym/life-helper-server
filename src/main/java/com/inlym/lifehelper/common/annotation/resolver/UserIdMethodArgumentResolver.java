@@ -24,7 +24,7 @@ public class UserIdMethodArgumentResolver implements HandlerMethodArgumentResolv
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter
             .getParameterType()
-            .isAssignableFrom(int.class) && parameter.hasParameterAnnotation(UserId.class);
+            .isAssignableFrom(long.class) && parameter.hasParameterAnnotation(UserId.class);
     }
 
     @Override

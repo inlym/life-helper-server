@@ -15,7 +15,7 @@ public class WeatherPlaceOverflowException extends RuntimeException {
         super(message);
     }
 
-    public static WeatherPlaceOverflowException create(int userId) {
+    public static WeatherPlaceOverflowException create(long userId) {
         String message = "Weather Places Overflow For userId=" + userId;
         return new WeatherPlaceOverflowException(message);
     }

@@ -37,7 +37,7 @@ public class MediaController {
      */
     @PostMapping(path = "/album/{album_id}/media", params = "type=image")
     @UserPermission
-    public MediaVO addImage(@PathVariable("album_id") String albumId, @UserId int userId, @RequestBody AddImageDTO dto) {
+    public MediaVO addImage(@PathVariable("album_id") String albumId, @UserId long userId, @RequestBody AddImageDTO dto) {
         Media media = Media
             .builder()
             .albumId(albumId)
@@ -61,7 +61,7 @@ public class MediaController {
      */
     @PostMapping(path = "/album/{album_id}/media", params = "type=video")
     @UserPermission
-    public MediaVO addVideo(@PathVariable("album_id") String albumId, @UserId int userId, @RequestBody AddVideoDTO dto) {
+    public MediaVO addVideo(@PathVariable("album_id") String albumId, @UserId long userId, @RequestBody AddVideoDTO dto) {
         Media media = Media
             .builder()
             .albumId(albumId)
@@ -89,7 +89,7 @@ public class MediaController {
      */
     @DeleteMapping("/album/{album_id}/media/{media_id}")
     @UserPermission
-    public MediaVO delete(@UserId int userId, @PathVariable("album_id") String albumId, @PathVariable("media_id") String mediaId) {
+    public MediaVO delete(@UserId long userId, @PathVariable("album_id") String albumId, @PathVariable("media_id") String mediaId) {
         Media media = Media
             .builder()
             .albumId(albumId)
@@ -111,7 +111,7 @@ public class MediaController {
      */
     @GetMapping("/album/{album_id}")
     @UserPermission
-    public AlbumVO getAlbumDetail(@UserId int userId, @PathVariable("album_id") String albumId) {
+    public AlbumVO getAlbumDetail(@UserId long userId, @PathVariable("album_id") String albumId) {
         return mediaService.getAlbumWithMedias(userId, albumId);
     }
 }

@@ -27,7 +27,7 @@ public class UserInfoService {
      * @date 2023/5/6
      * @since 2.0.0
      */
-    public UserInfo get(int userId) {
+    public UserInfo get(long userId) {
         return userInfoRepository.findByUserId(userId);
     }
 

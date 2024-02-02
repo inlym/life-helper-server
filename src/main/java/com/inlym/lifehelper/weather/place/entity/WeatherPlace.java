@@ -35,7 +35,7 @@ public class WeatherPlace {
 
     /** 所属用户 ID - 分区键 */
     @PrimaryKeyField(name = "uid", order = 1, hashed = true)
-    private Integer userId;
+    private Long userId;
 
     /** 地点 ID */
     @PrimaryKeyField(order = 2, mode = PrimaryKeyMode.SIMPLE_UUID)

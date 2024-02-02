@@ -15,7 +15,7 @@ import java.lang.annotation.*;
  * <pre class="code">
  * &#064;GetMapping("/userid")
  * &#064;UserPermission
- * public int getUserId(@UserId int userId) {
+ * public int getUserId(@UserId long userId) {
  *     return userId;
  * }
  * </pre>

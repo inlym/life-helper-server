@@ -38,7 +38,7 @@ public class GreatDayController {
      */
     @PostMapping("/greatday")
     @UserPermission
-    public GreatDayVO create(@UserId int userId, @Valid @RequestBody SaveGreatDayDTO dto) {
+    public GreatDayVO create(@UserId long userId, @Valid @RequestBody SaveGreatDayDTO dto) {
         return greatDayViewService.create(userId, dto);
     }
 
@@ -52,7 +52,7 @@ public class GreatDayController {
      */
     @DeleteMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO delete(@UserId int userId, @PathVariable("id") Long id) {
+    public GreatDayVO delete(@UserId long userId, @PathVariable("id") Long id) {
         return greatDayViewService.delete(userId, id);
     }
 
@@ -66,7 +66,7 @@ public class GreatDayController {
      */
     @PutMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO update(@UserId int userId, @PathVariable("id") long id, @Valid @RequestBody SaveGreatDayDTO dto) {
+    public GreatDayVO update(@UserId long userId, @PathVariable("id") long id, @Valid @RequestBody SaveGreatDayDTO dto) {
         return greatDayViewService.update(userId, id, dto);
     }
 
@@ -80,7 +80,7 @@ public class GreatDayController {
      */
     @GetMapping("/greatday/{id}")
     @UserPermission
-    public GreatDayVO findOne(@UserId int userId, @PathVariable("id") long id) {
+    public GreatDayVO findOne(@UserId long userId, @PathVariable("id") long id) {
         return greatDayViewService.findOne(userId, id);
     }
 
@@ -93,7 +93,7 @@ public class GreatDayController {
      */
     @GetMapping("/greatdays")
     @UserPermission
-    public CommonListResponse<GreatDayVO> findAll(@UserId int userId) {
+    public CommonListResponse<GreatDayVO> findAll(@UserId long userId) {
         return greatDayViewService.findAll(userId);
     }
 

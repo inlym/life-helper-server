@@ -52,7 +52,7 @@ public class TodoTaskTag {
     // ================================= 业务字段 =================================
 
     /** 所属用户 ID */
-    private Integer userId;
+    private Long userId;
 
     /** 对应的任务 ID */
     private Long taskId;

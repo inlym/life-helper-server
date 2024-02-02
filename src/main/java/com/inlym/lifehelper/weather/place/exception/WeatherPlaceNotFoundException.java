@@ -16,7 +16,7 @@ public class WeatherPlaceNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public static WeatherPlaceNotFoundException create(int userId, String placeId) {
+    public static WeatherPlaceNotFoundException create(long userId, String placeId) {
         String message = "Not Found Weather Place For userId=" + userId + ", placeId=" + placeId;
         return new WeatherPlaceNotFoundException(message);
     }

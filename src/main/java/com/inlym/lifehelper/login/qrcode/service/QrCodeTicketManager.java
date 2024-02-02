@@ -102,7 +102,7 @@ public class QrCodeTicketManager {
      * @date 2023/5/15
      * @since 2.0.0
      */
-    public QrCodeTicket confirm(String ticketId, int userId) {
+    public QrCodeTicket confirm(String ticketId, long userId) {
         QrCodeTicket ticket = getOrThrow(ticketId);
 
         // 只有「已扫码未确认」状态需要处理，其他状态均不做任何处理

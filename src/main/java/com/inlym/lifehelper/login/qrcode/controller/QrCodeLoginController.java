@@ -87,7 +87,7 @@ public class QrCodeLoginController {
      */
     @PutMapping("/login/qrcode/confirm/{id}")
     @UserPermission
-    public QrCodeTicketVO operate(@UserId int userId, @PathVariable("id") String ticketId) {
+    public QrCodeTicketVO operate(@UserId long userId, @PathVariable("id") String ticketId) {
         return qrCodeLoginService.confirm(ticketId, userId);
     }
 }

@@ -53,7 +53,7 @@ public class UserInfoAdapter {
      * @date 2023/5/6
      * @since 2.0.0
      */
-    public UserInfoVO update(int userId, UpdateUserInfoDTO dto) {
+    public UserInfoVO update(long userId, UpdateUserInfoDTO dto) {
         UserInfo info = UserInfo
             .builder()
             .userId(userId)
@@ -71,7 +71,7 @@ public class UserInfoAdapter {
         return getMixedUserInfo(userId);
     }
 
-    public UserInfoVO getMixedUserInfo(int userId) {
+    public UserInfoVO getMixedUserInfo(long userId) {
         User user = userAccountService.getById(userId);
         UserInfo info = userInfoService.get(userId);
         UserInfoVO vo = convert(info);

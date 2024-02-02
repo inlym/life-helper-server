@@ -38,7 +38,7 @@ public class SimpleTokenService {
      *
      * @since 1.7.0
      */
-    private SimpleToken create(int userId) {
+    private SimpleToken create(long userId) {
         SimpleToken simpleToken = SimpleToken
             .builder()
             .id(IdUtil.simpleUUID())
@@ -61,7 +61,7 @@ public class SimpleTokenService {
      *
      * @since 1.7.0
      */
-    public SecurityToken generateSecurityToken(int userId) {
+    public SecurityToken generateSecurityToken(long userId) {
         SimpleToken simpleToken = create(userId);
 
         return SecurityToken
