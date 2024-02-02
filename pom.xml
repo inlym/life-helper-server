@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.2.2</version>
         <relativePath/>
     </parent>
 
     <groupId>com.inlym</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>2.0.3</version>
+    <version>2.1.0</version>
 
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.8.15</version>
+            <version>5.8.18</version>
         </dependency>
 
         <!-- Google Guava -->
@@ -224,8 +224,14 @@
         <!-- MyBatis-Flex -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
-            <version>1.7.3</version>
+            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
+            <version>1.7.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-processor</artifactId>
+            <version>1.7.8</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Spring Boot Admin 客户端 -->
