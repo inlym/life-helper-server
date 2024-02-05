@@ -29,9 +29,9 @@ public class ClientIpMethodArgumentResolver implements HandlerMethodArgumentReso
 
     /**
      * 解析参数处理
-     *
+     * <p>
      * <h2>处理逻辑
-     * <p>在过滤器中已获取客户端 IP 地址，并附在了请求域属性上，直接获取即可。
+     * <p>在过滤器中已获取客户端 IP 地址，并附在了自定义请求域属性上，直接获取即可。
      */
     @Override
     public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
