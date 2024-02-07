@@ -2,6 +2,9 @@ package com.inlym.lifehelper.common.constant;
 
 /**
  * 自定义的 HTTP 请求头
+ * <p>
+ * <h2>说明
+ * <p>为避免冲突，所有请求头均以 `x-lifehelper-` 开头。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-19
