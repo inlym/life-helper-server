@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.login.qrcode.service;
 
-import com.inlym.lifehelper.common.auth.core.SecurityToken;
+import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.login.qrcode.constant.QrCodeTicketStatus;
@@ -126,14 +126,14 @@ public class QrCodeLoginService {
                 .build();
         } else if (ticket.getStatus() == QrCodeTicketStatus.CONFIRMED) {
             qrCodeTicketManager.consume(ticketId);
-            SecurityToken securityToken = simpleTokenService.generateSecurityToken(ticket.getUserId());
+            IdentityCertificate identityCertificate = simpleTokenService.generateSecurityToken(ticket.getUserId());
 
             return QrCodeLoginResultVO
                 .builder()
                 .invalid(false)
                 .scanned(true)
                 .logined(true)
-                .securityToken(securityToken)
+                .identityCertificate(identityCertificate)
                 .build();
         } else {
             // 其他任何异常，均返回告知已失效即可

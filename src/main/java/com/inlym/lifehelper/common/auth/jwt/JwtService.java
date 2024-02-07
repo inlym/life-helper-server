@@ -5,7 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.inlym.lifehelper.common.auth.core.SecurityToken;
+import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.constant.SecurityTokenType;
@@ -43,7 +43,7 @@ public class JwtService {
         this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
     }
 
-    public SecurityToken generateSecurityToken(long userId) {
+    public IdentityCertificate generateSecurityToken(long userId) {
         LocalDateTime createTime = LocalDateTime.now();
         LocalDateTime expireTime = createTime.plusSeconds(DEFAULT_JWT_DURATION.toSeconds());
 
@@ -56,7 +56,7 @@ public class JwtService {
             .withClaim(USER_ID_FIELD, userId)
             .sign(algorithm);
 
-        return SecurityToken
+        return IdentityCertificate
             .builder()
             .token(token)
             .type(SecurityTokenType.JSON_WEB_TOKEN)

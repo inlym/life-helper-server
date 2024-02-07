@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.login.qrcode.model;
 
-import com.inlym.lifehelper.common.auth.core.SecurityToken;
+import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,10 +28,10 @@ public class QrCodeLoginResultVO {
      * 是否已登录
      *
      * <h2>字段说明
-     * <p>该字段为 {@code true} 时，在 {@code securityToken} 字段中将包含登录凭证。
+     * <p>该字段为 {@code true} 时，在 {@code identityCertificate} 字段中将包含登录凭证。
      */
     private Boolean logined;
 
     /** 登录凭证 */
-    private SecurityToken securityToken;
+    private IdentityCertificate identityCertificate;
 }

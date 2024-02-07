@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.login.wechatcode;
 
-import com.inlym.lifehelper.common.auth.core.SecurityToken;
+import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.user.account.service.UserAccountService;
@@ -35,13 +35,13 @@ public class WeChatCodeLoginService {
      *
      * @since 1.3.0
      */
-    public SecurityToken loginByCode(String code) {
+    public IdentityCertificate loginByCode(String code) {
         String openid = weChatService.getOpenidByCode(code);
         long userId = userAccountService.getUserIdByOpenid(openid);
-        SecurityToken securityToken = simpleTokenService.generateSecurityToken(userId);
+        IdentityCertificate identityCertificate = simpleTokenService.generateSecurityToken(userId);
 
         log.info("[小程序用户登录] code={}, openid={}, userId={}", code, openid, userId);
 
-        return securityToken;
+        return identityCertificate;
     }
 }

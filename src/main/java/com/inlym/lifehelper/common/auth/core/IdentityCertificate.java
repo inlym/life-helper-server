@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 安全令牌
- *
+ * 身份证书
+ * <p>
  * <h2>主要用途
- * <p>用于发放登录鉴权凭证，并告知其如何使用及使用限制。用户登录成功后，就发放这个安全令牌。
+ * <p>在用户鉴权通过后（即完成登录），发放身份证书，用于证明其身份。证书中包含鉴权令牌以及使用方法。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/11/27
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SecurityToken {
+public class IdentityCertificate {
     /** 鉴权令牌 */
     private String token;
 

@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.auth.simpletoken;
 
 import cn.hutool.core.util.IdUtil;
-import com.inlym.lifehelper.common.auth.core.SecurityToken;
+import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.core.SimpleAuthentication;
 import com.inlym.lifehelper.common.auth.simpletoken.entity.SimpleToken;
 import com.inlym.lifehelper.common.auth.simpletoken.exception.InvalidSimpleTokenException;
@@ -61,10 +61,10 @@ public class SimpleTokenService {
      *
      * @since 1.7.0
      */
-    public SecurityToken generateSecurityToken(long userId) {
+    public IdentityCertificate generateSecurityToken(long userId) {
         SimpleToken simpleToken = create(userId);
 
-        return SecurityToken
+        return IdentityCertificate
             .builder()
             .token(simpleToken.getId())
             .type(SecurityTokenType.SIMPLE_TOKEN)

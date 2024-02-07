@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.login.wechatcode;
 
-import com.inlym.lifehelper.common.auth.core.SecurityToken;
+import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.login.wechatcode.pojo.WeChatCodeDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class WeChatCodeLoginController {
      * @since 1.3.0
      */
     @PostMapping("/login/wechat")
-    public SecurityToken loginByCode(@Valid @RequestBody WeChatCodeDTO dto) {
+    public IdentityCertificate loginByCode(@Valid @RequestBody WeChatCodeDTO dto) {
         return weChatCodeLoginService.loginByCode(dto.getCode());
     }
 }
