@@ -4,7 +4,6 @@ import com.inlym.lifehelper.common.annotation.resolver.ClientIpMethodArgumentRes
 import com.inlym.lifehelper.common.annotation.resolver.UserIdMethodArgumentResolver;
 import com.inlym.lifehelper.common.interceptor.LogInterceptor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -15,22 +14,18 @@ import java.util.List;
 
 /**
  * MVC 配置
- *
+ * <p>
  * <h2>说明
  * <p>当前类如果 {@code extends WebMvcConfigurationSupport} 时，会导致配置文件中的 Jackson 配置无效，因此要用如下实现接口对方式。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @version 1.1.1
- * @date 2022-02-14
  * @since 1.0.0
  **/
 @Configuration
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
     private final LogInterceptor logInterceptor;
-
-    @Value("${lifehelper.web-url}")
-    private String webUrl;
 
     /**
      * 配置拦截器
@@ -39,11 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry
-            .addInterceptor(logInterceptor)
-            .order(1)
-            .addPathPatterns("/**")
-            .excludePathPatterns("/ping");
+        registry.addInterceptor(logInterceptor).order(1).addPathPatterns("/**").excludePathPatterns("/ping");
     }
 
     /**
@@ -54,10 +45,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
-            .addMapping("/**")
-            .allowedOrigins(webUrl)
-            .allowedMethods("GET", "POST", "PUT", "DELETE")
-            .maxAge(86400L);
+                .addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .maxAge(86400L);
     }
 
     @Override
