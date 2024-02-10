@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place.exception;
+package com.inlym.lifehelper.weather.place2.exception;
 
 /**
  * 天气地点超出最大数量限制异常

@@ -1,8 +1,8 @@
-package com.inlym.lifehelper.weather.place.service;
+package com.inlym.lifehelper.weather.place2.service;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
-import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.place.exception.WeatherPlaceNotFoundException;
+import com.inlym.lifehelper.weather.place2.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place2.exception.WeatherPlaceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +16,7 @@ import java.util.List;
  * 天气地点存储库
  *
  * <h2>主要用途
- * <p>仅封装 {@link com.inlym.lifehelper.weather.place.entity.WeatherPlace} 实体的增删改查，不处理业务逻辑。
+ * <p>仅封装 {@link com.inlym.lifehelper.weather.place2.entity.WeatherPlace} 实体的增删改查，不处理业务逻辑。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/10/22

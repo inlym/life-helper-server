@@ -1,8 +1,8 @@
-package com.inlym.lifehelper.weather.place.config;
+package com.inlym.lifehelper.weather.place2.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
-import com.inlym.lifehelper.weather.place.exception.WeatherPlaceNotFoundException;
-import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
+import com.inlym.lifehelper.weather.place2.exception.WeatherPlaceNotFoundException;
+import com.inlym.lifehelper.weather.place2.exception.WeatherPlaceOverflowException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @date 2022/10/21
  * @since 1.5.0
  **/
-@RestControllerAdvice
+@RestControllerAdvice(name = "WeatherPlaceExceptionHandler2")
 @Slf4j
 @Order(20)
 @RequiredArgsConstructor

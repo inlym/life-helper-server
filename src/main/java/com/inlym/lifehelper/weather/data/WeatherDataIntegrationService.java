@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.weather.data;
 
 import com.inlym.lifehelper.weather.data.pojo.*;
-import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place2.entity.WeatherPlace;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place.pojo;
+package com.inlym.lifehelper.weather.place2.pojo;
 
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import lombok.AllArgsConstructor;

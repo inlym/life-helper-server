@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place.entity;
+package com.inlym.lifehelper.weather.place2.entity;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyField;
 import com.inlym.lifehelper.common.base.aliyun.ots.core.annotation.PrimaryKeyMode;

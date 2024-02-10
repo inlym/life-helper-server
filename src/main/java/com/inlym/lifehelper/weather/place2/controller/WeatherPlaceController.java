@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place.controller;
+package com.inlym.lifehelper.weather.place2.controller;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;
@@ -8,11 +8,11 @@ import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import com.inlym.lifehelper.weather.data.WeatherDataService;
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
-import com.inlym.lifehelper.weather.place.service.WeatherPlaceService;
-import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.place.pojo.WeChatChooseLocationDTO;
-import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceListVO;
-import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
+import com.inlym.lifehelper.weather.place2.service.WeatherPlaceService;
+import com.inlym.lifehelper.weather.place2.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place2.pojo.WeChatChooseLocationDTO;
+import com.inlym.lifehelper.weather.place2.pojo.WeatherPlaceListVO;
+import com.inlym.lifehelper.weather.place2.pojo.WeatherPlaceVO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2022/10/21
  * @since 1.5.0
  **/
-@RestController
+@RestController(value = "WeatherPlaceController2")
 @RequiredArgsConstructor
 @Slf4j
 public class WeatherPlaceController {
