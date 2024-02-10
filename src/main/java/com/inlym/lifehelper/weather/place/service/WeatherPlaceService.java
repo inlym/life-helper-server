@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place;
+package com.inlym.lifehelper.weather.place.service;
 
 import com.inlym.lifehelper.location.position.LocationService;
 import com.inlym.lifehelper.location.position.pojo.AddressComponent;
@@ -8,6 +8,7 @@ import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
+import com.inlym.lifehelper.weather.place.service.WeatherPlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

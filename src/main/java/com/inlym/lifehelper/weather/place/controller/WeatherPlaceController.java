@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place;
+package com.inlym.lifehelper.weather.place.controller;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;
@@ -8,6 +8,7 @@ import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import com.inlym.lifehelper.weather.data.WeatherDataService;
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
+import com.inlym.lifehelper.weather.place.service.WeatherPlaceService;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import com.inlym.lifehelper.weather.place.pojo.WeChatChooseLocationDTO;
 import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceListVO;

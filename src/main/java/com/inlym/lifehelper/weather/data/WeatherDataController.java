@@ -6,7 +6,7 @@ import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.location.position.LocationService;
 import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import com.inlym.lifehelper.weather.data.pojo.WeatherDataVO;
-import com.inlym.lifehelper.weather.place.WeatherPlaceRepository;
+import com.inlym.lifehelper.weather.place.service.WeatherPlaceRepository;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place;
+package com.inlym.lifehelper.weather.place.service;
 
 import com.inlym.lifehelper.common.base.aliyun.ots.core.WideColumnExecutor;
 import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
