@@ -1,11 +1,14 @@
 package com.inlym.lifehelper.greatday.service;
 
 import com.inlym.lifehelper.greatday.entity.GreatDay;
+import com.inlym.lifehelper.greatday.mapper.GreatDayMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.inlym.lifehelper.greatday.entity.table.GreatDayTableDef.GREAT_DAY;
 
 /**
  * 纪念日模块服务
@@ -20,7 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GreatDayService {
-    private final GreatDayRepository repository;
+    private final GreatDayMapper greatDayMapper;
 
     /**
      * 添加一条新的纪念日
@@ -34,14 +37,15 @@ public class GreatDayService {
      */
     public GreatDay create(GreatDay day) {
         // 必要性检查和处理
-        if (day.getDayId() != null) {
-            day.setDayId(null);
+        if (day.getId() != null) {
+            day.setId(null);
         }
 
         // 业务逻辑处理：
         // 之后引入 VIP 后会限定最大创建条数，本次不限定
 
-        return repository.create(day);
+        greatDayMapper.insertSelective(day);
+        return day;
     }
 
     /**
@@ -56,7 +60,7 @@ public class GreatDayService {
      * @since 2.0.0
      */
     public void update(GreatDay day) {
-        repository.update(day);
+        greatDayMapper.update(day);
     }
 
     /**
@@ -69,9 +73,11 @@ public class GreatDayService {
      * @since 2.0.0
      */
     public void delete(long userId, long dayId) {
-        // （待补充）删除前的判断
-
-        repository.delete(userId, dayId);
+        // 删除前的判断，只有资源存在并且属于当前用户才能操作
+        GreatDay day = greatDayMapper.selectOneById(dayId);
+        if (day != null && day.getUserId() == userId) {
+            greatDayMapper.deleteById(dayId);
+        }
     }
 
     /**
@@ -85,7 +91,7 @@ public class GreatDayService {
      * @since 2.0.0
      */
     public List<GreatDay> findAll(long userId) {
-        return repository.findAll(userId);
+        return greatDayMapper.selectListByCondition(GREAT_DAY.USER_ID.eq(userId));
     }
 
     /**
@@ -100,7 +106,9 @@ public class GreatDayService {
      * @since 2.0.0
      */
     public GreatDay findOne(long userId, long dayId) {
-        return repository.findOne(userId, dayId);
+        return greatDayMapper.selectOneByCondition(GREAT_DAY.USER_ID
+                                                       .eq(userId)
+                                                       .and(GREAT_DAY.ID.eq(dayId)));
     }
 
     /**

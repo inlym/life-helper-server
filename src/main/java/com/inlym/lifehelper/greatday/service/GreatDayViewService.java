@@ -81,7 +81,7 @@ public class GreatDayViewService {
         GreatDay day = GreatDay
             .builder()
             .userId(userId)
-            .dayId(dayId)
+            .id(dayId)
             .name(dto.getName())
             .date(dto.getDate())
             .icon(dto.getIcon())
@@ -121,7 +121,7 @@ public class GreatDayViewService {
     public CommonListResponse<GreatDayVO> findAll(long userId) {
         List<GreatDay> list = greatDayService.findAll(userId);
 
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             // 如果用户自己的数据为空，则给用户展示默认数据
             return new CommonListResponse<>(greatDayDefaultDataProvider.getDefaultList());
         } else {
@@ -148,7 +148,7 @@ public class GreatDayViewService {
     private GreatDayVO convert(GreatDay day) {
         return GreatDayVO
             .builder()
-            .id(day.getDayId())
+            .id(day.getId())
             .name(day.getName())
             .date(day.getDate())
             .icon(day.getIcon())
