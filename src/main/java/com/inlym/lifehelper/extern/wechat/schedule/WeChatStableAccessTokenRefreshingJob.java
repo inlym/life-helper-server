@@ -38,11 +38,12 @@ public class WeChatStableAccessTokenRefreshingJob extends JavaProcessor {
      */
     @Override
     public ProcessResult process(JobContext context) {
-        String token = weChatStableAccessTokenService.refresh();
-        if (token != null) {
+        try {
+            weChatStableAccessTokenService.refreshAll();
+
             log.info("[Schedule Job] 微信稳定版接口调用凭据刷新任务执行成功，任务实例ID={}", context.getJobInstanceId());
             return new ProcessResult(true);
-        } else {
+        } catch (Exception e) {
             log.error("[Schedule Job] 微信稳定版接口调用凭据刷新任务执行失败，任务实例ID={}", context.getJobInstanceId());
             return new ProcessResult(false);
         }

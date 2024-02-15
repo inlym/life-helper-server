@@ -36,6 +36,9 @@ public class LoginQrCodeGenerator {
     /** 存储在 Redis 中的可用二维码列表使用的键名 */
     private static final String AVAILABLE_QRCODE_LIST = "wechat:qrcode:scan:list";
 
+    // 有较多处重构，此处临时写死
+    private final static String APP_ID = "wx09c0a1ea5251c75a";
+
     private final StringRedisTemplate stringRedisTemplate;
 
     private final WeChatService weChatService;
@@ -54,60 +57,6 @@ public class LoginQrCodeGenerator {
             .leftPop(AVAILABLE_QRCODE_LIST);
 
         return Objects.requireNonNullElseGet(id, this::generate);
-    }
-
-    /**
-     * 生成一个新的二维码（并上传至 OSS）
-     *
-     * @date 2023/5/15
-     * @since 2.0.0
-     */
-    private String generate() {
-        String id = getRandomId();
-        // 小程序中用于扫码登录页面的路径
-        String page = "pages/scan/login";
-        // 二维码宽度
-        int width = 300;
-
-        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
-            .builder()
-            .scene(id)
-            .page(page)
-            .width(width)
-            .envVersion("release")
-            .build();
-
-        // 向微信服务器获取二维码
-        byte[] qrcode = weChatService.getUnlimitedQrCode(options);
-
-        // 上传至阿里云 OSS
-        ossService.upload(getOssPath(id), qrcode);
-
-        return id;
-    }
-
-    /**
-     * 获取随机字符串 ID
-     *
-     * <h2>说明
-     * <p>字符串长度 19~22
-     *
-     * @date 2023/5/15
-     * @since 2.0.0
-     */
-    private String getRandomId() {
-        String id = UUID
-            .randomUUID()
-            .toString()
-            .toLowerCase()
-            .replace("-", "");
-
-        return Base64
-            .getEncoder()
-            .encodeToString(HexUtil.decodeHex(id))
-            .replace("+", "")
-            .replace("/", "")
-            .replace("=", "");
     }
 
     /**
@@ -149,5 +98,59 @@ public class LoginQrCodeGenerator {
                     .rightPush(AVAILABLE_QRCODE_LIST, id);
             }
         }
+    }
+
+    /**
+     * 生成一个新的二维码（并上传至 OSS）
+     *
+     * @date 2023/5/15
+     * @since 2.0.0
+     */
+    private String generate() {
+        String id = getRandomId();
+        // 小程序中用于扫码登录页面的路径
+        String page = "pages/scan/login";
+        // 二维码宽度
+        int width = 300;
+
+        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
+            .builder()
+            .scene(id)
+            .page(page)
+            .width(width)
+            .envVersion("release")
+            .build();
+
+        // 向微信服务器获取二维码
+        byte[] qrcode = weChatService.getUnlimitedQrCode(APP_ID, options);
+
+        // 上传至阿里云 OSS
+        ossService.upload(getOssPath(id), qrcode);
+
+        return id;
+    }
+
+    /**
+     * 获取随机字符串 ID
+     *
+     * <h2>说明
+     * <p>字符串长度 19~22
+     *
+     * @date 2023/5/15
+     * @since 2.0.0
+     */
+    private String getRandomId() {
+        String id = UUID
+            .randomUUID()
+            .toString()
+            .toLowerCase()
+            .replace("-", "");
+
+        return Base64
+            .getEncoder()
+            .encodeToString(HexUtil.decodeHex(id))
+            .replace("+", "")
+            .replace("/", "")
+            .replace("=", "");
     }
 }

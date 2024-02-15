@@ -126,7 +126,7 @@ public class QrCodeLoginService {
                 .build();
         } else if (ticket.getStatus() == QrCodeTicketStatus.CONFIRMED) {
             qrCodeTicketManager.consume(ticketId);
-            IdentityCertificate identityCertificate = simpleTokenService.generateSecurityToken(ticket.getUserId());
+            IdentityCertificate identityCertificate = simpleTokenService.generateIdentityCertificate(ticket.getUserId());
 
             return QrCodeLoginResultVO
                 .builder()

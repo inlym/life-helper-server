@@ -32,36 +32,13 @@ public class SimpleTokenService {
     private final SimpleTokenRepository repository;
 
     /**
-     * 创建一个简易登录令牌
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.7.0
-     */
-    private SimpleToken create(long userId) {
-        SimpleToken simpleToken = SimpleToken
-            .builder()
-            .id(IdUtil.simpleUUID())
-            .createTime(LocalDateTime.now())
-            .expireTime(LocalDateTime
-                .now()
-                .plusSeconds(SimpleToken.expiration.toSeconds()))
-            .userId(userId)
-            .build();
-
-        repository.save(simpleToken);
-
-        return simpleToken;
-    }
-
-    /**
      * 创建登录鉴权安全令牌
      *
      * @param userId 用户 ID
      *
      * @since 1.7.0
      */
-    public IdentityCertificate generateSecurityToken(long userId) {
+    public IdentityCertificate generateIdentityCertificate(long userId) {
         SimpleToken simpleToken = create(userId);
 
         return IdentityCertificate
@@ -89,5 +66,28 @@ public class SimpleTokenService {
 
         SimpleToken simpleToken = result.get();
         return new SimpleAuthentication(simpleToken.getUserId());
+    }
+
+    /**
+     * 创建一个简易登录令牌
+     *
+     * @param userId 用户 ID
+     *
+     * @since 1.7.0
+     */
+    private SimpleToken create(long userId) {
+        SimpleToken simpleToken = SimpleToken
+            .builder()
+            .id(IdUtil.simpleUUID())
+            .createTime(LocalDateTime.now())
+            .expireTime(LocalDateTime
+                            .now()
+                            .plusSeconds(SimpleToken.expiration.toSeconds()))
+            .userId(userId)
+            .build();
+
+        repository.save(simpleToken);
+
+        return simpleToken;
     }
 }

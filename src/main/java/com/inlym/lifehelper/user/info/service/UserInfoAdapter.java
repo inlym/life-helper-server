@@ -75,7 +75,6 @@ public class UserInfoAdapter {
         User user = userAccountService.getById(userId);
         UserInfo info = userInfoService.get(userId);
         UserInfoVO vo = convert(info);
-        vo.setAccountId(user.getAccountId());
         vo.setRegisterTime(user.getRegisterTime());
         vo.setRegisteredDays(calcRegisteredDays(user.getRegisterTime()));
 

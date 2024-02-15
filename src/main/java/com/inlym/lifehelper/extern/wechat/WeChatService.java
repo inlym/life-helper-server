@@ -1,6 +1,8 @@
 package com.inlym.lifehelper.extern.wechat;
 
 import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;
+import com.inlym.lifehelper.extern.wechat.pojo.WeChatCode2SessionResponse;
+import com.inlym.lifehelper.extern.wechat.pojo.WeChatSession;
 import com.inlym.lifehelper.extern.wechat.service.WeChatHttpService;
 import com.inlym.lifehelper.extern.wechat.service.WeChatStableAccessTokenService;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +28,21 @@ public class WeChatService {
     private final WeChatStableAccessTokenService weChatStableAccessTokenService;
 
     /**
-     * 通过从微信小程序中获取的 code 换取用户对应的 openid
+     * 获取小程序会话
      *
      * @param code 微信小程序端通过 `wx.login` 获取的 code
      *
-     * @since 1.3.0
+     * @since 2.1.0
      */
-    public String getOpenidByCode(String code) {
-        return weChatHttpService
-            .code2Session(code)
-            .getOpenid();
+    public WeChatSession getSession(String appId, String code) {
+        WeChatCode2SessionResponse response = weChatHttpService.code2Session(appId, code);
+
+        return WeChatSession
+            .builder()
+            .openId(response.getOpenId())
+            .unionId(response.getUnionId())
+            .sessionKey(response.getSessionKey())
+            .build();
     }
 
     /**
@@ -45,8 +52,8 @@ public class WeChatService {
      *
      * @since 1.3.0
      */
-    public byte[] getUnlimitedQrCode(UnlimitedQrCodeOptions options) {
-        String token = weChatStableAccessTokenService.get();
+    public byte[] getUnlimitedQrCode(String appId, UnlimitedQrCodeOptions options) {
+        String token = weChatStableAccessTokenService.get(appId);
         return weChatHttpService.getUnlimitedQrCode(token, options);
     }
 }

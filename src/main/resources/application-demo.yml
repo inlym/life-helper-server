@@ -66,8 +66,11 @@ lifehelper:
 
     # 微信小程序服务端配置
     wechat:
-        appid: xxxxxxxxxxxx
-        secret: xxxxxxxxxxxx
+        # 配置多个小程序，每一个都是 `appid: secret` 的格式
+        miniprogram-map:
+            appid1: secret1
+            appid2: secret2
+
 
     # ChatGPT
     openai:

@@ -37,7 +37,7 @@ public class WeChatExceptionHandler {
     @ExceptionHandler(WeChatInvalidAccessTokenException.class)
     public ExceptionResponse handleWeChatInvalidAccessTokenException(WeChatInvalidAccessTokenException e) {
         log.error(e.getMessage());
-        weChatStableAccessTokenService.refresh();
+        weChatStableAccessTokenService.refreshAll();
         return ExceptionResponse.forServerError();
     }
 }

@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.extern.wechat.service;
 
+import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
 import com.inlym.lifehelper.extern.wechat.pojo.WeChatGetAccessTokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,20 +27,22 @@ public class WeChatStableAccessTokenService {
 
     private final StringRedisTemplate stringRedisTemplate;
 
+    private final WeChatProperties weChatProperties;
+
     /**
      * 刷新微信稳定版接口调用凭据
      *
      * @date 2023/4/24
      * @since 2.0.0
      */
-    public String refresh() {
-        WeChatGetAccessTokenResponse response = weChatHttpService.getStableAccessToken();
+    public String refresh(String appId) {
+        WeChatGetAccessTokenResponse response = weChatHttpService.getStableAccessToken(appId);
         String token = response.getAccessToken();
         int expiresIn = response.getExpiresIn();
 
         stringRedisTemplate
             .opsForValue()
-            .set(REDIS_KEY, token, Duration.ofSeconds(expiresIn));
+            .set(REDIS_KEY + ":" + appId, token, Duration.ofSeconds(expiresIn));
 
         return token;
     }
@@ -53,12 +56,25 @@ public class WeChatStableAccessTokenService {
      * @date 2023/4/24
      * @since 2.0.0
      */
-    public String get() {
+    public String get(String appId) {
         String token = stringRedisTemplate
             .opsForValue()
-            .get(REDIS_KEY);
+            .get(REDIS_KEY + ":" + appId);
 
         // Redis 中存在则直接返回，否则获取一个新的
-        return token == null ? refresh() : token;
+        return token == null ? refresh(appId) : token;
+    }
+
+    /**
+     * 对所有小程序进行刷新
+     *
+     * @since 2.1.0
+     */
+    public void refreshAll() {
+        for (String appId : weChatProperties
+            .getMiniprogramMap()
+            .keySet()) {
+            refresh(appId);
+        }
     }
 }

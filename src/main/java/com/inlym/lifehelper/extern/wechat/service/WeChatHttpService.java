@@ -40,14 +40,22 @@ public class WeChatHttpService {
     private final WeChatProperties properties;
 
     /**
-     * 校验相应数据是否正常
+     * 根据小程序的 appId 获取 appSecret
      *
-     * @param data 响应数据
+     * @param appId 小程序 appId
      *
-     * @since 1.3.0
+     * @since 2.1.0
      */
-    private boolean validateResponse(WeChatCommonResponse data) {
-        return data != null && (data.getErrorCode() == null || data.getErrorCode() == 0);
+    public String getAppSecret(String appId) {
+        String secret = properties
+            .getMiniprogramMap()
+            .get(appId);
+
+        if (secret == null) {
+            throw new WeChatCommonException("appId 无效");
+        }
+
+        return secret;
     }
 
     /**
@@ -56,14 +64,14 @@ public class WeChatHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getAccessToken.html">获取接口调用凭据</a>
      * @since 1.3.0
      */
-    public WeChatGetAccessTokenResponse getAccessToken() {
+    public WeChatGetAccessTokenResponse getAccessToken(String appId) {
         String baseUrl = "https://api.weixin.qq.com/cgi-bin/token";
 
         String url = UriComponentsBuilder
             .fromHttpUrl(baseUrl)
             .queryParam("grant_type", "client_credential")
-            .queryParam("appid", properties.getAppid())
-            .queryParam("secret", properties.getSecret())
+            .queryParam("appid", appId)
+            .queryParam("secret", getAppSecret(appId))
             .build()
             .toUriString();
 
@@ -84,12 +92,12 @@ public class WeChatHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getStableAccessToken.html">文档地址</a>
      * @since 2.0.0
      */
-    public WeChatGetAccessTokenResponse getStableAccessToken() {
+    public WeChatGetAccessTokenResponse getStableAccessToken(String appId) {
         String url = "https://api.weixin.qq.com/cgi-bin/stable_token";
         Map<String, Object> options = new HashMap<>(16);
         options.put("grant_type", "client_credential");
-        options.put("appid", properties.getAppid());
-        options.put("secret", properties.getSecret());
+        options.put("appid", appId);
+        options.put("secret", getAppSecret(appId));
 
         WeChatGetAccessTokenResponse data = restTemplate.postForObject(url, options, WeChatGetAccessTokenResponse.class);
 
@@ -110,13 +118,13 @@ public class WeChatHttpService {
      * @since 1.3.0
      */
     @Cacheable(RedisCacheCollector.WECHAT_SESSION)
-    public WeChatCode2SessionResponse code2Session(String code) {
+    public WeChatCode2SessionResponse code2Session(String appId, String code) {
         String baseUrl = "https://api.weixin.qq.com/sns/jscode2session";
 
         String url = UriComponentsBuilder
             .fromHttpUrl(baseUrl)
-            .queryParam("appid", properties.getAppid())
-            .queryParam("secret", properties.getSecret())
+            .queryParam("appid", appId)
+            .queryParam("secret", getAppSecret(appId))
             .queryParam("js_code", code)
             .queryParam("grant_type", "authorization_code")
             .build()
@@ -166,5 +174,16 @@ public class WeChatHttpService {
         } else {
             throw WeChatInvalidAccessTokenException.create(accessToken);
         }
+    }
+
+    /**
+     * 校验相应数据是否正常
+     *
+     * @param data 响应数据
+     *
+     * @since 1.3.0
+     */
+    private boolean validateResponse(WeChatCommonResponse data) {
+        return data != null && (data.getErrorCode() == null || data.getErrorCode() == 0);
     }
 }

@@ -1,10 +1,10 @@
 package com.inlym.lifehelper.extern.wechat.config;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+
+import java.util.HashMap;
 
 /**
  * 微信小程序服务端配置信息
@@ -18,14 +18,8 @@ import org.springframework.validation.annotation.Validated;
  **/
 @Component
 @ConfigurationProperties(prefix = "lifehelper.wechat")
-@Validated
 @Data
 public class WeChatProperties {
-    /** 小程序 appId */
-    @NotEmpty
-    private String appid;
-
-    /** 小程序 appSecret */
-    @NotEmpty
-    private String secret;
+    /** 多个小程序映射集（appId:appSecret） */
+    private HashMap<String, String> miniprogramMap;
 }
