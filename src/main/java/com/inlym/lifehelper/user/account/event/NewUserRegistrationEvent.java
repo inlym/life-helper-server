@@ -18,21 +18,17 @@ public class NewUserRegistrationEvent extends ApplicationEvent {
     /** 用户 ID */
     private final Long userId;
 
-    /** 微信小程序用户唯一标识 */
-    private final String openid;
+    /** 用户在微信开放平台的唯一标识符 */
+    private final String unionId;
 
     /** 注册时间 */
     private final LocalDateTime registerTime;
-
-    /** 账户 ID */
-    private final Long accountId;
 
     public NewUserRegistrationEvent(User user) {
         super(user);
 
         this.userId = user.getId();
-        this.openid = user.getOpenid();
-        this.accountId = user.getAccountId();
+        this.unionId = user.getUnionId();
         this.registerTime = user.getRegisterTime();
     }
 }
