@@ -1,8 +1,11 @@
 package com.inlym.lifehelper.location.region.entity;
 
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import jakarta.persistence.Id;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * 中国行政区划地区（省、市、区三级）
@@ -15,17 +18,17 @@ import lombok.Data;
  * @date 2023/7/29
  * @since 2.0.2
  **/
-@Data
 @Table("region")
+@Data
 public class Region {
     /**
-     * 行政区划唯一标识（adcode）
+     * 主键 ID，行政区划唯一标识（adcode）
      * <p>
      * <h2>说明
      * <p>1. `id` 自带，不需要数据表生成。
      * <p>2. `id` 是6位数字。
      */
-    @Id
+    @Id(keyType = KeyType.None)
     private Integer id;
 
     /**
@@ -63,4 +66,10 @@ public class Region {
      * <p>第1级为空，其余级不为空。
      */
     private Integer parentId;
+
+    /** 创建时间（该字段值由数据库自行维护，请勿手动赋值） */
+    private LocalDateTime createTime;
+
+    /** 更新时间（该字段值由数据库自行维护，请勿手动赋值） */
+    private LocalDateTime updateTime;
 }
