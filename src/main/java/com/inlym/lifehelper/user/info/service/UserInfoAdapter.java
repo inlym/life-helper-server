@@ -9,6 +9,7 @@ import com.inlym.lifehelper.location.region.exception.RegionNotFoundException;
 import com.inlym.lifehelper.location.region.service.RegionService;
 import com.inlym.lifehelper.user.account.entity.User;
 import com.inlym.lifehelper.user.account.service.UserAccountService;
+import com.inlym.lifehelper.user.info.constant.GenderType;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.inlym.lifehelper.user.info.pojo.UpdateUserInfoDTO;
 import com.inlym.lifehelper.user.info.pojo.UserInfoVO;
@@ -58,9 +59,17 @@ public class UserInfoAdapter {
             .builder()
             .userId(userId)
             .nickName(dto.getNickName())
-            .genderType(dto.getGenderType())
             .cityId(dto.getCityId())
             .build();
+
+        // 枚举类型赋值临时用以下方法，后续再自建一个 Converter 实现自动化
+        if (dto.getGenderType() != null) {
+            if (dto.getGenderType() == GenderType.MALE.getCode()) {
+                info.setGenderType(GenderType.MALE);
+            } else if (dto.getGenderType() == GenderType.FEMALE.getCode()) {
+                info.setGenderType(GenderType.FEMALE);
+            }
+        }
 
         if (dto.getAvatarUrl() != null) {
             info.setAvatarPath(ossService.dump(OssDir.AVATAR, dto.getAvatarUrl()));
@@ -78,7 +87,7 @@ public class UserInfoAdapter {
         vo.setRegisterTime(user.getRegisterTime());
         vo.setRegisteredDays(calcRegisteredDays(user.getRegisterTime()));
 
-        if (info.getCityId() != null) {
+        if (info != null && info.getCityId() != null) {
             // 此处查找地区发生错误，不应阻塞主流程，因此使用 `try` 捕获，而不让全局错误捕获器接管
             try {
                 List<String> region = new ArrayList<>();
@@ -117,17 +126,25 @@ public class UserInfoAdapter {
         UserInfoVO vo = new UserInfoVO();
 
         // 昵称
-        vo.setNickName(info.getNickName() != null ? info.getNickName() : defaultUserInfoProvider.getNickName());
+        if (info == null || info.getNickName() == null) {
+            vo.setNickName(defaultUserInfoProvider.getNickName());
+        }
 
         // 头像
-        if (info.getAvatarPath() != null) {
-            vo.setAvatarUrl(ossService.concatUrl(info.getAvatarPath()));
-        } else {
+        if (info == null || info.getAvatarPath() == null) {
             vo.setAvatarUrl(defaultUserInfoProvider.getAvatarUrl());
+        } else {
+            vo.setAvatarUrl(ossService.concatUrl(info.getAvatarPath()));
         }
 
         // 性别
-        vo.setGender(getGender(info.getGenderType()));
+        if (info == null || info.getGenderType() == null) {
+            vo.setGender(getGender(0));
+        } else {
+            vo.setGender(getGender(info
+                                       .getGenderType()
+                                       .getCode()));
+        }
 
         return vo;
     }
@@ -157,7 +174,7 @@ public class UserInfoAdapter {
         final int male = 1;
         final int female = 2;
 
-        if (genderType == null) {
+        if (genderType == null || genderType == 0) {
             return "保密";
         } else if (genderType == male) {
             return "男";

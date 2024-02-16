@@ -22,9 +22,6 @@ import java.util.List;
 public class UserInfoVO {
     // ============================== 数据源来自用户账户实体 =============================
 
-    /** 账户 ID */
-    private Long accountId;
-
     /** 注册时间 */
     private LocalDateTime registerTime;
 

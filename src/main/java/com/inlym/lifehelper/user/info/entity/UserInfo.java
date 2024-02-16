@@ -1,9 +1,15 @@
 package com.inlym.lifehelper.user.info.entity;
 
+import com.inlym.lifehelper.user.info.constant.GenderType;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
+import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * 用户信息实体
@@ -18,17 +24,18 @@ import lombok.NoArgsConstructor;
  * @date 2022/11/26
  * @since 1.7.0
  **/
+@Table("user_info")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfo {
-    // ================================= 主键列 =================================
+    /** 主键 ID */
+    @Id(keyType = KeyType.Auto)
+    private Long id;
 
-    /** 所属用户 ID - 分区键 */
+    /** 所属用户 ID */
     private Long userId;
-
-    // ================================= 属性列 =================================
 
     /** 用户昵称 */
     private String nickName;
@@ -45,14 +52,18 @@ public class UserInfo {
      * 性别
      *
      * <h2>值范围
+     * <li>[0] - 未知
      * <li>[1] - 男
      * <li>[2] - 女
-     *
-     * <h2>说明
-     * <p>为空表示“未知”。
      */
-    private Integer genderType;
+    private GenderType genderType;
 
     /** 所在城市的 adcode */
     private Integer cityId;
+
+    /** 创建时间（该字段值由数据库自行维护，请勿手动赋值） */
+    private LocalDateTime createTime;
+
+    /** 更新时间（该字段值由数据库自行维护，请勿手动赋值） */
+    private LocalDateTime updateTime;
 }
