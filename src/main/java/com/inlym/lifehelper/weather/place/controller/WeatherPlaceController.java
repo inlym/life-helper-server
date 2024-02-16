@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place2.controller;
+package com.inlym.lifehelper.weather.place.controller;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;
@@ -8,11 +8,11 @@ import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import com.inlym.lifehelper.weather.data.WeatherDataService;
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
-import com.inlym.lifehelper.weather.place2.service.WeatherPlaceService;
-import com.inlym.lifehelper.weather.place2.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.place2.pojo.WeChatChooseLocationDTO;
-import com.inlym.lifehelper.weather.place2.pojo.WeatherPlaceListVO;
-import com.inlym.lifehelper.weather.place2.pojo.WeatherPlaceVO;
+import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place.pojo.WeChatChooseLocationDTO;
+import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceListVO;
+import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
+import com.inlym.lifehelper.weather.place.service.WeatherPlaceService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -20,71 +20,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 天气地点管理控制器
+ * 天气地点控制器
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/10/21
- * @since 1.5.0
+ * @date 2024/2/16
+ * @since 2.1.0
  **/
-@RestController(value = "WeatherPlaceController2")
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 public class WeatherPlaceController {
-    private final WeatherPlaceService weatherPlaceService;
-
     private final LocationService locationService;
 
     private final WeatherDataService weatherDataService;
 
-    /**
-     * 新增天气地点
-     *
-     * @param userId 用户 ID
-     * @param dto    请求数据
-     *
-     * @since 1.5.0
-     */
-    @PostMapping("/weather/place")
-    @UserPermission
-    public WeatherPlaceVO create(@UserId long userId, @Valid @RequestBody WeChatChooseLocationDTO dto) {
-        WeatherPlace place = WeatherPlace
-            .builder()
-            .userId(userId)
-            .name(dto.getName())
-            .address(dto.getAddress())
-            .longitude(dto.getLongitude())
-            .latitude(dto.getLatitude())
-            .build();
+    private final WeatherPlaceService weatherPlaceService;
 
-        return weatherPlaceService.convertToViewObject(weatherPlaceService.create(place));
-    }
-
-    /**
-     * 删除一个天气地点
-     *
-     * @param userId  用户 ID
-     * @param placeId 天气地点 ID
-     *
-     * @since 1.5.0
-     */
-    @DeleteMapping("/weather/place/{id}")
-    @UserPermission
-    public WeatherPlaceVO delete(@UserId long userId, @NotBlank @PathVariable("id") String placeId) {
-        weatherPlaceService.delete(userId, placeId);
-
-        return WeatherPlaceVO
-            .builder()
-            .id(placeId)
-            .build();
-    }
-
-    /**
-     * 获取天气地点列表
-     *
-     * @param userId 用户 ID
-     *
-     * @since 1.5.0
-     */
     @GetMapping("/weather/places")
     @UserPermission
     public WeatherPlaceListVO getList(@UserId long userId, @ClientIp String ip) {
@@ -108,5 +59,31 @@ public class WeatherPlaceController {
         vo.setList(weatherPlaceService.getList(userId));
 
         return vo;
+    }
+
+    @PostMapping("/weather/place")
+    @UserPermission
+    public WeatherPlaceVO create(@UserId long userId, @Valid @RequestBody WeChatChooseLocationDTO dto) {
+        WeatherPlace place = WeatherPlace
+            .builder()
+            .userId(userId)
+            .name(dto.getName())
+            .address(dto.getAddress())
+            .longitude(dto.getLongitude())
+            .latitude(dto.getLatitude())
+            .build();
+
+        return weatherPlaceService.convertToViewObject(weatherPlaceService.create(place));
+    }
+
+    @DeleteMapping("/weather/place/{id}")
+    @UserPermission
+    public WeatherPlaceVO delete(@UserId long userId, @NotBlank @PathVariable("id") long placeId) {
+        weatherPlaceService.delete(userId, placeId);
+
+        return WeatherPlaceVO
+            .builder()
+            .id(placeId)
+            .build();
     }
 }

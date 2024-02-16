@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place2.pojo;
+package com.inlym.lifehelper.weather.place.pojo;
 
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WeatherPlaceVO {
     /** 地点 ID */
-    private String id;
+    private Long id;
 
     /** 位置名称 */
     private String name;

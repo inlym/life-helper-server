@@ -1,10 +1,7 @@
-package com.inlym.lifehelper.weather.place2.config;
+package com.inlym.lifehelper.weather.place.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
-import com.inlym.lifehelper.weather.place2.exception.WeatherPlaceNotFoundException;
-import com.inlym.lifehelper.weather.place2.exception.WeatherPlaceOverflowException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,16 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @date 2022/10/21
  * @since 1.5.0
  **/
-@RestControllerAdvice(name = "WeatherPlaceExceptionHandler2")
-@Slf4j
+@RestControllerAdvice
 @Order(20)
-@RequiredArgsConstructor
 public class WeatherPlaceExceptionHandler {
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(WeatherPlaceNotFoundException.class)
-    public ExceptionResponse handleWeatherPlaceNotFoundException(WeatherPlaceNotFoundException e) {
-        return new ExceptionResponse(1, "你操作的地点不存在，请刷新后再试！");
-    }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(WeatherPlaceOverflowException.class)

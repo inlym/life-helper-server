@@ -25,9 +25,6 @@ public class UserInfoVO {
     /** 注册时间 */
     private LocalDateTime registerTime;
 
-    /** 已注册天数 */
-    private Integer registeredDays;
-
     // ============================== 数据源来自用户信息实体 =============================
 
     /** 用户昵称 */

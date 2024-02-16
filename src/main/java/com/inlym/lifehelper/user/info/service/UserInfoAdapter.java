@@ -85,7 +85,6 @@ public class UserInfoAdapter {
         UserInfo info = userInfoService.get(userId);
         UserInfoVO vo = convert(info);
         vo.setRegisterTime(user.getRegisterTime());
-        vo.setRegisteredDays(calcRegisteredDays(user.getRegisterTime()));
 
         if (info != null && info.getCityId() != null) {
             // 此处查找地区发生错误，不应阻塞主流程，因此使用 `try` 捕获，而不让全局错误捕获器接管
@@ -128,6 +127,8 @@ public class UserInfoAdapter {
         // 昵称
         if (info == null || info.getNickName() == null) {
             vo.setNickName(defaultUserInfoProvider.getNickName());
+        } else {
+            vo.setNickName(info.getNickName());
         }
 
         // 头像

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.weather.place2.pojo;
+package com.inlym.lifehelper.weather.place.pojo;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -1,43 +1,42 @@
-package com.inlym.lifehelper.weather.place2.service;
+package com.inlym.lifehelper.weather.place.service;
 
+import com.inlym.lifehelper.common.exception.ResourceNotFoundException;
 import com.inlym.lifehelper.location.position.LocationService;
 import com.inlym.lifehelper.location.position.pojo.AddressComponent;
 import com.inlym.lifehelper.weather.data.WeatherDataService;
 import com.inlym.lifehelper.weather.data.pojo.BasicWeather;
 import com.inlym.lifehelper.weather.data.pojo.WeatherNow;
-import com.inlym.lifehelper.weather.place2.entity.WeatherPlace;
-import com.inlym.lifehelper.weather.place2.exception.WeatherPlaceOverflowException;
-import com.inlym.lifehelper.weather.place2.pojo.WeatherPlaceVO;
+import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
+import com.inlym.lifehelper.weather.place.mapper.WeatherPlaceMapper;
+import com.inlym.lifehelper.weather.place.pojo.WeatherPlaceVO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static com.inlym.lifehelper.weather.place.entity.table.WeatherPlaceTableDef.WEATHER_PLACE;
+
 /**
  * 天气地点服务
  *
- * <h2>主要用途
- * <p>封装对“天气地点”数据的增删改查。
- *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2022/10/21
- * @since 1.5.0
+ * @date 2024/2/16
+ * @since 2.1.0
  **/
-@Service(value ="WeatherPlaceService2" )
-@Slf4j
+@Service
 @RequiredArgsConstructor
 public class WeatherPlaceService {
     /** 允许添加的最大天气地点数量 */
     public static final int MAX_WEATHER_PLACE_NUMBER = 10;
 
-    private final WeatherPlaceRepository weatherPlaceRepository;
-
     private final LocationService locationService;
 
     private final WeatherDataService weatherDataService;
+
+    private final WeatherPlaceMapper weatherPlaceMapper;
 
     /**
      * 将天气地点实体转化为可用于客户端展示使用的视图对象
@@ -49,7 +48,7 @@ public class WeatherPlaceService {
     public WeatherPlaceVO convertToViewObject(WeatherPlace place) {
         return WeatherPlaceVO
             .builder()
-            .id(place.getPlaceId())
+            .id(place.getId())
             .name(place.getName())
             .region(place.getCity() + place.getDistrict())
             .build();
@@ -75,11 +74,12 @@ public class WeatherPlaceService {
      *
      * @param place 天气地点
      *
-     * @since 1.5.0
+     * @since 2.1.0
      */
     public WeatherPlace create(WeatherPlace place) {
         // 检测是否已超出数量限制
-        if (weatherPlaceRepository.count(place.getUserId()) >= MAX_WEATHER_PLACE_NUMBER) {
+        long count = weatherPlaceMapper.selectCountByCondition(WEATHER_PLACE.USER_ID.eq(place.getUserId()));
+        if (count >= MAX_WEATHER_PLACE_NUMBER) {
             throw WeatherPlaceOverflowException.create(place.getUserId());
         }
 
@@ -89,37 +89,42 @@ public class WeatherPlaceService {
             place.setProvince(ac.getProvince());
             place.setCity(ac.getCity());
             place.setDistrict(ac.getDistrict());
+
             // 获取和风天气的 LocationId
             place.setLocationId(weatherDataService.getUniqueLocationId(place.getLongitude(), place.getLatitude()));
         }
 
-        return weatherPlaceRepository.create(place);
+        weatherPlaceMapper.insertSelective(place);
+        return weatherPlaceMapper.selectOneById(place.getId());
     }
 
     /**
-     * 删除一个天气地点
+     * 删除一条天气地点记录
      *
-     * @param userId  用户 ID
+     * @param userId  所属用户 ID
      * @param placeId 天气地点 ID
      *
-     * @since 1.5.0
+     * @since 2.1.0
      */
-    public void delete(long userId, String placeId) {
-        weatherPlaceRepository.delete(userId, placeId);
+    public void delete(long userId, long placeId) {
+        WeatherPlace place = weatherPlaceMapper.selectOneById(placeId);
+        if (place != null && place.getUserId() == userId) {
+            weatherPlaceMapper.deleteById(placeId);
+        }
     }
 
     /**
-     * 获取所有记录
+     * 获取列表
      *
      * @param userId 用户 ID
      *
-     * @since 1.5.0
+     * @since 2.1.0
      */
     public List<WeatherPlaceVO> getList(long userId) {
         List<WeatherPlaceVO> list = new ArrayList<>();
-        List<WeatherPlace> places = weatherPlaceRepository.list(userId);
+        List<WeatherPlace> places = weatherPlaceMapper.selectListByCondition(WEATHER_PLACE.USER_ID.eq(userId));
 
-        if (places.size() > 0) {
+        if (!places.isEmpty()) {
             List<WeatherNow> weatherNowList = places
                 .stream()
                 .map(place -> weatherDataService.getWeatherNowAsync(place.getLocationId()))
@@ -132,5 +137,24 @@ public class WeatherPlaceService {
         }
 
         return list;
+    }
+
+    /**
+     * 查找指定天气地点
+     *
+     * @param userId  用户 ID
+     * @param placeId 天气地点 ID
+     *
+     * @since 2.1.0
+     */
+    public WeatherPlace findOne(long userId, long placeId) {
+        WeatherPlace place = weatherPlaceMapper.selectOneByCondition(WEATHER_PLACE.USER_ID
+                                                                         .eq(userId)
+                                                                         .and(WEATHER_PLACE.ID.eq(placeId)));
+        if (place != null) {
+            return place;
+        }
+
+        throw new ResourceNotFoundException();
     }
 }

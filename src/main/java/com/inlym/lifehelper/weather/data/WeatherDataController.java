@@ -6,8 +6,8 @@ import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.location.position.LocationService;
 import com.inlym.lifehelper.location.position.pojo.IpLocation;
 import com.inlym.lifehelper.weather.data.pojo.WeatherDataVO;
-import com.inlym.lifehelper.weather.place2.service.WeatherPlaceRepository;
-import com.inlym.lifehelper.weather.place2.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place.entity.WeatherPlace;
+import com.inlym.lifehelper.weather.place.service.WeatherPlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeatherDataController {
     private final WeatherDataIntegrationService weatherDataIntegrationService;
 
-    private final WeatherPlaceRepository weatherPlaceRepository;
+    private final WeatherPlaceService weatherPlaceService;
 
     private final LocationService locationService;
 
@@ -64,8 +64,8 @@ public class WeatherDataController {
      */
     @GetMapping(path = "/weather", params = "place_id")
     @UserPermission
-    public WeatherDataVO getWeatherData(@UserId long userId, @RequestParam("place_id") String placeId) {
-        WeatherPlace place = weatherPlaceRepository.findOneOrElseThrow(userId, placeId);
+    public WeatherDataVO getWeatherData(@UserId long userId, @RequestParam("place_id") long placeId) {
+        WeatherPlace place = weatherPlaceService.findOne(userId, placeId);
         return weatherDataIntegrationService.getWeatherData(place);
     }
 }
