@@ -2,6 +2,7 @@ package com.inlym.lifehelper.common.config;
 
 import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
+import com.inlym.lifehelper.common.exception.UnauthorizedResourceAccessException;
 import com.inlym.lifehelper.common.model.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +105,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 访问了不属于自己的资源
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler({AccessDeniedException.class, UnauthorizedResourceAccessException.class})
+    public ErrorResponse handleUnauthorizedResourceAccessException() {
+        return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
+    }
+
+    /**
      * 通用异常处理
      *
      * <h2>说明
@@ -113,8 +123,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ErrorResponse handleException(Exception e) {
         log.debug(e
-            .getClass()
-            .getName() + ":" + e.getMessage());
+                      .getClass()
+                      .getName() + ":" + e.getMessage());
         return new ErrorResponse(1);
     }
 }
