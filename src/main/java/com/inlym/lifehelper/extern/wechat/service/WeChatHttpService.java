@@ -37,7 +37,7 @@ import java.util.Map;
 public class WeChatHttpService {
     private final RestTemplate restTemplate;
 
-    private final WeChatProperties properties;
+    private final WeChatProperties weChatProperties;
 
     /**
      * 根据小程序的 appId 获取 appSecret
@@ -47,15 +47,34 @@ public class WeChatHttpService {
      * @since 2.1.0
      */
     public String getAppSecret(String appId) {
-        String secret = properties
-            .getMiniprogramMap()
-            .get(appId);
-
-        if (secret == null) {
-            throw new WeChatCommonException("appId 无效");
+        if (weChatProperties
+            .getMainApp()
+            .getAppId()
+            .equals(appId)) {
+            return weChatProperties
+                .getMainApp()
+                .getAppSecret();
         }
 
-        return secret;
+        if (weChatProperties
+            .getAiApp()
+            .getAppId()
+            .equals(appId)) {
+            return weChatProperties
+                .getAiApp()
+                .getAppSecret();
+        }
+
+        if (weChatProperties
+            .getWeatherApp()
+            .getAppId()
+            .equals(appId)) {
+            return weChatProperties
+                .getWeatherApp()
+                .getAppSecret();
+        }
+
+        throw new WeChatCommonException("appId 无效");
     }
 
     /**

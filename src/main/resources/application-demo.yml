@@ -64,12 +64,20 @@ lifehelper:
     he-weather:
         key: xxxxxxxxxxxx
 
-    # 微信小程序服务端配置
+    # 微信小程序配置
     wechat:
-        # 配置多个小程序，每一个都是 `appid: secret` 的格式
-        miniprogram-map:
-            appid1: secret1
-            appid2: secret2
+        # 【小鸣助手】小程序
+        main-app:
+            app-id: xxxxxxxxxxxx
+            app-secret: xxxxxxxxxxxx
+        # 【小鸣 AI】小程序
+        ai-app:
+            app-id: xxxxxxxxxxxx
+            app-secret: xxxxxxxxxxxx
+        # 【小鸣天气】小程序
+        weather-app:
+            app-id: xxxxxxxxxxxx
+            app-secret: xxxxxxxxxxxx
 
 
     # ChatGPT

@@ -4,6 +4,7 @@ import cn.hutool.core.util.HexUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
+import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
 import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +37,7 @@ public class LoginQrCodeGenerator {
     /** 存储在 Redis 中的可用二维码列表使用的键名 */
     private static final String AVAILABLE_QRCODE_LIST = "wechat:qrcode:scan:list";
 
-    // 有较多处重构，此处临时写死
-    private final static String APP_ID = "wx09c0a1ea5251c75a";
+    private final WeChatProperties weChatProperties;
 
     private final StringRedisTemplate stringRedisTemplate;
 
@@ -121,8 +121,12 @@ public class LoginQrCodeGenerator {
             .envVersion("release")
             .build();
 
+        String appId = weChatProperties
+            .getMainApp()
+            .getAppId();
+
         // 向微信服务器获取二维码
-        byte[] qrcode = weChatService.getUnlimitedQrCode(APP_ID, options);
+        byte[] qrcode = weChatService.getUnlimitedQrCode(appId, options);
 
         // 上传至阿里云 OSS
         ossService.upload(getOssPath(id), qrcode);

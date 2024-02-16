@@ -108,7 +108,7 @@ public class GlobalExceptionHandler {
      * 访问了不属于自己的资源
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler({AccessDeniedException.class, UnauthorizedResourceAccessException.class})
+    @ExceptionHandler({UnauthorizedResourceAccessException.class})
     public ErrorResponse handleUnauthorizedResourceAccessException() {
         return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
     }

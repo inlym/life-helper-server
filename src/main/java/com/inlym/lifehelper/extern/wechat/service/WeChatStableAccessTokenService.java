@@ -71,10 +71,14 @@ public class WeChatStableAccessTokenService {
      * @since 2.1.0
      */
     public void refreshAll() {
-        for (String appId : weChatProperties
-            .getMiniprogramMap()
-            .keySet()) {
-            refresh(appId);
-        }
+        refresh(weChatProperties
+                    .getMainApp()
+                    .getAppId());
+        refresh(weChatProperties
+                    .getAiApp()
+                    .getAppId());
+        refresh(weChatProperties
+                    .getWeatherApp()
+                    .getAppId());
     }
 }

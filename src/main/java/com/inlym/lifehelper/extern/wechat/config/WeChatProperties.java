@@ -1,10 +1,9 @@
 package com.inlym.lifehelper.extern.wechat.config;
 
+import com.inlym.lifehelper.extern.wechat.pojo.WeChatAppAccount;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
 
 /**
  * 微信小程序服务端配置信息
@@ -20,6 +19,12 @@ import java.util.HashMap;
 @ConfigurationProperties(prefix = "lifehelper.wechat")
 @Data
 public class WeChatProperties {
-    /** 多个小程序映射集（appId:appSecret） */
-    private HashMap<String, String> miniprogramMap;
+    /** 【小鸣助手】小程序配置 */
+    private WeChatAppAccount mainApp;
+
+    /** 【小鸣 AI】小程序配置 */
+    private WeChatAppAccount aiApp;
+
+    /** 【小鸣天气】小程序配置 */
+    private WeChatAppAccount weatherApp;
 }
