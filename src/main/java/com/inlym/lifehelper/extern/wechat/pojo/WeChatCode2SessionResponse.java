@@ -22,9 +22,11 @@ public class WeChatCode2SessionResponse implements WeChatCommonResponse {
     private String errorMessage;
 
     /** 用户唯一标识 */
+    @JsonProperty("openid")
     private String openId;
 
     /** 用户在微信开放平台的唯一标识符 */
+    @JsonProperty("unionid")
     private String unionId;
 
     /** 会话密钥 */
