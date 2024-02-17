@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
             <artifactId>schedulerx2-spring-boot-starter</artifactId>
-            <version>1.9.0</version>
+            <version>1.11.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
