@@ -82,13 +82,10 @@ lifehelper:
 
     # ChatGPT
     openai:
-        # 代理 HTTP 请求地址
-        proxy-url: xxxxxxxxxxxx
+        # 请求地址前缀部分
+        base-url: xxxxxxxxxxxx
         # 开发者密钥
-        keys:
-            - xxxxxxxxxxxx
-            - xxxxxxxxxxxx
-            - xxxxxxxxxxxx
+        key: xxxxxxxxxxxx
 
 
 # 阿里云资源配置
