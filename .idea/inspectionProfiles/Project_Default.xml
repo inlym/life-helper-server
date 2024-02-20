@@ -1,96 +1,10 @@
 <component name="InspectionProjectProfileManager">
-  <profile version="1.0">
-    <option name="myName" value="Project Default" />
-    <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,org.springframework.boot.SpringApplication,run" />
-    </inspection_tool>
-    <inspection_tool class="ClassCanBeRecord" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
-    <inspection_tool class="FieldCanBeLocal" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="EXCLUDE_ANNOS">
-        <value>
-          <list size="1">
-            <item index="0" class="java.lang.String" itemvalue="com.mybatisflex.annotation.EnumValue" />
-          </list>
-        </value>
-      </option>
-      <option name="IGNORE_FIELDS_USED_IN_MULTIPLE_METHODS" value="true" />
-    </inspection_tool>
-    <inspection_tool class="IncorrectHttpHeaderInspection" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="customHeaders">
-        <set>
-          <option value="x-client-ip" />
-          <option value="x-ca-request-id" />
-        </set>
-      </option>
-    </inspection_tool>
-    <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="TOP_LEVEL_CLASS_OPTIONS">
-        <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-          <option name="REQUIRED_TAGS" value="" />
-        </value>
-      </option>
-      <option name="INNER_CLASS_OPTIONS">
-        <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-          <option name="REQUIRED_TAGS" value="" />
-        </value>
-      </option>
-      <option name="METHOD_OPTIONS">
-        <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
-        </value>
-      </option>
-      <option name="FIELD_OPTIONS">
-        <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
-          <option name="REQUIRED_TAGS" value="" />
-        </value>
-      </option>
-      <option name="IGNORE_DEPRECATED" value="false" />
-      <option name="IGNORE_JAVADOC_PERIOD" value="true" />
-      <option name="IGNORE_DUPLICATED_THROWS" value="false" />
-      <option name="IGNORE_POINT_TO_ITSELF" value="false" />
-      <option name="myAdditionalJavadocTags" value="date" />
-    </inspection_tool>
-    <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="ADDITIONAL_TAGS" value="date" />
-    </inspection_tool>
-    <inspection_tool class="MissingJavadoc" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="PACKAGE_SETTINGS">
-        <Options>
-          <option name="ENABLED" value="false" />
-        </Options>
-      </option>
-      <option name="MODULE_SETTINGS">
-        <Options>
-          <option name="ENABLED" value="false" />
-        </Options>
-      </option>
-      <option name="TOP_LEVEL_CLASS_SETTINGS">
-        <Options>
-          <option name="ENABLED" value="false" />
-        </Options>
-      </option>
-      <option name="INNER_CLASS_SETTINGS">
-        <Options>
-          <option name="ENABLED" value="false" />
-        </Options>
-      </option>
-      <option name="METHOD_SETTINGS">
-        <Options>
-          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
-          <option name="ENABLED" value="false" />
-        </Options>
-      </option>
-      <option name="FIELD_SETTINGS">
-        <Options>
-          <option name="ENABLED" value="false" />
-        </Options>
-      </option>
-    </inspection_tool>
-    <inspection_tool class="SerializableHasSerialVersionUIDField" enabled="true" level="INFORMATION" enabled_by_default="true" editorAttributes="INFORMATION_ATTRIBUTES" />
-    <inspection_tool class="VulnerableLibrariesLocal" enabled="false" level="WARNING" enabled_by_default="false" />
-  </profile>
+    <profile version="1.0">
+        <option name="myName" value="Project Default"/>
+        <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
+            <option name="processCode" value="true"/>
+            <option name="processLiterals" value="true"/>
+            <option name="processComments" value="true"/>
+        </inspection_tool>
+    </profile>
 </component>
