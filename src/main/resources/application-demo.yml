@@ -45,13 +45,6 @@ lifehelper:
     # 网页端 URL 地址
     web-url: https://www.lifehelper.com.cn
 
-    # 权限相关
-    auth:
-        # JSON Web Token
-        jwt:
-            # JWT 密钥
-            secret: xxxxxxxxxxxx
-
     # 腾讯位置服务
     tencent-map:
         # 开发者密钥
@@ -59,6 +52,11 @@ lifehelper:
             - xxxxxxxxxxxx
             - xxxxxxxxxxxx
             - xxxxxxxxxxxx
+
+    # 腾讯位置服务
+    we-map:
+        # 开发者密钥
+        key: xxxxxxxxxxxx
 
     # 和风天气
     he-weather:

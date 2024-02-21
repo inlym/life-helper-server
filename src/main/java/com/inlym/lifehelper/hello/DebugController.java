@@ -39,6 +39,35 @@ public class DebugController {
     private final Environment environment;
 
     /**
+     * 查看请求详情
+     *
+     * @param request 请求
+     * @param headers 请求头
+     * @param body    请求数据
+     *
+     * @since 1.9.4
+     */
+    @RequestMapping("/debug")
+    public Map<String, Object> getRequestDetail(HttpServletRequest request, @RequestHeader Map<String, String> headers, @RequestParam Map<String, String> params,
+                                                @RequestBody(required = false) String body, @ClientIp String ip, @RequestParam(value = "sleep", required = false, defaultValue =
+        "0") int sleep) throws InterruptedException {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("path", request.getServletPath());
+        map.put("method", request.getMethod());
+        map.put("params", params);
+        map.put("querystring", request.getQueryString());
+        map.put("headers", headers);
+        map.put("ip", ip);
+        map.put("body", body);
+
+        if (sleep > 0) {
+            TimeUnit.MILLISECONDS.sleep(sleep);
+        }
+
+        return map;
+    }
+
+    /**
      * 获取时间相关参数
      *
      * @since 1.9.4
@@ -108,34 +137,6 @@ public class DebugController {
     @UserPermission
     public Map<String, Object> getUserId(@UserId long userId) {
         return Map.of("userId", userId);
-    }
-
-    /**
-     * 查看请求详情
-     *
-     * @param request 请求
-     * @param headers 请求头
-     * @param body    请求数据
-     *
-     * @since 1.9.4
-     */
-    @RequestMapping("/debug")
-    public Map<String, Object> getRequestDetail(HttpServletRequest request, @RequestHeader Map<String, String> headers, @RequestParam Map<String, String> params,
-                                                @RequestBody(required = false) String body, @ClientIp String ip, @RequestParam("sleep") int sleep) throws InterruptedException {
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("path", request.getServletPath());
-        map.put("method", request.getMethod());
-        map.put("params", params);
-        map.put("querystring", request.getQueryString());
-        map.put("headers", headers);
-        map.put("ip", ip);
-        map.put("body", body);
-
-        if (sleep > 0) {
-            TimeUnit.MILLISECONDS.sleep(sleep);
-        }
-
-        return map;
     }
 
     /**
