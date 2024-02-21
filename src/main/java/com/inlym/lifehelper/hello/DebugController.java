@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.hello;
 
+import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 调试控制器
@@ -48,31 +50,31 @@ public class DebugController {
         map.put("new Date()", new Date());
 
         map.put("ZoneId.systemDefault().getId()", ZoneId
-                                                      .systemDefault()
-                                                      .getId());
+            .systemDefault()
+            .getId());
         map.put("ZoneId.systemDefault().toString()", ZoneId
-                                                         .systemDefault()
-                                                         .toString());
+            .systemDefault()
+            .toString());
 
         map.put("Calendar.getInstance()", Calendar.getInstance());
         map.put("Calendar.getInstance().getTimeZone()", Calendar
-                                                            .getInstance()
-                                                            .getTimeZone());
+            .getInstance()
+            .getTimeZone());
 
         map.put("LocalDateTime.now()", LocalDateTime.now());
         map.put("LocalDateTime.now().toString()", LocalDateTime
-                                                      .now()
-                                                      .toString());
+            .now()
+            .toString());
 
         map.put("LocalDate.now()", LocalDate.now());
         map.put("LocalDate.now().toString()", LocalDate
-                                                  .now()
-                                                  .toString());
+            .now()
+            .toString());
 
         map.put("LocalTime.now()", LocalTime.now());
         map.put("LocalTime.now().toString()", LocalTime
-                                                  .now()
-                                                  .toString());
+            .now()
+            .toString());
 
         return map;
     }
@@ -117,18 +119,21 @@ public class DebugController {
      *
      * @since 1.9.4
      */
-    @RequestMapping("/debug/request")
-    public Map<String, Object> getRequestDetail(HttpServletRequest request, @RequestHeader Map<String, String> headers,
-                                                @RequestBody(required = false) String body) {
+    @RequestMapping("/debug")
+    public Map<String, Object> getRequestDetail(HttpServletRequest request, @RequestHeader Map<String, String> headers, @RequestParam Map<String, String> params,
+                                                @RequestBody(required = false) String body, @ClientIp String ip, @RequestParam("sleep") int sleep) throws InterruptedException {
         Map<String, Object> map = new HashMap<>(16);
-        map.put("getRequestURI", request.getRequestURI());
-        map.put("getServletPath", request.getServletPath());
-        map.put("getMethod", request.getMethod());
-        map.put("getParameterMap", request.getParameterMap());
-        map.put("getQueryString", request.getQueryString());
-        map.put("getAuthType", request.getAuthType());
+        map.put("path", request.getServletPath());
+        map.put("method", request.getMethod());
+        map.put("params", params);
+        map.put("querystring", request.getQueryString());
         map.put("headers", headers);
+        map.put("ip", ip);
         map.put("body", body);
+
+        if (sleep > 0) {
+            TimeUnit.MILLISECONDS.sleep(sleep);
+        }
 
         return map;
     }
