@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.tencentmap.pojo;
+package com.inlym.lifehelper.extern.wemap.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
  * @since 1.7.0
  **/
 @Data
-public class TencentMapListRegionResponse {
+public class WeMapListRegionResponse {
     /** 状态码，0为正常，其它为异常 */
     private Integer status;
 

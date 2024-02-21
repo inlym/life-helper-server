@@ -85,7 +85,7 @@ public class WeatherPlaceService {
 
         // 根据经纬度填充省市区信息
         if (place.getLongitude() != null && place.getLatitude() != null) {
-            AddressComponent ac = locationService.reverseGeocoding(place.getLongitude(), place.getLatitude());
+            AddressComponent ac = locationService.reverseGeocode(place.getLongitude(), place.getLatitude());
             place.setProvince(ac.getProvince());
             place.setCity(ac.getCity());
             place.setDistrict(ac.getDistrict());

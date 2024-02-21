@@ -43,14 +43,6 @@ lifehelper:
     version: "0.0.0"
 
     # 腾讯位置服务
-    tencent-map:
-        # 开发者密钥
-        keys:
-            - xxxxxxxxxxxx
-            - xxxxxxxxxxxx
-            - xxxxxxxxxxxx
-
-    # 腾讯位置服务
     we-map:
         # 开发者密钥
         key: xxxxxxxxxxxx

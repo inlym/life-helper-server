@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.tencentmap.pojo;
+package com.inlym.lifehelper.extern.wemap.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.Data;
  * @since 1.0.0
  **/
 @Data
-public class TencentMapReverseGeocodingResponse {
+public class WeMapReverseGeocodeResponse {
     /** 状态码，0为正常，其它为异常 */
     private Integer status;
 

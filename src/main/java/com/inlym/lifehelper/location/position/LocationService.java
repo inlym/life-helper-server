@@ -1,12 +1,10 @@
 package com.inlym.lifehelper.location.position;
 
-import com.inlym.lifehelper.extern.tencentmap.TencentMapService;
-import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapLocateIpResponse;
-import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapReverseGeocodingResponse;
+import com.inlym.lifehelper.extern.wemap.model.WeMapLocateIpResponse;
+import com.inlym.lifehelper.extern.wemap.model.WeMapReverseGeocodeResponse;
+import com.inlym.lifehelper.extern.wemap.service.WeMapApiService;
 import com.inlym.lifehelper.location.position.pojo.AddressComponent;
-import com.inlym.lifehelper.location.position.pojo.GeographicCoordinate;
 import com.inlym.lifehelper.location.position.pojo.IpLocation;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -24,25 +22,7 @@ import org.springframework.util.StringUtils;
 public class LocationService {
     private static final String CHINA_NATION_NAME = "中国";
 
-    private final TencentMapService tencentMapService;
-
-    /**
-     * 解析经纬度字符串
-     * <p>
-     * <h2>注意事项
-     * <li>一般用在控制器中解析参数，在这之前已通过数据校验。
-     *
-     * @param locationString 经纬度字符串
-     *
-     * @since 1.0.0
-     */
-    public static GeographicCoordinate parseLocationString(@NonNull String locationString) {
-        String[] list = locationString.split(",");
-        double longitude = Double.parseDouble(list[0]);
-        double latitude = Double.parseDouble(list[1]);
-
-        return new GeographicCoordinate(longitude, latitude);
-    }
+    private final WeMapApiService weMapApiService;
 
     /**
      * 逆地址解析
@@ -52,9 +32,9 @@ public class LocationService {
      *
      * @since 1.0.0
      */
-    public AddressComponent reverseGeocoding(double longitude, double latitude) {
-        TencentMapReverseGeocodingResponse data = tencentMapService.reverseGeocoding(longitude, latitude);
-        TencentMapReverseGeocodingResponse.AddressComponent ac = data
+    public AddressComponent reverseGeocode(double longitude, double latitude) {
+        WeMapReverseGeocodeResponse data = weMapApiService.reverseGeocode(longitude, latitude);
+        WeMapReverseGeocodeResponse.AddressComponent ac = data
             .getResult()
             .getAddressComponent();
 
@@ -85,7 +65,7 @@ public class LocationService {
     public IpLocation locateIpUpToCity(String ip) {
         IpLocation location = locateIp(ip);
         if (CHINA_NATION_NAME.equals(location.getNation()) && !StringUtils.hasText(location.getCity())) {
-            AddressComponent component = reverseGeocoding(location.getLongitude(), location.getLatitude());
+            AddressComponent component = reverseGeocode(location.getLongitude(), location.getLatitude());
             location.setProvince(component.getProvince());
             location.setCity(component.getCity());
             location.setDistrict(component.getDistrict());
@@ -102,7 +82,7 @@ public class LocationService {
      * @since 1.0.0
      */
     private IpLocation locateIp(String ip) {
-        TencentMapLocateIpResponse data = tencentMapService.locateIp(ip);
+        WeMapLocateIpResponse data = weMapApiService.locateIp(ip);
 
         IpLocation info = new IpLocation();
         BeanUtils.copyProperties(data

@@ -3,8 +3,8 @@ package com.inlym.lifehelper.location.region.job;
 import com.alibaba.schedulerx.worker.domain.JobContext;
 import com.alibaba.schedulerx.worker.processor.JavaProcessor;
 import com.alibaba.schedulerx.worker.processor.ProcessResult;
-import com.inlym.lifehelper.extern.tencentmap.TencentMapHttpService;
-import com.inlym.lifehelper.extern.tencentmap.pojo.TencentMapListRegionResponse;
+import com.inlym.lifehelper.extern.wemap.model.WeMapListRegionResponse;
+import com.inlym.lifehelper.extern.wemap.service.WeMapApiService;
 import com.inlym.lifehelper.location.region.entity.Region;
 import com.inlym.lifehelper.location.region.mapper.RegionMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.List;
 public class RegionDataInjectionJob extends JavaProcessor {
     private final RegionMapper regionMapper;
 
-    private final TencentMapHttpService tencentMapHttpService;
+    private final WeMapApiService weMapApiService;
 
     @Override
     public ProcessResult process(JobContext context) throws Exception {
@@ -53,22 +53,22 @@ public class RegionDataInjectionJob extends JavaProcessor {
         }
 
         // 从腾讯位置服务的 API 中获取数据
-        TencentMapListRegionResponse data = tencentMapHttpService.listRegions();
+        WeMapListRegionResponse data = weMapApiService.listRegion();
 
         // 三个列表分别是省、市、区的数据
-        List<TencentMapListRegionResponse.Region> provinceList = data
+        List<WeMapListRegionResponse.Region> provinceList = data
             .getResult()
             .get(0);
 
-        List<TencentMapListRegionResponse.Region> cityList = data
+        List<WeMapListRegionResponse.Region> cityList = data
             .getResult()
             .get(1);
 
-        List<TencentMapListRegionResponse.Region> districtList = data
+        List<WeMapListRegionResponse.Region> districtList = data
             .getResult()
             .get(2);
 
-        for (TencentMapListRegionResponse.Region provinceItem : provinceList) {
+        for (WeMapListRegionResponse.Region provinceItem : provinceList) {
             Region province = new Region();
             province.setId(Integer.valueOf(provinceItem.getId()));
             province.setShortName(provinceItem.getName());
@@ -87,7 +87,7 @@ public class RegionDataInjectionJob extends JavaProcessor {
                 .get(1);
 
             for (int i = cityStart; i < cityEnd + 1; i++) {
-                TencentMapListRegionResponse.Region cityItem = cityList.get(i);
+                WeMapListRegionResponse.Region cityItem = cityList.get(i);
                 Region city = new Region();
                 city.setId(Integer.valueOf(cityItem.getId()));
                 city.setShortName(cityItem.getName());
@@ -109,7 +109,7 @@ public class RegionDataInjectionJob extends JavaProcessor {
                         .get(1);
 
                     for (int j = districtStart; j < districtEnd + 1; j++) {
-                        TencentMapListRegionResponse.Region districtItem = districtList.get(j);
+                        WeMapListRegionResponse.Region districtItem = districtList.get(j);
                         Region district = new Region();
                         district.setId(Integer.valueOf(districtItem.getId()));
                         district.setShortName(districtItem.getName());

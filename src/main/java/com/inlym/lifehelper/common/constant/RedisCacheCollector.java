@@ -24,7 +24,7 @@ public abstract class RedisCacheCollector {
     public static final String WE_MAP_LOCATE_IP = "wemap:locate-ip";
 
     /** 腾讯位置服务 - 逆地址解析（坐标位置描述） */
-    public static final String WE_MAP_REVERSE_GEOCODING = "wemap:regeo";
+    public static final String WE_MAP_REVERSE_GEOCODE = "wemap:regeo";
 
     // ================================  和风天气  ================================
 
@@ -73,7 +73,7 @@ public abstract class RedisCacheCollector {
 
         // ========================  腾讯位置服务 HTTP 请求缓存  ========================
         put(WE_MAP_LOCATE_IP, Duration.ofDays(30));
-        put(WE_MAP_REVERSE_GEOCODING, Duration.ofDays(30));
+        put(WE_MAP_REVERSE_GEOCODE, Duration.ofDays(30));
 
         // =========================  和风天气 HTTP 请求缓存  =========================
         put(HE_GEO_CITY_LOOKUP, Duration.ofDays(100));

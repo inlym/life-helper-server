@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.extern.tencentmap.pojo;
+package com.inlym.lifehelper.extern.wemap.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -6,12 +6,13 @@ import lombok.Data;
 /**
  * 腾讯位置服务 IP 定位响应数据
  *
- * @author inlym
- * @date 2022-02-14 00:44
- * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2024/2/21
+ * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/position/webServiceIp">IP定位</a>
+ * @since 2.2.0
  **/
 @Data
-public class TencentMapLocateIpResponse {
+public class WeMapLocateIpResponse {
     /** 状态码，0为正常，其它为异常 */
     private Integer status;
 
@@ -19,10 +20,10 @@ public class TencentMapLocateIpResponse {
     private String message;
 
     /** IP 定位结果 */
-    private LocateIpResult result;
+    private Result result;
 
     @Data
-    public static class LocateIpResult {
+    public static class Result {
         /** 用于定位的IP地址 */
         private String ip;
 
@@ -52,13 +53,17 @@ public class TencentMapLocateIpResponse {
         /** 国家 */
         private String nation;
 
+        /** 国家代码（ISO3166标准3位数字码） */
+        @JsonProperty("nation_code")
+        private String nationCode;
+
         /** 省 */
         private String province;
 
-        /** 市 */
+        /** 市（可能为空） */
         private String city;
 
-        /** 区 */
+        /** 区（可能为空） */
         private String district;
 
         /** 行政区划代码（非正常情况则返回 -1） */
