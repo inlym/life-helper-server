@@ -38,21 +38,6 @@ public class TencentMapHttpService {
     private Integer invokeCounter = 0;
 
     /**
-     * 获取开发者调用密钥
-     *
-     * <h2>说明
-     * <p>正常企业级项目中，只需要一个密钥就可以了，而不是这里的一组密钥列表。这里使用密钥列表的原因是：
-     * 个人开发者的密钥存在并发限制和较低的免费额度，容易达到上限，因此申请多个密钥用于轮询调用。
-     */
-    private String getKey() {
-        String[] keys = properties.getKeys();
-        String key = keys[invokeCounter % keys.length];
-        invokeCounter++;
-
-        return key;
-    }
-
-    /**
      * IP 定位
      *
      * @param ip IP 地址
@@ -60,7 +45,7 @@ public class TencentMapHttpService {
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceIp">IP 定位</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.TENCENT_MAP_LOCATE_IP)
+    @Cacheable(RedisCacheCollector.WE_MAP_LOCATE_IP)
     public TencentMapLocateIpResponse locateIp(String ip) {
         String baseUrl = "https://apis.map.qq.com/ws/location/v1/ip";
         String url = UriComponentsBuilder
@@ -89,7 +74,7 @@ public class TencentMapHttpService {
      *
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder">逆地址解析（坐标位置描述）</a>
      */
-    @Cacheable(RedisCacheCollector.TENCENT_MAP_REVERSE_GEOCODING)
+    @Cacheable(RedisCacheCollector.WE_MAP_REVERSE_GEOCODING)
     public TencentMapReverseGeocodingResponse reverseGeocoding(String location) {
         String baseUrl = "https://apis.map.qq.com/ws/geocoder/v1/";
         String url = UriComponentsBuilder
@@ -133,5 +118,20 @@ public class TencentMapHttpService {
             return data;
         }
         throw new ExternalHttpRequestException("获取省市区列表", url, data.getStatus(), data.getMessage());
+    }
+
+    /**
+     * 获取开发者调用密钥
+     *
+     * <h2>说明
+     * <p>正常企业级项目中，只需要一个密钥就可以了，而不是这里的一组密钥列表。这里使用密钥列表的原因是：
+     * 个人开发者的密钥存在并发限制和较低的免费额度，容易达到上限，因此申请多个密钥用于轮询调用。
+     */
+    private String getKey() {
+        String[] keys = properties.getKeys();
+        String key = keys[invokeCounter % keys.length];
+        invokeCounter++;
+
+        return key;
     }
 }
