@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.common.auth.core;
 
-import com.inlym.lifehelper.common.auth.jwt.JwtService;
 import com.inlym.lifehelper.common.constant.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,13 +13,10 @@ import java.util.List;
  * 自定义简单鉴权凭证
  *
  * <h2>主要用途
- *
  * <p>通过鉴权后，将相关信息带入生成这个鉴权凭证，用于在 Spring Security 中使用。
  *
  * <h2>注意事项
- *
- * <li>当前只用到用户 ID 和用户角色。
- * <li>目前使用到当前类的文件：{@link JwtService}
+ * <p>当前只用到用户 ID 和用户角色。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022-01-22

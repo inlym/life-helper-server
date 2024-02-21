@@ -67,7 +67,6 @@ public class TraceIdFilter extends OncePerRequestFilter {
 
         context.setTraceId(traceId);
         MDC.put(LogName.TRACE_ID, traceId);
-        log.trace("[Header] {}={}", REQUEST_HEADER_NAME, requestIdString);
 
         chain.doFilter(request, response);
     }

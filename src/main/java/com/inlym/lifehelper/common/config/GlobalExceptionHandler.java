@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.common.config;
 
-import com.inlym.lifehelper.common.exception.ExternalHttpRequestException;
 import com.inlym.lifehelper.common.exception.ResourceNotFoundException;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.ErrorResponse;
@@ -35,16 +34,6 @@ import java.util.List;
 @Slf4j
 @Order(1000)
 public class GlobalExceptionHandler {
-    /**
-     * 对外 HTTP 请求异常处理
-     */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(ExternalHttpRequestException.class)
-    public ErrorResponse handleExternalHttpRequestException(ExternalHttpRequestException e) {
-        log.error(String.valueOf(e));
-        return new ErrorResponse(5000, "内部错误");
-    }
-
     /**
      * 请求参数，必填项未传值
      */

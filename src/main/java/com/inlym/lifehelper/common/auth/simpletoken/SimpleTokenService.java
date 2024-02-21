@@ -7,7 +7,6 @@ import com.inlym.lifehelper.common.auth.simpletoken.entity.SimpleToken;
 import com.inlym.lifehelper.common.auth.simpletoken.exception.InvalidSimpleTokenException;
 import com.inlym.lifehelper.common.auth.simpletoken.repository.SimpleTokenRepository;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
-import com.inlym.lifehelper.common.constant.SecurityTokenType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,8 +43,7 @@ public class SimpleTokenService {
         return IdentityCertificate
             .builder()
             .token(simpleToken.getId())
-            .type(SecurityTokenType.SIMPLE_TOKEN)
-            .headerName(CustomHttpHeader.SIMPLE_TOKEN)
+            .headerName(CustomHttpHeader.AUTH_TOKEN)
             .createTime(simpleToken.getCreateTime())
             .expireTime(simpleToken.getExpireTime())
             .build();

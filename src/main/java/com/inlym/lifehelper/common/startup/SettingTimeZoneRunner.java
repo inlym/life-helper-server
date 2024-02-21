@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.runner;
+package com.inlym.lifehelper.common.startup;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

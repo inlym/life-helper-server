@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.common.filter;
 
-import com.inlym.lifehelper.common.constant.ClientType;
 import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -21,7 +20,7 @@ import java.io.IOException;
  * <p>目前用于解析客户端的类型和版本号。
  *
  * <h2>字段值格式示例
- * <p>`type=mini_program;version=1.0.0`
+ * <p>`appid=abcdefg; version=1.0.0`
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2023/3/11
@@ -50,7 +49,6 @@ public class ClientInfoFilter extends OncePerRequestFilter {
         CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
 
         String str = request.getHeader(HEADER_NAME);
-        log.trace("[Header] {}={}", HEADER_NAME, str);
 
         // 备注（2023.03.11）：
         // 下方有很多层的 `if` 嵌套，虽然代码更长了，但是逻辑上更好理解
@@ -62,17 +60,7 @@ public class ClientInfoFilter extends OncePerRequestFilter {
                     String key = pairs[0];
                     String value = pairs[1];
                     if (key != null && value != null) {
-                        if ("type".equalsIgnoreCase(key)) {
-                            if (ClientType.MINI_PROGRAM
-                                .name()
-                                .equalsIgnoreCase(value)) {
-                                context.setClientType(ClientType.MINI_PROGRAM);
-                            } else if (ClientType.WEB
-                                .name()
-                                .equalsIgnoreCase(value)) {
-                                context.setClientType(ClientType.WEB);
-                            }
-                        } else if ("version".equalsIgnoreCase(key)) {
+                        if ("version".equalsIgnoreCase(key)) {
                             context.setClientVersion(value);
                         }
                     }

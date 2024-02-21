@@ -69,8 +69,6 @@ public class ClientIpFilter extends OncePerRequestFilter {
             MDC.put(LogName.CLIENT_IP, clientIp);
         }
 
-        log.trace("[Header] {}={}", HEADER_NAME, ipString);
-
         chain.doFilter(request, response);
     }
 }

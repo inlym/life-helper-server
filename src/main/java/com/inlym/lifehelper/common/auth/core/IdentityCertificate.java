@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.common.auth.core;
 
-import com.inlym.lifehelper.common.constant.SecurityTokenType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +24,6 @@ import java.time.LocalDateTime;
 public class IdentityCertificate {
     /** 鉴权令牌 */
     private String token;
-
-    /** 鉴权令牌类型 */
-    private SecurityTokenType type;
 
     /** 发起请求时，携带令牌的请求头名称 */
     private String headerName;

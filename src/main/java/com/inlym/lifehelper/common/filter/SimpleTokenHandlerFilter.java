@@ -35,7 +35,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SimpleTokenHandlerFilter extends OncePerRequestFilter {
     /** 传递简易鉴权凭证的请求头字段名 */
-    private static final String HEADER_NAME = CustomHttpHeader.SIMPLE_TOKEN;
+    private static final String HEADER_NAME = CustomHttpHeader.AUTH_TOKEN;
 
     private final SimpleTokenService simpleTokenService;
 
@@ -46,7 +46,8 @@ public class SimpleTokenHandlerFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException,
+        IOException {
         // 从请求头获取鉴权凭证
         String token = request.getHeader(HEADER_NAME);
         log.trace("[Header] {}={}", HEADER_NAME, token);

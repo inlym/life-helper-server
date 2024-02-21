@@ -9,7 +9,7 @@
       <option name="JD_PRESERVE_LINE_FEEDS" value="true" />
     </JavaCodeStyleSettings>
     <codeStyleSettings language="JAVA">
-      <option name="RIGHT_MARGIN" value="160" />
+      <option name="RIGHT_MARGIN" value="180" />
       <option name="BLOCK_COMMENT_ADD_SPACE" value="true" />
       <option name="KEEP_LINE_BREAKS" value="false" />
       <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />

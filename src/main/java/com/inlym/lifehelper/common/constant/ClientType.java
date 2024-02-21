@@ -13,11 +13,11 @@ package com.inlym.lifehelper.common.constant;
 public enum ClientType {
     /** 未知 */
     UNKNOWN,
-    
+
     /** 微信小程序 */
     MINI_PROGRAM,
 
-    /** Web 网页，目前使用 Angular 框架构建 */
+    /** Web 网页 */
     WEB;
 
     ClientType() {}
