@@ -42,9 +42,6 @@ lifehelper:
     # 版本号（该值由项目启动时传入，此处定义仅供展示该字段）
     version: "0.0.0"
 
-    # 网页端 URL 地址
-    web-url: https://www.lifehelper.com.cn
-
     # 腾讯位置服务
     tencent-map:
         # 开发者密钥
