@@ -41,4 +41,6 @@ public class ChatCompletion {
 
     /** 使用统计信息 */
     private Usage usage;
+
+    private ResponseError error;
 }

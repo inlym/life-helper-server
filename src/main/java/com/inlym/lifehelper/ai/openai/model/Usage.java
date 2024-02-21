@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 类名称
- * <p>
- * <h2>主要用途
- * <p>
+ * 用量统计
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/2/20

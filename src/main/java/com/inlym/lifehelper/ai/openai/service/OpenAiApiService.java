@@ -2,8 +2,7 @@ package com.inlym.lifehelper.ai.openai.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inlym.lifehelper.ai.openai.config.OpenAiProperties;
-import com.inlym.lifehelper.ai.openai.model.ChatCompletion;
-import com.inlym.lifehelper.ai.openai.model.ChatCompletionRequest;
+import com.inlym.lifehelper.ai.openai.model.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,22 +38,43 @@ public class OpenAiApiService {
             })
             .baseUrl(openAiProperties.getBaseUrl())
             .defaultHeaders(jsonContentHeaders)
+            .defaultStatusHandler(new OpenAiResponseErrorHandler())
             .build();
     }
 
     /**
      * 发起会话补全
      *
-     * @param chatRequest 请求数据
+     * @param request 请求数据
      *
      * @since 2.2.0
      */
-    public ResponseEntity<ChatCompletion> chatCompletionEntity(ChatCompletionRequest chatRequest) {
-        return this.restClient
+    public ChatCompletion createChatCompletion(ChatCompletionRequest request) {
+        ResponseEntity<ChatCompletion> response = this.restClient
             .post()
             .uri("/v1/chat/completions")
-            .body(chatRequest)
+            .body(request)
             .retrieve()
             .toEntity(ChatCompletion.class);
+
+        return response.getBody();
+    }
+
+    /**
+     * 创建图片
+     *
+     * @param request 请求数据
+     *
+     * @since 2.2.0
+     */
+    public ImageResponse createImage(ImageRequest request) {
+        ResponseEntity<ImageResponse> response = this.restClient
+            .post()
+            .uri("/v1/images/generations")
+            .body(request)
+            .retrieve()
+            .toEntity(ImageResponse.class);
+
+        return response.getBody();
     }
 }
