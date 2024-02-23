@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.pojo;
+package com.inlym.lifehelper.common.base.aliyun.oss.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

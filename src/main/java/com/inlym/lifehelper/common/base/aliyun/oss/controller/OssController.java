@@ -1,7 +1,9 @@
-package com.inlym.lifehelper.common.base.aliyun.oss;
+package com.inlym.lifehelper.common.base.aliyun.oss.controller;
 
-import com.inlym.lifehelper.common.base.aliyun.oss.pojo.GeneratePostCredentialOptions;
-import com.inlym.lifehelper.common.base.aliyun.oss.pojo.OssPostCredential;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.model.GeneratePostCredentialOptions;
+import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

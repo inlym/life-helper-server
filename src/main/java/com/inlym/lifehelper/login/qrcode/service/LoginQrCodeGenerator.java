@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.login.qrcode.service;
 
 import cn.hutool.core.util.HexUtil;
-import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
 import com.inlym.lifehelper.extern.wechat.pojo.UnlimitedQrCodeOptions;

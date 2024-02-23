@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss;
+package com.inlym.lifehelper.common.base.aliyun.oss.constant;
 
 /**
  * 阿里云 OSS 目录

@@ -2,7 +2,7 @@ package com.inlym.lifehelper.login.qrcode.service;
 
 import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
-import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.login.qrcode.constant.QrCodeTicketStatus;
 import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
 import com.inlym.lifehelper.login.qrcode.model.QrCodeLoginResultVO;

@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.pojo;
+package com.inlym.lifehelper.common.base.aliyun.oss.model;
 
-import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

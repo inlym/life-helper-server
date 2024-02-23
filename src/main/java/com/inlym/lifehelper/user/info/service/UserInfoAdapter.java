@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.user.info.service;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
-import com.inlym.lifehelper.common.base.aliyun.oss.OssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.common.exception.UnpredictableException;
 import com.inlym.lifehelper.location.region.entity.Region;
 import com.inlym.lifehelper.location.region.exception.RegionNotFoundException;
