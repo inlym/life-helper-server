@@ -79,28 +79,17 @@ lifehelper:
 aliyun:
     # 阿里云 OSS 配置
     oss:
-        main:
-            # AccessKey ID
-            access-key-id: xxxxxxxxxxxx
-            # AccessKey Secret
-            access-key-secret: xxxxxxxxxxxx
-            # 访问域名
-            endpoint: xxxxxxxxxxxx
-            # 存储空间名称
-            bucket-name: xxxxxxxxxxxx
-            # 绑定的自定义域名（包含 https:// 前缀部分）
-            alias-url: xxxxxxxxxxxx
-        ugc:
-            # AccessKey ID
-            access-key-id: xxxxxxxxxxxx
-            # AccessKey Secret
-            access-key-secret: xxxxxxxxxxxx
-            # 访问域名
-            endpoint: xxxxxxxxxxxx
-            # 存储空间名称
-            bucket-name: xxxxxxxxxxxx
-            # 绑定的自定义域名（包含 https:// 前缀部分）
-            alias-url: xxxxxxxxxxxx
+        # AccessKey ID
+        access-key-id: xxxxxxxxxxxx
+        # AccessKey Secret
+        access-key-secret: xxxxxxxxxxxx
+        # 访问域名
+        endpoint: xxxxxxxxxxxx
+        # 存储空间名称
+        bucket-name: xxxxxxxxxxxx
+        # 绑定的自定义域名（包含 https:// 前缀部分）
+        alias-url: xxxxxxxxxxxx
+
 
     # 阿里云表格存储配置
     ots:

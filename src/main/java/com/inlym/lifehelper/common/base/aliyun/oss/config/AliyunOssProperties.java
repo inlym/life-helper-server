@@ -1,16 +1,20 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.model;
+package com.inlym.lifehelper.common.base.aliyun.oss.config;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
- * 单个阿里云OSS存储桶配置
+ * 阿里云 OSS 配置
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/2/24
  * @since 2.2.0
  **/
+@Component
+@ConfigurationProperties(prefix = "aliyun.oss")
 @Data
-public class OssBucket {
+public class AliyunOssProperties {
     /** 访问密钥 ID */
     private String accessKeyId;
 

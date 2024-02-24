@@ -2,16 +2,15 @@ package com.inlym.lifehelper.common.base.aliyun.oss.service;
 
 import cn.hutool.core.util.IdUtil;
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.inlym.lifehelper.common.base.aliyun.oss.config.OssProperties;
+import com.inlym.lifehelper.common.base.aliyun.oss.config.AliyunOssProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.GeneratePostCredentialOptions;
-import com.inlym.lifehelper.common.base.aliyun.oss.model.OssBucket;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -23,41 +22,24 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * 类名称
- * <p>
- * <h2>主要用途
- * <p>
+ * 阿里云 OSS 服务
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/2/24
  * @since 2.2.0
  **/
 @Service
+@RequiredArgsConstructor
 public class OssService {
-    private final OssProperties properties;
+    private final OSS ossClient;
 
-    private final OSS mainClient;
-
-    private final OSS ugcClient;
-
-    private final RestClient restClient;
-
-    public OssService(OssProperties properties) {
-        this.properties = properties;
-        
-        OssBucket main = properties.getMain();
-        OssBucket ugc = properties.getUgc();
-
-        this.mainClient = new OSSClientBuilder().build(main.getEndpoint(), main.getAccessKeyId(), main.getAccessKeySecret());
-        this.ugcClient = new OSSClientBuilder().build(ugc.getEndpoint(), ugc.getAccessKeyId(), ugc.getAccessKeySecret());
-
-        this.restClient = RestClient
-            .builder()
-            .build();
-    }
+    private final AliyunOssProperties properties;
 
     /**
      * 上传文件
+     *
+     * <h2>主要用途
+     * <p>用户在服务器获取外部资源，再上传至 OSS。
      *
      * @param pathname 文件路径，注意不要以 `/` 开头
      * @param content  文件内容
@@ -65,11 +47,7 @@ public class OssService {
      * @since 2.2.0
      */
     public void upload(String pathname, byte[] content) {
-        String bucketName = properties
-            .getMain()
-            .getBucketName();
-
-        mainClient.putObject(bucketName, pathname, new ByteArrayInputStream(content));
+        ossClient.putObject(properties.getBucketName(), pathname, new ByteArrayInputStream(content));
     }
 
     /**
@@ -87,12 +65,14 @@ public class OssService {
      */
     @Retryable
     public String dump(String dirname, String url) {
-        String bucketName = properties
-            .getMain()
-            .getBucketName();
+        String bucketName = properties.getBucketName();
 
         // 文件路径
         String pathname = dirname + "/" + IdUtil.simpleUUID();
+
+        RestClient restClient = RestClient
+            .builder()
+            .build();
 
         ResponseEntity<byte[]> response = restClient
             .get()
@@ -108,7 +88,7 @@ public class OssService {
                                 .getContentType())
             .toString());
         putObjectRequest.setMetadata(metadata);
-        mainClient.putObject(putObjectRequest);
+        ossClient.putObject(putObjectRequest);
 
         return pathname;
     }
@@ -126,9 +106,7 @@ public class OssService {
         if ("".equals(path)) {
             return "";
         }
-        return properties
-            .getMain()
-            .getAliasUrl() + "/" + path;
+        return properties.getAliasUrl() + "/" + path;
     }
 
     /**
@@ -141,8 +119,6 @@ public class OssService {
      * @since 1.2.3
      */
     public OssPostCredential generatePostCredential(GeneratePostCredentialOptions options) {
-        OssBucket ugc = properties.getUgc();
-
         // 文件在 OSS 中的完整路径
         String pathname = options.getDirname() + "/" + IdUtil.simpleUUID();
 
@@ -158,17 +134,17 @@ public class OssService {
         // 指定文件路径（完全匹配）
         policyConditions.addConditionItem(MatchMode.Exact, PolicyConditions.COND_KEY, pathname);
         // 指定存储空间（完全匹配）
-        policyConditions.addConditionItem(MatchMode.Exact, "bucket", ugc.getBucketName());
+        policyConditions.addConditionItem(MatchMode.Exact, "bucket", properties.getBucketName());
 
-        String postPolicy = ugcClient.generatePostPolicy(expiration, policyConditions);
+        String postPolicy = ossClient.generatePostPolicy(expiration, policyConditions);
         byte[] binaryData = postPolicy.getBytes(StandardCharsets.UTF_8);
         String policy = BinaryUtil.toBase64String(binaryData);
-        String signature = ugcClient.calculatePostSignature(postPolicy);
+        String signature = ossClient.calculatePostSignature(postPolicy);
 
         return OssPostCredential
             .builder()
-            .accessKeyId(ugc.getAccessKeyId())
-            .url(ugc.getAliasUrl())
+            .accessKeyId(properties.getAccessKeyId())
+            .url(properties.getAliasUrl())
             .key(pathname)
             .policy(policy)
             .signature(signature)
