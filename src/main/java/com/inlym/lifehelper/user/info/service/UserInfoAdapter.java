@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.user.info.service;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
-import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.common.exception.UnpredictableException;
 import com.inlym.lifehelper.location.region.entity.Region;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +70,7 @@ public class UserInfoAdapter {
         }
 
         if (dto.getAvatarUrl() != null) {
-            info.setAvatarPath(ossService.dump(OssDir.AVATAR, dto.getAvatarUrl()));
+            info.setAvatarPath(ossService.dump(AliyunOssDir.AVATAR, dto.getAvatarUrl()));
         }
 
         userInfoService.save(info);
@@ -148,20 +146,6 @@ public class UserInfoAdapter {
         }
 
         return vo;
-    }
-
-    /**
-     * 计算注册天数
-     *
-     * @param registerTime 注册时间
-     *
-     * @since 1.7.2
-     */
-    private int calcRegisteredDays(LocalDateTime registerTime) {
-        LocalDateTime now = LocalDateTime.now();
-        return (int) LocalDateTimeUtil
-            .between(registerTime, now)
-            .toDays();
     }
 
     /**

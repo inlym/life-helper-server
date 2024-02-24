@@ -8,11 +8,12 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.AliyunOssProperties;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.GeneratePostCredentialOptions;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
+import com.inlym.lifehelper.common.util.ExtnameUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -51,25 +52,29 @@ public class OssService {
     }
 
     /**
-     * 转储文件
+     * 上传图片
      *
-     * <h2>说明
-     * <li>实测客户端将资源直传至 OSS，此时立即访问资源时，会告知资源不存在，然后过一会就正常了，因此此处增加重试机制。
+     * @param dir     OSS 目录名
+     * @param content 上传内容
      *
-     * @param dirname 转储的目录（注意不要以 `/` 开头）
-     * @param url     资源文件的 URL 地址
-     *
-     * @return 资源在 OSS 中的路径
-     *
-     * @since 1.0.0
+     * @since 2.2.0
      */
-    @Retryable
-    public String dump(String dirname, String url) {
-        String bucketName = properties.getBucketName();
+    public String uploadImageBytes(AliyunOssDir dir, byte[] content) {
+        String extname = ExtnameUtil.detectImageFormat(content);
+        String filename = dir.getDirname() + "/" + generateRandomString() + "." + extname;
+        ossClient.putObject(properties.getBucketName(), filename, new ByteArrayInputStream(content));
+        return filename;
+    }
 
-        // 文件路径
-        String pathname = dirname + "/" + IdUtil.simpleUUID();
-
+    /**
+     * 转储第三方资源
+     *
+     * @param dir OSS 目录名
+     * @param url 第三方资源的 URL 地址
+     *
+     * @since 2.2.0
+     */
+    public String dump(AliyunOssDir dir, String url) {
         RestClient restClient = RestClient
             .builder()
             .build();
@@ -80,17 +85,25 @@ public class OssService {
             .retrieve()
             .toEntity(byte[].class);
 
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, pathname, new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setHeader("Content-Type", Objects
+        String extname = Objects
             .requireNonNull(response
                                 .getHeaders()
                                 .getContentType())
-            .toString());
-        putObjectRequest.setMetadata(metadata);
-        ossClient.putObject(putObjectRequest);
+            .getSubtype();
 
-        return pathname;
+        String filename = dir.getDirname() + "/" + generateRandomString() + "." + extname;
+
+        PutObjectRequest request = new PutObjectRequest(properties.getBucketName(), filename,
+                                                        new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setHeader("Content-Type", response
+            .getHeaders()
+            .getContentType()
+            .toString());
+        request.setMetadata(metadata);
+        ossClient.putObject(request);
+
+        return filename;
     }
 
     /**
@@ -149,5 +162,14 @@ public class OssService {
             .policy(policy)
             .signature(signature)
             .build();
+    }
+
+    /**
+     * 获取随机字符串
+     *
+     * @since 2.2.0
+     */
+    private String generateRandomString() {
+        return IdUtil.objectId();
     }
 }
