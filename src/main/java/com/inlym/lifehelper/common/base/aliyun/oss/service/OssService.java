@@ -9,7 +9,6 @@ import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.AliyunOssProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.model.GeneratePostCredentialOptions;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
 import com.inlym.lifehelper.common.util.ExtnameUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +18,7 @@ import org.springframework.web.client.RestClient;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
 
@@ -131,21 +131,22 @@ public class OssService {
      * @see <a href="https://help.aliyun.com/document_detail/91868.html">服务端签名直传</a>
      * @since 1.2.3
      */
-    public OssPostCredential generatePostCredential(GeneratePostCredentialOptions options) {
+    public OssPostCredential generatePostCredential() {
         // 文件在 OSS 中的完整路径
-        String pathname = options.getDirname() + "/" + IdUtil.simpleUUID();
+        String filename = AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + generateRandomString();
 
-        // 凭证有效期结束时间（时间戳）
-        long expireEndTime = System.currentTimeMillis() + options
-            .getTtl()
+        // 凭证有效期结束时间（时间戳）：1小时
+        long expireEndTime = System.currentTimeMillis() + Duration
+            .ofHours(1L)
             .toMillis();
+
         Date expiration = new Date(expireEndTime);
 
         PolicyConditions policyConditions = new PolicyConditions();
-        // 指定文件体积（范围）
-        policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, options.getMaxSize());
+        // 指定文件体积（范围）：0 ~ 100MB
+        policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 100L * 1024 * 1024);
         // 指定文件路径（完全匹配）
-        policyConditions.addConditionItem(MatchMode.Exact, PolicyConditions.COND_KEY, pathname);
+        policyConditions.addConditionItem(MatchMode.Exact, PolicyConditions.COND_KEY, filename);
         // 指定存储空间（完全匹配）
         policyConditions.addConditionItem(MatchMode.Exact, "bucket", properties.getBucketName());
 
@@ -158,7 +159,7 @@ public class OssService {
             .builder()
             .accessKeyId(properties.getAccessKeyId())
             .url(properties.getAliasUrl())
-            .key(pathname)
+            .key(filename)
             .policy(policy)
             .signature(signature)
             .build();
@@ -170,6 +171,6 @@ public class OssService {
      * @since 2.2.0
      */
     private String generateRandomString() {
-        return IdUtil.objectId();
+        return IdUtil.simpleUUID();
     }
 }
