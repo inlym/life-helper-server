@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.extern.openai.model;
 
+import com.inlym.lifehelper.ai.constant.AiRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +24,5 @@ public class ChatCompletionMessage {
     private String content;
 
     /** 角色，可选值 `system`, `user`, `assistant` */
-    private Role role;
+    private AiRole role;
 }

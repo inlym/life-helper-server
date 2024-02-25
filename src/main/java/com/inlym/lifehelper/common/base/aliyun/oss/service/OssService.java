@@ -72,6 +72,8 @@ public class OssService {
      * @param dir OSS 目录名
      * @param url 第三方资源的 URL 地址
      *
+     * @return 在 OSS 的存储路径
+     *
      * @since 2.2.0
      */
     public String dump(AliyunOssDir dir, String url) {

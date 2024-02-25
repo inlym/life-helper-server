@@ -22,5 +22,5 @@ import java.util.List;
 public class ImageResponse {
     private Long created;
 
-    private List<Data> data;
+    private List<ImageData> data;
 }
