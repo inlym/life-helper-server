@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.openai.model;
+package com.inlym.lifehelper.extern.openai.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

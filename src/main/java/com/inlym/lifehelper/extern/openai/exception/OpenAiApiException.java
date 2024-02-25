@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.openai.exception;
+package com.inlym.lifehelper.extern.openai.exception;
 
 /**
  * OpenAI 接口请求异常

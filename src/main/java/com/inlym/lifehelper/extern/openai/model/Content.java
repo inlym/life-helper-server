@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.openai.model;
+package com.inlym.lifehelper.extern.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -22,11 +22,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopLogProbs {
+public class Content {
     private String token;
 
     private Float logprob;
 
     @JsonProperty("bytes")
     private List<Integer> probBytes;
+
+    @JsonProperty("top_logprobs")
+    private List<TopLogProbs> topLogprobs;
 }

@@ -1,8 +1,8 @@
-package com.inlym.lifehelper.ai.openai.service;
+package com.inlym.lifehelper.extern.openai.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.inlym.lifehelper.ai.openai.config.OpenAiProperties;
-import com.inlym.lifehelper.ai.openai.model.*;
+import com.inlym.lifehelper.extern.openai.config.OpenAiProperties;
+import com.inlym.lifehelper.extern.openai.model.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.ai.openai.model;
+package com.inlym.lifehelper.extern.openai.model;
 
-import com.inlym.lifehelper.ai.openai.exception.OpenAiApiException;
+import com.inlym.lifehelper.extern.openai.exception.OpenAiApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -18,13 +18,19 @@ import java.io.IOException;
 public class OpenAiResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
-        return response.getStatusCode().isError();
+        return response
+            .getStatusCode()
+            .isError();
     }
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        if (response.getStatusCode().isError()) {
-            String message = "[OpenAI] 请求错误，status=" + response.getStatusCode().value() + " - " + response.getBody();
+        if (response
+            .getStatusCode()
+            .isError()) {
+            String message = "[OpenAI] 请求错误，status=" + response
+                .getStatusCode()
+                .value() + " - " + response.getBody();
             log.error(message);
             throw new OpenAiApiException(message);
         }

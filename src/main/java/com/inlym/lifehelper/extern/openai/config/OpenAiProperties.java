@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.openai.config;
+package com.inlym.lifehelper.extern.openai.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

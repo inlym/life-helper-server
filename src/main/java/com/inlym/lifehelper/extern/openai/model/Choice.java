@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.openai.model;
+package com.inlym.lifehelper.extern.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
