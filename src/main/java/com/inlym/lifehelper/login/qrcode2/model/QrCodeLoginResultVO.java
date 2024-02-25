@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.qrcode.model;
+package com.inlym.lifehelper.login.qrcode2.model;
 
 import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import lombok.AllArgsConstructor;

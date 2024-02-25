@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.qrcode.service;
+package com.inlym.lifehelper.login.qrcode2.service;
 
 import cn.hutool.core.util.HexUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
@@ -35,7 +35,7 @@ import java.util.UUID;
 @Slf4j
 public class LoginQrCodeGenerator {
     /** 存储在 Redis 中的可用二维码列表使用的键名 */
-    private static final String AVAILABLE_QRCODE_LIST = "wechat:qrcode:scan:list";
+    private static final String AVAILABLE_QRCODE_LIST = "wechat:qrcode2:scan:list";
 
     private final WeChatProperties weChatProperties;
 

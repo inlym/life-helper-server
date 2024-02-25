@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.qrcode.constant;
+package com.inlym.lifehelper.login.qrcode2.constant;
 
 /**
  * 二维码凭据状态

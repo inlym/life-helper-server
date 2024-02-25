@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.login.qrcode.service;
+package com.inlym.lifehelper.login.qrcode2.service;
 
-import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
+import com.inlym.lifehelper.login.qrcode2.entity.QrCodeTicket;
 import org.springframework.data.keyvalue.repository.KeyValueRepository;
 
 /**

@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.login.qrcode.entity;
+package com.inlym.lifehelper.login.qrcode2.entity;
 
-import com.inlym.lifehelper.login.qrcode.constant.QrCodeTicketStatus;
+import com.inlym.lifehelper.login.qrcode2.constant.QrCodeTicketStatus;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "database:qrcode-ticket", timeToLive = 60 * 60)
+@RedisHash(value = "database:qrcode2-ticket", timeToLive = 60 * 60)
 public class QrCodeTicket {
     /**
      * 凭据 ID

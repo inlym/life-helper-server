@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.login.qrcode.event;
+package com.inlym.lifehelper.login.qrcode2.event;
 
-import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
+import com.inlym.lifehelper.login.qrcode2.entity.QrCodeTicket;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

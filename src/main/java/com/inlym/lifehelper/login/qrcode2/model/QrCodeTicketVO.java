@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.qrcode.model;
+package com.inlym.lifehelper.login.qrcode2.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

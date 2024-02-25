@@ -1,9 +1,9 @@
-package com.inlym.lifehelper.login.qrcode.service;
+package com.inlym.lifehelper.login.qrcode2.service;
 
-import com.inlym.lifehelper.login.qrcode.constant.QrCodeTicketStatus;
-import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
-import com.inlym.lifehelper.login.qrcode.event.QrCodeTicketConsumedEvent;
-import com.inlym.lifehelper.login.qrcode.exception.QrCodeTicketNotFoundException;
+import com.inlym.lifehelper.login.qrcode2.constant.QrCodeTicketStatus;
+import com.inlym.lifehelper.login.qrcode2.entity.QrCodeTicket;
+import com.inlym.lifehelper.login.qrcode2.event.QrCodeTicketConsumedEvent;
+import com.inlym.lifehelper.login.qrcode2.exception.QrCodeTicketNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;

@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.login.qrcode.controller;
+package com.inlym.lifehelper.login.qrcode2.controller;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.login.qrcode.model.QrCodeLoginDTO;
-import com.inlym.lifehelper.login.qrcode.model.QrCodeLoginResultVO;
-import com.inlym.lifehelper.login.qrcode.model.QrCodeTicketVO;
-import com.inlym.lifehelper.login.qrcode.service.QrCodeLoginService;
+import com.inlym.lifehelper.login.qrcode2.model.QrCodeLoginDTO;
+import com.inlym.lifehelper.login.qrcode2.model.QrCodeLoginResultVO;
+import com.inlym.lifehelper.login.qrcode2.model.QrCodeTicketVO;
+import com.inlym.lifehelper.login.qrcode2.service.QrCodeLoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

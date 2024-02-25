@@ -1,12 +1,12 @@
-package com.inlym.lifehelper.login.qrcode.service;
+package com.inlym.lifehelper.login.qrcode2.service;
 
 import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
-import com.inlym.lifehelper.login.qrcode.constant.QrCodeTicketStatus;
-import com.inlym.lifehelper.login.qrcode.entity.QrCodeTicket;
-import com.inlym.lifehelper.login.qrcode.model.QrCodeLoginResultVO;
-import com.inlym.lifehelper.login.qrcode.model.QrCodeTicketVO;
+import com.inlym.lifehelper.login.qrcode2.constant.QrCodeTicketStatus;
+import com.inlym.lifehelper.login.qrcode2.entity.QrCodeTicket;
+import com.inlym.lifehelper.login.qrcode2.model.QrCodeLoginResultVO;
+import com.inlym.lifehelper.login.qrcode2.model.QrCodeTicketVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

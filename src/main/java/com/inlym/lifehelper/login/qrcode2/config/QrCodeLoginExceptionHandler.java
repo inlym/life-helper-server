@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.login.qrcode.config;
+package com.inlym.lifehelper.login.qrcode2.config;
 
 import com.inlym.lifehelper.common.model.ExceptionResponse;
-import com.inlym.lifehelper.login.qrcode.exception.QrCodeTicketNotFoundException;
+import com.inlym.lifehelper.login.qrcode2.exception.QrCodeTicketNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;

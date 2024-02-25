@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.qrcode.exception;
+package com.inlym.lifehelper.login.qrcode2.exception;
 
 /**
  * 未找到二维码登录凭据异常
