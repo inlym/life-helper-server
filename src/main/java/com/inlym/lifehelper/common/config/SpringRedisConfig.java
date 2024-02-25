@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,15 +21,17 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class SpringRedisConfig {
     private final RedisConnectionFactory redisConnectionFactory;
 
+    private final ObjectMapper objectMapper;
+
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
 
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
 
         // 开启 `Redis Repositories` 需要关闭 Redis 事务
         template.setEnableTransactionSupport(false);
