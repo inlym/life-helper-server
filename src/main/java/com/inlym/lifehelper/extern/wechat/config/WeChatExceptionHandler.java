@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.extern.wechat.config;
 
-import com.inlym.lifehelper.common.model.ExceptionResponse;
+import com.inlym.lifehelper.common.model.ErrorResponse;
 import com.inlym.lifehelper.extern.wechat.exception.WeChatInvalidAccessTokenException;
 import com.inlym.lifehelper.extern.wechat.service.WeChatStableAccessTokenService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +35,9 @@ public class WeChatExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(WeChatInvalidAccessTokenException.class)
-    public ExceptionResponse handleWeChatInvalidAccessTokenException(WeChatInvalidAccessTokenException e) {
+    public ErrorResponse handleWeChatInvalidAccessTokenException(WeChatInvalidAccessTokenException e) {
         log.error(e.getMessage());
         weChatStableAccessTokenService.refreshAll();
-        return ExceptionResponse.forServerError();
+        return new ErrorResponse(10010);
     }
 }

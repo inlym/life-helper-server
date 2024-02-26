@@ -75,6 +75,31 @@ public class LocationService {
     }
 
     /**
+     * 获取 IP 定位获取的位置名称
+     *
+     * @param ip IP 地址
+     *
+     * @since 2.2.0
+     */
+    public String getIpLocationName(String ip) {
+        WeMapLocateIpResponse.AddressInfo addressInfo = weMapApiService
+            .locateIp(ip)
+            .getResult()
+            .getAddressInfo();
+
+        if (addressInfo.getCity() != null) {
+            return addressInfo.getCity();
+        }
+        if (addressInfo.getProvince() != null) {
+            return addressInfo.getProvince();
+        }
+        if (addressInfo.getNation() != null) {
+            return addressInfo.getNation();
+        }
+        return "未知";
+    }
+
+    /**
      * IP 定位
      *
      * @param ip IP 地址

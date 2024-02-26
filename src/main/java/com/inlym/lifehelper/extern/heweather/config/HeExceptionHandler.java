@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.extern.heweather.config;
 
-import com.inlym.lifehelper.common.model.ExceptionResponse;
+import com.inlym.lifehelper.common.model.ErrorResponse;
 import com.inlym.lifehelper.extern.heweather.exception.HeRequestFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class HeExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(HeRequestFailedException.class)
-    public ExceptionResponse handleHeRequestFailedException(HeRequestFailedException e) {
+    public ErrorResponse handleHeRequestFailedException(HeRequestFailedException e) {
         log.error(e.getMessage());
-        return ExceptionResponse.forServerError();
+        return new ErrorResponse(1);
     }
 }

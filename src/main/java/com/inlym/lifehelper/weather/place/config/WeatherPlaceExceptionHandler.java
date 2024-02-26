@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.weather.place.config;
 
-import com.inlym.lifehelper.common.model.ExceptionResponse;
+import com.inlym.lifehelper.common.model.ErrorResponse;
 import com.inlym.lifehelper.weather.place.exception.WeatherPlaceOverflowException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class WeatherPlaceExceptionHandler {
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(WeatherPlaceOverflowException.class)
-    public ExceptionResponse handleWeatherPlaceOverflowException(WeatherPlaceOverflowException e) {
-        return new ExceptionResponse(1, "您关注的天气地点已超出限制，请删除不需要的地点后再添加！");
+    public ErrorResponse handleWeatherPlaceOverflowException(WeatherPlaceOverflowException e) {
+        return new ErrorResponse(1, "您关注的天气地点已超出限制，请删除不需要的地点后再添加！");
     }
 }

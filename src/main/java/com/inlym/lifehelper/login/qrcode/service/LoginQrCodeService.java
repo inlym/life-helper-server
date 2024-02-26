@@ -56,6 +56,7 @@ public class LoginQrCodeService {
      * <h2>主要逻辑
      * <p>在缓存中有提前生成的，则从中取一个；若无，则直接生成过一个。
      *
+     * @date 2024/2/26
      * @since 2.2.0
      */
     public LoginQrCode getOne() {
@@ -93,6 +94,7 @@ public class LoginQrCodeService {
     /**
      * 监听小程序码不足事件处理
      *
+     * @date 2024/2/26
      * @since 2.2.0
      */
     @EventListener(LoginQrCodeLackEvent.class)
@@ -107,6 +109,7 @@ public class LoginQrCodeService {
      *
      * @return 新生成的二维码信息列表
      *
+     * @date 2024/2/26
      * @since 2.2.0
      */
     private List<LoginQrCode> batchGenerate() {
@@ -129,6 +132,7 @@ public class LoginQrCodeService {
     /**
      * 生成一个新的二维码（并上传至 OSS）
      *
+     * @date 2024/2/26
      * @since 2.2.0
      */
     private LoginQrCode generate() {

@@ -1,16 +1,13 @@
-package com.inlym.lifehelper.login.qrcode2.constant;
+package com.inlym.lifehelper.login.qrcode.constant;
 
 /**
- * 二维码凭据状态
- *
- * <h2>说明
- * <p>当前模块中提到的「二维码」均为「微信小程序码」。
+ * 扫码登录凭据状态
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2023/5/15
- * @since 2.0.0
+ * @date 2024/2/26
+ * @since 2.2.0
  **/
-public enum QrCodeTicketStatus {
+public enum LoginTicketStatus {
     /**
      * 已创建
      *
