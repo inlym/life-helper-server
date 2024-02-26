@@ -19,6 +19,7 @@ import org.springframework.web.client.RestClient;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -134,8 +135,12 @@ public class OssService {
      * @since 1.2.3
      */
     public OssPostCredential generatePostCredential() {
+        String date = LocalDate
+            .now()
+            .toString()
+            .replaceAll("-", "");
         // 文件在 OSS 中的完整路径
-        String filename = AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + generateRandomString();
+        String filename = AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + date + "/" + generateRandomString();
 
         // 凭证有效期结束时间（时间戳）：1小时
         long expireEndTime = System.currentTimeMillis() + Duration

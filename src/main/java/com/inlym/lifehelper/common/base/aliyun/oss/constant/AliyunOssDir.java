@@ -21,7 +21,7 @@ public enum AliyunOssDir {
     WEACODE("wxacode"),
 
     /** 用于客户端直传 */
-    CLIENT_DIRECT_TRANSMISSION("t");
+    CLIENT_DIRECT_TRANSMISSION("upload");
 
     private final String dirname;
 
