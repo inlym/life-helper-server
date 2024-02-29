@@ -33,7 +33,7 @@ public class LoginTicket {
     /** 登录端的 IP 地址 */
     private String ip;
 
-    /** IP 定位获取的位置，最低到市级，例如中国、浙江、杭州等。 */
+    /** IP 定位获取的位置，最低到市级，例如中国、浙江省、杭州市等。 */
     private String location;
 
     /** 小程序码（二维码）图片资源的完整 URL 地址 */

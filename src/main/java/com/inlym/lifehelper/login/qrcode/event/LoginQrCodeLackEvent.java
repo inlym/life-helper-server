@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationEvent;
  * 小程序码不足事件
  *
  * <h2>主要用途
- * <p>当预留的小程序码不足时，抛出此事件。
+ * <p>当预留的小程序码不足时，抛出此事件，用于再批量生成一批。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/2/26

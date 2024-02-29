@@ -59,6 +59,7 @@ public class LoginTicketService {
             .createTime(LocalDateTime.now())
             .build();
         loginTicketRepository.save(ticket);
+        log.trace("创建扫码登录凭据, ticket={}", ticket);
 
         // 发布扫码登录凭据创建事件
         applicationEventPublisher.publishEvent(new LoginTicketCreatedEvent(ticket));
@@ -87,6 +88,7 @@ public class LoginTicketService {
         LoginTicket ticketNow = getOrThrow(ticket.getId());
         ticketNow.setLocation(locationName);
         loginTicketRepository.save(ticketNow);
+        log.trace("扫码登录凭据赋值定位信息，id={}, ip={}, location={}", ticketNow.getId(), ticketNow.getIp(), ticketNow.getLocation());
     }
 
     /**
@@ -101,9 +103,10 @@ public class LoginTicketService {
         Optional<LoginTicket> result = loginTicketRepository.findById(ticketId);
         if (result.isEmpty()) {
             String message = "未找到对应的扫码登录凭据，id=" + ticketId;
-            log.debug(message);
+            log.trace(message);
             throw new LoginTicketNotFoundException(message);
         }
+        log.trace("获取到的扫码登录凭据为：{}", result.get());
         return result.get();
     }
 
@@ -128,6 +131,7 @@ public class LoginTicketService {
             ticket.setStatus(LoginTicketStatus.SCANNED);
             ticket.setScanTime(LocalDateTime.now());
             loginTicketRepository.save(ticket);
+            log.trace("扫码登录完成[扫码]操作，id={}", ticketId);
         }
 
         return ticket;
@@ -151,6 +155,7 @@ public class LoginTicketService {
             ticket.setConfirmeTime(LocalDateTime.now());
             ticket.setUserId(userId);
             loginTicketRepository.save(ticket);
+            log.trace("扫码登录完成[确认登录]操作，id={}", ticketId);
         }
 
         return ticket;
@@ -170,6 +175,8 @@ public class LoginTicketService {
         if (ticket.getStatus() == LoginTicketStatus.CONFIRMED) {
             ticket.setStatus(LoginTicketStatus.CONSUMED);
             ticket.setConsumeTime(LocalDateTime.now());
+            loginTicketRepository.save(ticket);
+            log.trace("扫码登录凭据完成[被消费]操作，id={}", ticketId);
 
             // 发布消费事件
             applicationEventPublisher.publishEvent(new LoginTicketConsumedEvent(ticket));

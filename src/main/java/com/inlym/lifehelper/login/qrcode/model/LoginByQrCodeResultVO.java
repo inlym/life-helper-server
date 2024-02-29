@@ -30,6 +30,11 @@ public class LoginByQrCodeResultVO {
      */
     private Integer status;
 
-    /** 登录凭据 */
+    /**
+     * 登录凭据
+     *
+     * <h2>说明
+     * <p>只有在 status=3 时，该属性才有值，其余情况为空。
+     */
     private IdentityCertificate certificate;
 }

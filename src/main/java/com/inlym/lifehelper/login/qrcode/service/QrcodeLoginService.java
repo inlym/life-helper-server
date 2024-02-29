@@ -48,6 +48,9 @@ public class QrcodeLoginService {
     /**
      * 扫码环节
      *
+     * <h2>说明
+     * <p>换个角度可以理解为这里是用于“扫码端”获取“被扫码端”的基本信息。
+     *
      * @param ticketId 扫码登录凭据 ID
      *
      * @date 2024/2/26
@@ -77,7 +80,7 @@ public class QrcodeLoginService {
 
         return LoginTicket
             .builder()
-            .id(ticketId)
+            .id(ticket.getId())
             .build();
     }
 
@@ -107,8 +110,10 @@ public class QrcodeLoginService {
             vo.setCertificate(simpleTokenService.generateIdentityCertificate(ticket.getUserId()));
         } else if (status == LoginTicketStatus.CONSUMED) {
             vo.setStatus(4);
+        } else {
+            throw new UnpredictableException("出现了未定义的 LoginTicketStatus 值");
         }
 
-        throw new UnpredictableException("出现了未定义的 LoginTicketStatus 值");
+        return vo;
     }
 }

@@ -101,7 +101,7 @@ public class LoginQrCodeService {
     @Async
     public void listenLoginQrCodeLackEvent() {
         List<LoginQrCode> list = batchGenerate();
-        log.info("监听到用于扫码登录的小程序码不足，已批量生成 {} 个", list.size());
+        log.debug("监听到用于扫码登录的小程序码不足，已批量生成 {} 个", list.size());
     }
 
     /**
@@ -155,6 +155,7 @@ public class LoginQrCodeService {
 
         String path = ossService.uploadImageBytes(AliyunOssDir.WEACODE, qrcodeBytes);
         String url = ossService.concatUrl(path);
+        log.trace("新生成一个用于扫码登录的二维码，信息为：id={}, url={}", id, url);
 
         return LoginQrCode
             .builder()
