@@ -66,13 +66,18 @@ lifehelper:
             app-id: xxxxxxxxxxxx
             app-secret: xxxxxxxxxxxx
 
-
     # ChatGPT
     openai:
         # 请求地址前缀部分
         base-url: xxxxxxxxxxxx
         # 开发者密钥
         key: xxxxxxxxxxxx
+
+    # 讯飞开放平台
+    xfyun:
+        app-id: xxxxxxxxxxxx
+        key: xxxxxxxxxxxx
+        secret: xxxxxxxxxxxx
 
 
 # 阿里云资源配置
