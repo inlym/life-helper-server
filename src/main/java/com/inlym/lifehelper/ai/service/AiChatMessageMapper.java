@@ -5,7 +5,7 @@ import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 智能会话消息村出库
+ * 智能会话消息存储库
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/2/25
