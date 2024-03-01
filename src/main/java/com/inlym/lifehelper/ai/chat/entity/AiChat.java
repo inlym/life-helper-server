@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.entity;
+package com.inlym.lifehelper.ai.chat.entity;
 
 import com.mybatisflex.annotation.*;
 import lombok.AllArgsConstructor;

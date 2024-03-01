@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.entity;
+package com.inlym.lifehelper.ai.chat.entity;
 
 import com.inlym.lifehelper.ai.constant.AiRole;
 import com.mybatisflex.annotation.Column;

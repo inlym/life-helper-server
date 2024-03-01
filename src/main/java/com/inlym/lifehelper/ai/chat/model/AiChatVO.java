@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.ai.model;
+package com.inlym.lifehelper.ai.chat.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.ai.service;
+package com.inlym.lifehelper.ai.chat.service;
 
-import com.inlym.lifehelper.ai.entity.AiChat;
+import com.inlym.lifehelper.ai.chat.entity.AiChat;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

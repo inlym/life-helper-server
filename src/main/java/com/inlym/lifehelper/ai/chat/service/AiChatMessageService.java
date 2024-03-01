@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.ai.service;
+package com.inlym.lifehelper.ai.chat.service;
 
+import com.inlym.lifehelper.ai.chat.entity.AiChatMessage;
 import com.inlym.lifehelper.ai.constant.AiRole;
-import com.inlym.lifehelper.ai.entity.AiChatMessage;
 import com.inlym.lifehelper.extern.openai.model.ChatCompletion;
 import com.inlym.lifehelper.extern.openai.model.ChatCompletionMessage;
 import lombok.RequiredArgsConstructor;
