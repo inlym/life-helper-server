@@ -63,6 +63,7 @@ public class AiChatService {
             .builder()
             .model(model)
             .userId(userId)
+            .description(prompt)
             .lastMessageTime(LocalDateTime.now())
             .build();
         aiChatMapper.insertSelective(chat);
@@ -117,6 +118,36 @@ public class AiChatService {
         aiChatMapper.deleteByCondition(AI_CHAT.USER_ID
                                            .eq(userId)
                                            .and(AI_CHAT.ID.eq(chatId)));
+    }
+
+    /**
+     * 获取会话列表
+     *
+     * @param userId 用户 ID
+     *
+     * @date 2024/3/1
+     * @since 2.3.0
+     */
+    public List<AiChat> getChatList(long userId) {
+        return aiChatMapper.selectListByCondition(AI_CHAT.USER_ID.eq(userId));
+    }
+
+    /**
+     * 获取会话详情
+     *
+     * @param userId 用户 ID
+     * @param chatId 会话 ID
+     *
+     * @date 2024/3/1
+     * @since 2.3.0
+     */
+    public AiChat getChat(long userId, long chatId) {
+        AiChat chat = aiChatMapper.selectOneWithRelationsById(chatId);
+        if (chat.getUserId() != userId) {
+            throw new ResourceNotFoundException();
+        }
+
+        return chat;
     }
 
     /**

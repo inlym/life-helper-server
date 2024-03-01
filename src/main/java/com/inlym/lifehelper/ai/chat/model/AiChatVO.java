@@ -29,6 +29,9 @@ public class AiChatVO {
     /** 使用的模型 */
     private String model;
 
+    /** 描述 */
+    private String description;
+
     /** 最后一条消息时间 */
     private LocalDateTime lastMessageTime;
 

@@ -35,6 +35,9 @@ public class AiChat {
     /** 所属用户 ID */
     private Long userId;
 
+    /** 描述，目前直接使用第一句用户消息 */
+    private String description;
+
     /** 最后一条消息时间 */
     private LocalDateTime lastMessageTime;
 
