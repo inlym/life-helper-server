@@ -73,12 +73,6 @@ lifehelper:
         # 开发者密钥
         key: xxxxxxxxxxxx
 
-    # 讯飞开放平台
-    xfyun:
-        app-id: xxxxxxxxxxxx
-        key: xxxxxxxxxxxx
-        secret: xxxxxxxxxxxx
-
 
 # 阿里云资源配置
 aliyun:
