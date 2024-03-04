@@ -10,7 +10,7 @@ import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.AliyunOssProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
-import com.inlym.lifehelper.common.util.ExtnameUtil;
+import com.inlym.lifehelper.common.util.ExtensionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class OssService {
      * @since 2.2.0
      */
     public String uploadImageBytes(AliyunOssDir dir, byte[] content) {
-        String extname = ExtnameUtil.detectImageFormat(content);
+        String extname = ExtensionUtil.detectImageFormat(content);
         String filename = dir.getDirname() + "/" + generateRandomString() + "." + extname;
         ossClient.putObject(properties.getBucketName(), filename, new ByteArrayInputStream(content));
         return filename;
@@ -88,11 +88,11 @@ public class OssService {
             .retrieve()
             .toEntity(byte[].class);
 
-        String extname = Objects
-            .requireNonNull(response
-                                .getHeaders()
-                                .getContentType())
-            .getSubtype();
+        String extname = ExtensionUtil.getExtensionFromMediaType(Objects
+                                                                     .requireNonNull(response
+                                                                                         .getHeaders()
+                                                                                         .getContentType())
+                                                                     .toString());
 
         String filename = dir.getDirname() + "/" + generateRandomString() + "." + extname;
 
@@ -131,16 +131,21 @@ public class OssService {
      * <h2>主要用途
      * <p>客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方服务器。
      *
+     * @param ext 后缀名
+     *
      * @see <a href="https://help.aliyun.com/document_detail/91868.html">服务端签名直传</a>
      * @since 1.2.3
      */
-    public OssPostCredential generatePostCredential() {
+    public OssPostCredential generatePostCredential(String ext) {
         String date = LocalDate
             .now()
             .toString()
             .replaceAll("-", "");
         // 文件在 OSS 中的完整路径
         String filename = AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + date + "/" + generateRandomString();
+        if (ext != null) {
+            filename += "." + ext;
+        }
 
         // 凭证有效期结束时间（时间戳）：1小时
         long expireEndTime = System.currentTimeMillis() + Duration
@@ -148,7 +153,7 @@ public class OssService {
             .toMillis();
 
         Date expiration = new Date(expireEndTime);
-
+        
         PolicyConditions policyConditions = new PolicyConditions();
         // 指定文件体积（范围）：0 ~ 100MB
         policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 100L * 1024 * 1024);

@@ -7,7 +7,7 @@ package com.inlym.lifehelper.common.util;
  * @date 2024/2/24
  * @since 2.2.0
  **/
-public abstract class ExtnameUtil {
+public abstract class ExtensionUtil {
     /**
      * 检测图片格式
      *
@@ -27,5 +27,41 @@ public abstract class ExtnameUtil {
         } else {
             return "";
         }
+    }
+
+    /**
+     * 根据媒体类型推断拓展名
+     *
+     * @param mediaType 媒体类型
+     *
+     * @date 2024/3/1
+     * @since 2.3.0
+     */
+    public static String getExtensionFromMediaType(String mediaType) {
+        if (mediaType != null) {
+            if (mediaType.equals("image/gif")) {
+                return "gif";
+            }
+            if (mediaType.equals("image/jpeg")) {
+                return "jpg";
+            }
+            if (mediaType.equals("image/png")) {
+                return "png";
+            }
+            if (mediaType.equals("image/webp")) {
+                return "webp";
+            }
+            if (mediaType.equals("image/svg+xml")) {
+                return "svg";
+            }
+            if (mediaType.equals("image/bmp")) {
+                return "bmp";
+            }
+            if (mediaType.equals("image/tiff")) {
+                return "tiff";
+            }
+        }
+
+        throw new RuntimeException("未识别的媒体类型，mediaType=" + mediaType);
     }
 }

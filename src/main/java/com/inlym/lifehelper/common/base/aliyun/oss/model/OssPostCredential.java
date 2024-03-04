@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.base.aliyun.oss.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OssPostCredential {
     /** 客户端使用时参数改为 `OSSAccessKeyId` */
+    @JsonProperty("OSSAccessKeyId")
     private String accessKeyId;
 
     private String url;

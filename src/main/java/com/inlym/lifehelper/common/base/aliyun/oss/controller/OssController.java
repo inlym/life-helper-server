@@ -4,6 +4,7 @@ import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,7 +28,7 @@ public class OssController {
      * @since 1.4.0
      */
     @GetMapping("/oss/credential")
-    public OssPostCredential getOssPostCredential() {
-        return ossService.generatePostCredential();
+    public OssPostCredential getOssPostCredential(@RequestParam(required = false, value = "ext") String ext) {
+        return ossService.generatePostCredential(ext);
     }
 }
