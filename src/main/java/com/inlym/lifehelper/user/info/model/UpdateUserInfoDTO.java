@@ -1,11 +1,10 @@
 package com.inlym.lifehelper.user.info.model;
 
+import com.inlym.lifehelper.user.info.constant.GenderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 /**
  * 修改用户信息请求数据
@@ -28,9 +27,6 @@ public class UpdateUserInfoDTO {
     /** 头像图片的 URL 地址 */
     private String avatarUrl;
 
-    /** 生日 */
-    private LocalDate birthday;
-
     /**
      * 性别
      *
@@ -38,8 +34,5 @@ public class UpdateUserInfoDTO {
      * <li>[1] - 男
      * <li>[2] - 女
      */
-    private Integer genderType;
-
-    /** 所在城市的 adcode */
-    private Integer cityId;
+    private GenderType genderType;
 }

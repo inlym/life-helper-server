@@ -4,7 +4,6 @@ import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.user.info.constant.GenderType;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
-import com.inlym.lifehelper.user.info.mapper.UserInfoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -59,26 +58,20 @@ public class UserInfoService {
      */
     public UserInfo updateUserInfo(UserInfo info) {
         userInfoMapper.update(info);
-        return info;
+        return getUserInfo(info.getId());
     }
 
     /**
-     * 更新头像
+     * 转储头像
      *
-     * @param userId    用户 ID
-     * @param avatarUrl 头像资源 URL 地址
+     * @param avatarUrl 头像资源的 URL 地址
      *
-     * @date 2024/3/1
+     * @return 转储至 OSS 后的资源路径
+     *
+     * @date 2024/3/4
      * @since 2.3.0
      */
-    public UserInfo updateAvatar(long userId, String avatarUrl) {
-        String path = ossService.dump(AliyunOssDir.AVATAR, avatarUrl);
-        UserInfo update = UserInfo
-            .builder()
-            .id(userId)
-            .avatarPath(path)
-            .build();
-        userInfoMapper.update(update);
-        return userInfoMapper.selectOneById(userId);
+    public String dumpAvatar(String avatarUrl) {
+        return ossService.dump(AliyunOssDir.AVATAR, avatarUrl);
     }
 }

@@ -14,13 +14,13 @@ import lombok.Getter;
 @Getter
 public enum GenderType {
     /** 未知（默认值） */
-    @JsonProperty("未知") UNKNOWN(0),
+    @JsonProperty("0") UNKNOWN(0),
 
     /** 男 */
-    @JsonProperty("男") MALE(1),
+    @JsonProperty("1") MALE(1),
 
     /** 女 */
-    @JsonProperty("女") FEMALE(2);
+    @JsonProperty("2") FEMALE(2);
 
     @EnumValue
     private final int code;

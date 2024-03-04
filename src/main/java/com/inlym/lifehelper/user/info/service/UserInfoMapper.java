@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.user.info.mapper;
+package com.inlym.lifehelper.user.info.service;
 
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.mybatisflex.core.BaseMapper;

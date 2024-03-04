@@ -72,33 +72,29 @@ public class UserInfoController {
     }
 
     /**
-     * 修改头像
+     * 修改其他用户信息（除头像外）
      *
      * @param userId 用户 ID
      * @param dto    请求数据
      *
-     * @date 2024/3/1
+     * @date 2024/3/4
      * @since 2.3.0
-     */
-    @PutMapping("/userinfo/avatar")
-    @UserPermission
-    public UserInfoVO updateAvatar(@UserId long userId, @RequestBody UpdateUserInfoDTO dto) {
-        String avatarUrl = dto.getAvatarUrl();
-        return convertEntity(userInfoService.updateAvatar(userId, avatarUrl));
-    }
-
-    /**
-     * 修改用户信息
-     *
-     * @param userId 用户 ID
-     * @param dto    请求数据
-     *
-     * @since 1.7.0
      */
     @PutMapping("/userinfo")
     @UserPermission
     public UserInfoVO update(@UserId long userId, @RequestBody UpdateUserInfoDTO dto) {
-        return null;
+        UserInfo info = UserInfo
+            .builder()
+            .id(userId)
+            .nickName(dto.getNickName())
+            .genderType(dto.getGenderType())
+            .build();
+
+        if (dto.getAvatarUrl() != null) {
+            info.setAvatarPath(userInfoService.dumpAvatar(dto.getAvatarUrl()));
+        }
+
+        return convertEntity(userInfoService.updateUserInfo(info));
     }
 
     /**
