@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.user.info.pojo;
+package com.inlym.lifehelper.user.info.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

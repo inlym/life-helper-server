@@ -1,12 +1,13 @@
 package com.inlym.lifehelper.user.info.service;
 
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
+import com.inlym.lifehelper.user.info.constant.GenderType;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.inlym.lifehelper.user.info.mapper.UserInfoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import static com.inlym.lifehelper.user.info.entity.table.UserInfoTableDef.USER_INFO;
 
 /**
  * 用户信息服务
@@ -21,34 +22,63 @@ import static com.inlym.lifehelper.user.info.entity.table.UserInfoTableDef.USER_
 public class UserInfoService {
     private final UserInfoMapper userInfoMapper;
 
+    private final OssService ossService;
+
     /**
-     * 获取用户资料
+     * 获取用户信息
      *
      * @param userId 用户 ID
      *
-     * @date 2023/5/6
-     * @since 2.0.0
+     * @date 2024/3/1
+     * @since 2.3.0
      */
-    public UserInfo get(long userId) {
-        return userInfoMapper.selectOneByCondition(USER_INFO.USER_ID.eq(userId));
+    public UserInfo getUserInfo(long userId) {
+        UserInfo info = userInfoMapper.selectOneById(userId);
+        if (info == null) {
+            // 资料为空时
+            UserInfo inserted = UserInfo
+                .builder()
+                .id(userId)
+                .nickName("小鸣AI用户")
+                .genderType(GenderType.UNKNOWN)
+                .build();
+            userInfoMapper.insertSelective(inserted);
+            return inserted;
+        }
+
+        return info;
     }
 
     /**
-     * 保存用户资料
+     * 更新用户信息
      *
-     * @param info 用户资料实体对象
+     * @param info 用户信息
      *
-     * @date 2023/5/6, 2024/2/16
-     * @since 2.0.0
+     * @date 2024/3/1
+     * @since 2.3.0
      */
-    public void save(UserInfo info) {
-        // 先检测数据表中是否已有记录，若无则创建
-        UserInfo userInfo = userInfoMapper.selectOneByCondition(USER_INFO.USER_ID.eq(info.getUserId()));
-        if (userInfo != null) {
-            info.setId(userInfo.getId());
-            userInfoMapper.update(info);
-        } else {
-            userInfoMapper.insertSelective(info);
-        }
+    public UserInfo updateUserInfo(UserInfo info) {
+        userInfoMapper.update(info);
+        return info;
+    }
+
+    /**
+     * 更新头像
+     *
+     * @param userId    用户 ID
+     * @param avatarUrl 头像资源 URL 地址
+     *
+     * @date 2024/3/1
+     * @since 2.3.0
+     */
+    public UserInfo updateAvatar(long userId, String avatarUrl) {
+        String path = ossService.dump(AliyunOssDir.AVATAR, avatarUrl);
+        UserInfo update = UserInfo
+            .builder()
+            .id(userId)
+            .avatarPath(path)
+            .build();
+        userInfoMapper.update(update);
+        return userInfoMapper.selectOneById(userId);
     }
 }

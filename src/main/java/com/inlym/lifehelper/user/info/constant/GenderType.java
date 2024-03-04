@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.user.info.constant;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mybatisflex.annotation.EnumValue;
 import lombok.Getter;
 
@@ -13,13 +14,13 @@ import lombok.Getter;
 @Getter
 public enum GenderType {
     /** 未知（默认值） */
-    UNKNOWN(0),
+    @JsonProperty("未知") UNKNOWN(0),
 
     /** 男 */
-    MALE(1),
+    @JsonProperty("男") MALE(1),
 
     /** 女 */
-    FEMALE(2);
+    @JsonProperty("女") FEMALE(2);
 
     @EnumValue
     private final int code;

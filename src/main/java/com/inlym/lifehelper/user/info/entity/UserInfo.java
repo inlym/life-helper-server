@@ -17,9 +17,6 @@ import java.time.LocalDateTime;
  * <h2>主要用途
  * <p>用于存储可由用户自主修改的信息。
  *
- * <h2>存储说明
- * <p>该实体对象存储在表格存储的宽列模型中。。
- *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2022/11/26
  * @since 1.7.0
@@ -30,12 +27,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfo {
-    /** 主键 ID */
-    @Id(keyType = KeyType.Auto)
+    /** 主键 ID（用户 ID） */
+    @Id(keyType = KeyType.None)
     private Long id;
-
-    /** 所属用户 ID */
-    private Long userId;
 
     /** 用户昵称 */
     private String nickName;
@@ -57,9 +51,6 @@ public class UserInfo {
      * <li>[2] - 女
      */
     private GenderType genderType;
-
-    /** 所在城市的 adcode */
-    private Integer cityId;
 
     /** 创建时间（该字段值由数据库自行维护，请勿手动赋值） */
     private LocalDateTime createTime;
