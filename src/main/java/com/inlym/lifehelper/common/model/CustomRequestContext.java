@@ -40,8 +40,20 @@ public class CustomRequestContext {
     /** 请求方法 */
     private String method;
 
-    /** 请求地址（路径 + 请求参数） */
-    private String url;
+    /** 请求路径 */
+    private String path;
+
+    /** 请求参数 */
+    private String querystring;
+
+    /** 请求数据 */
+    private String requestBody;
+
+    /** 响应状态码 */
+    private Integer status;
+
+    /** 响应数据 */
+    private String responseBody;
 
     /**
      * 客户端 IP 地址
@@ -67,8 +79,6 @@ public class CustomRequestContext {
      */
     private ClientType clientType;
 
-    /**
-     * 客户端版本号
-     */
+    /** 客户端版本号 */
     private String clientVersion;
 }

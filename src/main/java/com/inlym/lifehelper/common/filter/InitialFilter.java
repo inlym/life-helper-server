@@ -12,8 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 /**
@@ -35,25 +38,52 @@ import java.time.LocalDateTime;
 @Slf4j
 public class InitialFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
-        // 第1步：提取公共变量
-        String method = request.getMethod();
-        String url = getWholeUrl(request.getRequestURI(), request.getQueryString());
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // 如果是 ping 请求，则不进行处理
+        return request
+            .getRequestURI()
+            .equals("/ping");
+    }
 
-        // 第2步：初始化自定义请求上下文对象
+    @Override
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+        ContentCachingRequestWrapper cachingRequest = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper cachingResponse = new ContentCachingResponseWrapper(response);
+
+        // 提取公共变量
+        String method = request.getMethod();
+        String path = request.getRequestURI();
+        String querystring = request.getQueryString();
+        String url = getWholeUrl(path, querystring);
+        String requestBody = new String(cachingRequest.getContentAsByteArray(), StandardCharsets.UTF_8);
+
+        // 初始化自定义请求上下文对象
         request.setAttribute(CustomRequestContext.NAME, CustomRequestContext
             .builder()
             .requestTime(LocalDateTime.now())
             .method(method)
-            .url(url)
+            .path(path)
+            .querystring(querystring)
             .clientType(ClientType.UNKNOWN)
             .build());
 
-        // 第3步：初始化自定义的 logback 日志变量
+        // 初始化自定义的 logback 日志变量
         MDC.put(LogName.METHOD, method);
         MDC.put(LogName.URL, url);
 
-        chain.doFilter(request, response);
+        // 继续执行请求链
+        chain.doFilter(cachingRequest, cachingResponse);
+
+        String responseBody = new String(cachingResponse.getContentAsByteArray(), StandardCharsets.UTF_8);
+
+        CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
+        context.setRequestBody(requestBody);
+        context.setResponseBody(responseBody);
+
+        // TODO: 记录请求日志
+
+        // 把缓存的响应数据，响应给客户端
+        cachingResponse.copyBodyToResponse();
     }
 
     /**
