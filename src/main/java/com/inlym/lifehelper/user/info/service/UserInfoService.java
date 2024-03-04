@@ -39,6 +39,7 @@ public class UserInfoService {
                 .builder()
                 .id(userId)
                 .nickName("小鸣AI用户")
+                .avatarPath(getInitialAvatar())
                 .genderType(GenderType.UNKNOWN)
                 .build();
             userInfoMapper.insertSelective(inserted);
@@ -73,5 +74,18 @@ public class UserInfoService {
      */
     public String dumpAvatar(String avatarUrl) {
         return ossService.dump(AliyunOssDir.AVATAR, avatarUrl);
+    }
+
+    /**
+     * 获取初始头像
+     *
+     * @return 头像在 OSS 的资源路径
+     *
+     * @date 2024/3/5
+     * @since 2.3.0
+     */
+    private String getInitialAvatar() {
+        // 备注：临时用一个指定路径，后续改为从列表中随机一个
+        return "avatar/6ea11e4ffb8146d6b511a8a8f920c4c1.png";
     }
 }
