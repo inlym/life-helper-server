@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.filter;
 
+import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -44,7 +45,7 @@ public class ClientIpFilter extends OncePerRequestFilter {
      *
      * <p>文档地址：<a href="https://help.aliyun.com/document_detail/446450.html">HTTP头字段</a>
      */
-    private static final String HEADER_NAME = "x-forwarded-for";
+    private static final String HEADER_NAME = CustomHttpHeader.CLIENT_IP;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -53,7 +54,8 @@ public class ClientIpFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException,
+        IOException {
         // 一般情况下，该请求头的格式为 `<真实的客户端 IP>, <API 网关的 VPC IP>`，如果攻击者伪造请求并传递了该字段，
         // 格式将变成 `<攻击者定义的值>, <真实的客户端 IP>, <API 网关的 VPC IP>`，考虑到以上2种情况，获取其中的
         // “真实的客户端 IP”的方式应为：以逗号分隔，取倒数第2段的值。

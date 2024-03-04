@@ -50,7 +50,6 @@ public class SimpleTokenHandlerFilter extends OncePerRequestFilter {
         IOException {
         // 从请求头获取鉴权凭证
         String token = request.getHeader(HEADER_NAME);
-        log.trace("[Header] {}={}", HEADER_NAME, token);
 
         if (token != null) {
             try {

@@ -11,11 +11,15 @@ package com.inlym.lifehelper.common.constant;
  * @since 1.0.0
  */
 public abstract class CustomHttpHeader {
+
     /** 请求 ID，用作全链路追踪 ID */
     public static final String REQUEST_ID = "x-lifehelper-request-id";
 
     /** 登录令牌 */
     public static final String AUTH_TOKEN = "x-lifehelper-auth-token";
+
+    /** 客户端 IP 地址 */
+    public static final String CLIENT_IP = "x-forwarded-for";
 
     /**
      * 客户端类型

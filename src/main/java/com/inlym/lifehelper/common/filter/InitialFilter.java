@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.common.filter;
 
 import com.inlym.lifehelper.common.constant.ClientType;
+import com.inlym.lifehelper.common.constant.CustomHttpHeader;
 import com.inlym.lifehelper.common.constant.LogName;
 import com.inlym.lifehelper.common.model.CustomRequestContext;
 import jakarta.servlet.FilterChain;
@@ -71,6 +72,12 @@ public class InitialFilter extends OncePerRequestFilter {
         MDC.put(LogName.METHOD, method);
         MDC.put(LogName.URL, url);
 
+        // 自定义请求头打日志
+        log.trace("自定义请求头 -> [{}={}] [{}={}] [{}={}] [{}={}] [{}={}]", CustomHttpHeader.REQUEST_ID, request.getHeader(CustomHttpHeader.REQUEST_ID),
+                  CustomHttpHeader.CLIENT_IP, request.getHeader(CustomHttpHeader.CLIENT_IP), CustomHttpHeader.AUTH_TOKEN,
+                  request.getHeader(CustomHttpHeader.AUTH_TOKEN), CustomHttpHeader.CLIENT_TYPE, request.getHeader(CustomHttpHeader.CLIENT_TYPE),
+                  CustomHttpHeader.CLIENT_INFO, request.getHeader(CustomHttpHeader.CLIENT_INFO));
+
         // 继续执行请求链
         chain.doFilter(cachingRequest, cachingResponse);
 
@@ -79,8 +86,6 @@ public class InitialFilter extends OncePerRequestFilter {
         CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
         context.setRequestBody(requestBody);
         context.setResponseBody(responseBody);
-
-        // TODO: 记录请求日志
 
         // 把缓存的响应数据，响应给客户端
         cachingResponse.copyBodyToResponse();
