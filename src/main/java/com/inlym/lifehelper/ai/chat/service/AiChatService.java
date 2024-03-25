@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.inlym.lifehelper.ai.entity.table.AiChatTableDef.AI_CHAT;
+import static com.inlym.lifehelper.ai.chat.entity.table.AiChatTableDef.AI_CHAT;
 
 /**
  * AI 聊天服务
