@@ -1,0 +1,23 @@
+meta {
+  name: 获取请求详情
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/debug?name=mark&age=19
+  body: json
+  auth: none
+}
+
+query {
+  name: mark
+  age: 19
+}
+
+body:json {
+  {
+    "isGood": true,
+    "nickname": "good boy"
+  }
+}

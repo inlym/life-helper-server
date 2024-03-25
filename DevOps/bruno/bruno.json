@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "小鸣助手项目接口",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
