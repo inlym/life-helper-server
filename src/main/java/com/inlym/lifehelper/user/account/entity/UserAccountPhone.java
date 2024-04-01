@@ -12,42 +12,45 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 用户账户实体
+ * 用户手机号账户表
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @since 1.7.0
+ * @since 2.3.0
  **/
-@Table("user")
+@Table("user_account_phone")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    /** 用户 ID */
+public class UserAccountPhone {
+    /** 主键 ID */
     @Id(keyType = KeyType.Auto)
     private Long id;
 
-    /** 昵称 */
-    private String nickName;
+    /** 手机号 */
+    private String phone;
 
-    /** 头像路径 */
-    private String avatarPath;
+    /** 对应的用户 ID */
+    private Long userId;
 
-    /** 注册时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime registerTime;
+    /** 创建时的客户端 IP 地址 */
+    private String ip;
 
-    /** 最近一次登录时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime lastLoginTime;
-
-    /** 登录次数 */
+    /** 使用次数 */
     @Column(onInsertValue = "1")
-    private Long loginCounter;
+    private Long counter;
+
+    /** 最近一次使用时间 */
+    @Column(onInsertValue = "now()")
+    private LocalDateTime lastTime;
 
     /** 创建时间（该字段值由数据库自行维护，请勿手动赋值） */
     private LocalDateTime createTime;
 
     /** 更新时间（该字段值由数据库自行维护，请勿手动赋值） */
     private LocalDateTime updateTime;
+
+    /** 删除时间（逻辑删除标志） */
+    @Column(isLogicDelete = true)
+    private LocalDateTime deleteTime;
 }
