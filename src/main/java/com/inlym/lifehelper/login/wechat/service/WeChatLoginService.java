@@ -6,7 +6,6 @@ import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.extern.wechat.pojo.WeChatSession;
 import com.inlym.lifehelper.login.wechat.entity.WeChatLoginLog;
 import com.inlym.lifehelper.login.wechat.mapper.WeChatLoginLogMapper;
-import com.inlym.lifehelper.user.account.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Service;
 public class WeChatLoginService {
     private final WeChatService weChatService;
 
-    private final UserAccountService userAccountService;
-
     private final SimpleTokenService simpleTokenService;
 
     private final WeChatLoginLogMapper weChatLoginLogMapper;
@@ -40,21 +37,23 @@ public class WeChatLoginService {
      */
     public IdentityCertificate loginByCode(String appId, String code, String ip) {
         WeChatSession session = weChatService.getSession(appId, code);
-        long userId = userAccountService.getUserIdByUnionId(session.getUnionId());
+        // TODO
+        //        long userId = userAccountService.getUserIdByUnionId(session.getUnionId());
+        long userId = 0;
         IdentityCertificate identityCertificate = simpleTokenService.generateIdentityCertificate(userId);
 
         // 记录登录日志
         WeChatLoginLog entity = WeChatLoginLog
-            .builder()
-            .code(code)
-            .appId(appId)
-            .openId(session.getOpenId())
-            .unionId(session.getUnionId())
-            .sessionKey(session.getSessionKey())
-            .userId(userId)
-            .token(identityCertificate.getToken())
-            .ip(ip)
-            .build();
+                .builder()
+                .code(code)
+                .appId(appId)
+                .openId(session.getOpenId())
+                .unionId(session.getUnionId())
+                .sessionKey(session.getSessionKey())
+                .userId(userId)
+                .token(identityCertificate.getToken())
+                .ip(ip)
+                .build();
         weChatLoginLogMapper.insertSelective(entity);
         log.info("[微信登录] {}", entity);
 

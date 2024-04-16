@@ -23,10 +23,29 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAccountWeChat {
+    // ============================ 通用字段 ============================
 
     /** 主键 ID */
     @Id(keyType = KeyType.Auto)
     private Long id;
+
+    /** 创建时间 */
+    @Column(onInsertValue = "now()")
+    private LocalDateTime createTime;
+
+    /** 更新时间 */
+    @Column(onInsertValue = "now()", onUpdateValue = "now()")
+    private LocalDateTime updateTime;
+
+    /** 乐观锁（修改次数） */
+    @Column(version = true)
+    private Long version;
+
+    /** 删除时间（逻辑删除标志） */
+    @Column(isLogicDelete = true)
+    private LocalDateTime deleteTime;
+
+    // ============================ 业务字段 ============================
 
     /** 小程序开发者 ID */
     private String appId;
@@ -40,9 +59,6 @@ public class UserAccountWeChat {
     /** 对应的用户 ID */
     private Long userId;
 
-    /** 创建时的客户端 IP 地址 */
-    private String ip;
-
     /** 使用次数 */
     @Column(onInsertValue = "1")
     private Long counter;
@@ -50,14 +66,4 @@ public class UserAccountWeChat {
     /** 最近一次使用时间 */
     @Column(onInsertValue = "now()")
     private LocalDateTime lastTime;
-
-    /** 创建时间（该字段值由数据库自行维护，请勿手动赋值） */
-    private LocalDateTime createTime;
-
-    /** 更新时间（该字段值由数据库自行维护，请勿手动赋值） */
-    private LocalDateTime updateTime;
-
-    /** 删除时间（逻辑删除标志） */
-    @Column(isLogicDelete = true)
-    private LocalDateTime deleteTime;
 }

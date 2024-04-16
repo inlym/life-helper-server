@@ -14,8 +14,11 @@ import java.time.LocalDateTime;
 /**
  * 用户账户实体
  *
+ * <h2>说明
+ * <p>文本内容
+ *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @since 1.7.0
+ * @since 2.3.0
  **/
 @Table("user")
 @Data
@@ -45,9 +48,11 @@ public class User {
     @Column(onInsertValue = "1")
     private Long loginCounter;
 
-    /** 创建时间（该字段值由数据库自行维护，请勿手动赋值） */
+    /** 创建时间 */
+    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
-    /** 更新时间（该字段值由数据库自行维护，请勿手动赋值） */
+    /** 更新时间 */
+    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 }
