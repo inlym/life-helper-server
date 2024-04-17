@@ -59,7 +59,7 @@ public class UserAccountWeChat {
     /** 对应的用户 ID */
     private Long userId;
 
-    /** 使用次数 */
+    /** 当前小程序登录次数 */
     @Column(onInsertValue = "1")
     private Long counter;
 

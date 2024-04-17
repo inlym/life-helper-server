@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeChatAccount {
+public class WeChatAccountInfo {
     /** 小程序开发者 ID */
     private String appId;
 
