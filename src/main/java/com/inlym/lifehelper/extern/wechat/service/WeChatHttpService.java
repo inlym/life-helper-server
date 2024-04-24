@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.extern.wechat.service;
 
-import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
 import com.inlym.lifehelper.extern.wechat.exception.WeChatCommonException;
 import com.inlym.lifehelper.extern.wechat.exception.WeChatInvalidAccessTokenException;
@@ -40,59 +39,22 @@ public class WeChatHttpService {
     private final WeChatProperties weChatProperties;
 
     /**
-     * 根据小程序的 appId 获取 appSecret
-     *
-     * @param appId 小程序 appId
-     *
-     * @since 2.1.0
-     */
-    public String getAppSecret(String appId) {
-        if (weChatProperties
-            .getMainApp()
-            .getAppId()
-            .equals(appId)) {
-            return weChatProperties
-                .getMainApp()
-                .getAppSecret();
-        }
-
-        if (weChatProperties
-            .getAiApp()
-            .getAppId()
-            .equals(appId)) {
-            return weChatProperties
-                .getAiApp()
-                .getAppSecret();
-        }
-
-        if (weChatProperties
-            .getWeatherApp()
-            .getAppId()
-            .equals(appId)) {
-            return weChatProperties
-                .getWeatherApp()
-                .getAppSecret();
-        }
-
-        throw new WeChatCommonException("appId 无效");
-    }
-
-    /**
      * 获取接口调用凭据
      *
-     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getAccessToken.html">获取接口调用凭据</a>
+     * @see
+     * <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getAccessToken.html">获取接口调用凭据</a>
      * @since 1.3.0
      */
     public WeChatGetAccessTokenResponse getAccessToken(String appId) {
         String baseUrl = "https://api.weixin.qq.com/cgi-bin/token";
 
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseUrl)
-            .queryParam("grant_type", "client_credential")
-            .queryParam("appid", appId)
-            .queryParam("secret", getAppSecret(appId))
-            .build()
-            .toUriString();
+                .fromHttpUrl(baseUrl)
+                .queryParam("grant_type", "client_credential")
+                .queryParam("appid", appId)
+                .queryParam("secret", getAppSecret(appId))
+                .build()
+                .toUriString();
 
         WeChatGetAccessTokenResponse data = restTemplate.getForObject(url, WeChatGetAccessTokenResponse.class);
 
@@ -105,10 +67,45 @@ public class WeChatHttpService {
     }
 
     /**
+     * 根据小程序的 appId 获取 appSecret
+     *
+     * @param appId 小程序 appId
+     *
+     * @since 2.1.0
+     */
+    public String getAppSecret(String appId) {
+        if (weChatProperties.getMainApp().getAppId().equals(appId)) {
+            return weChatProperties.getMainApp().getAppSecret();
+        }
+
+        if (weChatProperties.getAiApp().getAppId().equals(appId)) {
+            return weChatProperties.getAiApp().getAppSecret();
+        }
+
+        if (weChatProperties.getWeatherApp().getAppId().equals(appId)) {
+            return weChatProperties.getWeatherApp().getAppSecret();
+        }
+
+        throw new WeChatCommonException("appId 无效");
+    }
+
+    /**
+     * 校验相应数据是否正常
+     *
+     * @param data 响应数据
+     *
+     * @since 1.3.0
+     */
+    private boolean validateResponse(WeChatCommonResponse data) {
+        return data != null && (data.getErrorCode() == null || data.getErrorCode() == 0);
+    }
+
+    /**
      * 获取稳定版接口调用凭据
      *
      * @date 2023-04-20
-     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getStableAccessToken.html">文档地址</a>
+     * @see
+     * <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getStableAccessToken.html">文档地址</a>
      * @since 2.0.0
      */
     public WeChatGetAccessTokenResponse getStableAccessToken(String appId) {
@@ -118,7 +115,8 @@ public class WeChatHttpService {
         options.put("appid", appId);
         options.put("secret", getAppSecret(appId));
 
-        WeChatGetAccessTokenResponse data = restTemplate.postForObject(url, options, WeChatGetAccessTokenResponse.class);
+        WeChatGetAccessTokenResponse data = restTemplate.postForObject(url, options,
+                                                                       WeChatGetAccessTokenResponse.class);
 
         assert data != null;
         if (validateResponse(data)) {
@@ -136,18 +134,18 @@ public class WeChatHttpService {
      * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html">小程序登录</a>
      * @since 1.3.0
      */
-    @Cacheable(RedisCacheCollector.WECHAT_SESSION)
+    @Cacheable("wechat:session#86400")
     public WeChatCode2SessionResponse code2Session(String appId, String code) {
         String baseUrl = "https://api.weixin.qq.com/sns/jscode2session";
 
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseUrl)
-            .queryParam("appid", appId)
-            .queryParam("secret", getAppSecret(appId))
-            .queryParam("js_code", code)
-            .queryParam("grant_type", "authorization_code")
-            .build()
-            .toUriString();
+                .fromHttpUrl(baseUrl)
+                .queryParam("appid", appId)
+                .queryParam("secret", getAppSecret(appId))
+                .queryParam("js_code", code)
+                .queryParam("grant_type", "authorization_code")
+                .build()
+                .toUriString();
 
         WeChatCode2SessionResponse data = restTemplate.getForObject(url, WeChatCode2SessionResponse.class);
 
@@ -165,17 +163,18 @@ public class WeChatHttpService {
      * @param accessToken 微信服务端接口调用凭证
      * @param options     小程序码配置信息
      *
-     * @see <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/qr-code/getUnlimitedQRCode.html">获取不限制的小程序码</a>
+     * @see
+     * <a href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/qr-code/getUnlimitedQRCode.html">获取不限制的小程序码</a>
      * @since 1.3.0
      */
     public byte[] getUnlimitedQrCode(String accessToken, UnlimitedQrCodeOptions options) {
         String baseUrl = "https://api.weixin.qq.com/wxa/getwxacodeunlimit";
 
         String url = UriComponentsBuilder
-            .fromHttpUrl(baseUrl)
-            .queryParam("access_token", accessToken)
-            .build()
-            .toUriString();
+                .fromHttpUrl(baseUrl)
+                .queryParam("access_token", accessToken)
+                .build()
+                .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -193,16 +192,5 @@ public class WeChatHttpService {
         } else {
             throw WeChatInvalidAccessTokenException.create(accessToken);
         }
-    }
-
-    /**
-     * 校验相应数据是否正常
-     *
-     * @param data 响应数据
-     *
-     * @since 1.3.0
-     */
-    private boolean validateResponse(WeChatCommonResponse data) {
-        return data != null && (data.getErrorCode() == null || data.getErrorCode() == 0);
     }
 }

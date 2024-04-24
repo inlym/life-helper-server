@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.extern.heweather;
 
-import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.extern.heweather.exception.HeRequestFailedException;
 import com.inlym.lifehelper.extern.heweather.pojo.*;
 import lombok.RequiredArgsConstructor;
@@ -53,16 +52,15 @@ public class HeHttpService {
      *
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_GEO_CITY_LOOKUP)
+    @Cacheable("hefeng:geo#864000")
     public HeCityLookupResponse getGeoCityLookup(String location) {
-        URI uri = UriComponentsBuilder
-            .fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
-            // 只有此处查询城市可能用到中文，因此进行特殊处理，对请求参数进行编码
-            .queryParam("location", URLEncoder.encode(location, StandardCharsets.UTF_8))
-            .queryParam("key", heProperties.getKey())
-            .queryParam("range", "cn")
-            .build(true)
-            .toUri();
+        URI uri = UriComponentsBuilder.fromHttpUrl("https://geoapi.qweather.com/v2/city/lookup")
+                                      // 只有此处查询城市可能用到中文，因此进行特殊处理，对请求参数进行编码
+                                      .queryParam("location", URLEncoder.encode(location, StandardCharsets.UTF_8))
+                                      .queryParam("key", heProperties.getKey())
+                                      .queryParam("range", "cn")
+                                      .build(true)
+                                      .toUri();
 
         return restTemplate.getForObject(uri, HeCityLookupResponse.class);
     }
@@ -75,14 +73,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-now/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_WEATHER_NOW)
+    @Cacheable("hefeng:now#600")
     public HeWeatherNowResponse getWeatherNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/weather/now")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/weather/now")
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeWeatherNowResponse data = restTemplate.getForObject(url, HeWeatherNowResponse.class);
 
@@ -102,14 +100,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_WEATHER_DAILY)
+    @Cacheable("hefeng:daily#7200")
     public HeWeatherDailyResponse getWeatherDaily(String location, String days) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/weather/" + days)
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/weather/" + days)
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeWeatherDailyResponse data = restTemplate.getForObject(url, HeWeatherDailyResponse.class);
 
@@ -129,14 +127,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-hourly-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_WEATHER_HOURLY)
+    @Cacheable("hefeng:hourly#600")
     public HeWeatherHourlyResponse getWeatherHourly(String location, String hours) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/weather/" + hours)
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/weather/" + hours)
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeWeatherHourlyResponse data = restTemplate.getForObject(url, HeWeatherHourlyResponse.class);
 
@@ -155,14 +153,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/minutely/minutely-precipitation/">分钟级降水</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_WEATHER_MINUTELY)
+    @Cacheable("hefeng:minutely#300")
     public HeMinutelyResponse getMinutely(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/minutely/5m")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/minutely/5m")
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeMinutelyResponse data = restTemplate.getForObject(url, HeMinutelyResponse.class);
 
@@ -181,14 +179,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-now/">格点实时天气</a>
      * @since 1.5.0
      */
-    @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_NOW)
+    @Cacheable("hefeng:grid-now#600")
     public HeGridWeatherNowResponse getGridWeatherNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/grid-weather/now")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/grid-weather/now")
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeGridWeatherNowResponse data = restTemplate.getForObject(url, HeGridWeatherNowResponse.class);
 
@@ -208,14 +206,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/weather/weather-daily-forecast/">官方文档</a>
      * @since 1.5.0
      */
-    @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_DAILY)
+    @Cacheable("hefeng:grid-daily#7200")
     public HeGridWeatherDailyResponse getGridWeatherDaily(String location, String days) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/grid-weather/" + days)
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/grid-weather/" + days)
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeGridWeatherDailyResponse data = restTemplate.getForObject(url, HeGridWeatherDailyResponse.class);
 
@@ -235,14 +233,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/">官方文档</a>
      * @since 1.5.0
      */
-    @Cacheable(RedisCacheCollector.HE_GRID_WEATHER_HOURLY)
+    @Cacheable("hefeng:grid-hourly#600")
     public HeGridWeatherHourlyResponse getGridWeatherHourly(String location, String hours) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/grid-weather/" + hours)
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/grid-weather/" + hours)
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeGridWeatherHourlyResponse data = restTemplate.getForObject(url, HeGridWeatherHourlyResponse.class);
 
@@ -261,14 +259,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning/">官方文档</a>
      * @since 1.2.0
      */
-    @Cacheable(RedisCacheCollector.HE_WARNING_NOW)
+    @Cacheable("hefeng:warning-now#600")
     public HeWarningNowResponse getWarningNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/warning/now")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/warning/now")
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeWarningNowResponse data = restTemplate.getForObject(url, HeWarningNowResponse.class);
 
@@ -285,14 +283,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/warning/weather-warning-city-list/">官方文档</a>
      * @since 1.5.0
      */
-    @Cacheable(RedisCacheCollector.HE_WARNING_LIST)
+    @Cacheable("hefeng:warning-list#600")
     public HeWarningListResponse getWarningList() {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/warning/list")
-            .queryParam("range", "cn")
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/warning/list")
+                .queryParam("range", "cn")
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeWarningListResponse data = restTemplate.getForObject(url, HeWarningListResponse.class);
 
@@ -312,15 +310,15 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/indices/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_INDICES_DAILY)
+    @Cacheable("hefeng:indices#600")
     public HeIndicesResponse getIndicesDaily(String location, String days) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/indices/" + days)
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .queryParam("type", "0")
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/indices/" + days)
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .queryParam("type", "0")
+                .build()
+                .toUriString();
 
         HeIndicesResponse data = restTemplate.getForObject(url, HeIndicesResponse.class);
 
@@ -339,14 +337,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/air/air-now/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_WEATHER_AIR_NOW)
+    @Cacheable("hefeng:air-now#600")
     public HeAirNowResponse getAirNow(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/air/now")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/air/now")
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeAirNowResponse data = restTemplate.getForObject(url, HeAirNowResponse.class);
 
@@ -365,14 +363,14 @@ public class HeHttpService {
      * @see <a href="https://dev.qweather.com/docs/api/air/air-daily-forecast/">官方文档</a>
      * @since 1.0.0
      */
-    @Cacheable(RedisCacheCollector.HE_WEATHER_AIR_DAILY)
+    @Cacheable("hefeng:air-daily#3600")
     public HeAirDailyResponse getAirDaily(String location) {
         String url = UriComponentsBuilder
-            .fromHttpUrl("https://api.qweather.com/v7/air/5d")
-            .queryParam("location", location)
-            .queryParam("key", heProperties.getKey())
-            .build()
-            .toUriString();
+                .fromHttpUrl("https://api.qweather.com/v7/air/5d")
+                .queryParam("location", location)
+                .queryParam("key", heProperties.getKey())
+                .build()
+                .toUriString();
 
         HeAirDailyResponse data = restTemplate.getForObject(url, HeAirDailyResponse.class);
 

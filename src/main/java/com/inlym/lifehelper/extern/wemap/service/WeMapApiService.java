@@ -1,6 +1,5 @@
 package com.inlym.lifehelper.extern.wemap.service;
 
-import com.inlym.lifehelper.common.constant.RedisCacheCollector;
 import com.inlym.lifehelper.extern.wemap.config.WeMapProperties;
 import com.inlym.lifehelper.extern.wemap.exception.WeMapApiException;
 import com.inlym.lifehelper.extern.wemap.model.WeMapListRegionResponse;
@@ -31,10 +30,10 @@ public class WeMapApiService {
 
     public WeMapApiService(WeMapProperties weMapProperties) {
         this.restClient = RestClient
-            .builder()
-            .baseUrl("https://apis.map.qq.com")
-            .defaultUriVariables(Map.of("key", weMapProperties.getKey()))
-            .build();
+                .builder()
+                .baseUrl("https://apis.map.qq.com")
+                .defaultUriVariables(Map.of("key", weMapProperties.getKey()))
+                .build();
     }
 
     /**
@@ -44,13 +43,13 @@ public class WeMapApiService {
      *
      * @since 2.1.0
      */
-    @Cacheable(RedisCacheCollector.WE_MAP_LOCATE_IP)
+    @Cacheable("wemap:locate-ip#864000")
     public WeMapLocateIpResponse locateIp(String ip) {
         ResponseEntity<WeMapLocateIpResponse> response = this.restClient
-            .get()
-            .uri("/ws/location/v1/ip?key={key}&ip={ip}", Map.of("ip", ip))
-            .retrieve()
-            .toEntity(WeMapLocateIpResponse.class);
+                .get()
+                .uri("/ws/location/v1/ip?key={key}&ip={ip}", Map.of("ip", ip))
+                .retrieve()
+                .toEntity(WeMapLocateIpResponse.class);
 
         WeMapLocateIpResponse body = response.getBody();
         if (body != null && body.getStatus() != SUCCESS_STATUS) {
@@ -72,10 +71,10 @@ public class WeMapApiService {
      */
     public WeMapListRegionResponse listRegion() {
         ResponseEntity<WeMapListRegionResponse> response = this.restClient
-            .get()
-            .uri("/ws/district/v1/list?key={key}")
-            .retrieve()
-            .toEntity(WeMapListRegionResponse.class);
+                .get()
+                .uri("/ws/district/v1/list?key={key}")
+                .retrieve()
+                .toEntity(WeMapListRegionResponse.class);
 
         WeMapListRegionResponse body = response.getBody();
         if (body != null && body.getStatus() != SUCCESS_STATUS) {
@@ -95,7 +94,7 @@ public class WeMapApiService {
      *
      * @see <a href="https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder">逆地址解析（坐标位置描述）</a>
      */
-    @Cacheable(RedisCacheCollector.WE_MAP_REVERSE_GEOCODE)
+    @Cacheable("wemap:regeo#864000")
     public WeMapReverseGeocodeResponse reverseGeocode(double longitude, double latitude) {
         // 将数值向下取整到 5 位小数
         double lng = Math.floor(longitude * 100000) / 100000;
@@ -104,10 +103,10 @@ public class WeMapApiService {
         String location = lat + "," + lng;
 
         ResponseEntity<WeMapReverseGeocodeResponse> response = this.restClient
-            .get()
-            .uri("/ws/geocoder/v1?key={key}&location={location}", Map.of("location", location))
-            .retrieve()
-            .toEntity(WeMapReverseGeocodeResponse.class);
+                .get()
+                .uri("/ws/geocoder/v1?key={key}&location={location}", Map.of("location", location))
+                .retrieve()
+                .toEntity(WeMapReverseGeocodeResponse.class);
 
         WeMapReverseGeocodeResponse body = response.getBody();
         if (body != null && body.getStatus() != SUCCESS_STATUS) {
