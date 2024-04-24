@@ -1,22 +1,27 @@
 package com.inlym.lifehelper.common.config;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
 
 /**
  * Spring 缓存配置
- * <p>
+ *
  * <h2>注意事项
  * <li>注意区分缓存和需要使用 Redis 存储的数据两种内容的区别。
  * <li>缓存的使用场景是：对于相同的入参，某个方法的返回值预估在短期内不会发生变化，或者即便发生变化仍使用旧数据也无所谓的时候，使用缓存避免重复执行，
@@ -34,12 +39,13 @@ public class SpringCacheConfig implements CachingConfigurer {
     @Override
     public CacheManager cacheManager() {
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration
-            .defaultCacheConfig()
-            .entryTtl(Duration.ofMinutes(10))
-            .computePrefixWith(name -> name)
-            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(10))
+                .computePrefixWith(name -> name)
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
-        return new CustomRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory), defaultCacheConfig);
+        return new CustomRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),
+                                           defaultCacheConfig);
     }
 
     /**
@@ -59,31 +65,53 @@ public class SpringCacheConfig implements CachingConfigurer {
 
     /**
      * 自定义键名生成器
-     * <p>
+     *
      * <h2>规则
      * <p>先和键名使用 {@code :} 连接，然后每个参数之间使用 {@code ,} 连接。
+     *
+     * <h2>备忘（2024/4/25）
+     * <p>使用了 {@code key}，则不走下方生成规则，例如 {@code key = "':' + #user.id"}
      */
     public static class MyKeyGenerator implements KeyGenerator {
+        @NotNull
         @Override
-        @SuppressWarnings("NullableProblems")
-        public Object generate(Object target, Method method, Object... params) {
-            if (params.length > 0) {
-                StringBuilder sb = new StringBuilder();
-
-                for (int i = 0; i < params.length; i++) {
-                    if (i == 0) {
-                        sb.append(":");
-                    }
-                    if (i > 0) {
-                        sb.append(",");
-                    }
-                    sb.append(params[i].toString());
-                }
-
-                return sb.toString();
-            } else {
+        public Object generate(@NotNull Object target, @NotNull Method method, Object... params) {
+            if (params.length == 0) {
                 return "";
             }
+
+            // 使用“冒号”分隔键名和参数部分，使用“逗号”分隔各个参数
+            return ":" + StringUtils.arrayToCommaDelimitedString(params);
+        }
+    }
+
+    /**
+     * 自定义 Redis 缓存管理器
+     *
+     * @author <a href="https://www.inlym.com">inlym</a>
+     * @date 2022/5/8
+     * @since 1.2.2
+     **/
+    public static class CustomRedisCacheManager extends RedisCacheManager {
+        public CustomRedisCacheManager(RedisCacheWriter cacheWriter,
+                                       RedisCacheConfiguration defaultCacheConfiguration) {
+            super(cacheWriter, defaultCacheConfiguration);
+        }
+
+        @NotNull
+        @Override
+        protected RedisCache createRedisCache(@NotNull String name, RedisCacheConfiguration cacheConfig) {
+            // 键名格式 `keyName#seconds`
+            String[] strs = name.split("#");
+
+            // 此处严格要求，必须按照以上格式，否则直接报错，便于开发阶段直接暴露问题
+            Assert.isTrue(strs.length == 2, "缓存配置错误");
+
+            String keyName = strs[0];
+            long seconds = Long.parseLong(strs[1]);
+
+            assert cacheConfig != null;
+            return super.createRedisCache(keyName, cacheConfig.entryTtl(Duration.ofSeconds(seconds)));
         }
     }
 }
