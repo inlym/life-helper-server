@@ -15,7 +15,10 @@ import java.time.LocalDateTime;
  * 用户账户实体
  *
  * <h2>说明
- * <p>文本内容
+ * <p>当前数据表不存储账户关联关系（存于其他“用户账户表”），其他数据表通过关联信息指向对应用户 ID：
+ * <p>1. {@code UserAccountWeChat} 微信账户关联表
+ * <p>2. {@code UserAccountPhone} 手机号账户关联表（当前无）
+ * <p>3. {@code UserAccountGithub} Github账户关联表（当前无）
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @since 2.3.0

@@ -63,7 +63,7 @@ public class UserAccountWeChat {
     @Column(onInsertValue = "1")
     private Long counter;
 
-    /** 最近一次使用时间 */
+    /** 最近一次使用（指通过当前行记录用于登录）时间 */
     @Column(onInsertValue = "now()")
     private LocalDateTime lastTime;
 }

@@ -28,7 +28,7 @@ public class UserAccountWeChatService {
     private final UserAccountService userAccountService;
 
     /**
-     * 通过微信账户数据获取用户 ID
+     * 通过微信账户数据获取用户 ID（仅在登录时使用）
      *
      * @param info 微信账户信息
      *
@@ -41,10 +41,7 @@ public class UserAccountWeChatService {
                  info.getUnionId());
 
         // 流程1：以“小程序账户级”查找优先级最高，若查到则直接返回对应的用户 ID
-        QueryCondition condition1 = USER_ACCOUNT_WE_CHAT.APP_ID
-                .eq(info.getAppId())
-                .and(USER_ACCOUNT_WE_CHAT.OPEN_ID.eq(info.getOpenId()));
-        UserAccountWeChat result1 = userAccountWeChatMapper.selectOneByCondition(condition1);
+        UserAccountWeChat result1 = getByMiniprogram(info.getAppId(), info.getOpenId());
 
         if (result1 != null) {
             UserAccountWeChat updated = UserAccountWeChat
@@ -59,8 +56,7 @@ public class UserAccountWeChatService {
         }
 
         // 流程2：未找到，则说明这是首次使用这个小程序登录，继续检查“平台级”账号
-        QueryCondition condition2 = USER_ACCOUNT_WE_CHAT.UNION_ID.eq(info.getUnionId());
-        UserAccountWeChat result2 = userAccountWeChatMapper.selectOneByCondition(condition2);
+        UserAccountWeChat result2 = getByUnionId(info.getUnionId());
 
         if (result2 != null) {
             // 继承对应的用户 ID，并将小程序账号级数据存入，下次登录时就直接在流程1返回了
@@ -75,6 +71,35 @@ public class UserAccountWeChatService {
         log.info("[用户描述] 平台级新用户, userId={}", userId);
 
         return userId;
+    }
+
+    /**
+     * 通过小程序信息获取账户
+     *
+     * @param appId  小程序开发者 ID
+     * @param openId 小程序的用户唯一标识
+     *
+     * @return 微信关联账户（未找到则返回 {@code null}）
+     * @date 2024/5/21
+     * @since 2.3.0
+     */
+    public UserAccountWeChat getByMiniprogram(String appId, String openId) {
+        QueryCondition condition = USER_ACCOUNT_WE_CHAT.APP_ID.eq(appId).and(USER_ACCOUNT_WE_CHAT.OPEN_ID.eq(openId));
+        return userAccountWeChatMapper.selectOneByCondition(condition);
+    }
+
+    /**
+     * 通过“平台级”账号信息获取账户
+     *
+     * @param unionId 用户在微信开放平台的唯一标识符
+     *
+     * @return 微信关联账户（未找到则返回 {@code null}）
+     * @date 2024/5/21
+     * @since 2.3.0
+     */
+    public UserAccountWeChat getByUnionId(String unionId) {
+        QueryCondition condition = USER_ACCOUNT_WE_CHAT.UNION_ID.eq(unionId);
+        return userAccountWeChatMapper.selectOneByCondition(condition);
     }
 
     /**
