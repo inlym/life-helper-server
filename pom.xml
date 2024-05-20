@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.5</version>
         <relativePath/>
     </parent>
 
@@ -122,14 +122,14 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>4.3.0</version>
+            <version>4.4.0</version>
         </dependency>
 
         <!-- 阿里云对象存储（OSS）SDK -->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.16.1</version>
+            <version>3.17.4</version>
         </dependency>
 
         <!-- 阿里云分布式任务调度平台 SchedulerX -->
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
             <artifactId>schedulerx2-spring-boot-starter</artifactId>
-            <version>1.11.0</version>
+            <version>1.11.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
@@ -158,7 +158,7 @@
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>tablestore</artifactId>
-            <version>5.13.12</version>
+            <version>5.17.0</version>
             <classifier>jar-with-dependencies</classifier>
             <exclusions>
                 <exclusion>
@@ -189,45 +189,45 @@
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>aliyun-log-logback-appender</artifactId>
-            <version>0.1.20</version>
+            <version>0.1.27</version>
         </dependency>
 
         <!-- Hutool -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.8.25</version>
+            <version>5.8.27</version>
         </dependency>
 
         <!-- Google Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.0.0-jre</version>
+            <version>33.2.0-jre</version>
         </dependency>
 
         <!-- RestTemplate 创建自定义 HTTP 客户端所使用的依赖 -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.2.1</version>
+            <version>5.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5-fluent</artifactId>
-            <version>5.2.1</version>
+            <version>5.3</version>
         </dependency>
 
         <!-- MyBatis-Flex -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
-            <version>1.7.8</version>
+            <version>1.8.9</version>
         </dependency>
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-processor</artifactId>
-            <version>1.7.8</version>
+            <version>1.8.6</version>
             <scope>provided</scope>
         </dependency>
 
