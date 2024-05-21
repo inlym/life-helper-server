@@ -5,7 +5,11 @@ import com.inlym.lifehelper.user.account.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class UserAccountServiceTests {
@@ -21,10 +25,15 @@ class UserAccountServiceTests {
         long id = userAccountService.createUser();
 
         // 新生成的用户 ID 要求大于 0
-        Assert.isTrue(id > 0, "新生成的用户 ID 要求大于 0");
+        assertThat(id).isGreaterThan(0L);
 
         // 通过 {@code id} 查找记录，应该存在
         User user = userMapper.selectOneById(id);
-        Assert.notNull(user, "通过 id 查找记录，应该存在");
+        assertThat(user).isNotNull();
+        // {@code id} 字段值相同
+        assertThat(user.getId()).isEqualTo(id);
+        // 创建时间应该是“刚刚”（设定10秒内）
+        assertThat(user.getCreateTime()).isBefore(LocalDateTime.now());
+        assertThat(Duration.between(user.getCreateTime(), LocalDateTime.now())).isLessThan(Duration.ofSeconds(10L));
     }
 }
