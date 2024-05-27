@@ -10,7 +10,7 @@ import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.AliyunOssProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
-import com.inlym.lifehelper.common.util.ExtensionUtil;
+import com.inlym.lifehelper.common.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,10 +61,19 @@ public class OssService {
      * @since 2.2.0
      */
     public String uploadImageBytes(AliyunOssDir dir, byte[] content) {
-        String extname = ExtensionUtil.detectImageFormat(content);
+        String extname = ImageUtil.detectFormat(content);
         String filename = dir.getDirname() + "/" + generateRandomString() + "." + extname;
         ossClient.putObject(properties.getBucketName(), filename, new ByteArrayInputStream(content));
         return filename;
+    }
+
+    /**
+     * 获取随机字符串
+     *
+     * @since 2.2.0
+     */
+    private String generateRandomString() {
+        return IdUtil.simpleUUID();
     }
 
     /**
@@ -74,24 +83,17 @@ public class OssService {
      * @param url 第三方资源的 URL 地址
      *
      * @return 在 OSS 的存储路径
-     *
      * @since 2.2.0
      */
     public String dump(AliyunOssDir dir, String url) {
-        RestClient restClient = RestClient
-            .builder()
-            .build();
+        RestClient restClient = RestClient.builder().build();
 
-        ResponseEntity<byte[]> response = restClient
-            .get()
-            .uri(url)
-            .retrieve()
-            .toEntity(byte[].class);
+        ResponseEntity<byte[]> response = restClient.get().uri(url).retrieve().toEntity(byte[].class);
 
-        String extname = ExtensionUtil.getExtensionFromMediaType(Objects
+        String extname = ImageUtil.getExtensionFromMediaType(Objects
                                                                      .requireNonNull(response
-                                                                                         .getHeaders()
-                                                                                         .getContentType())
+                                                                                             .getHeaders()
+                                                                                             .getContentType())
                                                                      .toString());
 
         String filename = dir.getDirname() + "/" + generateRandomString() + "." + extname;
@@ -99,10 +101,7 @@ public class OssService {
         PutObjectRequest request = new PutObjectRequest(properties.getBucketName(), filename,
                                                         new ByteArrayInputStream(Objects.requireNonNull(response.getBody())));
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setHeader("Content-Type", response
-            .getHeaders()
-            .getContentType()
-            .toString());
+        metadata.setHeader("Content-Type", response.getHeaders().getContentType().toString());
         request.setMetadata(metadata);
         ossClient.putObject(request);
 
@@ -115,7 +114,6 @@ public class OssService {
      * @param path 资源在 OSS 中的路径
      *
      * @return 完整的 URL 地址
-     *
      * @since 1.0.0
      */
     public String concatUrl(String path) {
@@ -137,23 +135,19 @@ public class OssService {
      * @since 1.2.3
      */
     public OssPostCredential generatePostCredential(String ext) {
-        String date = LocalDate
-            .now()
-            .toString()
-            .replaceAll("-", "");
+        String date = LocalDate.now().toString().replaceAll("-", "");
         // 文件在 OSS 中的完整路径
-        String filename = AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + date + "/" + generateRandomString();
+        String filename =
+                AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + date + "/" + generateRandomString();
         if (ext != null) {
             filename += "." + ext;
         }
 
         // 凭证有效期结束时间（时间戳）：1小时
-        long expireEndTime = System.currentTimeMillis() + Duration
-            .ofHours(1L)
-            .toMillis();
+        long expireEndTime = System.currentTimeMillis() + Duration.ofHours(1L).toMillis();
 
         Date expiration = new Date(expireEndTime);
-        
+
         PolicyConditions policyConditions = new PolicyConditions();
         // 指定文件体积（范围）：0 ~ 100MB
         policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 100L * 1024 * 1024);
@@ -168,21 +162,12 @@ public class OssService {
         String signature = ossClient.calculatePostSignature(postPolicy);
 
         return OssPostCredential
-            .builder()
-            .accessKeyId(properties.getAccessKeyId())
-            .url(properties.getAliasUrl())
-            .key(filename)
-            .policy(policy)
-            .signature(signature)
-            .build();
-    }
-
-    /**
-     * 获取随机字符串
-     *
-     * @since 2.2.0
-     */
-    private String generateRandomString() {
-        return IdUtil.simpleUUID();
+                .builder()
+                .accessKeyId(properties.getAccessKeyId())
+                .url(properties.getAliasUrl())
+                .key(filename)
+                .policy(policy)
+                .signature(signature)
+                .build();
     }
 }
