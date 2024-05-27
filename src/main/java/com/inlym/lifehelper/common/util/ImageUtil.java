@@ -2,6 +2,7 @@ package com.inlym.lifehelper.common.util;
 
 import lombok.SneakyThrows;
 import org.apache.commons.imaging.Imaging;
+import org.springframework.web.client.RestClient;
 
 /**
  * 图片工具集
@@ -11,6 +12,21 @@ import org.apache.commons.imaging.Imaging;
  * @since 2.3.0
  **/
 public abstract class ImageUtil {
+    /**
+     * 检测网络图片的默认后缀名
+     *
+     * @param url 网络图片地址
+     *
+     * @return 后缀名，返回格式示例：`png`, `jpg`, `gif`, `webp`
+     * @date 2024/5/27
+     * @since 2.3.0
+     */
+    public static String detectFormat(String url) {
+        RestClient restClient = RestClient.create();
+        byte[] bytes = restClient.get().uri(url).retrieve().toEntity(byte[].class).getBody();
+        return detectFormat(bytes);
+    }
+
     /**
      * 检测图片资源的默认后缀名
      *
