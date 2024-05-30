@@ -2,7 +2,7 @@ package com.inlym.lifehelper.login.qrcode.service;
 
 import cn.hutool.core.util.IdUtil;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
 import com.inlym.lifehelper.common.exception.UnpredictableException;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
@@ -46,7 +46,7 @@ public class LoginQrCodeService {
 
     private final WeChatService weChatService;
 
-    private final OssService ossService;
+    private final AliyunOssService aliyunOssService;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -60,9 +60,7 @@ public class LoginQrCodeService {
      * @since 2.2.0
      */
     public LoginQrCode getOne() {
-        Long size = stringRedisTemplate
-            .opsForList()
-            .size(AVAILABLE_QRCODE_LIST);
+        Long size = stringRedisTemplate.opsForList().size(AVAILABLE_QRCODE_LIST);
 
         // (2024-02-26) 实测：size 不会为 null，当列表不存在时，也会返回 `0`
         if (size != null) {
@@ -71,17 +69,11 @@ public class LoginQrCodeService {
             }
 
             if (size > 0) {
-                String result = stringRedisTemplate
-                    .opsForList()
-                    .leftPop(AVAILABLE_QRCODE_LIST);
+                String result = stringRedisTemplate.opsForList().leftPop(AVAILABLE_QRCODE_LIST);
 
                 if (result != null) {
                     String[] strs = result.split(",");
-                    return LoginQrCode
-                        .builder()
-                        .id(strs[0])
-                        .url(strs[1])
-                        .build();
+                    return LoginQrCode.builder().id(strs[0]).url(strs[1]).build();
                 }
             }
 
@@ -89,6 +81,35 @@ public class LoginQrCodeService {
         }
 
         throw new UnpredictableException("出现了 stringRedisTemplate.opsForList().size 值为 null 的情况");
+    }
+
+    /**
+     * 生成一个新的二维码（并上传至 OSS）
+     *
+     * @date 2024/2/26
+     * @since 2.2.0
+     */
+    private LoginQrCode generate() {
+        String id = IdUtil.simpleUUID();
+
+        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
+                .builder()
+                .scene(id)
+                .page(WECHAT_SCAN_LOGIN_PAGE)
+                .width(300)
+                .envVersion("release")
+                .build();
+
+        String appId = weChatProperties.getMainApp().getAppId();
+
+        // 向微信服务器获取二维码
+        byte[] qrcodeBytes = weChatService.getUnlimitedQrCode(appId, options);
+
+        String path = aliyunOssService.uploadImageBytes(AliyunOssDir.WEACODE, qrcodeBytes);
+        String url = aliyunOssService.concatUrl(path);
+        log.trace("新生成一个用于扫码登录的二维码，信息为：id={}, url={}", id, url);
+
+        return LoginQrCode.builder().id(id).url(url).build();
     }
 
     /**
@@ -108,7 +129,6 @@ public class LoginQrCodeService {
      * 批量生成（并将列表存入到 Redis，用于后续快速获取）
      *
      * @return 新生成的二维码信息列表
-     *
      * @date 2024/2/26
      * @since 2.2.0
      */
@@ -121,46 +141,9 @@ public class LoginQrCodeService {
             String str = loginQrCode.getId() + "," + loginQrCode.getUrl();
 
             list.add(loginQrCode);
-            stringRedisTemplate
-                .opsForList()
-                .rightPush(AVAILABLE_QRCODE_LIST, str);
+            stringRedisTemplate.opsForList().rightPush(AVAILABLE_QRCODE_LIST, str);
         }
 
         return list;
-    }
-
-    /**
-     * 生成一个新的二维码（并上传至 OSS）
-     *
-     * @date 2024/2/26
-     * @since 2.2.0
-     */
-    private LoginQrCode generate() {
-        String id = IdUtil.simpleUUID();
-
-        UnlimitedQrCodeOptions options = UnlimitedQrCodeOptions
-            .builder()
-            .scene(id)
-            .page(WECHAT_SCAN_LOGIN_PAGE)
-            .width(300)
-            .envVersion("release")
-            .build();
-
-        String appId = weChatProperties
-            .getMainApp()
-            .getAppId();
-
-        // 向微信服务器获取二维码
-        byte[] qrcodeBytes = weChatService.getUnlimitedQrCode(appId, options);
-
-        String path = ossService.uploadImageBytes(AliyunOssDir.WEACODE, qrcodeBytes);
-        String url = ossService.concatUrl(path);
-        log.trace("新生成一个用于扫码登录的二维码，信息为：id={}, url={}", id, url);
-
-        return LoginQrCode
-            .builder()
-            .id(id)
-            .url(url)
-            .build();
     }
 }

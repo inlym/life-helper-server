@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.common.base.aliyun.oss.controller;
 
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequiredArgsConstructor
-public class OssController {
-    private final OssService ossService;
+public class AliyunOssController {
+    private final AliyunOssService aliyunOssService;
 
     /**
      * 获取阿里云 OSS 直传凭证
@@ -29,6 +29,6 @@ public class OssController {
      */
     @GetMapping("/oss/credential")
     public OssPostCredential getOssPostCredential(@RequestParam(required = false, value = "ext") String ext) {
-        return ossService.generatePostCredential(ext);
+        return aliyunOssService.generatePostCredential(ext);
     }
 }

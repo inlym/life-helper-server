@@ -2,7 +2,7 @@ package com.inlym.lifehelper.user.info.controller;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.inlym.lifehelper.user.info.model.BasicUserInfo;
 import com.inlym.lifehelper.user.info.model.UpdateUserInfoDTO;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserInfoController {
     private final UserInfoService userInfoService;
 
-    private final OssService ossService;
+    private final AliyunOssService aliyunOssService;
 
     /**
      * 获取基础个人信息
@@ -44,10 +44,10 @@ public class UserInfoController {
     public BasicUserInfo getBasicUserInfo(@UserId long userId) {
         UserInfo info = userInfoService.getUserInfo(userId);
         return BasicUserInfo
-            .builder()
-            .nickName(info.getNickName())
-            .avatarUrl(ossService.concatUrl(info.getAvatarPath()))
-            .build();
+                .builder()
+                .nickName(info.getNickName())
+                .avatarUrl(aliyunOssService.concatUrl(info.getAvatarPath()))
+                .build();
     }
 
     /**
@@ -64,11 +64,11 @@ public class UserInfoController {
         UserInfo info = userInfoService.getUserInfo(userId);
 
         return UserInfoVO
-            .builder()
-            .nickName(info.getNickName())
-            .avatarUrl(ossService.concatUrl(info.getAvatarPath()))
-            .gender(info.getGenderType())
-            .build();
+                .builder()
+                .nickName(info.getNickName())
+                .avatarUrl(aliyunOssService.concatUrl(info.getAvatarPath()))
+                .gender(info.getGenderType())
+                .build();
     }
 
     /**
@@ -84,11 +84,11 @@ public class UserInfoController {
     @UserPermission
     public UserInfoVO update(@UserId long userId, @RequestBody UpdateUserInfoDTO dto) {
         UserInfo info = UserInfo
-            .builder()
-            .id(userId)
-            .nickName(dto.getNickName())
-            .genderType(dto.getGenderType())
-            .build();
+                .builder()
+                .id(userId)
+                .nickName(dto.getNickName())
+                .genderType(dto.getGenderType())
+                .build();
 
         if (dto.getAvatarUrl() != null) {
             info.setAvatarPath(userInfoService.dumpAvatar(dto.getAvatarUrl()));
@@ -107,10 +107,10 @@ public class UserInfoController {
      */
     private UserInfoVO convertEntity(UserInfo info) {
         return UserInfoVO
-            .builder()
-            .nickName(info.getNickName())
-            .avatarUrl(ossService.concatUrl(info.getAvatarPath()))
-            .gender(info.getGenderType())
-            .build();
+                .builder()
+                .nickName(info.getNickName())
+                .avatarUrl(aliyunOssService.concatUrl(info.getAvatarPath()))
+                .gender(info.getGenderType())
+                .build();
     }
 }
