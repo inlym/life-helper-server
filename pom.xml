@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>3.3.0</version>
         <relativePath/>
     </parent>
 
@@ -196,7 +196,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.8.27</version>
+            <version>5.8.28</version>
         </dependency>
 
         <!-- Google Guava -->
@@ -222,12 +222,12 @@
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
-            <version>1.8.9</version>
+            <version>1.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-processor</artifactId>
-            <version>1.8.6</version>
+            <version>1.9.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -320,6 +320,11 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
 
