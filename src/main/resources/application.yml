@@ -38,3 +38,7 @@ spring:
         generate-ddl: false
         show-sql: true
         open-in-view: false
+
+server:
+    # 优雅关闭
+    shutdown: graceful
