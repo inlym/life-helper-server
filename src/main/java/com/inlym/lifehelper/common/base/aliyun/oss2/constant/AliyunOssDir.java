@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.constant;
+package com.inlym.lifehelper.common.base.aliyun.oss2.constant;
 
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.login.qrcode.service;
 
 import cn.hutool.core.util.IdUtil;
-import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss2.constant.AliyunOssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
 import com.inlym.lifehelper.common.exception.UnpredictableException;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;

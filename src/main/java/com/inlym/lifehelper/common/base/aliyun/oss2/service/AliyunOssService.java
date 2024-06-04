@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.service;
+package com.inlym.lifehelper.common.base.aliyun.oss2.service;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.common.utils.BinaryUtil;
@@ -6,9 +6,9 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.inlym.lifehelper.common.base.aliyun.oss.config.AliyunOssProperties;
-import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
+import com.inlym.lifehelper.common.base.aliyun.oss2.config.AliyunOssProperties;
+import com.inlym.lifehelper.common.base.aliyun.oss2.constant.AliyunOssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss2.model.OssPostCredential;
 import com.inlym.lifehelper.common.util.ImageUtil;
 import com.inlym.lifehelper.common.util.StringUtil;
 import lombok.RequiredArgsConstructor;

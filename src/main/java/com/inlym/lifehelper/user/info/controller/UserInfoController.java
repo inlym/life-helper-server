@@ -2,7 +2,7 @@ package com.inlym.lifehelper.user.info.controller;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.inlym.lifehelper.user.info.model.BasicUserInfo;
 import com.inlym.lifehelper.user.info.model.UpdateUserInfoDTO;

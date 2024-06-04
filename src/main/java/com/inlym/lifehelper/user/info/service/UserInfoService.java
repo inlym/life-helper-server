@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.user.info.service;
 
-import com.inlym.lifehelper.common.base.aliyun.oss.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss2.constant.AliyunOssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
 import com.inlym.lifehelper.user.info.constant.GenderType;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import lombok.RequiredArgsConstructor;

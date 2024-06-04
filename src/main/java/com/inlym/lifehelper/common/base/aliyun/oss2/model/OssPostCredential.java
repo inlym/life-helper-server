@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.model;
+package com.inlym.lifehelper.common.base.aliyun.oss2.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

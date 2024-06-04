@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.config;
+package com.inlym.lifehelper.common.base.aliyun.oss2.config;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
@@ -20,6 +20,7 @@ public class AliyunOssConfig {
 
     @Bean
     public OSS ossClient() {
-        return new OSSClientBuilder().build(properties.getEndpoint(), properties.getAccessKeyId(), properties.getAccessKeySecret());
+        return new OSSClientBuilder().build(properties.getEndpoint(), properties.getAccessKeyId(),
+                                            properties.getAccessKeySecret());
     }
 }

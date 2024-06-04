@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.config;
+package com.inlym.lifehelper.common.base.aliyun.oss2.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @since 2.2.0
  **/
 @Component
-@ConfigurationProperties(prefix = "aliyun.oss")
+@ConfigurationProperties(prefix = "aliyun.oss2")
 @Data
 public class AliyunOssProperties {
     /** 访问密钥 ID */

@@ -1,7 +1,7 @@
-package com.inlym.lifehelper.common.base.aliyun.oss.controller;
+package com.inlym.lifehelper.common.base.aliyun.oss2.controller;
 
-import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
-import com.inlym.lifehelper.common.base.aliyun.oss.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss2.model.OssPostCredential;
+import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

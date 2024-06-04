@@ -18,7 +18,10 @@ public enum ClientType {
     MINI_PROGRAM,
 
     /** Web 网页 */
-    WEB;
+    WEB,
+
+    /** PC 客户端 */
+    PC;
 
     ClientType() {}
 }
