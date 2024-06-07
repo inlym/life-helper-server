@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "aliyun.oss.static-resource")
 @Data
-public class StaticResourceBucketproperties {
+public class StaticResourceBucketProperties {
     /**
      * 绑定的自定义域名 URL
      *
