@@ -75,17 +75,30 @@ lifehelper:
 aliyun:
     # 阿里云 OSS 配置
     oss:
-        # AccessKey ID
-        access-key-id: xxxxxxxxxxxx
-        # AccessKey Secret
-        access-key-secret: xxxxxxxxxxxx
-        # 访问域名
-        endpoint: xxxxxxxxxxxx
-        # 存储空间名称
-        bucket-name: xxxxxxxxxxxx
-        # 绑定的自定义域名（包含 https:// 前缀部分）
-        alias-url: xxxxxxxxxxxx
-
+        # 主存储空间
+        central:
+            # 存储空间名称
+            bucket-name: "weutil-central"
+            # 绑定的自定义域名 URL
+            custom-url: "https://res.weutil.com"
+            # AccessKey ID
+            access-key-id: xxxxxxxxxxxx
+            # AccessKey Secret
+            access-key-secret: xxxxxxxxxxxx
+        # 用户直传专用存储空间
+        user-upload:
+            # 存储空间名称
+            bucket-name: "weutil-upload"
+            # 绑定的自定义域名 URL
+            custom-url: "https://upload.weutil.com"
+            # AccessKey ID
+            access-key-id: xxxxxxxxxxxx
+            # AccessKey Secret
+            access-key-secret: xxxxxxxxxxxx
+        # 静态资源专用存储空间
+        static-resource:
+            # 绑定的自定义域名 URL
+            custom-url: "https://static.weutil.com"
 
     # 阿里云表格存储配置
     ots:
