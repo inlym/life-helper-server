@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.user.info.service;
 
-import com.inlym.lifehelper.common.base.aliyun.oss2.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.user.info.constant.GenderType;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserInfoService {
     private final UserInfoMapper userInfoMapper;
 
-    private final AliyunOssService aliyunOssService;
+    private final OssService ossService;
 
     /**
      * 更新用户信息
@@ -84,6 +84,6 @@ public class UserInfoService {
      * @since 2.3.0
      */
     public String dumpAvatar(String avatarUrl) {
-        return aliyunOssService.dump(AliyunOssDir.AVATAR, avatarUrl);
+        return ossService.dumpExternalImage(OssDir.AVATAR, avatarUrl);
     }
 }

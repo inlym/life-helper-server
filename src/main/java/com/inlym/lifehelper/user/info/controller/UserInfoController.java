@@ -2,7 +2,7 @@ package com.inlym.lifehelper.user.info.controller;
 
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
-import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.user.info.entity.UserInfo;
 import com.inlym.lifehelper.user.info.model.BasicUserInfo;
 import com.inlym.lifehelper.user.info.model.UpdateUserInfoDTO;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserInfoController {
     private final UserInfoService userInfoService;
 
-    private final AliyunOssService aliyunOssService;
+    private final OssService ossService;
 
     /**
      * 获取基础个人信息
@@ -46,7 +46,7 @@ public class UserInfoController {
         return BasicUserInfo
                 .builder()
                 .nickName(info.getNickName())
-                .avatarUrl(aliyunOssService.concatUrl(info.getAvatarPath()))
+                .avatarUrl(ossService.getPresignedUrl(info.getAvatarPath()))
                 .build();
     }
 
@@ -66,7 +66,7 @@ public class UserInfoController {
         return UserInfoVO
                 .builder()
                 .nickName(info.getNickName())
-                .avatarUrl(aliyunOssService.concatUrl(info.getAvatarPath()))
+                .avatarUrl(ossService.getPresignedUrl(info.getAvatarPath()))
                 .gender(info.getGenderType())
                 .build();
     }
@@ -109,7 +109,7 @@ public class UserInfoController {
         return UserInfoVO
                 .builder()
                 .nickName(info.getNickName())
-                .avatarUrl(aliyunOssService.concatUrl(info.getAvatarPath()))
+                .avatarUrl(ossService.getPresignedUrl(info.getAvatarPath()))
                 .gender(info.getGenderType())
                 .build();
     }

@@ -1,8 +1,8 @@
 package com.inlym.lifehelper.login.qrcode.service;
 
 import cn.hutool.core.util.IdUtil;
-import com.inlym.lifehelper.common.base.aliyun.oss2.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss2.service.AliyunOssService;
+import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
+import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import com.inlym.lifehelper.common.exception.UnpredictableException;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
@@ -46,9 +46,9 @@ public class LoginQrCodeService {
 
     private final WeChatService weChatService;
 
-    private final AliyunOssService aliyunOssService;
-
     private final ApplicationEventPublisher applicationEventPublisher;
+
+    private final OssService ossService;
 
     /**
      * 封装外部获取一个二维码的方法
@@ -105,8 +105,8 @@ public class LoginQrCodeService {
         // 向微信服务器获取二维码
         byte[] qrcodeBytes = weChatService.getUnlimitedQrCode(appId, options);
 
-        String path = aliyunOssService.uploadImageBytes(AliyunOssDir.WEACODE, qrcodeBytes);
-        String url = aliyunOssService.concatUrl(path);
+        String path = ossService.saveImage(OssDir.WEACODE, qrcodeBytes);
+        String url = ossService.getPresignedUrl(path);
         log.trace("新生成一个用于扫码登录的二维码，信息为：id={}, url={}", id, url);
 
         return LoginQrCode.builder().id(id).url(url).build();

@@ -8,9 +8,12 @@ import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
 import com.inlym.lifehelper.common.util.ImageUtil;
 import com.inlym.lifehelper.common.util.StringUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Date;
 
@@ -28,6 +31,22 @@ public class CentralBucketService {
     private final OSS centralBucketClient;
 
     private final OSS centralBucketWithCustomDomainClient;
+
+    /**
+     * 转存外部图片
+     *
+     * @param dir      要保存的目录
+     * @param imageUrl 外部图片的 URL 地址
+     *
+     * @return 保存后的文件路径，示例值：{@code avatar/nUztcRQGBetU.webp}
+     * @since 2024/6/8
+     */
+    @SneakyThrows
+    public String dumpImage(OssDir dir, String imageUrl) {
+        URL url = new URL(imageUrl);
+        InputStream is = url.openStream();
+        return saveImage(dir, is.readAllBytes());
+    }
 
     /**
      * 保存图片

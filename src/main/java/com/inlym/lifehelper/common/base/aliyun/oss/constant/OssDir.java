@@ -11,11 +11,14 @@ import lombok.Getter;
  **/
 @Getter
 public enum OssDir {
-    /** 临时使用的目录，一般仅用于开发阶段调试 */
-    TEMP("temp"),
-
     /** 用户头像 */
-    AVATAR("avatar");
+    AVATAR("avatar"),
+
+    /** 微信小程序码 */
+    WEACODE("wxacode"),
+
+    /** 临时使用的目录，一般仅用于开发阶段调试 */
+    TEMP("temp");
 
     /** 目录名 */
     private final String dirname;
