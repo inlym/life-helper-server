@@ -1,14 +1,10 @@
 package com.inlym.lifehelper.common.base.aliyun.oss2.service;
 
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.common.utils.BinaryUtil;
-import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.inlym.lifehelper.common.base.aliyun.oss2.config.AliyunOssProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss2.constant.AliyunOssDir;
-import com.inlym.lifehelper.common.base.aliyun.oss2.model.OssPostCredential;
 import com.inlym.lifehelper.common.util.ImageUtil;
 import com.inlym.lifehelper.common.util.StringUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -98,52 +90,5 @@ public class AliyunOssService {
             return "";
         }
         return properties.getAliasUrl() + "/" + path;
-    }
-
-    /**
-     * 生成用于客户端直传文件至 OSS 的临时鉴权凭证信息
-     *
-     * <h2>主要用途
-     * <p>客户端可使用该凭证直接将文件上传到 OSS，文件无需经过我方项目服务器。
-     *
-     * @param ext 后缀名，例如 `png`, `jpg`, ...
-     *
-     * @see <a href="https://help.aliyun.com/document_detail/91868.html">服务端签名直传</a>
-     * @since 1.2.3
-     */
-    public OssPostCredential generatePostCredential(String ext) {
-        String date = LocalDate.now().toString().replaceAll("-", "");
-
-        // 目录名
-        String dirname = AliyunOssDir.CLIENT_DIRECT_TRANSMISSION.getDirname() + "/" + date;
-        // 文件名
-        String filename = StringUtil.generateRandomString(12) + "." + ext;
-        // 构建文件在 OSS 中的完整路径
-        String path = dirname + "/" + filename;
-
-        // 凭证有效期结束时间（时间戳）：1小时
-        long expireEndTime = System.currentTimeMillis() + Duration.ofHours(1L).toMillis();
-        Date expiration = new Date(expireEndTime);
-
-        PolicyConditions policyConditions = new PolicyConditions();
-        // 指定文件体积（范围）：0 ~ 100MB
-        policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 100L * 1024 * 1024);
-        // 指定文件路径（完全匹配）
-        policyConditions.addConditionItem(MatchMode.Exact, PolicyConditions.COND_KEY, path);
-        // 指定存储空间（完全匹配）
-        policyConditions.addConditionItem(MatchMode.Exact, "bucket", properties.getBucketName());
-
-        String postPolicy = ossClient.generatePostPolicy(expiration, policyConditions);
-        String policy = BinaryUtil.toBase64String(postPolicy.getBytes(StandardCharsets.UTF_8));
-        String signature = ossClient.calculatePostSignature(postPolicy);
-
-        return OssPostCredential
-                .builder()
-                .accessKeyId(properties.getAccessKeyId())
-                .url(properties.getAliasUrl())
-                .key(path)
-                .policy(policy)
-                .signature(signature)
-                .build();
     }
 }
