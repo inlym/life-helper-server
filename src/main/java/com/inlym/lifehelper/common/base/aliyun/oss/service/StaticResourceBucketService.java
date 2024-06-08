@@ -15,4 +15,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StaticResourceBucketService {
     private final StaticResourceBucketProperties properties;
+
+    /**
+     * 拼接资源访问 URL
+     *
+     * @param key 资源在 OSS 的存储路径，示例值：{@code image/logo.png}
+     *
+     * @date 2024/6/8
+     * @since 2.3.0
+     */
+    public String concatUrl(String key) {
+        return properties.getCustomUrl() + "/" + key;
+    }
 }
