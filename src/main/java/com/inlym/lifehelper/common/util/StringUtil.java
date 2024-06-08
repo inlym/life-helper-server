@@ -12,6 +12,9 @@ import java.util.stream.IntStream;
  * @since 2.3.0
  **/
 public abstract class StringUtil {
+    /** 空字符串 */
+    public static final String EMPTY_STRING = "";
+
     /**
      * 生成指定长度的随机字符串
      *

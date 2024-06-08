@@ -25,6 +25,6 @@ public class StaticResourceBucketService {
      * @since 2.3.0
      */
     public String concatUrl(String key) {
-        return properties.getCustomUrl() + "/" + key;
+        return "https://" + properties.getCustomDomain() + "/" + key;
     }
 }

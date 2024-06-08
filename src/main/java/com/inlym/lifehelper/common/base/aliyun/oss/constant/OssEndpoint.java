@@ -19,7 +19,7 @@ public enum OssEndpoint {
 
     private final String domain;
 
-    private OssEndpoint(String domain) {
+    OssEndpoint(String domain) {
         this.domain = domain;
     }
 }

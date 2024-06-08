@@ -84,7 +84,7 @@ public class UserUploadBucketService {
         return OssPostCredential
                 .builder()
                 .accessKeyId(properties.getAccessKeyId())
-                .url(properties.getCustomUrl())
+                .url("https://" + properties.getCustomDomain())
                 .key(options.getKey())
                 .policy(policy)
                 .signature(signature)

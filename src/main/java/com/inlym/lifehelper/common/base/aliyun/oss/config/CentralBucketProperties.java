@@ -27,8 +27,7 @@ import org.springframework.stereotype.Component;
  * 的方式生成访问链接。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/6/7
- * @since 2.3.0
+ * @since 2024/6/7
  **/
 @Component
 @ConfigurationProperties(prefix = "aliyun.oss.central")
@@ -43,12 +42,12 @@ public class CentralBucketProperties {
     private String bucketName;
 
     /**
-     * 绑定的自定义域名 URL
+     * 绑定的自定义域名
      *
      * <h4>示例
-     * <p>{@code https://res.weutil.com}
+     * <p>{@code res.weutil.com}
      */
-    private String customUrl;
+    private String customDomain;
 
     /** 访问密钥 ID */
     private String accessKeyId;

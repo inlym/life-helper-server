@@ -1,7 +1,9 @@
 package com.inlym.lifehelper.common.base.aliyun.oss.config;
 
+import com.aliyun.oss.ClientBuilderConfiguration;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.common.comm.Protocol;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssEndpointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +32,19 @@ public class OssConfig {
         String accessKeySecret = centralBucketProperties.getAccessKeySecret();
 
         return new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+    }
+
+    @Bean
+    public OSS centralBucketWithCustomDomainClient() {
+        String endpoint = centralBucketProperties.getCustomDomain();
+        String accessKeyId = centralBucketProperties.getAccessKeyId();
+        String accessKeySecret = centralBucketProperties.getAccessKeySecret();
+
+        ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
+        conf.setProtocol(Protocol.HTTPS);
+        conf.setSupportCname(true);
+
+        return new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, conf);
     }
 
     @Bean

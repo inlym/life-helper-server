@@ -25,18 +25,17 @@ import org.springframework.stereotype.Component;
  * <p>公共读。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/6/8
- * @since 2.3.0
+ * @since 2024/6/8
  **/
 @Component
 @ConfigurationProperties(prefix = "aliyun.oss.static-resource")
 @Data
 public class StaticResourceBucketProperties {
     /**
-     * 绑定的自定义域名 URL
+     * 绑定的自定义域名
      *
      * <h4>示例
-     * <p>{@code https://static.weutil.com}
+     * <p>{@code static.weutil.com}
      */
-    private String customUrl;
+    private String customDomain;
 }

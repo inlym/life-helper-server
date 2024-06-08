@@ -79,8 +79,8 @@ aliyun:
         central:
             # 存储空间名称
             bucket-name: "weutil-central"
-            # 绑定的自定义域名 URL
-            custom-url: "https://res.weutil.com"
+            # 绑定的自定义域名
+            custom-domain: "res.weutil.com"
             # AccessKey ID
             access-key-id: xxxxxxxxxxxx
             # AccessKey Secret
@@ -89,8 +89,8 @@ aliyun:
         user-upload:
             # 存储空间名称
             bucket-name: "weutil-upload"
-            # 绑定的自定义域名 URL
-            custom-url: "https://upload.weutil.com"
+            # 绑定的自定义域名
+            custom-domain: "upload.weutil.com"
             # AccessKey ID
             access-key-id: xxxxxxxxxxxx
             # AccessKey Secret
@@ -98,7 +98,7 @@ aliyun:
         # 静态资源专用存储空间
         static-resource:
             # 绑定的自定义域名 URL
-            custom-url: "https://static.weutil.com"
+            custom-domain: "static.weutil.com"
 
     # 阿里云表格存储配置
     ots:

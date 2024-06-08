@@ -27,8 +27,7 @@ import org.springframework.stereotype.Component;
  * <p>私有，不支持用户访问。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/6/8
- * @since 2.3.0
+ * @since 2024/6/8
  **/
 @Component
 @ConfigurationProperties(prefix = "aliyun.oss.user-upload")
@@ -43,12 +42,12 @@ public class UserUploadBucketProperties {
     private String bucketName;
 
     /**
-     * 绑定的自定义域名 URL
+     * 绑定的自定义域名
      *
      * <h4>示例
-     * <p>{@code https://upload.weutil.com}
+     * <p>{@code upload.weutil.com}
      */
-    private String customUrl;
+    private String customDomain;
 
     /** 访问密钥 ID */
     private String accessKeyId;
