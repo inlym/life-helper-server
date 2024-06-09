@@ -68,4 +68,17 @@ public class OssService {
     public String getPresignedUrl(String key) {
         return centralBucketService.getPresignedUrl(key);
     }
+
+    /**
+     * 从用户直传空间复制图片到主空间
+     *
+     * @param dir 要转存的目录（在主存储空间）
+     * @param key 文件在用户直传存储空间的路径
+     *
+     * @return 保存后的文件路径，示例值：{@code avatar/nUztcRQGBetU.webp}
+     * @since 2024/06/09
+     */
+    public String copyImage(OssDir dir, String key) {
+        return centralBucketService.copyImageFromUserUploadBucket(dir, key);
+    }
 }

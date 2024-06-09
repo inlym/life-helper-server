@@ -3,6 +3,7 @@ package com.inlym.lifehelper.common.base.aliyun.oss.service;
 import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
+import com.aliyun.oss.model.OSSObject;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.CentralBucketProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
 import com.inlym.lifehelper.common.util.ImageUtil;
@@ -31,6 +32,8 @@ public class CentralBucketService {
     private final OSS centralBucketClient;
 
     private final OSS centralBucketWithCustomDomainClient;
+
+    private final UserUploadBucketService userUploadBucketService;
 
     /**
      * 转存外部图片
@@ -84,5 +87,21 @@ public class CentralBucketService {
         request.setExpiration(new Date(System.currentTimeMillis() + Duration.ofDays(30L).toMillis()));
 
         return centralBucketWithCustomDomainClient.generatePresignedUrl(request).toString();
+    }
+
+    /**
+     * 从用户直传空间复制图片到主空间
+     *
+     * @param dir 要转存的目录（在主存储空间）
+     * @param key 文件在用户直传存储空间的路径
+     *
+     * @return 保存后的文件路径，示例值：{@code avatar/nUztcRQGBetU.webp}
+     * @since 2024/06/09
+     */
+    @SneakyThrows
+    public String copyImageFromUserUploadBucket(OssDir dir, String key) {
+        OSSObject object = userUploadBucketService.getObject(key);
+        byte[] bytes = object.getObjectContent().readAllBytes();
+        return saveImage(dir, bytes);
     }
 }
