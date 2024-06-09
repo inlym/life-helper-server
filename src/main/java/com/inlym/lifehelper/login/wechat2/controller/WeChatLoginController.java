@@ -1,10 +1,10 @@
-package com.inlym.lifehelper.login.wechat.controller;
+package com.inlym.lifehelper.login.wechat2.controller;
 
 import com.inlym.lifehelper.common.annotation.ClientIp;
 import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.extern.wechat.config.WeChatProperties;
-import com.inlym.lifehelper.login.wechat.pojo.WeChatCodeDTO;
-import com.inlym.lifehelper.login.wechat.service.WeChatLoginService;
+import com.inlym.lifehelper.login.wechat2.pojo.WeChatCodeDTO;
+import com.inlym.lifehelper.login.wechat2.service.WeChatLoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,9 +40,7 @@ public class WeChatLoginController {
     public IdentityCertificate loginByCode(@ClientIp String ip, @Valid @RequestBody WeChatCodeDTO dto) {
         // 过渡阶段 appId 处理，后续需移除该处理
         if (dto.getAppId() == null) {
-            dto.setAppId(weChatProperties
-                             .getMainApp()
-                             .getAppId());
+            dto.setAppId(weChatProperties.getMainApp().getAppId());
         }
 
         return weChatLoginService.loginByCode(dto.getAppId(), dto.getCode(), ip);

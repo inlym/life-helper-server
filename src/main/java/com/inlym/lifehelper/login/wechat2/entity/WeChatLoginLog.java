@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.wechat.entity;
+package com.inlym.lifehelper.login.wechat2.entity;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;

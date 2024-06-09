@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.wechat.exception;
+package com.inlym.lifehelper.login.wechat2.exception;
 
 /**
  * 微信登录异常

@@ -1,6 +1,6 @@
-package com.inlym.lifehelper.login.wechat.mapper;
+package com.inlym.lifehelper.login.wechat2.mapper;
 
-import com.inlym.lifehelper.login.wechat.entity.WeChatLoginLog;
+import com.inlym.lifehelper.login.wechat2.entity.WeChatLoginLog;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

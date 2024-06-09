@@ -1,11 +1,11 @@
-package com.inlym.lifehelper.login.wechat.service;
+package com.inlym.lifehelper.login.wechat2.service;
 
 import com.inlym.lifehelper.common.auth.core.IdentityCertificate;
 import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.extern.wechat.WeChatService;
 import com.inlym.lifehelper.extern.wechat.pojo.WeChatSession;
-import com.inlym.lifehelper.login.wechat.entity.WeChatLoginLog;
-import com.inlym.lifehelper.login.wechat.mapper.WeChatLoginLogMapper;
+import com.inlym.lifehelper.login.wechat2.entity.WeChatLoginLog;
+import com.inlym.lifehelper.login.wechat2.mapper.WeChatLoginLogMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

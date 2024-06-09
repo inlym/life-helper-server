@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.login.wechat.pojo;
+package com.inlym.lifehelper.login.wechat2.pojo;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
