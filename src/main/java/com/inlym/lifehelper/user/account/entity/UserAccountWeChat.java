@@ -60,7 +60,7 @@ public class UserAccountWeChat {
     private Long userId;
 
     /** 当前小程序登录次数 */
-    @Column(onInsertValue = "1")
+    @Column(onInsertValue = "0")
     private Long counter;
 
     /** 最近一次使用（指通过当前行记录用于登录）时间 */

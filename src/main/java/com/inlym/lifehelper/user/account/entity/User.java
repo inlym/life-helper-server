@@ -48,7 +48,7 @@ public class User {
     private LocalDateTime lastLoginTime;
 
     /** 登录次数 */
-    @Column(onInsertValue = "1")
+    @Column(onInsertValue = "0")
     private Long loginCounter;
 
     /** 创建时间 */
@@ -58,4 +58,8 @@ public class User {
     /** 更新时间 */
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
+
+    /** 乐观锁（修改次数） */
+    @Column(version = true)
+    private Long version;
 }

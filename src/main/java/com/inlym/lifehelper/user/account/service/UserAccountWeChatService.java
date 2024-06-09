@@ -1,11 +1,16 @@
 package com.inlym.lifehelper.user.account.service;
 
 import com.inlym.lifehelper.user.account.entity.UserAccountWeChat;
+import com.inlym.lifehelper.user.account.event.LoginByWeChatAccountEvent;
 import com.inlym.lifehelper.user.account.mapper.UserAccountWeChatMapper;
 import com.inlym.lifehelper.user.account.model.WeChatAccountInfo;
 import com.mybatisflex.core.query.QueryCondition;
+import com.mybatisflex.core.update.UpdateWrapper;
+import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,41 +41,31 @@ public class UserAccountWeChatService {
      * @date 2024/4/17
      * @since 2.3.0
      */
-    public long getUserIdByWeChat(WeChatAccountInfo info) {
-        log.info("[微信登录] 微信账户信息: appId={}, openId={}, unionId={}", info.getAppId(), info.getOpenId(),
-                 info.getUnionId());
+    public UserAccountWeChat getWeChatUserAccount(WeChatAccountInfo info) {
+        log.info("[微信账户信息] appId={}, openId={}, unionId={}", info.getAppId(), info.getOpenId(), info.getUnionId());
 
         // 流程1：以“小程序账户级”查找优先级最高，若查到则直接返回对应的用户 ID
         UserAccountWeChat result1 = getByMiniprogram(info.getAppId(), info.getOpenId());
-
         if (result1 != null) {
-            UserAccountWeChat updated = UserAccountWeChat
-                    .builder()
-                    .id(result1.getId())
-                    .counter(result1.getCounter() + 1)
-                    .lastTime(LocalDateTime.now())
-                    .build();
-            userAccountWeChatMapper.update(updated);
-            log.debug("[用户描述] 老用户, userId={}, 当前小程序登录次数={}", result1.getUserId(), updated.getCounter());
-            return result1.getUserId();
+            return result1;
         }
 
         // 流程2：未找到，则说明这是首次使用这个小程序登录，继续检查“平台级”账号
         UserAccountWeChat result2 = getByUnionId(info.getUnionId());
-
         if (result2 != null) {
+            // 能找到，说明在其他小程序登录过
             // 继承对应的用户 ID，并将小程序账号级数据存入，下次登录时就直接在流程1返回了
-            createAccount(result2.getUserId(), info);
+            UserAccountWeChat result3 = createAccount(result2.getUserId(), info);
             log.info("[用户描述] 小程序级新用户（访问过其他小程序）, userId={}", result2.getUserId());
-            return result2.getUserId();
+            return result3;
         }
 
         // 流程3：上述2步未找到说明是新用户，需要先注册一个新用户，再返回
         long userId = userAccountService.createUser();
-        createAccount(userId, info);
+        UserAccountWeChat result4 = createAccount(userId, info);
         log.info("[用户描述] 平台级新用户, userId={}", userId);
 
-        return userId;
+        return result4;
     }
 
     /**
@@ -111,14 +106,37 @@ public class UserAccountWeChatService {
      * @date 2024/4/17
      * @since 2.3.0
      */
-    private void createAccount(long userId, WeChatAccountInfo info) {
-        UserAccountWeChat entity = UserAccountWeChat
+    private UserAccountWeChat createAccount(long userId, WeChatAccountInfo info) {
+        UserAccountWeChat inserted = UserAccountWeChat
                 .builder()
                 .appId(info.getAppId())
                 .openId(info.getOpenId())
                 .unionId(info.getUnionId())
                 .userId(userId)
                 .build();
-        userAccountWeChatMapper.insertSelective(entity);
+        userAccountWeChatMapper.insertSelective(inserted);
+
+        return userAccountWeChatMapper.selectOneById(inserted.getId());
+    }
+
+    /**
+     * 监听使用微信账户登录事件
+     *
+     * @date 2024/6/10
+     * @since 2.3.0
+     */
+    @Async
+    @EventListener(LoginByWeChatAccountEvent.class)
+    public void listenToLoginByWeChatAccountEvent(LoginByWeChatAccountEvent event) {
+        long id = event.getUserAccountWeChat().getId();
+
+        // 更新登录统计数据
+        UserAccountWeChat updated = UpdateEntity.of(UserAccountWeChat.class, id);
+        updated.setLastTime(LocalDateTime.now());
+        UpdateWrapper<UserAccountWeChat> wrapper = UpdateWrapper.of(updated);
+        wrapper.set(USER_ACCOUNT_WE_CHAT.COUNTER, USER_ACCOUNT_WE_CHAT.COUNTER.add(1));
+
+        userAccountWeChatMapper.update(updated);
+        userAccountService.refreshLoginStatistic(event.getUserAccountWeChat().getUserId());
     }
 }
