@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * @date 2024/6/10
  * @since 2.3.0
  **/
-@Table("login_wechat_log")
+@Table("login_wechat")
 @Data
 @Builder
 @NoArgsConstructor
