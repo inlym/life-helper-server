@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.user.account.event;
 
-import com.inlym.lifehelper.user.account.entity.UserAccountWeChat;
+import com.inlym.lifehelper.login.wechat.entity.WeChatLoginLog;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
@@ -13,10 +13,18 @@ import org.springframework.context.ApplicationEvent;
  **/
 @Getter
 public class LoginByWeChatAccountEvent extends ApplicationEvent {
-    private final UserAccountWeChat userAccountWeChat;
+    private final WeChatLoginLog weChatLoginLog;
 
-    public LoginByWeChatAccountEvent(UserAccountWeChat source) {
+    /** 关联的用户微信账户表 ID */
+    private final Long userAccountWeChatId;
+
+    /** 对应的用户 ID */
+    private final Long userId;
+
+    public LoginByWeChatAccountEvent(WeChatLoginLog source) {
         super(source);
-        this.userAccountWeChat = source;
+        this.weChatLoginLog = source;
+        this.userAccountWeChatId = source.getUserAccountWeChatId();
+        this.userId = source.getUserId();
     }
 }

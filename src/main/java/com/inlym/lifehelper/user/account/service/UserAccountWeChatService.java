@@ -128,7 +128,7 @@ public class UserAccountWeChatService {
     @Async
     @EventListener(LoginByWeChatAccountEvent.class)
     public void listenToLoginByWeChatAccountEvent(LoginByWeChatAccountEvent event) {
-        long id = event.getUserAccountWeChat().getId();
+        long id = event.getUserAccountWeChatId();
 
         // 更新登录统计数据
         UserAccountWeChat updated = UpdateEntity.of(UserAccountWeChat.class, id);
@@ -137,6 +137,6 @@ public class UserAccountWeChatService {
         wrapper.set(USER_ACCOUNT_WE_CHAT.COUNTER, USER_ACCOUNT_WE_CHAT.COUNTER.add(1));
 
         userAccountWeChatMapper.update(updated);
-        userAccountService.refreshLoginStatistic(event.getUserAccountWeChat().getUserId());
+        userAccountService.refreshLoginStatistic(event.getUserId());
     }
 }
