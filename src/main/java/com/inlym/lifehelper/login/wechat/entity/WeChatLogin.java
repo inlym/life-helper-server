@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeChatLoginLog {
+public class WeChatLogin {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */
