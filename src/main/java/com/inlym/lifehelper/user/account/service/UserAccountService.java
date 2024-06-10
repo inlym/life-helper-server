@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.user.account.service;
 
+import com.inlym.lifehelper.common.util.StringUtil;
 import com.inlym.lifehelper.user.account.entity.User;
 import com.inlym.lifehelper.user.account.entity.table.UserTableDef;
 import com.inlym.lifehelper.user.account.event.UserCreatedEvent;
@@ -22,6 +23,9 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class UserAccountService {
+    /** 默认头像存储路径 */
+    private static final String DEFAULT_AVATAR_PATH = "avatar/default.jpg";
+
     private final UserMapper userMapper;
 
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -32,7 +36,12 @@ public class UserAccountService {
      * @since 2.3.0
      */
     public long createUser() {
-        User user = new User();
+        User user = User
+                .builder()
+                .nickName("用户_" + StringUtil.generateRandomString(6))
+                .avatarPath(DEFAULT_AVATAR_PATH)
+                .build();
+
         userMapper.insertSelective(user);
         // 发布用户创建事件
         applicationEventPublisher.publishEvent(new UserCreatedEvent(userMapper.selectOneById(user.getId())));
