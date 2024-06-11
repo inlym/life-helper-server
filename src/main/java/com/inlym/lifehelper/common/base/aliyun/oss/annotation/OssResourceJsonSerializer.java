@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
 
@@ -16,7 +15,9 @@ import java.io.IOException;
  * @date 2024/6/10
  * @since 2.3.0
  **/
-@JsonComponent
+// 备注（2024.06.12）
+// 临时移除以下注解，让其不要注入，因为目前一旦加上，所有的字符串都会被处理，目前还不知道如何只处理被注解的字符串，这一部分还需要去研究一下。
+//@JsonComponent
 public class OssResourceJsonSerializer extends JsonSerializer<String> {
     private OssService ossService;
 
