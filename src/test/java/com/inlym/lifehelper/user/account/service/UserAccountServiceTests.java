@@ -1,7 +1,8 @@
 package com.inlym.lifehelper.user.account.service;
 
-import com.inlym.lifehelper.user.account.entity.User;
-import com.inlym.lifehelper.user.account.mapper.UserMapper;
+import com.inlym.lifehelper.account.user.entity.User;
+import com.inlym.lifehelper.account.user.mapper.UserMapper;
+import com.inlym.lifehelper.account.user.service.UserAccountService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
