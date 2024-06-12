@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.user.account.model;
 
+import com.inlym.lifehelper.common.base.aliyun.oss.annotation.OssResource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class BaseUserInfo {
     private String nickName;
 
     /** 头像地址 */
+    @OssResource
     private String avatarUrl;
 }

@@ -1,10 +1,14 @@
 package com.inlym.lifehelper.common.base.aliyun.oss.annotation;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
 
@@ -15,10 +19,8 @@ import java.io.IOException;
  * @date 2024/6/10
  * @since 2.3.0
  **/
-// 备注（2024.06.12）
-// 临时移除以下注解，让其不要注入，因为目前一旦加上，所有的字符串都会被处理，目前还不知道如何只处理被注解的字符串，这一部分还需要去研究一下。
-//@JsonComponent
-public class OssResourceJsonSerializer extends JsonSerializer<String> {
+@JsonComponent
+public class OssResourceJsonSerializer extends JsonSerializer<String> implements ContextualSerializer {
     private OssService ossService;
 
     // 备注（2024.06.10）
@@ -32,5 +34,15 @@ public class OssResourceJsonSerializer extends JsonSerializer<String> {
     @Override
     public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeString(ossService.getPresignedUrl(s));
+    }
+
+    @Override
+    public JsonSerializer<?> createContextual(SerializerProvider serializerProvider, BeanProperty beanProperty) {
+        OssResource annotation = beanProperty.getAnnotation(OssResource.class);
+        if (annotation != null) {
+            return this;
+        }
+
+        return new ToStringSerializer(String.class);
     }
 }
