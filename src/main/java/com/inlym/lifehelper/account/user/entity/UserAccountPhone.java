@@ -12,44 +12,26 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 用户账户实体
+ * 用户手机号账户表
  *
  * <h2>说明
- * <p>当前数据表不存储账户关联关系（存于其他“用户账户表”），其他数据表通过关联信息指向对应用户 ID：
- * <p>1. {@code UserAccountWeChat} 微信账户关联表
- * <p>2. {@code UserAccountPhone} 手机号账户关联表
- * <p>3. {@code UserAccountGithub} Github账户关联表（当前无）
+ * <p>通过手机号关联到账户。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2024/6/12
  * @since 2.3.0
  **/
-@Table("user")
+@Table("user_account_phone")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    /** 用户 ID */
+public class UserAccountPhone {
+    // ============================ 通用字段 ============================
+
+    /** 主键 ID */
     @Id(keyType = KeyType.Auto)
     private Long id;
-
-    /** 昵称 */
-    private String nickName;
-
-    /** 头像路径 */
-    private String avatarPath;
-
-    /** 注册时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime registerTime;
-
-    /** 最近一次登录时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime lastLoginTime;
-
-    /** 登录次数 */
-    @Column(onInsertValue = "0")
-    private Long loginCounter;
 
     /** 创建时间 */
     @Column(onInsertValue = "now()")
@@ -62,4 +44,24 @@ public class User {
     /** 乐观锁（修改次数） */
     @Column(version = true)
     private Long version;
+
+    /** 删除时间（逻辑删除标志） */
+    @Column(isLogicDelete = true)
+    private LocalDateTime deleteTime;
+
+    // ============================ 业务字段 ============================
+
+    /** 对应的用户 ID */
+    private Long userId;
+
+    /** 手机号（仅支持国内手机号） */
+    private String phone;
+
+    /** 当前手机号登录次数 */
+    @Column(onInsertValue = "0")
+    private Long counter;
+
+    /** 最近一次使用（指通过当前行记录用于登录）时间 */
+    @Column(onInsertValue = "now()")
+    private LocalDateTime lastTime;
 }

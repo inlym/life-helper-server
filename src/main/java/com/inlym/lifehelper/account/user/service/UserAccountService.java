@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.account.user.service;
 
 import com.inlym.lifehelper.account.user.entity.User;
-import com.inlym.lifehelper.account.user.entity.table.UserTableDef;
 import com.inlym.lifehelper.account.user.event.UserCreatedEvent;
 import com.inlym.lifehelper.account.user.mapper.UserMapper;
 import com.inlym.lifehelper.common.util.StringUtil;
@@ -12,6 +11,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static com.inlym.lifehelper.account.user.entity.table.UserTableDef.USER;
 
 /**
  * 用户账户服务
@@ -57,7 +58,7 @@ public class UserAccountService {
         updated.setLastLoginTime(LocalDateTime.now());
 
         UpdateWrapper<User> wrapper = UpdateWrapper.of(updated);
-        wrapper.set(UserTableDef.USER.LOGIN_COUNTER, UserTableDef.USER.LOGIN_COUNTER.add(1));
+        wrapper.set(USER.LOGIN_COUNTER, USER.LOGIN_COUNTER.add(1));
 
         userMapper.update(updated);
     }
