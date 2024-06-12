@@ -4,11 +4,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -19,9 +20,14 @@ import java.io.IOException;
  * @date 2024/6/10
  * @since 2.3.0
  **/
-@JsonComponent
-public class OssResourceJsonSerializer extends JsonSerializer<String> implements ContextualSerializer {
+@Component
+@JsonSerialize(using = OssResourceJsonSerializer.class)
+public class OssResourceJsonSerializer extends StdSerializer<String> implements ContextualSerializer {
     private OssService ossService;
+
+    protected OssResourceJsonSerializer() {
+        super(String.class);
+    }
 
     // 备注（2024.06.10）
     // [当前类不使用构造器注入的原因]
@@ -43,6 +49,6 @@ public class OssResourceJsonSerializer extends JsonSerializer<String> implements
             return this;
         }
 
-        return new ToStringSerializer(String.class);
+        return null;
     }
 }
