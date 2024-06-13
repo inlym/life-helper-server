@@ -7,7 +7,7 @@ import com.aliyun.oss.model.OSSObject;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.CentralBucketProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
 import com.inlym.lifehelper.common.util.ImageUtil;
-import com.inlym.lifehelper.common.util.StringUtil;
+import com.inlym.lifehelper.common.util.RandomStringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ public class CentralBucketService {
      */
     public String saveImage(OssDir dir, byte[] bytes) {
         String ext = ImageUtil.detectFormat(bytes);
-        String key = dir.getDirname() + "/" + StringUtil.generateRandomString(12) + "." + ext;
+        String key = dir.getDirname() + "/" + RandomStringUtil.generate(12) + "." + ext;
         centralBucketClient.putObject(properties.getBucketName(), key, new ByteArrayInputStream(bytes));
         return key;
     }
@@ -76,13 +76,11 @@ public class CentralBucketService {
      * @param key 资源在 OSS 的存储路径
      *
      * @return 完整的 URL 地址
-     * @see
-     * <a href="https://help.aliyun.com/zh/oss/user-guide/how-to-obtain-the-url-of-a-single-object-or-the-urls-of-multiple-objects">使用文件URL分享文件</a>
+     * @see <a href="https://help.aliyun.com/zh/oss/user-guide/how-to-obtain-the-url-of-a-single-object-or-the-urls-of-multiple-objects">使用文件URL分享文件</a>
      * @since 2024/6/8
      */
     public String getPresignedUrl(String key) {
-        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(properties.getBucketName(), key,
-                                                                              HttpMethod.GET);
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(properties.getBucketName(), key, HttpMethod.GET);
         // 设置过期时间，目前默认：30天
         request.setExpiration(new Date(System.currentTimeMillis() + Duration.ofDays(30L).toMillis()));
 

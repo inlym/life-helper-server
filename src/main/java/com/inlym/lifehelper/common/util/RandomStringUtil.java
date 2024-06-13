@@ -5,13 +5,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * 字符串工具集
+ * 随机字符串工具集
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/5/31
  * @since 2.3.0
  **/
-public abstract class StringUtil {
+public abstract class RandomStringUtil {
     /** 空字符串 */
     public static final String EMPTY_STRING = "";
 
@@ -24,7 +24,7 @@ public abstract class StringUtil {
      * @date 2024/5/31
      * @since 2.3.0
      */
-    public static String generateRandomString(int length) {
+    public static String generate(int length) {
         // 定义字符集，包括大写字母、小写字母和数字
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();

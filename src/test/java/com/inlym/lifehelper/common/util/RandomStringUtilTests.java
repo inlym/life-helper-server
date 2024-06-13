@@ -15,17 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 2.3.0
  **/
 @SpringBootTest
-class StringUtilTests {
+class RandomStringUtilTests {
 
     @Test
-    void testGenerateRandomString() {
+    void testGenerate() {
         // 检测生成的字符串长度
-        assertThat(StringUtil.generateRandomString(10).length()).isEqualTo(10);
+        assertThat(RandomStringUtil.generate(10).length()).isEqualTo(10);
 
         // 生成1万个，检测不重复
         HashSet<String> set = new HashSet<>();
         for (int i = 0; i < 10000; i++) {
-            assertThat(set.add(StringUtil.generateRandomString(8))).isTrue();
+            assertThat(set.add(RandomStringUtil.generate(8))).isTrue();
         }
     }
 }

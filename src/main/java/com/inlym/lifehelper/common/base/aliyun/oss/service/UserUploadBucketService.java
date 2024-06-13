@@ -8,7 +8,7 @@ import com.aliyun.oss.model.PolicyConditions;
 import com.inlym.lifehelper.common.base.aliyun.oss.config.UserUploadBucketProperties;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.GeneratePostCredentialOptions;
 import com.inlym.lifehelper.common.base.aliyun.oss.model.OssPostCredential;
-import com.inlym.lifehelper.common.util.StringUtil;
+import com.inlym.lifehelper.common.util.RandomStringUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,18 +42,13 @@ public class UserUploadBucketService {
      */
     public OssPostCredential generatePostCredential(@NonNull String ext) {
         String dateStr = LocalDate.now().toString().replaceAll("-", "");
-        String key = dateStr + "/" + StringUtil.generateRandomString(12) + "." + ext;
+        String key = dateStr + "/" + RandomStringUtil.generate(12) + "." + ext;
         // 默认有效期：2小时
         Duration duration = Duration.ofHours(2);
         // 默认文件最大体积：100MB
         long sizeMB = 100L;
 
-        return generatePostCredential(GeneratePostCredentialOptions
-                                              .builder()
-                                              .key(key)
-                                              .duration(duration)
-                                              .sizeMB(sizeMB)
-                                              .build());
+        return generatePostCredential(GeneratePostCredentialOptions.builder().key(key).duration(duration).sizeMB(sizeMB).build());
     }
 
     /**
@@ -62,8 +57,7 @@ public class UserUploadBucketService {
      * @param options 生成环节使用的配置项
      *
      * @date 2024/6/8
-     * @see
-     * <a href="https://help.aliyun.com/zh/oss/use-cases/obtain-signature-information-from-the-server-and-upload-data-to-oss">服务端签名直传</a>
+     * @see <a href="https://help.aliyun.com/zh/oss/use-cases/obtain-signature-information-from-the-server-and-upload-data-to-oss">服务端签名直传</a>
      * @since 2.3.0
      */
     public OssPostCredential generatePostCredential(GeneratePostCredentialOptions options) {

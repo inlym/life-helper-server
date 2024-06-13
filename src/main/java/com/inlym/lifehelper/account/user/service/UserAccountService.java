@@ -3,7 +3,7 @@ package com.inlym.lifehelper.account.user.service;
 import com.inlym.lifehelper.account.user.entity.User;
 import com.inlym.lifehelper.account.user.event.UserCreatedEvent;
 import com.inlym.lifehelper.account.user.mapper.UserMapper;
-import com.inlym.lifehelper.common.util.StringUtil;
+import com.inlym.lifehelper.common.util.RandomStringUtil;
 import com.mybatisflex.core.update.UpdateWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class UserAccountService {
      * @since 2.3.0
      */
     public long createUser() {
-        User user = User.builder().nickName("用户_" + StringUtil.generateRandomString(6)).avatarPath(DEFAULT_AVATAR_PATH).build();
+        User user = User.builder().nickName("用户_" + RandomStringUtil.generate(6)).avatarPath(DEFAULT_AVATAR_PATH).build();
 
         userMapper.insertSelective(user);
         // 发布用户创建事件
