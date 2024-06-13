@@ -23,7 +23,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 public class SmsService {
-    private static final String SIGN_NAME = "快乐短文";
+    /** 签名名称 */
+    private static final String SIGN_NAME = "小鸣AI";
 
     /** 响应数据表达成功的 code 值 */
     private static final String SUCCESS_CODE = "OK";
@@ -43,7 +44,7 @@ public class SmsService {
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setPhoneNumbers(phone)
                 .setSignName(SIGN_NAME)
-                .setTemplateCode("SMS_271410655")
+                .setTemplateCode("SMS_468360281")
                 .setTemplateParam("{\"code\":\"" + code + "\"}");
 
         try {
