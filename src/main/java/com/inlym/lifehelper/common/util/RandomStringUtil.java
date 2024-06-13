@@ -16,7 +16,7 @@ public abstract class RandomStringUtil {
     public static final String EMPTY_STRING = "";
 
     /**
-     * 生成指定长度的随机字符串
+     * 生成指定长度的随机字符串（包含大小写字母和数字）
      *
      * @param length 字符串长度
      *
@@ -34,5 +34,23 @@ public abstract class RandomStringUtil {
                 .map(i -> random.nextInt(characters.length()))
                 .mapToObj(randomIndex -> String.valueOf(characters.charAt(randomIndex)))
                 .collect(Collectors.joining());
+    }
+
+    /**
+     * 生成数字串（全部由数字组成的字符串）
+     *
+     * @param length 字符串长度
+     *
+     * @date 2024/6/14
+     * @since 2.3.0
+     */
+    public static String generateNumericString(int length) {
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(random.nextInt(10));
+        }
+
+        return sb.toString();
     }
 }
