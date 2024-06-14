@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.account.login.wechat.service;
 
-import com.inlym.lifehelper.account.login.wechat.entity.WeChatLogin;
+import com.inlym.lifehelper.account.login.wechat.entity.WeChatLoginLog;
 import com.inlym.lifehelper.account.login.wechat.mapper.WeChatLoginLogMapper;
 import com.inlym.lifehelper.account.user.entity.UserAccountWeChat;
 import com.inlym.lifehelper.account.user.event.LoginByWeChatAccountEvent;
@@ -58,7 +58,7 @@ public class WeChatLoginService {
         IdentityCertificate identityCertificate = simpleTokenService.generateIdentityCertificate(weChatUserAccount.getUserId());
 
         // 记录登录日志
-        WeChatLogin inserted = WeChatLogin
+        WeChatLoginLog inserted = WeChatLoginLog
                 .builder()
                 .code(code)
                 .appId(appId)

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 微信登录记录日志
+ * 微信账户登录日志
  *
  * <h2>主要用途
  * <p>记录使用微信账户的方式进行登录的行为。
@@ -21,12 +21,12 @@ import java.time.LocalDateTime;
  * @date 2024/6/10
  * @since 2.3.0
  **/
-@Table("login_wechat")
+@Table("login_wechat_log")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeChatLogin {
+public class WeChatLoginLog {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */
