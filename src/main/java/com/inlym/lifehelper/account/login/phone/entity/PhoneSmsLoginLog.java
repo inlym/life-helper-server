@@ -21,12 +21,12 @@ import java.time.LocalDateTime;
  * @date 2024/6/12
  * @since 2.3.0
  **/
-@Table("login_phone")
+@Table("login_phone_sms_log")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhoneLogin {
+public class PhoneSmsLoginLog {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */
@@ -40,10 +40,6 @@ public class PhoneLogin {
     /** 更新时间 */
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
-
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
 
     // ============================ 业务字段 ============================
 
@@ -59,7 +55,7 @@ public class PhoneLogin {
     /** 对应的用户 ID */
     private Long userId;
 
-    /** 鉴权令牌 */
+    /** 发放的鉴权令牌 */
     private String token;
 
     /** 客户端 IP 地址 */

@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.account.user.event;
 
-import com.inlym.lifehelper.account.login.phone.entity.PhoneLogin;
+import com.inlym.lifehelper.account.login.phone.entity.PhoneSmsLoginLog;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationEvent;
  **/
 @Getter
 public class LoginByPhoneEvent extends ApplicationEvent {
-    private final PhoneLogin phoneLogin;
+    private final PhoneSmsLoginLog phoneSmsLoginLog;
 
     /** 关联的用户手机号账户表 ID */
     private final Long userAccountPhoneId;
@@ -21,11 +21,11 @@ public class LoginByPhoneEvent extends ApplicationEvent {
     /** 对应的用户 ID */
     private final Long userId;
 
-    public LoginByPhoneEvent(PhoneLogin phoneLogin) {
-        super(phoneLogin);
+    public LoginByPhoneEvent(PhoneSmsLoginLog phoneSmsLoginLog) {
+        super(phoneSmsLoginLog);
 
-        this.phoneLogin = phoneLogin;
-        this.userAccountPhoneId = phoneLogin.getUserAccountPhoneId();
-        this.userId = phoneLogin.getUserId();
+        this.phoneSmsLoginLog = phoneSmsLoginLog;
+        this.userAccountPhoneId = phoneSmsLoginLog.getUserAccountPhoneId();
+        this.userId = phoneSmsLoginLog.getUserId();
     }
 }
