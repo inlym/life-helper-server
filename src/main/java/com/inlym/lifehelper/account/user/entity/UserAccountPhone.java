@@ -51,17 +51,24 @@ public class UserAccountPhone {
 
     // ============================ 业务字段 ============================
 
+    // ---------- 账户关联表通用项 ----------
+
     /** 对应的用户 ID */
     private Long userId;
+
+    /** （通过当前行）登录次数 */
+    @Column(onInsertValue = "0")
+    private Long counter;
+
+    /** 最近一次（通过当前行）登录时间 */
+    @Column(onInsertValue = "now()")
+    private LocalDateTime lastTime;
+
+    // ---------- 账户关联表差异项 ----------
 
     /** 手机号（仅支持国内手机号） */
     private String phone;
 
-    /** 当前手机号登录次数 */
-    @Column(onInsertValue = "0")
-    private Long counter;
-
-    /** 最近一次使用（指通过当前行记录用于登录）时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime lastTime;
+    /** 哈希化后的密码 */
+    private String hashedPassword;
 }

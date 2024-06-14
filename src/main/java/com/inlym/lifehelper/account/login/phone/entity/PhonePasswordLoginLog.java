@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.account.login.phone.entity;
 
+import com.inlym.lifehelper.account.user.model.LoginLog;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhonePasswordLoginLog {
+public class PhonePasswordLoginLog implements LoginLog {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */
