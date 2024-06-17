@@ -70,6 +70,6 @@ public class BaseUserInfoService {
      */
     public BaseUserInfo get(long userId) {
         User user = userMapper.selectOneById(userId);
-        return BaseUserInfo.builder().nickName(user.getNickName()).avatarUrl(ossService.getPresignedUrl(user.getAvatarPath())).build();
+        return BaseUserInfo.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
     }
 }

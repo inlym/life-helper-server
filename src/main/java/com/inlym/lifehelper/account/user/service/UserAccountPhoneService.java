@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.account.user.service;
 
 import com.inlym.lifehelper.account.user.entity.UserAccountPhone;
-import com.inlym.lifehelper.account.user.event.LoginByPhoneEvent;
+import com.inlym.lifehelper.account.user.event.LoginByPhoneSmsEvent;
 import com.inlym.lifehelper.account.user.mapper.UserAccountPhoneMapper;
 import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.update.UpdateWrapper;
@@ -60,8 +60,8 @@ public class UserAccountPhoneService {
      * @since 2.3.0
      */
     @Async
-    @EventListener(LoginByPhoneEvent.class)
-    public void listenToLoginByPhoneEvent(LoginByPhoneEvent event) {
+    @EventListener(LoginByPhoneSmsEvent.class)
+    public void listenToLoginByPhoneEvent(LoginByPhoneSmsEvent event) {
         long id = event.getUserAccountPhoneId();
 
         // 更新统计数据

@@ -5,14 +5,14 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * 使用手机号登录事件
+ * 使用手机号验证码登录事件
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/6/12
  * @since 2.3.0
  **/
 @Getter
-public class LoginByPhoneEvent extends ApplicationEvent {
+public class LoginByPhoneSmsEvent extends ApplicationEvent {
     private final PhoneSmsLoginLog phoneSmsLoginLog;
 
     /** 关联的用户手机号账户表 ID */
@@ -21,7 +21,7 @@ public class LoginByPhoneEvent extends ApplicationEvent {
     /** 对应的用户 ID */
     private final Long userId;
 
-    public LoginByPhoneEvent(PhoneSmsLoginLog phoneSmsLoginLog) {
+    public LoginByPhoneSmsEvent(PhoneSmsLoginLog phoneSmsLoginLog) {
         super(phoneSmsLoginLog);
 
         this.phoneSmsLoginLog = phoneSmsLoginLog;
