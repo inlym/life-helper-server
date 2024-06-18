@@ -41,11 +41,10 @@ public class PhonePasswordLoginLog implements LoginLog {
 
     // ============================ 业务字段 ============================
 
+    // ---------- 手机号登录日志通用项 ----------
+
     /** 手机号 */
     private String phone;
-
-    /** 哈希化后的密码 */
-    private String hashedPassword;
 
     /** 关联的用户手机号账户表 ID */
     private Long userAccountPhoneId;
@@ -61,4 +60,9 @@ public class PhonePasswordLoginLog implements LoginLog {
 
     /** 登录时间 */
     private LocalDateTime loginTime;
+
+    // ---------- 手机号登录日志差异项 ----------
+
+    /** 哈希化后的密码 */
+    private String hashedPassword;
 }

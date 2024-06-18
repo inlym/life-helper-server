@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.account.login.phone.entity;
 
+import com.inlym.lifehelper.common.base.aliyun.sms.constant.SendingStatus;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -47,6 +48,8 @@ public class LoginSmsTrack {
 
     // ============================ 业务字段 ============================
 
+    // ---------- 短信发出前确认的字段 ----------
+
     /** 手机号 */
     private String phone;
 
@@ -59,23 +62,56 @@ public class LoginSmsTrack {
     /** 客户端 IP 地址 */
     private String ip;
 
-    /** 短信发送时间 */
-    private LocalDateTime sendTime;
+    /** 短信发送时间（发送前） */
+    private LocalDateTime preSendTime;
 
-    /** 计划失效时间 */
+    /** 发送状态 */
+    private SendingStatus sendingStatus;
+
+    // ---------- 短信发出后，从发送结果反馈获得的的字段 ----------
+    // 文档地址：https://next.api.aliyun.com/document/Dysmsapi/2017-05-25/SendSms
+
+    /** 请求状态码 */
+    private String resCode;
+
+    /** 状态码的描述 */
+    private String resMessage;
+
+    /** 发送回执 ID */
+    private String resBizId;
+
+    /** 请求 ID */
+    private String requestId;
+
+    // ---------- 短信发出后，得到相应后处理的字段 ----------
+
+    /** 收到响应的时间 */
+    private LocalDateTime postSendTime;
+
+    /**
+     * 计划失效时间
+     *
+     * <h3>说明
+     * <p>目前为短信发送后的5分钟。
+     */
     private LocalDateTime plannedDisableTime;
-
-    /** 响应数据返回的业务码 */
-    private String bizCode;
 
     /** 用户首次尝试进行登录验证时间 */
     private LocalDateTime firstAttemptTime;
+
+    /** 用户最后一次尝试进行登录验证时间 */
+    private LocalDateTime lastAttemptTime;
 
     /** 用户尝试进行登录验证的次数 */
     private Integer attemptCounter;
 
     /** 匹配成功时间 */
     private LocalDateTime succeedTime;
+
+    // ---------- 关联 ID ----------
+
+    /** 登录成功后记录关联的手机号验证码登录日志表 ID */
+    private Long phoneSmsLoginLogId;
 
     /** 登录成功后记录关联的用户手机号账户表 ID */
     private Long userAccountPhoneId;

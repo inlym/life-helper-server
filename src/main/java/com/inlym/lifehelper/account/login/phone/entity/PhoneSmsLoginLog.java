@@ -44,11 +44,10 @@ public class PhoneSmsLoginLog implements LoginLog {
 
     // ============================ 业务字段 ============================
 
+    // ---------- 手机号登录日志通用项 ----------
+
     /** 手机号 */
     private String phone;
-
-    /** 短信验证码 */
-    private String code;
 
     /** 关联的用户手机号账户表 ID */
     private Long userAccountPhoneId;
@@ -64,4 +63,9 @@ public class PhoneSmsLoginLog implements LoginLog {
 
     /** 登录时间 */
     private LocalDateTime loginTime;
+
+    // ---------- 手机号登录日志差异项 ----------
+
+    /** 短信验证码 */
+    private String code;
 }
