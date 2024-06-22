@@ -29,27 +29,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    /** 用户 ID */
+    // ============================ 通用字段 ============================
+
+    /** 主键 ID，即业务含义上的“用户 ID” */
     @Id(keyType = KeyType.Auto)
     private Long id;
-
-    /** 昵称 */
-    private String nickName;
-
-    /** 头像路径 */
-    private String avatarPath;
-
-    /** 注册时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime registerTime;
-
-    /** 最近一次登录时间 */
-    @Column(onInsertValue = "now()")
-    private LocalDateTime lastLoginTime;
-
-    /** 登录次数 */
-    @Column(onInsertValue = "0")
-    private Long loginCounter;
 
     /** 创建时间 */
     @Column(onInsertValue = "now()")
@@ -62,4 +46,29 @@ public class User {
     /** 乐观锁（修改次数） */
     @Column(version = true)
     private Long version;
+
+    // 字段备注：无逻辑删除字段
+
+    // ============================ 业务字段 ============================
+
+    /** 昵称 */
+    private String nickName;
+
+    /** 头像路径 */
+    private String avatarPath;
+
+    /** 注册时间 */
+    @Column(onInsertValue = "now()")
+    private LocalDateTime registerTime;
+
+    /** 登录次数 */
+    @Column(onInsertValue = "0")
+    private Long loginCounter;
+
+    /** 最近一次登录时间 */
+    @Column(onInsertValue = "now()")
+    private LocalDateTime lastLoginTime;
+
+    /** 最近一次登录的 IP 地址 */
+    private String lastLoginIp;
 }

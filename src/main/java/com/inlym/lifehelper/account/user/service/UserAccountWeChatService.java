@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.account.user.service;
 
+import com.inlym.lifehelper.account.login.common.event.LoginByWeChatAccountEvent;
 import com.inlym.lifehelper.account.user.entity.UserAccountWeChat;
-import com.inlym.lifehelper.account.user.event.LoginByWeChatAccountEvent;
 import com.inlym.lifehelper.account.user.mapper.UserAccountWeChatMapper;
 import com.inlym.lifehelper.account.user.model.WeChatAccountInfo;
 import com.mybatisflex.core.query.QueryCondition;
@@ -130,13 +130,13 @@ public class UserAccountWeChatService {
     public void listenToLoginByWeChatAccountEvent(LoginByWeChatAccountEvent event) {
         long id = event.getUserAccountWeChatId();
 
+        // TODO
         // 更新登录统计数据
         UserAccountWeChat updated = UpdateEntity.of(UserAccountWeChat.class, id);
-        updated.setLastTime(LocalDateTime.now());
+        updated.setLastLoginTime(LocalDateTime.now());
         UpdateWrapper<UserAccountWeChat> wrapper = UpdateWrapper.of(updated);
-        wrapper.set(USER_ACCOUNT_WE_CHAT.COUNTER, USER_ACCOUNT_WE_CHAT.COUNTER.add(1));
+        wrapper.set(USER_ACCOUNT_WE_CHAT.LOGIN_COUNTER, USER_ACCOUNT_WE_CHAT.LOGIN_COUNTER.add(1));
 
         userAccountWeChatMapper.update(updated);
-        userAccountService.refreshLoginStatistic(event.getUserId());
     }
 }

@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.account.user.constant;
+package com.inlym.lifehelper.account.login.common.constant;
 
 import com.mybatisflex.annotation.EnumValue;
 import lombok.Getter;

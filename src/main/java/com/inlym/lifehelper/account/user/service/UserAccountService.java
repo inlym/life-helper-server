@@ -1,18 +1,15 @@
 package com.inlym.lifehelper.account.user.service;
 
+import com.inlym.lifehelper.account.login.common.event.LoginEvent;
 import com.inlym.lifehelper.account.user.entity.User;
 import com.inlym.lifehelper.account.user.event.UserCreatedEvent;
 import com.inlym.lifehelper.account.user.mapper.UserMapper;
 import com.inlym.lifehelper.common.util.RandomStringUtil;
-import com.mybatisflex.core.update.UpdateWrapper;
-import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-
-import static com.inlym.lifehelper.account.user.entity.table.UserTableDef.USER;
 
 /**
  * 用户账户服务
@@ -47,19 +44,14 @@ public class UserAccountService {
     }
 
     /**
-     * 刷新登录统计数据
+     * 监听登录事件
      *
-     * @param userId 用户 ID
-     *
+     * @date 2024/6/22
      * @since 2.3.0
      */
-    public void refreshLoginStatistic(long userId) {
-        User updated = UpdateEntity.of(User.class, userId);
-        updated.setLastLoginTime(LocalDateTime.now());
-
-        UpdateWrapper<User> wrapper = UpdateWrapper.of(updated);
-        wrapper.set(USER.LOGIN_COUNTER, USER.LOGIN_COUNTER.add(1));
-
-        userMapper.update(updated);
+    @Async
+    @EventListener(LoginEvent.class)
+    public void listenToLoginEvent(LoginEvent event) {
+        // TODO
     }
 }

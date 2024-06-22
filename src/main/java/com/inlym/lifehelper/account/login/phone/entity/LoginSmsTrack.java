@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
  * <h2>主要用途
  * <p>记录使用手机号（短信验证码）的方式进行登录的过程中，各个时间节点情况。
  *
+ * <h2>追踪起点
+ * <p>用户在前台点击“获取验证码”（不管短信是否正确发出）。
+ *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/6/13
  * @since 2.3.0
@@ -46,6 +49,8 @@ public class LoginSmsTrack {
     @Column(version = true)
     private Long version;
 
+    // 字段说明：因为是“追踪表”，因此此处无“逻辑删除标志”字段
+
     // ============================ 业务字段 ============================
 
     // ---------- 短信发出前确认的字段 ----------
@@ -56,7 +61,12 @@ public class LoginSmsTrack {
     /** 短信验证码 */
     private String code;
 
-    /** 校验码 */
+    /**
+     * 校验码
+     *
+     * <h3>说明
+     * <p>32位随机字符串，使用唯一约束。
+     */
     private String checkCode;
 
     /** 客户端 IP 地址 */
@@ -88,21 +98,13 @@ public class LoginSmsTrack {
     /** 收到响应的时间 */
     private LocalDateTime postSendTime;
 
-    /**
-     * 计划失效时间
-     *
-     * <h3>说明
-     * <p>目前为短信发送后的5分钟。
-     */
-    private LocalDateTime plannedDisableTime;
-
     /** 用户首次尝试进行登录验证时间 */
     private LocalDateTime firstAttemptTime;
 
     /** 用户最后一次尝试进行登录验证时间 */
     private LocalDateTime lastAttemptTime;
 
-    /** 用户尝试进行登录验证的次数 */
+    /** 用户尝试进行登录验证的次数，默认值：0 */
     private Integer attemptCounter;
 
     /** 匹配成功时间 */

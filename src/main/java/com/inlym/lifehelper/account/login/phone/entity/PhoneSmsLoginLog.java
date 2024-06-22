@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.account.login.phone.entity;
 
-import com.inlym.lifehelper.account.user.model.LoginLog;
+import com.inlym.lifehelper.account.login.common.model.LoginLog;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 手机号（短信验证码）登录记录日志
+ * 手机号（短信验证码）登录日志
  *
  * <h2>主要用途
  * <p>记录使用手机号（短信验证码）的方式进行登录的行为。
@@ -41,6 +41,8 @@ public class PhoneSmsLoginLog implements LoginLog {
     /** 更新时间 */
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
+
+    // 字段说明：因为是“日志表”，因此此处无“逻辑删除标志”和“乐观锁”字段
 
     // ============================ 业务字段 ============================
 

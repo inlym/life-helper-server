@@ -1,9 +1,9 @@
 package com.inlym.lifehelper.account.login.wechat.service;
 
+import com.inlym.lifehelper.account.login.common.event.LoginByWeChatAccountEvent;
 import com.inlym.lifehelper.account.login.wechat.entity.WeChatLoginLog;
 import com.inlym.lifehelper.account.login.wechat.mapper.WeChatLoginLogMapper;
 import com.inlym.lifehelper.account.user.entity.UserAccountWeChat;
-import com.inlym.lifehelper.account.user.event.LoginByWeChatAccountEvent;
 import com.inlym.lifehelper.account.user.model.WeChatAccountInfo;
 import com.inlym.lifehelper.account.user.service.UserAccountWeChatService;
 import com.inlym.lifehelper.common.auth.core.IdentityCertificate;

@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.account.login.wechat.entity;
 
-import com.inlym.lifehelper.account.user.model.LoginLog;
+import com.inlym.lifehelper.account.login.common.model.LoginLog;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -42,9 +42,7 @@ public class WeChatLoginLog implements LoginLog {
     @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
+    // 字段说明：因为是“日志表”，因此此处无“逻辑删除标志”和“乐观锁”字段
 
     // ============================ 业务字段 ============================
 

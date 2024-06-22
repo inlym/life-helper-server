@@ -56,13 +56,16 @@ public class UserAccountPhone {
     /** 对应的用户 ID */
     private Long userId;
 
-    /** （通过当前行）登录次数 */
+    /** 登录次数 */
     @Column(onInsertValue = "0")
-    private Long counter;
+    private Long loginCounter;
 
-    /** 最近一次（通过当前行）登录时间 */
+    /** 最近一次登录时间 */
     @Column(onInsertValue = "now()")
-    private LocalDateTime lastTime;
+    private LocalDateTime lastLoginTime;
+
+    /** 最近一次登录的 IP 地址 */
+    private String lastLoginIp;
 
     // ---------- 账户关联表差异项 ----------
 

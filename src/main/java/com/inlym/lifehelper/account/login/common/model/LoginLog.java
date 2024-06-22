@@ -1,4 +1,4 @@
-package com.inlym.lifehelper.account.user.model;
+package com.inlym.lifehelper.account.login.common.model;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  **/
 public interface LoginLog {
     /** 获取用户 ID */
-    long getUserId();
+    Long getUserId();
 
     /** 获取客户端 IP 地址 */
     String getIp();
