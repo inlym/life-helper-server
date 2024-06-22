@@ -35,7 +35,7 @@ public class ErrorResponse {
         this.errorCode = errorCode;
 
         // 未特别指明，则使用这句默认提示。
-        this.errorMessage = "网络异常，请稍后重试！";
+        this.errorMessage = "网络异常，请稍后再试！";
     }
 
     public ErrorResponse(int errorCode, String errorMessage) {

@@ -75,13 +75,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
-        ConstraintViolationImpl<?> cv = (ConstraintViolationImpl<?>) e
-            .getConstraintViolations()
-            .toArray()[0];
-
-        String message = cv.getMessage();
-
-        return new ErrorResponse(3, message);
+        ConstraintViolationImpl<?> cv = (ConstraintViolationImpl<?>) e.getConstraintViolations().toArray()[0];
+        return new ErrorResponse(3, cv.getMessage());
     }
 
     /**
@@ -100,20 +95,5 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ResourceNotFoundException.class})
     public ErrorResponse handleUnauthorizedResourceAccessException() {
         return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
-    }
-
-    /**
-     * 通用异常处理
-     *
-     * <h2>说明
-     * <p>未被其他处理器捕获时，最终会进入到这里处理。
-     */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public ErrorResponse handleException(Exception e) {
-        log.debug(e
-                      .getClass()
-                      .getName() + ":" + e.getMessage());
-        return new ErrorResponse(1);
     }
 }
