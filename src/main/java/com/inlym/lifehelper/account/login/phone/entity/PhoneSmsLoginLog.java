@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 手机号（短信验证码）登录日志
+ * 手机号（短信验证码）登录日志表
  *
  * <h2>主要用途
  * <p>记录使用手机号（短信验证码）的方式进行登录的行为。

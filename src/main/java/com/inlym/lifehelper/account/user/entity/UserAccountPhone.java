@@ -72,6 +72,6 @@ public class UserAccountPhone {
     /** 手机号（仅支持国内手机号） */
     private String phone;
 
-    /** 哈希化后的密码 */
+    /** 使用 HmacSHA256 算法哈希化后的密码 */
     private String hashedPassword;
 }

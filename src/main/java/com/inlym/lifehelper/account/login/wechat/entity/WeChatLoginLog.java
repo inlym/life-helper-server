@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 微信账户登录日志
+ * 微信账户登录日志表
  *
  * <h2>主要用途
  * <p>记录使用微信账户的方式进行登录的行为。
