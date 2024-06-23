@@ -62,6 +62,7 @@ public class UserAccountPhoneService {
     @Async
     @EventListener(LoginByPhoneSmsEvent.class)
     public void listenToLoginByPhoneSmsEvent(LoginByPhoneSmsEvent event) {
+        log.trace("[EventListener=LoginByPhoneSmsEvent] event={}", event);
         long id = event.getUserAccountPhoneId();
 
         // TODO

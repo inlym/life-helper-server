@@ -4,9 +4,7 @@ import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
 import com.inlym.lifehelper.account.login.common.event.LoginByPhoneSmsEvent;
 import com.inlym.lifehelper.account.login.phone.entity.LoginSmsTrack;
 import com.inlym.lifehelper.account.login.phone.entity.PhoneSmsLoginLog;
-import com.inlym.lifehelper.account.login.phone.exception.PhoneCodeExpiredException;
-import com.inlym.lifehelper.account.login.phone.exception.PhoneCodeNotMatchException;
-import com.inlym.lifehelper.account.login.phone.exception.SmsCheckCodeNotExistsException;
+import com.inlym.lifehelper.account.login.phone.exception.*;
 import com.inlym.lifehelper.account.login.phone.mapper.LoginSmsTrackMapper;
 import com.inlym.lifehelper.account.login.phone.mapper.PhoneSmsLoginLogMapper;
 import com.inlym.lifehelper.account.user.entity.UserAccountPhone;
@@ -16,6 +14,7 @@ import com.inlym.lifehelper.common.auth.simpletoken.SimpleTokenService;
 import com.inlym.lifehelper.common.base.aliyun.sms.constant.SendingStatus;
 import com.inlym.lifehelper.common.base.aliyun.sms.service.SmsService;
 import com.inlym.lifehelper.common.util.RandomStringUtil;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import static com.inlym.lifehelper.account.login.phone.entity.table.LoginSmsTrackTableDef.LOGIN_SMS_TRACK;
@@ -49,7 +50,7 @@ public class PhoneSmsLoginService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private UserAccountPhoneService userAccountPhoneService;
+    private final UserAccountPhoneService userAccountPhoneService;
 
     /**
      * 发送短信验证码
@@ -63,56 +64,102 @@ public class PhoneSmsLoginService {
      * @date 2024/6/13
      * @since 2.3.0
      */
-    public void sendSms(String phone, String ip) {
-        // TODO
+    public LoginSmsTrack sendSms(String phone, String ip) {
         // 发送前校验：判断是否发送
+        checkSendingLimit(phone, ip);
 
-        // 检验“验证码”是否正确时，使用 [checkCode(20位随机字符串) + code] 的方式替代 [phone + code]，能够大大降低被碰撞的概率。
-        String checkCode = RandomStringUtil.generate(32);
-        // 短信验证码
+        // 检验“验证码”是否正确时，使用 [checkTicket(32位随机字符串) + code] 的方式替代 [phone + code]，能够大大降低被碰撞的概率。
+        String checkTicket = RandomStringUtil.generate(32);
+        // 短信验证码（6位纯数字）
         String code = RandomStringUtil.generateNumericString(6);
-
-        // 发送前记录
-        LoginSmsTrack inserted = LoginSmsTrack
-                .builder()
-                .phone(phone)
-                .code(code)
-                .checkCode(checkCode)
-                .ip(ip)
-                .preSendTime(LocalDateTime.now())
-                .sendingStatus(SendingStatus.UNSENT)
-                .build();
-        loginSmsTrackMapper.insertSelective(inserted);
+        // 发送前的时间
+        LocalDateTime preSendTime = LocalDateTime.now();
 
         // 正式发送短信
         SendSmsResponseBody result = smsService.sendLoginCode(phone, code);
 
         // 发送后记录
-        LoginSmsTrack updated = LoginSmsTrack
+        LoginSmsTrack inserted = LoginSmsTrack
                 .builder()
-                .id(inserted.getId())
+                .phone(phone)
+                .code(code)
+                .checkTicket(checkTicket)
+                .ip(ip)
+                .preSendTime(preSendTime)
                 .resCode(result.getCode())
                 .resMessage(result.getMessage())
                 .resBizId(result.getBizId())
                 .requestId(result.getRequestId())
                 .postSendTime(LocalDateTime.now())
                 .build();
-        loginSmsTrackMapper.update(updated);
 
         if (result.getCode().equals("OK")) {
-            // 短信成功发送情况
+            // 短信发送成功情况
+            inserted.setSendingStatus(SendingStatus.SENT);
+            loginSmsTrackMapper.insertSelective(inserted);
             log.info("[SMS] 短信验证码发送成功, phone={}, code={}", phone, code);
+            return loginSmsTrackMapper.selectOneById(inserted.getId());
         } else {
+            // 短信发送失败情况
+            inserted.setSendingStatus(SendingStatus.UNSENT);
+            loginSmsTrackMapper.insertSelective(inserted);
             log.error("[SMS] 短信验证码发送失败, phone={}, code={}, response={}", phone, code, result);
             // 短信未发送，抛出异常
-            // TODO
-            // 替换为自定义异常
-            throw new RuntimeException("短信发送失败");
+            throw new SmsSentFailureException();
         }
     }
 
-    public IdentityCertificate loginBySmsCode(String checkCode, String code) {
-        LoginSmsTrack loginSmsTrack = loginSmsTrackMapper.selectOneByCondition(LOGIN_SMS_TRACK.CHECK_CODE.eq(checkCode));
+    /**
+     * （在短信发送前）检查是否达到发送限制
+     *
+     * <h3>说明
+     * <p>目前限制为：
+     * <p>1. 每分钟：1条
+     * <p>1. 每小时：5条
+     *
+     * @param phone 手机号
+     * @param ip    客户端 IP 地址
+     *
+     * @date 2024/06/23
+     * @since 2.3.0
+     */
+    private void checkSendingLimit(String phone, String ip) {
+        QueryWrapper queryWrapper = QueryWrapper
+                .create()
+                .select(LOGIN_SMS_TRACK.ALL_COLUMNS)
+                .from(LOGIN_SMS_TRACK)
+                .orderBy(LOGIN_SMS_TRACK.POST_SEND_TIME.desc())
+                .where(LOGIN_SMS_TRACK.PHONE.eq(phone))
+                .or(LOGIN_SMS_TRACK.IP.eq(ip));
+
+        // 限制每分钟 1 条
+        QueryWrapper query1 = queryWrapper.where(LOGIN_SMS_TRACK.POST_SEND_TIME.gt(LocalDateTime.now().minusMinutes(1L)));
+        List<LoginSmsTrack> list1 = loginSmsTrackMapper.selectListByQuery(query1);
+        if (!list1.isEmpty()) {
+            Duration between = Duration.between(list1.get(0).getPostSendTime(), LocalDateTime.now());
+            throw new SmsRateLimitExceededException(Duration.ofMinutes(1L).toSeconds() - between.toSeconds());
+        }
+
+        // 限制每小时 5 条
+        QueryWrapper query2 = queryWrapper.where(LOGIN_SMS_TRACK.POST_SEND_TIME.gt(LocalDateTime.now().minusHours(1L)));
+        List<LoginSmsTrack> list2 = loginSmsTrackMapper.selectListByQuery(query2);
+        if (list1.size() > 5) {
+            Duration between = Duration.between(list2.get(0).getPostSendTime(), LocalDateTime.now());
+            throw new SmsRateLimitExceededException(Duration.ofHours(1L).toSeconds() - between.toSeconds());
+        }
+    }
+
+    /**
+     * 通过短信验证码登录
+     *
+     * @param checkTicket 校验码
+     * @param code        短信验证码
+     *
+     * @date 2024/06/23
+     * @since 2.3.0
+     */
+    public IdentityCertificate loginBySmsCode(String checkTicket, String code, String ip) {
+        LoginSmsTrack loginSmsTrack = loginSmsTrackMapper.selectOneByCondition(LOGIN_SMS_TRACK.CHECK_TICKET.eq(checkTicket));
 
         // 短信验证码不存在
         if (loginSmsTrack == null) {
@@ -136,6 +183,12 @@ public class PhoneSmsLoginService {
         if (!Objects.equals(loginSmsTrack.getCode(), code)) {
             loginSmsTrackMapper.update(updated);
             throw new PhoneCodeNotMatchException();
+        }
+
+        // 虽然验证码匹配上了，再增加一重保障，要求“获取验证码”操作和“输入验证码”操作的设备是同一个，目前仅验证 IP 地址相同
+        if (!Objects.equals(loginSmsTrack.getIp(), ip)) {
+            loginSmsTrackMapper.update(updated);
+            throw new NotSameIpException();
         }
 
         // 全部校验通过，登录成功情况
@@ -166,20 +219,5 @@ public class PhoneSmsLoginService {
         applicationEventPublisher.publishEvent(new LoginByPhoneSmsEvent(insertedLog));
 
         return identityCertificate;
-    }
-
-    /**
-     * （在短信发送前）检查是否达到发送限制
-     *
-     * <h3>说明
-     * <p>目前限制为：
-     * <p>1. 每分钟：1条
-     * <p>1. 每小时：5条
-     *
-     * @param phone 手机号
-     * @param ip    客户端 IP 地址
-     */
-    private void checkSendingLimit(String phone, String ip) {
-        // TODO
     }
 }

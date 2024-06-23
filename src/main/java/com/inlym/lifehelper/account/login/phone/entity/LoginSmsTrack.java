@@ -67,7 +67,7 @@ public class LoginSmsTrack {
      * <h3>说明
      * <p>32位随机字符串，使用唯一约束。
      */
-    private String checkCode;
+    private String checkTicket;
 
     /** 客户端 IP 地址 */
     private String ip;

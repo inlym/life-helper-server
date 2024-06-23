@@ -6,6 +6,7 @@ import com.inlym.lifehelper.account.user.event.UserCreatedEvent;
 import com.inlym.lifehelper.account.user.mapper.UserMapper;
 import com.inlym.lifehelper.common.util.RandomStringUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * @since 2.3.0
  **/
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserAccountService {
     /** 默认头像存储路径 */
@@ -52,6 +54,8 @@ public class UserAccountService {
     @Async
     @EventListener(LoginEvent.class)
     public void listenToLoginEvent(LoginEvent event) {
+        log.trace("[EventListener=LoginEvent] event={}", event);
+
         // TODO
     }
 }

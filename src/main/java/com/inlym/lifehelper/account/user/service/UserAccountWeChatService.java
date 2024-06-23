@@ -128,6 +128,8 @@ public class UserAccountWeChatService {
     @Async
     @EventListener(LoginByWeChatAccountEvent.class)
     public void listenToLoginByWeChatAccountEvent(LoginByWeChatAccountEvent event) {
+        log.trace("[EventListener=LoginByWeChatAccountEvent] event={}", event);
+
         long id = event.getUserAccountWeChatId();
 
         // TODO
