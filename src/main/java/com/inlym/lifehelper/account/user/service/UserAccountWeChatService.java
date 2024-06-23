@@ -13,8 +13,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static com.inlym.lifehelper.account.user.entity.table.UserAccountWeChatTableDef.USER_ACCOUNT_WE_CHAT;
 
 /**
@@ -130,12 +128,10 @@ public class UserAccountWeChatService {
     public void listenToLoginByWeChatAccountEvent(LoginByWeChatAccountEvent event) {
         log.trace("[EventListener=LoginByWeChatAccountEvent] event={}", event);
 
-        long id = event.getUserAccountWeChatId();
-
-        // TODO
         // 更新登录统计数据
-        UserAccountWeChat updated = UpdateEntity.of(UserAccountWeChat.class, id);
-        updated.setLastLoginTime(LocalDateTime.now());
+        UserAccountWeChat updated = UpdateEntity.of(UserAccountWeChat.class, event.getUserAccountWeChatId());
+        updated.setLastLoginTime(event.getLoginTime());
+        updated.setLastLoginIp(event.getIp());
         UpdateWrapper<UserAccountWeChat> wrapper = UpdateWrapper.of(updated);
         wrapper.set(USER_ACCOUNT_WE_CHAT.LOGIN_COUNTER, USER_ACCOUNT_WE_CHAT.LOGIN_COUNTER.add(1));
 

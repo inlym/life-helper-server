@@ -5,12 +5,16 @@ import com.inlym.lifehelper.account.user.entity.User;
 import com.inlym.lifehelper.account.user.event.UserCreatedEvent;
 import com.inlym.lifehelper.account.user.mapper.UserMapper;
 import com.inlym.lifehelper.common.util.RandomStringUtil;
+import com.mybatisflex.core.update.UpdateWrapper;
+import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import static com.inlym.lifehelper.account.user.entity.table.UserTableDef.USER;
 
 /**
  * 用户账户服务
@@ -56,6 +60,13 @@ public class UserAccountService {
     public void listenToLoginEvent(LoginEvent event) {
         log.trace("[EventListener=LoginEvent] event={}", event);
 
-        // TODO
+        // 更新登录统计数据
+        User updated = UpdateEntity.of(User.class, event.getUserId());
+        updated.setLastLoginTime(event.getLoginTime());
+        updated.setLastLoginIp(event.getIp());
+        UpdateWrapper<User> wrapper = UpdateWrapper.of(updated);
+        wrapper.set(USER.LOGIN_COUNTER, USER.LOGIN_COUNTER.add(1));
+
+        userMapper.update(updated);
     }
 }

@@ -12,8 +12,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static com.inlym.lifehelper.account.user.entity.table.UserAccountPhoneTableDef.USER_ACCOUNT_PHONE;
 
 /**
@@ -39,7 +37,7 @@ public class UserAccountPhoneService {
      * @date 2024/6/13
      * @since 2.3.0
      */
-    public UserAccountPhone getUserAccountPhone(String phone) {
+    public UserAccountPhone getOrCreateUserAccountPhone(String phone) {
         QueryCondition condition = USER_ACCOUNT_PHONE.PHONE.eq(phone);
         UserAccountPhone result = userAccountPhoneMapper.selectOneByCondition(condition);
         if (result != null) {
@@ -54,7 +52,7 @@ public class UserAccountPhoneService {
     }
 
     /**
-     * 监听使用手机号账户登录事件
+     * 监听使用手机号（短信验证码）账户登录事件
      *
      * @date 2024/6/13
      * @since 2.3.0
@@ -63,12 +61,11 @@ public class UserAccountPhoneService {
     @EventListener(LoginByPhoneSmsEvent.class)
     public void listenToLoginByPhoneSmsEvent(LoginByPhoneSmsEvent event) {
         log.trace("[EventListener=LoginByPhoneSmsEvent] event={}", event);
-        long id = event.getUserAccountPhoneId();
 
-        // TODO
-        // 更新统计数据
-        UserAccountPhone updated = UpdateEntity.of(UserAccountPhone.class, id);
-        updated.setLastLoginTime(LocalDateTime.now());
+        // 更新登录统计数据
+        UserAccountPhone updated = UpdateEntity.of(UserAccountPhone.class, event.getUserAccountPhoneId());
+        updated.setLastLoginTime(event.getLoginTime());
+        updated.setLastLoginIp(event.getIp());
         UpdateWrapper<UserAccountPhone> wrapper = UpdateWrapper.of(updated);
         wrapper.set(USER_ACCOUNT_PHONE.LOGIN_COUNTER, USER_ACCOUNT_PHONE.LOGIN_COUNTER.add(1));
 

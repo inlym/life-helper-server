@@ -2,7 +2,7 @@ package com.inlym.lifehelper.account.user.service;
 
 import com.inlym.lifehelper.account.user.entity.User;
 import com.inlym.lifehelper.account.user.mapper.UserMapper;
-import com.inlym.lifehelper.account.user.model.BaseUserInfo;
+import com.inlym.lifehelper.account.user.model.BaseUserInfoVO;
 import com.inlym.lifehelper.common.base.aliyun.oss.constant.OssDir;
 import com.inlym.lifehelper.common.base.aliyun.oss.service.OssService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class BaseUserInfoService {
      * @date 2024/6/9
      * @since 2.3.0
      */
-    public void update(long userId, @Nonnull BaseUserInfo info) {
+    public void update(long userId, @Nonnull BaseUserInfoVO info) {
         User updated = User.builder().id(userId).build();
 
         // 处理昵称
@@ -68,8 +68,8 @@ public class BaseUserInfoService {
      * @date 2024/6/9
      * @since 2.3.0
      */
-    public BaseUserInfo get(long userId) {
+    public BaseUserInfoVO get(long userId) {
         User user = userMapper.selectOneById(userId);
-        return BaseUserInfo.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
+        return BaseUserInfoVO.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
     }
 }

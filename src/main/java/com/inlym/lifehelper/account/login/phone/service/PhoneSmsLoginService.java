@@ -192,7 +192,7 @@ public class PhoneSmsLoginService {
         }
 
         // 全部校验通过，登录成功情况
-        UserAccountPhone userAccountPhone = userAccountPhoneService.getUserAccountPhone(loginSmsTrack.getPhone());
+        UserAccountPhone userAccountPhone = userAccountPhoneService.getOrCreateUserAccountPhone(loginSmsTrack.getPhone());
 
         // 生成鉴权凭据
         IdentityCertificate identityCertificate = simpleTokenService.generateIdentityCertificate(userAccountPhone.getUserId());
