@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.account.login.phone.entity;
 
 import com.inlym.lifehelper.common.base.aliyun.sms.constant.SendingStatus;
-import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -38,16 +37,10 @@ public class LoginSmsTrack {
     private Long id;
 
     /** 创建时间 */
-    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
     /** 更新时间 */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
-
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
 
     // 字段说明：因为是“追踪表”，因此此处无“逻辑删除标志”字段
 

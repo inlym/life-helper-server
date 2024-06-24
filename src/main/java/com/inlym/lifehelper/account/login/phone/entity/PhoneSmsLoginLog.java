@@ -1,7 +1,6 @@
 package com.inlym.lifehelper.account.login.phone.entity;
 
 import com.inlym.lifehelper.account.login.common.model.LoginLog;
-import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -35,14 +34,12 @@ public class PhoneSmsLoginLog implements LoginLog {
     private Long id;
 
     /** 创建时间 */
-    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
     /** 更新时间 */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
 
-    // 字段说明：因为是“日志表”，因此此处无“逻辑删除标志”和“乐观锁”字段
+    // 字段说明：因为是“日志表”，因此此处无“逻辑删除标志”字段
 
     // ============================ 业务字段 ============================
 

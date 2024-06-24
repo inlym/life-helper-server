@@ -52,7 +52,7 @@ public class WeChatLoginService {
     public IdentityCertificate loginByWeChatCode(String appId, String code, String ip) {
         WeChatSession session = weChatService.getSession(appId, code);
         WeChatAccountInfo weChatAccountInfo = WeChatAccountInfo.builder().appId(appId).openId(session.getOpenId()).unionId(session.getUnionId()).build();
-        UserAccountWeChat weChatUserAccount = userAccountWeChatService.getWeChatUserAccount(weChatAccountInfo);
+        UserAccountWeChat weChatUserAccount = userAccountWeChatService.getOrCreateWeChatUserAccount(weChatAccountInfo);
 
         // 生成鉴权凭据
         IdentityCertificate identityCertificate = simpleTokenService.generateIdentityCertificate(weChatUserAccount.getUserId());

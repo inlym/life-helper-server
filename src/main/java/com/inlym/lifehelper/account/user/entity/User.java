@@ -36,16 +36,10 @@ public class User {
     private Long id;
 
     /** 创建时间 */
-    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
     /** 更新时间 */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
-
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
 
     // 字段备注：无逻辑删除字段
 

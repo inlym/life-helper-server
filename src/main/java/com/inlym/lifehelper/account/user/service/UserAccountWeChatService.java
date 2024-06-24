@@ -39,7 +39,7 @@ public class UserAccountWeChatService {
      * @date 2024/4/17
      * @since 2.3.0
      */
-    public UserAccountWeChat getWeChatUserAccount(WeChatAccountInfo info) {
+    public UserAccountWeChat getOrCreateWeChatUserAccount(WeChatAccountInfo info) {
         log.info("[微信账户信息] appId={}, openId={}, unionId={}", info.getAppId(), info.getOpenId(), info.getUnionId());
 
         // 流程1：以“小程序账户级”查找优先级最高，若查到则直接返回对应的用户 ID

@@ -36,6 +36,9 @@ public class WeChatLoginController {
      */
     @PostMapping("/login/wechat")
     public IdentityCertificate loginByCode(@ClientIp String ip, @Valid @RequestBody WeChatCodeDTO dto) {
-        return weChatLoginService.loginByWeChatCode(dto.getAppId(), dto.getCode(), ip);
+        String appId = dto.getAppId();
+        String code = dto.getCode();
+        
+        return weChatLoginService.loginByWeChatCode(appId, code, ip);
     }
 }
