@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 待办清单（项目）
+ * 待办清单（即项目）
  *
  * <h2>说明
  * <p>注意项目中提到的「待办清单」就是指「项目（Project）」。
@@ -34,16 +34,10 @@ public class ChecklistProject {
     private Long id;
 
     /** 创建时间 */
-    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
     /** 更新时间 */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
-
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
 
     /** 删除时间（逻辑删除标志） */
     @Column(isLogicDelete = true)

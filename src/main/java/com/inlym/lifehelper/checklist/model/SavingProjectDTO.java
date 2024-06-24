@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.checklist.model;
 
 import com.inlym.lifehelper.common.validation.group.CreateGroup;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 /**
@@ -15,9 +15,9 @@ import lombok.Data;
  * @since 2.3.0
  **/
 @Data
-public class EditProjectDTO {
+public class SavingProjectDTO {
     /** 项目名称 */
-    @NotBlank(message = "清单名称不能为空！", groups = {CreateGroup.class})
+    @NotEmpty(message = "清单名称不能为空！", groups = {CreateGroup.class})
     private String name;
 
     /** 标记颜色 */

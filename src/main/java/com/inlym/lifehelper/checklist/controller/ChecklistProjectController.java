@@ -1,7 +1,7 @@
 package com.inlym.lifehelper.checklist.controller;
 
 import com.inlym.lifehelper.checklist.model.ChecklistProjectVO;
-import com.inlym.lifehelper.checklist.model.EditProjectDTO;
+import com.inlym.lifehelper.checklist.model.SavingProjectDTO;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
 import com.inlym.lifehelper.common.validation.group.CreateGroup;
@@ -35,7 +35,7 @@ public class ChecklistProjectController {
      */
     @PostMapping("/checklist/projects")
     @UserPermission
-    public ChecklistProjectVO createProject(@UserId long userId, @Validated(CreateGroup.class) @RequestBody EditProjectDTO dto) {
+    public ChecklistProjectVO createProject(@UserId long userId, @Validated(CreateGroup.class) @RequestBody SavingProjectDTO dto) {
         log.debug("[createProject] userId={}, dto={}", userId, dto);
         return null;
     }
@@ -68,8 +68,8 @@ public class ChecklistProjectController {
      */
     @PutMapping("/checklist/projects/{id}")
     @UserPermission
-    public ChecklistProjectVO updateProject(@UserId long userId, @Validated(UpdateGroup.class) @RequestBody EditProjectDTO dto,
-                                            @Positive @PathVariable("id") long id) {
+    public ChecklistProjectVO updateProject(@UserId long userId, @Validated(UpdateGroup.class) @RequestBody SavingProjectDTO dto, @Positive @PathVariable("id"
+    ) long id) {
         log.debug("[updateProject] userId={}, dto={}, id={}", userId, dto, id);
         return null;
     }

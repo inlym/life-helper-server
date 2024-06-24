@@ -38,16 +38,10 @@ public class ChecklistTask {
     private Long id;
 
     /** 创建时间 */
-    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
     /** 更新时间 */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
-
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
 
     /** 删除时间（逻辑删除标志） */
     @Column(isLogicDelete = true)
@@ -64,7 +58,7 @@ public class ChecklistTask {
     /** 任务标题 */
     private String title;
 
-    /** 内容类型 */
+    /** 内容类型，默认为 "0" */
     private ContentType contentType;
 
     /** 内容文本 */
@@ -78,7 +72,7 @@ public class ChecklistTask {
      */
     private LocalDateTime completeTime;
 
-    /** 任务优先级 */
+    /** 任务优先级，默认为 "0" */
     private TaskPriority priority;
 
     /** 截止日期 */

@@ -34,16 +34,10 @@ public class ChecklistTag {
     private Long id;
 
     /** 创建时间 */
-    @Column(onInsertValue = "now()")
     private LocalDateTime createTime;
 
     /** 更新时间 */
-    @Column(onInsertValue = "now()", onUpdateValue = "now()")
     private LocalDateTime updateTime;
-
-    /** 乐观锁（修改次数） */
-    @Column(version = true)
-    private Long version;
 
     /** 删除时间（逻辑删除标志） */
     @Column(isLogicDelete = true)
@@ -54,7 +48,7 @@ public class ChecklistTag {
     /** 所属用户 ID */
     private Long userId;
 
-    /** 项目名称 */
+    /** 标签名称 */
     private String name;
 
     /**
