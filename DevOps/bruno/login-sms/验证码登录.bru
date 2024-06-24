@@ -1,0 +1,18 @@
+meta {
+  name: 验证码登录
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/login/sms
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "checkTicket": "HCk12zAePQIgOsz9eTvsRwEDWAoDNb8W",
+    "code": "925299"
+  }
+}
