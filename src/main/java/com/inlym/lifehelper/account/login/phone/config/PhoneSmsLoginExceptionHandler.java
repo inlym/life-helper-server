@@ -33,6 +33,12 @@ public class PhoneSmsLoginExceptionHandler {
     // ============================ 短信发送环节异常 ============================
 
     @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(AbnormalPhoneException.class)
+    public ErrorResponse handleAbnormalPhoneException() {
+        return new ErrorResponse(10011, "您输入的手机号不正确，请重新输入");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(SmsSentFailureException.class)
     public ErrorResponse handleSmsSentFailureException() {
         return new ErrorResponse(10010, SENT_FAILURE_TIP);

@@ -65,7 +65,9 @@ public class PhoneSmsLoginService {
      * @since 2.3.0
      */
     public LoginSmsTrack sendSms(String phone, String ip) {
-        // 发送前校验：判断是否发送
+        // 检查手机号格式是否正确
+        checkPhoneFormat(phone);
+        // 检查是否达到发送限制
         checkSendingLimit(phone, ip);
 
         // 检验“验证码”是否正确时，使用 [checkTicket(32位随机字符串) + code] 的方式替代 [phone + code]，能够大大降低被碰撞的概率。
@@ -110,6 +112,21 @@ public class PhoneSmsLoginService {
     }
 
     /**
+     * 检查手机号格式是否正确
+     *
+     * @param phone 手机号
+     *
+     * @date 2024/6/24
+     * @since 2.3.0
+     */
+    private void checkPhoneFormat(String phone) {
+        String regex = "^1(3[0-9]|4[5-9]|5[0-3,5-9]|6[5-7]|7[0-8]|8[0-9]|9[0-3,5-9])\\d{8}$";
+        if (!phone.matches(regex)) {
+            throw new AbnormalPhoneException();
+        }
+    }
+
+    /**
      * （在短信发送前）检查是否达到发送限制
      *
      * <h3>说明
@@ -120,7 +137,7 @@ public class PhoneSmsLoginService {
      * @param phone 手机号
      * @param ip    客户端 IP 地址
      *
-     * @date 2024/06/23
+     * @date 2024/6/23
      * @since 2.3.0
      */
     private void checkSendingLimit(String phone, String ip) {
@@ -129,11 +146,10 @@ public class PhoneSmsLoginService {
                 .select(LOGIN_SMS_TRACK.ALL_COLUMNS)
                 .from(LOGIN_SMS_TRACK)
                 .orderBy(LOGIN_SMS_TRACK.POST_SEND_TIME.desc())
-                .where(LOGIN_SMS_TRACK.PHONE.eq(phone))
-                .or(LOGIN_SMS_TRACK.IP.eq(ip));
+                .where(LOGIN_SMS_TRACK.PHONE.eq(phone).or(LOGIN_SMS_TRACK.IP.eq(ip)));
 
         // 限制每分钟 1 条
-        QueryWrapper query1 = queryWrapper.where(LOGIN_SMS_TRACK.POST_SEND_TIME.gt(LocalDateTime.now().minusMinutes(1L)));
+        QueryWrapper query1 = queryWrapper.clone().where(LOGIN_SMS_TRACK.POST_SEND_TIME.gt(LocalDateTime.now().minusMinutes(1L)));
         List<LoginSmsTrack> list1 = loginSmsTrackMapper.selectListByQuery(query1);
         if (!list1.isEmpty()) {
             Duration between = Duration.between(list1.get(0).getPostSendTime(), LocalDateTime.now());
@@ -141,7 +157,7 @@ public class PhoneSmsLoginService {
         }
 
         // 限制每小时 5 条
-        QueryWrapper query2 = queryWrapper.where(LOGIN_SMS_TRACK.POST_SEND_TIME.gt(LocalDateTime.now().minusHours(1L)));
+        QueryWrapper query2 = queryWrapper.clone().where(LOGIN_SMS_TRACK.POST_SEND_TIME.gt(LocalDateTime.now().minusHours(1L)));
         List<LoginSmsTrack> list2 = loginSmsTrackMapper.selectListByQuery(query2);
         if (list1.size() > 5) {
             Duration between = Duration.between(list2.get(0).getPostSendTime(), LocalDateTime.now());
@@ -212,6 +228,7 @@ public class PhoneSmsLoginService {
 
         // 剩余信息记录到追踪表
         updated.setSucceedTime(now);
+        updated.setPhoneSmsLoginLogId(insertedLog.getId());
         updated.setUserAccountPhoneId(userAccountPhone.getId());
         loginSmsTrackMapper.update(updated);
 
