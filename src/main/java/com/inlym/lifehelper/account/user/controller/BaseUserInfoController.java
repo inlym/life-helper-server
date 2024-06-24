@@ -1,6 +1,6 @@
 package com.inlym.lifehelper.account.user.controller;
 
-import com.inlym.lifehelper.account.user.model.BaseUserInfoVO;
+import com.inlym.lifehelper.account.user.model.BaseUserInfo;
 import com.inlym.lifehelper.account.user.service.BaseUserInfoService;
 import com.inlym.lifehelper.common.annotation.UserId;
 import com.inlym.lifehelper.common.annotation.UserPermission;
@@ -32,7 +32,7 @@ public class BaseUserInfoController {
      */
     @GetMapping("/user-info/base")
     @UserPermission
-    public BaseUserInfoVO get(@UserId long userId) {
+    public BaseUserInfo get(@UserId long userId) {
         return baseUserInfoService.get(userId);
     }
 
@@ -47,7 +47,7 @@ public class BaseUserInfoController {
      */
     @PutMapping("/user-info/base")
     @UserPermission
-    public BaseUserInfoVO update(@UserId long userId, @RequestBody BaseUserInfoVO dto) {
+    public BaseUserInfo update(@UserId long userId, @RequestBody BaseUserInfo dto) {
         baseUserInfoService.update(userId, dto);
         return baseUserInfoService.get(userId);
     }

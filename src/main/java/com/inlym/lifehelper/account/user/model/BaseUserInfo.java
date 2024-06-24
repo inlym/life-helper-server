@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseUserInfoVO {
+public class BaseUserInfo {
     /** 昵称 */
     private String nickName;
 
