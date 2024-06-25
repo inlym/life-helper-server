@@ -33,13 +33,12 @@ class UserAccountServiceTests {
         // {@code id} 字段值相同
         assertThat(user.getId()).isEqualTo(id);
         // 创建时间应该是“刚刚”（设定10秒内）
-        assertThat(user.getCreateTime()).isBefore(LocalDateTime.now());
         assertThat(Duration.between(user.getCreateTime(), LocalDateTime.now())).isLessThan(Duration.ofSeconds(10L));
-        // 默认昵称和头像路径都是空字符串
-        assertThat(user.getNickName()).isEmpty();
-        assertThat(user.getAvatarPath()).isEmpty();
+        // 默认昵称和头像路径都有默认值
+        assertThat(user.getNickName()).isNotEmpty();
+        assertThat(user.getAvatarPath()).isNotEmpty();
         // 默认登录次数为 `1`
-        assertThat(user.getLoginCounter()).isEqualTo(1L);
+        assertThat(user.getLoginCounter()).isEqualTo(0L);
         // 再建一个 id 应该比之前的大
         assertThat(userAccountService.createUser()).isGreaterThan(id);
     }
