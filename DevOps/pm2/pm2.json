@@ -1,0 +1,12 @@
+{
+    "name": "life-helper-server",
+    "script": "java",
+    "args": [
+        "-jar",
+        "-Dspring.profiles.active=prod",
+        "lifehelper.jar"
+    ],
+    "cwd": "/app",
+    "watch": true,
+    "ignore_watch": "logs"
+}
