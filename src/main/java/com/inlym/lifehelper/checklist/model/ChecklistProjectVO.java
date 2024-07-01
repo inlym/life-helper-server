@@ -46,7 +46,4 @@ public class ChecklistProjectVO {
 
   /** 置顶时间 */
   private LocalDateTime pinTime;
-
-  /** 任务数 */
-  private Long taskCount;
 }

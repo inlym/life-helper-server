@@ -62,7 +62,6 @@ public class ChecklistProjectController {
         .name(entity.getName())
         .color(entity.getColor())
         .pinTime(entity.getPinTime())
-        .taskCount(entity.getTaskCount())
         .build();
   }
 

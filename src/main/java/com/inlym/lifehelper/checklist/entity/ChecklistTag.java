@@ -74,15 +74,4 @@ public class ChecklistTag {
    * <p>2. 操作 [取消置顶] 时，将该字段置空。
    */
   private LocalDateTime pinTime;
-
-  // ---------- 冗余计算字段 ----------
-
-  /**
-   * 任务数
-   *
-   * <p>[使用说明]：用于列表展示，避免在不需要展示任务列表情况重复计算任务数
-   *
-   * <p>[默认值]：默认为 "0"
-   */
-  private Long taskCount;
 }
