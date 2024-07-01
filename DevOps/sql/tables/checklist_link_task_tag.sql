@@ -3,7 +3,7 @@
 -- 对应实体: [com.inlym.lifehelper.checklist.entity.ChecklistTaskTagLink]
 -- --------------------------------------------------------
 
-CREATE TABLE `user_account_wechat`
+CREATE TABLE `checklist_link_task_tag`
 (
     /* 下方是通用字段 */
     `id`          bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
