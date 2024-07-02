@@ -1,137 +1,109 @@
 package com.inlym.lifehelper.checklist.service;
 
-import static com.inlym.lifehelper.checklist.entity.table.ChecklistProjectTableDef.CHECKLIST_PROJECT;
-
 import com.inlym.lifehelper.checklist.entity.ChecklistProject;
 import com.inlym.lifehelper.checklist.exception.ChecklistProjectNotFoundException;
 import com.inlym.lifehelper.checklist.mapper.ChecklistProjectMapper;
 import com.mybatisflex.core.query.QueryCondition;
-import com.mybatisflex.core.util.UpdateEntity;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
+import static com.inlym.lifehelper.checklist.entity.table.ChecklistProjectTableDef.CHECKLIST_PROJECT;
+
 /**
- * 待办清单服务
+ * 待办项目服务
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/7/1
+ * @date 2024/7/2
  * @since 2.3.0
- */
+ **/
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ChecklistProjectService {
-  private final ChecklistProjectMapper checklistProjectMapper;
+    private final ChecklistProjectMapper checklistProjectMapper;
 
-  /**
-   * 创建待办清单
-   *
-   * @param project 待办清单实体
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public void create(ChecklistProject project) {
-    checklistProjectMapper.insertSelective(project);
-  }
-
-  /**
-   * 删除待办清单
-   *
-   * @param userId 用户 ID
-   * @param projectId 待办清单 ID
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public void delete(long userId, long projectId) {
-    int i = checklistProjectMapper.deleteByCondition(generateCondition(userId, projectId));
-    log.trace("[ChecklistProject] userId={}, projectId={}, 删除{}行", userId, projectId, i);
-  }
-
-  /**
-   * 生成查询条件
-   *
-   * @param userId 用户 ID
-   * @param projectId 待办清单 ID
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  private QueryCondition generateCondition(long userId, long projectId) {
-    return CHECKLIST_PROJECT.USER_ID.eq(userId).and(CHECKLIST_PROJECT.ID.eq(projectId));
-  }
-
-  /**
-   * 更新待办清单
-   *
-   * @param project 待办清单实体
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public void update(ChecklistProject project) {
-    checklistProjectMapper.update(project);
-  }
-
-  /**
-   * 获取指定用户的待办清单列表
-   *
-   * @param userId 用户 ID
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public List<ChecklistProject> list(long userId) {
-    return checklistProjectMapper.selectListByCondition(CHECKLIST_PROJECT.USER_ID.eq(userId));
-  }
-
-  /**
-   * “置顶”操作
-   *
-   * @param userId 用户 ID
-   * @param projectId 待办清单 ID
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public void pin(long userId, long projectId) {
-    ChecklistProject project = findOneById(userId, projectId);
-    if (project != null) {
-      ChecklistProject updated =
-          ChecklistProject.builder().id(projectId).pinTime(LocalDateTime.now()).build();
-      checklistProjectMapper.update(updated);
+    /**
+     * 新增
+     *
+     * @param entity 实体数据
+     *
+     * @date 2024/7/2
+     * @since 2.3.0
+     */
+    public void add(ChecklistProject entity) {
+        checklistProjectMapper.insertSelective(entity);
     }
-  }
 
-  /**
-   * 查找待办清单
-   *
-   * @param userId 用户 ID
-   * @param projectId 待办清单 ID
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public ChecklistProject findOneById(long userId, long projectId) {
-    ChecklistProject result =
-        checklistProjectMapper.selectOneByCondition(generateCondition(userId, projectId));
-    if (result != null) {
-      return result;
-    }
-    throw new ChecklistProjectNotFoundException();
-  }
+    /**
+     * 删除待办项目
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     *
+     * @date 2024/7/2
+     * @since 2.3.0
+     */
+    public void delete(long userId, long projectId) {
+        ChecklistProject project = findById(userId, projectId);
+        if (project != null) {
+            // TODO
+            // 检查当前项目下的“未完成”任务数，不为0则不允许删除
 
-  /**
-   * “取消置顶”操作
-   *
-   * @param userId 用户 ID
-   * @param projectId 待办清单 ID
-   * @date 2024/7/1
-   * @since 2.3.0
-   */
-  public void unpin(long userId, long projectId) {
-    ChecklistProject project = findOneById(userId, projectId);
-    if (project != null) {
-      ChecklistProject updated = UpdateEntity.of(ChecklistProject.class, projectId);
-      updated.setPinTime(null);
-      checklistProjectMapper.update(updated);
+            // 全部校验通过后，最后执行删除
+            checklistProjectMapper.deleteById(projectId);
+        }
     }
-  }
+
+    /**
+     * 通过 ID 查找待办项目
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     *
+     * @date 2024/7/2
+     * @since 2.3.0
+     */
+    public ChecklistProject findById(long userId, long projectId) {
+        ChecklistProject project = checklistProjectMapper.selectOneById(projectId);
+        if (project != null) {
+            // 能找到说明数据存在，继续判断是否属于指定用户
+            if (Objects.equals(project.getUserId(), userId)) {
+                // 归属用户 ID 校验通过
+                return project;
+            } else {
+                // 归属用户 ID 校验未通过，当前仅打印日志，后期开发纳入安全体系预警机制
+                log.trace("[疑似伪造请求攻击] userId={} 的用户尝试访问了不属于自己的 ChecklistProject(id={}) .", userId, projectId);
+            }
+        }
+        throw new ChecklistProjectNotFoundException();
+    }
+
+    /**
+     * 更新信息
+     *
+     * @param entity 待办项目实体对象
+     *
+     * @date 2024/7/2
+     * @since 2.3.0
+     */
+    public void update(ChecklistProject entity) {
+        checklistProjectMapper.update(entity);
+    }
+
+    /**
+     * 获取指定用户的待办项目列表
+     *
+     * @param userId 用户 ID
+     *
+     * @date 2024/7/2
+     * @since 2.3.0
+     */
+    public List<ChecklistProject> list(long userId) {
+        QueryCondition condition = CHECKLIST_PROJECT.USER_ID.eq(userId);
+        return checklistProjectMapper.selectListByCondition(condition);
+    }
 }

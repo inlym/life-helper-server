@@ -75,4 +75,12 @@ public class ChecklistTag {
      * <p>该字段仅用于组内排序使用，排在第1个（最前面）的该字段赋值为 {@code 0}
      */
     private Long prevId;
+
+    /**
+     * 未完成的任务数
+     *
+     * <h3>说明
+     * <p>该字段值可以直接从“任务表”计算获得，此处可认为是一个“缓存值”。
+     */
+    private Long uncompletedTaskCount;
 }
