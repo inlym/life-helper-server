@@ -4,30 +4,27 @@ import com.mybatisflex.annotation.EnumValue;
 import lombok.Getter;
 
 /**
- * 任务优先级
+ * 任务状态
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/6/11
+ * @date 2024/7/2
  * @since 2.3.0
  **/
 @Getter
-public enum TaskPriority {
-    /** 无优先级（默认） */
-    NONE(0),
+public enum TaskStatus {
+    /** 未开始（默认） */
+    NOT_STARTED(0),
 
-    /** 低优先级 */
-    LOW(1),
+    /** 进行中 */
+    IN_PROGRESS(1),
 
-    /** 中优先级 */
-    MEDIUM(2),
-
-    /** 高优先级 */
-    HIGH(3);
+    /** 已完成 */
+    COMPLETED(2);
 
     @EnumValue
     private final int code;
 
-    TaskPriority(int code) {
+    TaskStatus(int code) {
         this.code = code;
     }
 }
