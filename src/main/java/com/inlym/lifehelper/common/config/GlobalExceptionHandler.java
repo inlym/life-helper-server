@@ -1,5 +1,6 @@
 package com.inlym.lifehelper.common.config;
 
+import com.inlym.lifehelper.common.exception.ResourceAccessDeniedException;
 import com.inlym.lifehelper.common.exception.ResourceNotFoundException;
 import com.inlym.lifehelper.common.exception.UnauthorizedAccessException;
 import com.inlym.lifehelper.common.model.ErrorResponse;
@@ -90,9 +91,12 @@ public class GlobalExceptionHandler {
 
     /**
      * 访问了不属于自己的资源
+     *
+     * <h3>说明
+     * <p>一般会在各个模块中捕获该异常并处理，此处作为保底策略。
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler({ResourceNotFoundException.class})
+    @ExceptionHandler({ResourceNotFoundException.class, ResourceAccessDeniedException.class})
     public ErrorResponse handleUnauthorizedResourceAccessException() {
         return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
     }
