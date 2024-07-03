@@ -4,6 +4,7 @@ import com.inlym.lifehelper.checklist.constant.Color;
 import com.inlym.lifehelper.checklist.entity.ChecklistProject;
 import com.inlym.lifehelper.checklist.model.ChecklistProjectVO;
 import com.inlym.lifehelper.checklist.model.SavingProjectDTO;
+import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,40 @@ public class ChecklistProjectConverterService {
         }
 
         return inserted;
+    }
+
+    /**
+     * 将请求数据对应字段转化为待更新的实体对象
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     * @param dto       请求数据
+     *
+     * @date 2024/7/3
+     * @since 2.3.0
+     */
+    public ChecklistProject convertToUpdatedEntity(long userId, long projectId, SavingProjectDTO dto) {
+        ChecklistProject entity = UpdateEntity.of(ChecklistProject.class, projectId);
+        entity.setUserId(userId);
+
+        // 处理“项目名称”
+        if (dto.getName() != null) {
+            entity.setName(dto.getName());
+        }
+        // 处理“标记颜色”
+        if (dto.getColorCode() != null) {
+            entity.setColor(Color.fromCode(dto.getColorCode()));
+        }
+        // 处理“是否收藏”
+        if (dto.getFavorite() != null) {
+            if (dto.getFavorite()) {
+                entity.setFavoriteTime(LocalDateTime.now());
+            } else {
+                // 将“收藏时间”置空，表示取消收藏
+                entity.setFavoriteTime(null);
+            }
+        }
+
+        return entity;
     }
 }
