@@ -1,9 +1,12 @@
 package com.inlym.lifehelper.checklist.service;
 
 import com.inlym.lifehelper.checklist.mapper.ChecklistProjectMapper;
+import com.inlym.lifehelper.checklist.model.Sortable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 拖拽排序服务
@@ -24,31 +27,44 @@ public class DragAndDropSortingService {
     /**
      * 移动到指定项目前
      *
-     * @param movedId  被移动的项目 ID
-     * @param targetId 目标项目 ID
+     * @param moved  被移动的项目 ID
+     * @param target 目标项目 ID
      *
      * @date 2024/7/2
      * @since 2.3.0
      */
-    public void movedBeforeTarget(long movedId, long targetId) {}
+    public void movedBeforeTarget(Sortable moved, Sortable target) {}
 
     /**
      * 移动到尾部
      *
-     * @param movedId 被移动的项目 ID
+     * @param moved 被移动的项目 ID
      *
      * @date 2024/7/2
      * @since 2.3.0
      */
-    public void movedToEnd(long movedId) {}
+    public void movedToEnd(Sortable moved) {}
 
     /**
      * 新创建项目后，将原来的顶部项目排到第2名
      *
-     * @param newlyCreatedId 新创建的项目 ID
+     * @param newlyCreated 新创建的项目 ID
      *
      * @date 2024/7/2
      * @since 2.3.0
      */
-    public void moveOriginalTopToSecond(long newlyCreatedId) {}
+    public void moveOriginalTopToSecond(Sortable newlyCreated) {}
+
+    /**
+     * 对列表进行重排序
+     *
+     * @param list 原始列表
+     *
+     * @return 排序后的列表
+     * @date 2024/7/2
+     * @since 2.3.0
+     */
+    public List<Sortable> sort(List<Sortable> list) {
+        return null;
+    }
 }

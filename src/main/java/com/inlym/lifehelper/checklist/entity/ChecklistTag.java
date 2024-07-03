@@ -1,6 +1,7 @@
 package com.inlym.lifehelper.checklist.entity;
 
 import com.inlym.lifehelper.checklist.constant.Color;
+import com.inlym.lifehelper.checklist.model.Sortable;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChecklistTag {
+public class ChecklistTag implements Sortable {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */

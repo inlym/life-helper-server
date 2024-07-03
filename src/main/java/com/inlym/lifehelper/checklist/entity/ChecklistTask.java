@@ -3,6 +3,7 @@ package com.inlym.lifehelper.checklist.entity;
 import com.inlym.lifehelper.checklist.constant.ContentType;
 import com.inlym.lifehelper.checklist.constant.TaskPriority;
 import com.inlym.lifehelper.checklist.constant.TaskStatus;
+import com.inlym.lifehelper.checklist.model.Sortable;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -32,7 +33,7 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChecklistTask {
+public class ChecklistTask implements Sortable {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */
