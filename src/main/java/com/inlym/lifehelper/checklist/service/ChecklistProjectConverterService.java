@@ -53,7 +53,7 @@ public class ChecklistProjectConverterService {
      * @since 2.3.0
      */
     public ChecklistProject convertToInsertedEntity(long userId, SavingProjectDTO dto) {
-        ChecklistProject inserted = ChecklistProject.builder().name(dto.getName()).color(Color.fromCode(dto.getColorCode())).build();
+        ChecklistProject inserted = ChecklistProject.builder().userId(userId).name(dto.getName()).color(Color.fromCode(dto.getColorCode())).build();
         if (dto.getFavorite()) {
             inserted.setFavoriteTime(LocalDateTime.now());
         }
