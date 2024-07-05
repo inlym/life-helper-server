@@ -1,11 +1,12 @@
 package com.inlym.lifehelper.common.config;
 
+import com.inlym.lifehelper.common.base.mybatisflex.LogMessageCollector;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
-import com.mybatisflex.core.audit.ConsoleMessageCollector;
 import com.mybatisflex.core.logicdelete.LogicDeleteProcessor;
 import com.mybatisflex.core.logicdelete.impl.DateTimeLogicDeleteProcessor;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +18,10 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.0.3
  **/
 @Configuration
+@RequiredArgsConstructor
 public class MyBatisFlexConfig implements MyBatisFlexCustomizer {
+    private final LogMessageCollector logMessageCollector;
+
     /**
      * 配置逻辑删除处理器
      *
@@ -41,7 +45,9 @@ public class MyBatisFlexConfig implements MyBatisFlexCustomizer {
      */
     @Override
     public void customize(FlexGlobalConfig config) {
-        AuditManager.setMessageCollector(new ConsoleMessageCollector());
+        // 设置自定义的 SQL 审计日志收集器
+        AuditManager.setMessageCollector(logMessageCollector);
+
         // 开启审计功能
         AuditManager.setAuditEnable(true);
 
