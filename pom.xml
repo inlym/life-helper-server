@@ -5,16 +5,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
         <relativePath/>
     </parent>
 
-    <groupId>com.inlym</groupId>
+    <groupId>com.weutil</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>2.3.0</version>
+    <version>3.0.0</version>
 
     <name>life-helper-server</name>
     <description>Awesome Helper For Life.</description>
+
+    <packaging>pom</packaging>
 
     <properties>
         <java.version>17</java.version>
@@ -22,7 +24,55 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hutool.version>5.8.28</hutool.version>
+        <guava.version>33.2.0-jre</guava.version>
     </properties>
+
+    <modules>
+        <module>life-helper-account</module>
+        <module>life-helper-ai</module>
+        <module>life-helper-checklist</module>
+        <module>life-helper-common</module>
+        <module>life-helper-external</module>
+        <module>life-helper-location</module>
+        <module>life-helper-system</module>
+        <module>life-helper-weather</module>
+        <module>life-helper-web</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-common</artifactId>
+                <version>${version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-location</artifactId>
+                <version>${version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-external</artifactId>
+                <version>${version}</version>
+            </dependency>
+
+            <!-- Hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- Google Guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Spring Boot 的 Web 起步依赖 -->
@@ -194,19 +244,6 @@
             <version>0.1.27</version>
         </dependency>
 
-        <!-- Hutool -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-            <version>5.8.28</version>
-        </dependency>
-
-        <!-- Google Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>33.2.0-jre</version>
-        </dependency>
 
         <!-- RestTemplate 创建自定义 HTTP 客户端所使用的依赖 -->
         <dependency>
@@ -241,106 +278,5 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <finalName>lifehelper</finalName>
-
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
-            <!-- Google 容器构建工具 - Jib -->
-            <!-- 文档地址：https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin -->
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>3.3.1</version>
-                <configuration>
-                    <from>
-                        <!-- 下方基础镜像为 `openjdk:17-alpine3.14` -->
-                        <!-- 官网地址：https://hub.docker.com/layers/library/openjdk/17-alpine3.14/images/sha256-a996cdcc040704ec6badaf5fecf1e144c096e00231a29188596c784bcf858d05 -->
-                        <image>openjdk@sha256:a996cdcc040704ec6badaf5fecf1e144c096e00231a29188596c784bcf858d05</image>
-                    </from>
-                    <!-- 备注：`image`, `image`, `image` 三个参数在命令运行时注入 -->
-                    <to>
-                        <tags>
-                            <!-- 镜像标签和项目版本号保持一致 -->
-                            <tag>${project.version}</tag>
-                        </tags>
-                    </to>
-                    <container>
-                        <mainClass>com.inlym.lifehelper.Application</mainClass>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                        <ports>
-                            <port>23030</port>
-                        </ports>
-                        <args>
-                            <arg>--spring.profiles.active=prod</arg>
-                            <arg>--lifehelper.version=${project.version}</arg>
-                        </args>
-                    </container>
-                </configuration>
-            </plugin>
-
-        </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.yml</include>
-                    <include>**/*.xml</include>
-                    <include>static/**</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
-
-    <repositories>
-        <repository>
-            <id>aliyun</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>maven_central</id>
-            <name>Maven Central</name>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>aliyun-plugin</id>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>

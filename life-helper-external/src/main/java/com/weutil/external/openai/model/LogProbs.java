@@ -1,0 +1,26 @@
+package com.weutil.external.openai.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+/**
+ * 类名称
+ * <p>
+ * <h2>主要用途
+ * <p>
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2024/2/20
+ * @since 2.1.0
+ **/
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LogProbs {
+    private List<Content> content;
+}

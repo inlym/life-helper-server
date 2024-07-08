@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- 待办任务和标签关联表
--- 对应实体: [com.inlym.lifehelper.checklist.entity.ChecklistTaskTagLink]
+-- 对应实体: [com.weutil.checklist.entity.ChecklistTaskTagLink]
 -- --------------------------------------------------------
 
 CREATE TABLE `checklist_link_task_tag`

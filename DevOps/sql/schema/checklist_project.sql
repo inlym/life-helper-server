@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- 待办项目表
--- 对应实体: [com.inlym.lifehelper.checklist.entity.ChecklistProject]
+-- 对应实体: [com.weutil.checklist.entity.ChecklistProject]
 -- --------------------------------------------------------
 
 CREATE TABLE `checklist_project`

@@ -1,0 +1,12 @@
+package com.weutil.checklist.exception;
+
+import com.weutil.common.exception.ResourceAccessDeniedException;
+
+/**
+ * 待办任务无权访问异常
+ *
+ * @author <a href="https://www.inlym.com">inlym</a>
+ * @date 2024/7/3
+ * @since 2.3.0
+ **/
+public class ChecklistTaskAccessDeniedException extends ResourceAccessDeniedException {}

@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- 待办任务标签表
--- 对应实体: [com.inlym.lifehelper.checklist.entity.ChecklistTag]
+-- 对应实体: [com.weutil.checklist.entity.ChecklistTag]
 -- --------------------------------------------------------
 
 CREATE TABLE `checklist_tag`
