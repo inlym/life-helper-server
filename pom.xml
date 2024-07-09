@@ -30,7 +30,6 @@
 
     <modules>
         <module>life-helper-account</module>
-        <module>life-helper-ai</module>
         <module>life-helper-checklist</module>
         <module>life-helper-common</module>
         <module>life-helper-external</module>
