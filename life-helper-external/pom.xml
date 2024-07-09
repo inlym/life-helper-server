@@ -20,10 +20,7 @@
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.weutil</groupId>
-            <artifactId>life-helper-location</artifactId>
-        </dependency>
+   
     </dependencies>
 
     <build>

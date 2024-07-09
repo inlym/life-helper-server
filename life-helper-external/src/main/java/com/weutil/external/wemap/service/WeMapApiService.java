@@ -1,7 +1,7 @@
-package com.weutil.externalal.wemap.service;
+package com.weutil.external.wemap.service;
 
 import com.weutil.external.wemap.config.WeMapProperties;
-import com.weutil.externalal.wemap.exception.WeMapApiException;
+import com.weutil.external.wemap.exception.WeMapApiException;
 import com.weutil.external.wemap.model.WeMapListRegionResponse;
 import com.weutil.external.wemap.model.WeMapLocateIpResponse;
 import com.weutil.external.wemap.model.WeMapReverseGeocodeResponse;

@@ -1,4 +1,4 @@
-package com.weutil.externalal.wemap.exception;
+package com.weutil.external.wemap.exception;
 
 /**
  * 腾讯位置服务 API 调用异常

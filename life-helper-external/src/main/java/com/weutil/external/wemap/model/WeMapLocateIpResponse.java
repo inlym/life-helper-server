@@ -1,4 +1,4 @@
-package com.weutil.externalal.wemap.model;
+package com.weutil.external.wemap.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

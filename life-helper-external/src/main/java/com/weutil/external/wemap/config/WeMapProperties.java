@@ -1,4 +1,4 @@
-package com.weutil.externalal.wemap.config;
+package com.weutil.external.wemap.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
