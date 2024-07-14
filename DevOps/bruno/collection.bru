@@ -3,6 +3,11 @@ headers {
   x-weutil-access-token: {{token}}
 }
 
+script:pre-request {
+  const { v4: uuidv4 } = require('uuid');
+  req.setHeader("x-ca-request-id", uuidv4());
+}
+
 docs {
   「小鸣助手」项目 API 调试
 }

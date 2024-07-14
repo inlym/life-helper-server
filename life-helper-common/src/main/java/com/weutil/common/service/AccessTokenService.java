@@ -28,21 +28,6 @@ public class AccessTokenService {
     /**
      * 创建访问凭证
      *
-     * @param userId 用户 ID
-     *
-     * @return 访问凭证文本
-     * @date 2024/7/14
-     * @since 3.0.0
-     */
-    public String create(long userId) {
-        // 默认有效期10天
-        Duration duration = Duration.ofDays(10L);
-        return create(userId, duration);
-    }
-
-    /**
-     * 创建访问凭证
-     *
      * @param userId   用户 ID
      * @param duration 有效时长
      *
@@ -65,10 +50,11 @@ public class AccessTokenService {
      *
      * @param token 访问凭证
      *
+     * @return 不存在时返回 {@code null}
      * @date 2024/7/14
      * @since 3.0.0
      */
-    private final String generateKey(String token) {
+    private static String generateKey(String token) {
         return "auth:access-token:" + token;
     }
 
