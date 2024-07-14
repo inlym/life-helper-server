@@ -3,9 +3,9 @@ package com.weutil.common.filter;
 import com.weutil.common.model.CustomHttpHeader;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.io.IOException;
  * @date 2024/7/14
  * @since 3.0.0
  **/
-@WebFilter
+@Component
 public class ClientIpFilter extends OncePerRequestFilter {
     /**
      * 传递客户端 IP 地址的请求头字段

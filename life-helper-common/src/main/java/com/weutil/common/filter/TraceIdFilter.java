@@ -3,9 +3,9 @@ package com.weutil.common.filter;
 import com.weutil.common.model.CustomHttpHeader;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.io.IOException;
  * @date 2024/7/14
  * @since 3.0.0
  **/
-@WebFilter
+@Component
 public class TraceIdFilter extends OncePerRequestFilter {
     /**
      * 传递唯一请求 ID 的请求头字段
