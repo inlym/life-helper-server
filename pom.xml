@@ -35,6 +35,7 @@
         <hutool.version>5.8.16</hutool.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
         <aliyun-oss.version>2.5.0</aliyun-oss.version>
+        <mybatis-flex.version>1.9.3</mybatis-flex.version>
 
         <!-- 内部模块版本号 -->
         <life-helper.version>3.0.0</life-helper.version>
@@ -106,6 +107,11 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
         <!-- Spring 重试框架 -->
         <dependency>
             <groupId>org.springframework.retry</groupId>
@@ -130,6 +136,19 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- MyBatis-Flex -->
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
+            <version>${mybatis-flex.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-processor</artifactId>
+            <version>${mybatis-flex.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

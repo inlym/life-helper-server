@@ -13,4 +13,8 @@ package com.weutil.common.exception;
  * @date 2024/7/14
  * @since 3.0.0
  **/
-public class UnpredictableException extends RuntimeException {}
+public class UnpredictableException extends RuntimeException {
+    public UnpredictableException(String message) {
+        super(message);
+    }
+}

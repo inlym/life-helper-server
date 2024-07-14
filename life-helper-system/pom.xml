@@ -15,4 +15,12 @@
     <name>life-helper-system</name>
     <description>life-helper-system</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-common</artifactId>
+        </dependency>
+        
+    </dependencies>
+
 </project>

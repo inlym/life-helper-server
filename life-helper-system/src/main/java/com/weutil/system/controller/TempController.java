@@ -1,5 +1,6 @@
 package com.weutil.system.controller;
 
+import com.weutil.common.annotation.UserPermission;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,18 @@ import java.util.Map;
  **/
 @RestController
 public class TempController {
-    @GetMapping("/temp")
+    @GetMapping("/temp/a")
     public Map a() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("a", LocalDateTime.now());
+        map.put("b", Calendar.getInstance());
+
+        return map;
+    }
+
+    @GetMapping("/temp/b")
+    @UserPermission
+    public Map b() {
         Map<String, Object> map = new HashMap<>();
         map.put("a", LocalDateTime.now());
         map.put("b", Calendar.getInstance());
