@@ -4,6 +4,9 @@
     <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-account/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-ai/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-aliyun/life-helper-aliyun-oss/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-aliyun/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-aliyun/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-checklist/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-external/src/main/java" charset="UTF-8" />

@@ -1,0 +1,35 @@
+# 演示（demo）环境配置文件
+
+server: # Web 监听端口
+    port: 8080
+
+spring:
+    data: # Redis 配置
+        redis:
+            host: xxxxxxxxxxxx
+            database: 0
+            port: 6379
+            password: xxxxxxxxxxxx
+            connect-timeout: 1000
+            timeout: 20000
+
+    datasource:
+        url: jdbc:mysql://localhost:3306/lifehelper_db_demo?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        username: xxxxxxxxxxxx
+        password: xxxxxxxxxxxx
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 阿里云资源配置
+aliyun:
+    # 阿里云 OSS 配置
+    oss:
+        # 存储空间名称
+        bucket-name: xxxxxxxxxxxx
+        # 访问端口
+        endpoint: xxxxxxxxxxxx
+        # 绑定的自定义域名
+        custom-domain: xxxxxxxxxxxx
+        # AccessKey ID
+        access-key-id: xxxxxxxxxxxx
+        # AccessKey Secret
+        access-key-secret: xxxxxxxxxxxx

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.weutil</groupId>
+        <artifactId>life-helper-server</artifactId>
+        <version>3.0.0</version>
+    </parent>
+
+    <modules>
+        <module>life-helper-aliyun-oss</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <artifactId>life-helper-aliyun</artifactId>
+    <version>3.0.0</version>
+
+    <name>life-helper-aliyun</name>
+    <description>life-helper-aliyun</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-common</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

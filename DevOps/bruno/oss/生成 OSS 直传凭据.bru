@@ -1,0 +1,17 @@
+meta {
+  name: 生成 OSS 直传凭据
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/oss/credential
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "extension": "png"
+  }
+}

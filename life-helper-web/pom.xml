@@ -26,6 +26,11 @@
             <artifactId>life-helper-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-oss</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

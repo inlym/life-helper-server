@@ -12,8 +12,10 @@
 
     <modules>
         <module>life-helper-common</module>
+        <module>life-helper-aliyun</module>
         <module>life-helper-system</module>
         <module>life-helper-web</module>
+
     </modules>
 
     <parent>
@@ -34,7 +36,7 @@
         <!-- 第三方依赖版本号 -->
         <hutool.version>5.8.16</hutool.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
-        <aliyun-oss.version>2.5.0</aliyun-oss.version>
+        <aliyun-oss.version>3.8.0</aliyun-oss.version>
         <mybatis-flex.version>1.9.3</mybatis-flex.version>
 
         <!-- 内部模块版本号 -->
@@ -166,6 +168,13 @@
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-system</artifactId>
+                <version>${life-helper.version}</version>
+            </dependency>
+
+            <!-- 阿里云 OSS 依赖模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-aliyun-oss</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
 
