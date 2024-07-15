@@ -177,6 +177,12 @@
                 <artifactId>life-helper-aliyun-oss</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
+            <!-- 阿里云短信依赖模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-aliyun-sms</artifactId>
+                <version>3.0.0</version>
+            </dependency>
 
             <!--Hutool Java工具包-->
             <dependency>

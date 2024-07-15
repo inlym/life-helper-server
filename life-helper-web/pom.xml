@@ -30,6 +30,10 @@
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-aliyun-oss</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-sms</artifactId>
+        </dependency>
 
     </dependencies>
 
