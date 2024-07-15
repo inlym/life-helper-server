@@ -21,7 +21,7 @@ spring:
 
 # 阿里云资源配置
 aliyun:
-    # 阿里云 OSS 配置
+    # 对象存储（OSS）
     oss:
         # 存储空间名称
         bucket-name: xxxxxxxxxxxx
@@ -32,4 +32,8 @@ aliyun:
         # AccessKey ID
         access-key-id: xxxxxxxxxxxx
         # AccessKey Secret
+        access-key-secret: xxxxxxxxxxxx
+    # 短信服务（SMS）
+    sms:
+        access-key-id: xxxxxxxxxxxx
         access-key-secret: xxxxxxxxxxxx
