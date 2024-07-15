@@ -37,3 +37,10 @@ aliyun:
     sms:
         access-key-id: xxxxxxxxxxxx
         access-key-secret: xxxxxxxxxxxx
+
+# 项目配置
+weutil:
+    # 腾讯位置服务
+    we-map:
+        # 开发者密钥
+        key: xxxxxxxxxxxx

@@ -13,6 +13,7 @@
     <modules>
         <module>life-helper-common</module>
         <module>life-helper-aliyun</module>
+        <module>life-helper-external</module>
         <module>life-helper-system</module>
         <module>life-helper-web</module>
 
@@ -181,7 +182,13 @@
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-aliyun-sms</artifactId>
-                <version>3.0.0</version>
+                <version>${life-helper.version}</version>
+            </dependency>
+            <!-- 腾讯位置服务封装模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-wemap</artifactId>
+                <version>${life-helper.version}</version>
             </dependency>
 
             <!--Hutool Java工具包-->
