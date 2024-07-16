@@ -34,16 +34,6 @@ public class SimpleAuthentication implements Authentication {
         this.authenticated = true;
     }
 
-    public SimpleAuthentication(long userId, String[] roles) {
-        for (String role : roles) {
-            this.authorities.add(new SimpleGrantedAuthority(role));
-        }
-
-        this.userId = userId;
-        this.authorities.add(new SimpleGrantedAuthority(Role.USER));
-        this.authenticated = true;
-    }
-
     public long getUserId() {
         return userId;
     }

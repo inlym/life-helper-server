@@ -20,7 +20,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @RequiredArgsConstructor
 public class SpringRedisConfig {
     private final RedisConnectionFactory redisConnectionFactory;
-
     private final ObjectMapper objectMapper;
 
     @Bean

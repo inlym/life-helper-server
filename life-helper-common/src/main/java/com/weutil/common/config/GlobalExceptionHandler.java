@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,6 +38,9 @@ import java.util.List;
 public class GlobalExceptionHandler {
     /**
      * 请求参数，必填项未传值
+     *
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -47,7 +51,8 @@ public class GlobalExceptionHandler {
     /**
      * 处理 {@code @Valid} 抛出的异常
      *
-     * @since 1.3.0
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -71,7 +76,8 @@ public class GlobalExceptionHandler {
     /**
      * 处理 {@code @Validated} 抛出的异常
      *
-     * @since 1.3.0
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
@@ -82,6 +88,9 @@ public class GlobalExceptionHandler {
 
     /**
      * 鉴权异常处理（即需要登录的接口未提供有效的鉴权信息）
+     *
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({AccessDeniedException.class, UnauthorizedAccessException.class})
@@ -94,10 +103,30 @@ public class GlobalExceptionHandler {
      *
      * <h3>说明
      * <p>一般会在各个模块中捕获该异常并处理，此处作为保底策略。
+     *
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({ResourceNotFoundException.class, ResourceAccessDeniedException.class})
     public ErrorResponse handleUnauthorizedResourceAccessException() {
         return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
+    }
+
+    /**
+     * 通用异常处理
+     *
+     * <h2>说明
+     * <p>未被其他处理器捕获时，最终会进入到这里处理。
+     *
+     * @date 2024/7/16
+     * @since 3.0.0
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handleException(Exception e) {
+        log.error("[Exception] {}: {}", e.getClass(), e.getMessage());
+        log.trace("{}", Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(1, "网络异常，请稍后再试！");
     }
 }

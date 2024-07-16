@@ -50,7 +50,6 @@ public class AccessTokenService {
      *
      * @param token 访问凭证
      *
-     * @return 不存在时返回 {@code null}
      * @date 2024/7/14
      * @since 3.0.0
      */

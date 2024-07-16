@@ -2,7 +2,6 @@ package com.weutil.common.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ public class LogInterceptor implements HandlerInterceptor {
     public final String USER_ID = "USER_ID";
 
     @Override
-    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String traceId = (String) request.getAttribute(TRACE_ID);
         String clientIp = (String) request.getAttribute(CLIENT_IP);
         Long userId = (Long) request.getAttribute(USER_ID);
@@ -43,7 +42,7 @@ public class LogInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler, Exception ex) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         MDC.clear();
     }
 }

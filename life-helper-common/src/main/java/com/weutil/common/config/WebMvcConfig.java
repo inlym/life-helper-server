@@ -30,27 +30,30 @@ public class WebMvcConfig implements WebMvcConfigurer {
     /**
      * 配置拦截器
      *
-     * @since 1.9.1
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor).order(1).addPathPatterns("/**").excludePathPatterns("/ping");
     }
-    
+
     /**
      * 跨域资源共享配置
      *
-     * @since 1.2.3
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").maxAge(86400L);
+        registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").maxAge(864000L);
     }
 
     /**
      * 注解解析器配置
      *
-     * @since 1.2.3
+     * @date 2024/7/16
+     * @since 3.0.0
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {

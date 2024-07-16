@@ -33,9 +33,7 @@ public class SpringSecurityConfig {
         http.sessionManagement(registry -> registry.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 默认所有 API 均免鉴权，需要鉴权的 API 再额外使用 @Secured 注解声明需要的角色
-        http.authorizeHttpRequests(registry -> registry
-                .anyRequest()
-                .permitAll());
+        http.authorizeHttpRequests(registry -> registry.anyRequest().permitAll());
 
         return http.build();
     }
