@@ -38,6 +38,7 @@
         <hutool.version>5.8.16</hutool.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
         <aliyun-oss.version>3.8.0</aliyun-oss.version>
+        <aliyun-sms.version>3.0.0</aliyun-sms.version>
         <mybatis-flex.version>1.9.3</mybatis-flex.version>
 
         <!-- 内部模块版本号 -->
@@ -52,69 +53,59 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <!-- Spring Boot 的应用状态监控器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
         <!-- Spring Boot 的数据验证依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
         <!-- Spring Boot 配置注解处理器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
         <!-- Spring Cache 缓存依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
-
         <!-- Spring Redis 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-
         <!-- Spring Security 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
         <!-- Spring Boot 的测试框架 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- Spring Security 测试依赖 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- Spring Boot AOP 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
+        <!-- Spring JDBC 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-
         <!-- Spring 重试框架 -->
         <dependency>
             <groupId>org.springframework.retry</groupId>
@@ -159,6 +150,8 @@
     <!-- 依赖版本号统一管理 -->
     <dependencyManagement>
         <dependencies>
+            <!-- === 内部模块 === -->
+
             <!-- 通用模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
@@ -171,7 +164,6 @@
                 <artifactId>life-helper-system</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
-
             <!-- 阿里云 OSS 依赖模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
@@ -191,6 +183,8 @@
                 <version>${life-helper.version}</version>
             </dependency>
 
+            <!-- === 外部依赖 === -->
+
             <!--Hutool Java工具包-->
             <dependency>
                 <groupId>cn.hutool</groupId>
@@ -205,30 +199,26 @@
                 <version>${mysql-connector.version}</version>
             </dependency>
 
-            <!-- 阿里云OSS -->
+            <!-- 阿里云对象存储（OSS） -->
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
                 <version>${aliyun-oss.version}</version>
             </dependency>
+            <!-- 阿里云短信服务（sms） -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>dysmsapi20170525</artifactId>
+                <version>${aliyun-sms.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
     <!-- 使用阿里云的镜像源提升依赖下载速度 -->
     <repositories>
         <repository>
-            <id>aliyunmaven</id>
+            <id>aliyun-maven</id>
             <name>aliyun</name>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
@@ -242,7 +232,7 @@
     <!-- 使用阿里云的镜像源提升插件下载速度 -->
     <pluginRepositories>
         <pluginRepository>
-            <id>aliyunmaven</id>
+            <id>aliyun-maven</id>
             <name>aliyun</name>
             <url>https://maven.aliyun.com/repository/public</url>
         </pluginRepository>

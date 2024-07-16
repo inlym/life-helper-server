@@ -10,10 +10,9 @@
     </parent>
 
     <artifactId>life-helper-aliyun-oss</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-aliyun-oss</name>
-    <description>life-helper-aliyun-oss</description>
+    <description>封装阿里云对象存储（OSS）服务</description>
 
     <dependencies>
         <!-- 阿里云OSS -->
@@ -21,7 +20,7 @@
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
         </dependency>
-        
+
     </dependencies>
 
 </project>

@@ -17,10 +17,9 @@
     <packaging>pom</packaging>
 
     <artifactId>life-helper-aliyun</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-aliyun</name>
-    <description>life-helper-aliyun</description>
+    <description>封装阿里云服务</description>
 
     <dependencies>
         <dependency>

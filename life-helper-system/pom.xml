@@ -10,17 +10,25 @@
     </parent>
 
     <artifactId>life-helper-system</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-system</name>
-    <description>life-helper-system</description>
+    <description>系统调试服务</description>
 
     <dependencies>
         <dependency>
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-common</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-wemap</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

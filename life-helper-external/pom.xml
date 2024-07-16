@@ -16,10 +16,9 @@
     <packaging>pom</packaging>
 
     <artifactId>life-helper-external</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-external</name>
-    <description>life-helper-external</description>
+    <description>调用外部 API 服务</description>
 
     <dependencies>
         <dependency>

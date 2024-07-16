@@ -10,10 +10,9 @@
     </parent>
 
     <artifactId>life-helper-web</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-web</name>
-    <description>life-helper-web</description>
+    <description>Web 应用入口</description>
 
     <dependencies>
         <dependency>
@@ -30,6 +29,7 @@
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-aliyun-oss</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-aliyun-sms</artifactId>

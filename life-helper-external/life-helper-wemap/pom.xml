@@ -10,9 +10,8 @@
     </parent>
 
     <artifactId>life-helper-wemap</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-wemap</name>
-    <description>life-helper-wemap</description>
+    <description>腾讯位置服务</description>
 
 </project>

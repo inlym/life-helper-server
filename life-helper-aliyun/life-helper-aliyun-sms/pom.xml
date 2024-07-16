@@ -10,17 +10,15 @@
     </parent>
 
     <artifactId>life-helper-aliyun-sms</artifactId>
-    <version>3.0.0</version>
 
     <name>life-helper-aliyun-sms</name>
-    <description>life-helper-aliyun-sms</description>
+    <description>封装阿里云短信（SMS）服务</description>
 
     <dependencies>
         <!-- 阿里云短信服务（sms）SDK -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>dysmsapi20170525</artifactId>
-            <version>2.0.24</version>
         </dependency>
     </dependencies>
 

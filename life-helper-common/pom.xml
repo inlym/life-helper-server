@@ -10,11 +10,8 @@
     </parent>
 
     <artifactId>life-helper-common</artifactId>
-    <version>3.0.0</version>
-
-    <packaging>jar</packaging>
 
     <name>life-helper-common</name>
-    <description>life-helper-common</description>
-    
+    <description>通用子模块</description>
+
 </project>
