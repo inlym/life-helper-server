@@ -1,6 +1,7 @@
 package com.weutil.sms.service;
 
 import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
+import com.weutil.sms.config.SmsProperties;
 import com.weutil.sms.exception.SmsCommonException;
 import com.weutil.sms.model.SmsClient;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 public class SmsService {
-    /** 签名名称 */
-    private static final String SIGN_NAME = "小鸣AI";
-
     /** 响应数据表达成功的 code 值 */
     private static final String SUCCESS_CODE = "OK";
-
+    private final SmsProperties properties;
     private final SmsClient smsClient;
 
     /**
@@ -43,7 +41,7 @@ public class SmsService {
     public SendSmsResponseBody sendLoginCode(String phone, String code) {
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
             .setPhoneNumbers(phone)
-            .setSignName(SIGN_NAME)
+            .setSignName(properties.getSignName())
             .setTemplateCode("SMS_468360281")
             .setTemplateParam("{\"code\":\"" + code + "\"}");
 

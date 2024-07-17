@@ -35,8 +35,12 @@ aliyun:
         access-key-secret: xxxxxxxxxxxx
     # 短信服务（SMS）
     sms:
+        # AccessKey ID
         access-key-id: xxxxxxxxxxxx
+        # AccessKey Secret
         access-key-secret: xxxxxxxxxxxx
+        # 短信签名名称
+        sign-name: xxxxxxxxxxxx
 
 # 项目配置
 weutil:

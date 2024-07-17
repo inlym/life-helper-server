@@ -23,4 +23,7 @@ public class SmsProperties {
 
     /** 访问密钥口令 */
     private String accessKeySecret;
+
+    /** 短信签名名称 */
+    private String signName;
 }
