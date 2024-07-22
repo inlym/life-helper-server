@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>life-helper-account</artifactId>
-    
+
     <name>life-helper-account</name>
     <description>用户账号模块</description>
 
@@ -18,6 +18,10 @@
         <dependency>
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-oss</artifactId>
         </dependency>
 
     </dependencies>
