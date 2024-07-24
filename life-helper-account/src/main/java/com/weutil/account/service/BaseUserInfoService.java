@@ -2,9 +2,10 @@ package com.weutil.account.service;
 
 import com.weutil.account.entity.User;
 import com.weutil.account.mapper.UserMapper;
-import com.weutil.account.model.BaseUserInfo;
+import com.weutil.account.model.BaseUserInfoDTO;
+import com.weutil.account.model.BaseUserInfoVO;
+import com.weutil.oss.model.OssDir;
 import com.weutil.oss.service.OssService;
-import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,37 +23,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BaseUserInfoService {
     private final UserMapper userMapper;
-
     private final OssService ossService;
 
     /**
      * 更新用户基础信息
      *
      * @param userId 用户 ID
-     * @param info   用户基础信息
+     * @param dto    用户基础信息请求数据
      *
      * @date 2024/6/9
      * @since 2.3.0
      */
-    public void update(long userId, @Nonnull BaseUserInfo info) {
+    public void update(long userId, BaseUserInfoDTO dto) {
         User updated = User.builder().id(userId).build();
 
         // 处理昵称
-        if (info.getNickName() != null) {
-            updated.setNickName(info.getNickName());
+        if (dto.getNickName() != null) {
+            updated.setNickName(dto.getNickName());
         }
 
         // 处理头像
-        if (info.getAvatarUrl() != null) {
-            String ossKey = "";
-            if (info.getAvatarUrl().startsWith("http")) {
-                // [TODO] 图片是外部地址，则转储至主仓库
-                // ossKey = ossService.dumpExternalImage(OssDir.AVATAR, info.getAvatarUrl());
-            } else {
-                // [TODO] 图片已上传至内部 OSS 空间，复制到主仓库
-                //  ossKey = ossService.copyImage(OssDir.AVATAR, info.getAvatarUrl());
-            }
-            updated.setAvatarPath(ossKey);
+        if (dto.getAvatarKey() != null) {
+            // 将图片资源复制到“头像”专用目录下
+            String newAvatarKey = ossService.copyInternal(dto.getAvatarKey(), OssDir.AVATAR);
+            updated.setAvatarPath(newAvatarKey);
         }
 
         userMapper.update(updated);
@@ -66,8 +60,8 @@ public class BaseUserInfoService {
      * @date 2024/6/9
      * @since 2.3.0
      */
-    public BaseUserInfo get(long userId) {
+    public BaseUserInfoVO get(long userId) {
         User user = userMapper.selectOneById(userId);
-        return BaseUserInfo.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
+        return BaseUserInfoVO.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
     }
 }

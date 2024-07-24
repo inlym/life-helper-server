@@ -1,6 +1,7 @@
 package com.weutil.account.controller;
 
-import com.weutil.account.model.BaseUserInfo;
+import com.weutil.account.model.BaseUserInfoDTO;
+import com.weutil.account.model.BaseUserInfoVO;
 import com.weutil.account.service.BaseUserInfoService;
 import com.weutil.common.annotation.UserId;
 import com.weutil.common.annotation.UserPermission;
@@ -32,7 +33,7 @@ public class BaseUserInfoController {
      */
     @GetMapping("/user-info/base")
     @UserPermission
-    public BaseUserInfo get(@UserId long userId) {
+    public BaseUserInfoVO get(@UserId long userId) {
         return baseUserInfoService.get(userId);
     }
 
@@ -47,7 +48,7 @@ public class BaseUserInfoController {
      */
     @PutMapping("/user-info/base")
     @UserPermission
-    public BaseUserInfo update(@UserId long userId, @RequestBody BaseUserInfo dto) {
+    public BaseUserInfoVO update(@UserId long userId, @RequestBody BaseUserInfoDTO dto) {
         baseUserInfoService.update(userId, dto);
         return baseUserInfoService.get(userId);
     }
