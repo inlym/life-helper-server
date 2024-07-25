@@ -35,6 +35,11 @@
             <artifactId>life-helper-aliyun-sms</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-account</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
