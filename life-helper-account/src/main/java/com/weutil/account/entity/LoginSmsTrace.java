@@ -3,6 +3,7 @@ package com.weutil.account.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.weutil.account.model.PhoneCodeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -83,6 +84,9 @@ public class LoginSmsTrace {
     private String requestId;
 
     // ---------- 短信发出后，得到相应后处理的字段 ----------
+
+    /** 短信验证码的状态 */
+    private PhoneCodeStatus status;
 
     /** 收到响应的时间 */
     private LocalDateTime postSendTime;

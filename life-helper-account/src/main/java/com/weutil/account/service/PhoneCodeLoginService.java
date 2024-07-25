@@ -175,7 +175,7 @@ public class PhoneCodeLoginService {
         }
 
         // 短信验证码已过期
-        if (loginSmsTrack.getPostSendTime().isAfter(LocalDateTime.now().plusMinutes(5L))) {
+        if (loginSmsTrack.getPostSendTime().plusMinutes(5L).isBefore(LocalDateTime.now())) {
             throw new PhoneCodeExpiredException();
         }
 
