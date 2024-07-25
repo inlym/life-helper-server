@@ -9,7 +9,6 @@
       <option name="JD_PRESERVE_LINE_FEEDS" value="true" />
     </JavaCodeStyleSettings>
     <MySQLCodeStyleSettings version="7">
-      <option name="USE_GENERAL_STYLE" value="false" />
       <option name="KEYWORD_CASE" value="2" />
       <option name="IDENTIFIER_CASE" value="1" />
       <option name="TYPE_CASE" value="2" />

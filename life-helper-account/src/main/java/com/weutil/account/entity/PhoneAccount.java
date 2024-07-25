@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 用户手机号账户表
+ * 用户手机号账户关联表
  *
  * <h2>说明
- * <p>通过手机号关联到账户
+ * <p>通过手机号关联到用户账号
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/7/22

@@ -77,8 +77,7 @@ public class PhoneCodeLoginService {
         SendSmsResponseBody result = smsService.sendLoginCode(phone, code);
 
         // 发送后记录
-        LoginSmsTrace inserted = LoginSmsTrace
-            .builder()
+        LoginSmsTrace inserted = LoginSmsTrace.builder()
             .phone(phone)
             .code(code)
             .checkTicket(checkTicket)
@@ -135,8 +134,7 @@ public class PhoneCodeLoginService {
      * @since 2.3.0
      */
     private void checkSendingLimit(String phone, String ip) {
-        QueryWrapper queryWrapper = QueryWrapper
-            .create()
+        QueryWrapper queryWrapper = QueryWrapper.create()
             .select(LOGIN_SMS_TRACE.ALL_COLUMNS)
             .from(LOGIN_SMS_TRACE)
             .orderBy(LOGIN_SMS_TRACE.POST_SEND_TIME.desc())
@@ -208,8 +206,7 @@ public class PhoneCodeLoginService {
         IdentityCertificate identityCertificate = identityCertificateService.create(userAccountPhone.getUserId());
 
         // 记录到日志
-        PhoneCodeLoginLog insertedLog = PhoneCodeLoginLog
-            .builder()
+        PhoneCodeLoginLog insertedLog = PhoneCodeLoginLog.builder()
             .phone(loginSmsTrack.getPhone())
             .phoneAccountId(userAccountPhone.getId())
             .userId(userAccountPhone.getUserId())
@@ -222,8 +219,8 @@ public class PhoneCodeLoginService {
 
         // 剩余信息记录到追踪表
         updated.setSucceedTime(now);
-        updated.setPhoneSmsLoginLogId(insertedLog.getId());
-        updated.setUserAccountPhoneId(userAccountPhone.getId());
+        updated.setPhoneCodeLoginLogId(insertedLog.getId());
+        updated.setPhoneAccountId(userAccountPhone.getId());
         loginSmsTraceMapper.update(updated);
 
         // 发布手机号使用短信验证码登录事件

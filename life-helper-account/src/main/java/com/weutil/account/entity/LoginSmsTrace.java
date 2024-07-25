@@ -102,8 +102,8 @@ public class LoginSmsTrace {
     // ---------- 关联 ID ----------
 
     /** 登录成功后记录关联的手机号验证码登录日志表 ID */
-    private Long phoneSmsLoginLogId;
+    private Long phoneCodeLoginLogId;
 
     /** 登录成功后记录关联的用户手机号账户表 ID */
-    private Long userAccountPhoneId;
+    private Long phoneAccountId;
 }

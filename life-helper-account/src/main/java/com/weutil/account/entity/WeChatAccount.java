@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 用户手机号账户表
+ * 用户微信账户关联表
  *
  * <h2>说明
  * <p>通过微信账号关联到账户
