@@ -4,7 +4,7 @@ package com.weutil.account.exception;
  * 短信验证码尝试次数超出限制异常
  *
  * <h2>说明
- * <p>目前限定5次
+ * <p>目前限定10次
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/7/26

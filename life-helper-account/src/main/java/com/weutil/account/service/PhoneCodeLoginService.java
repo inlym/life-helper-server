@@ -184,8 +184,8 @@ public class PhoneCodeLoginService {
             throw new PhoneCodeExpiredException();
         }
 
-        // 尝试次数超过5次
-        if (entity.getAttemptCounter() >= 5) {
+        // 尝试次数超过10次
+        if (entity.getAttemptCounter() >= 10) {
             throw new PhoneCodeAttemptExceededException();
         }
 
