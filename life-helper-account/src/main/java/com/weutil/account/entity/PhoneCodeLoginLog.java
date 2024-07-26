@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * @date 2024/7/22
  * @since 3.0.0
  **/
-@Table("login_phone_sms_log")
+@Table("login_phone_code_log")
 @Data
 @Builder
 @NoArgsConstructor

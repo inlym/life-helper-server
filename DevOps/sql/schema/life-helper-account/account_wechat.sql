@@ -3,7 +3,7 @@
 -- 对应实体: [com.weutil.account.user.entity.UserAccountWeChat]
 -- --------------------------------------------------------
 
-create table `user_account_wechat`
+create table `account_wechat`
 (
     /* 下方是通用字段 */
     `id`              bigint unsigned not null auto_increment comment '主键 ID',
@@ -13,8 +13,8 @@ create table `user_account_wechat`
 
     /* 下方为业务字段 */
     `user_id`         bigint unsigned not null comment '对应的用户 ID',
-    `login_counter`   bigint unsigned not null comment '登录次数',
-    `last_login_time` datetime        not null comment '最近一次登录时间',
+    `login_counter`   bigint unsigned not null default 0 comment '登录次数',
+    `last_login_time` datetime                 default null comment '最近一次登录时间',
     `last_login_ip`   char(15)        not null default '' comment '最近一次登录的 IP 地址',
     `app_id`          varchar(50)     not null default '' comment '小程序开发者 ID',
     `open_id`         varchar(50)     not null default '' comment '小程序的用户唯一标识',

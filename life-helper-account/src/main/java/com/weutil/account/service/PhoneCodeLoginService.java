@@ -4,13 +4,13 @@ import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
-import com.weutil.account.entity.LoginSmsTrace;
 import com.weutil.account.entity.PhoneAccount;
+import com.weutil.account.entity.PhoneCode;
 import com.weutil.account.entity.PhoneCodeLoginLog;
 import com.weutil.account.event.LoginByPhoneCodeEvent;
 import com.weutil.account.exception.*;
-import com.weutil.account.mapper.LoginSmsTraceMapper;
 import com.weutil.account.mapper.PhoneCodeLoginLogMapper;
+import com.weutil.account.mapper.PhoneCodeMapper;
 import com.weutil.common.model.IdentityCertificate;
 import com.weutil.common.service.IdentityCertificateService;
 import com.weutil.common.util.RandomStringUtil;
@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static com.weutil.account.entity.table.LoginSmsTraceTableDef.LOGIN_SMS_TRACE;
+import static com.weutil.account.entity.table.PhoneCodeTableDef.PHONE_CODE;
 
 /**
  * 手机验证码登录服务
@@ -41,7 +41,7 @@ import static com.weutil.account.entity.table.LoginSmsTraceTableDef.LOGIN_SMS_TR
 @Slf4j
 @RequiredArgsConstructor
 public class PhoneCodeLoginService {
-    private final LoginSmsTraceMapper loginSmsTraceMapper;
+    private final PhoneCodeMapper phoneCodeMapper;
     private final PhoneAccountService phoneAccountService;
     private final SmsService smsService;
     private final IdentityCertificateService identityCertificateService;
@@ -60,7 +60,7 @@ public class PhoneCodeLoginService {
      * @date 2024/6/13
      * @since 2.3.0
      */
-    public LoginSmsTrace sendSms(String phone, String ip) {
+    public PhoneCode sendSms(String phone, String ip) {
         // 检查手机号格式是否正确
         checkPhoneFormat(phone);
         // 检查是否达到发送限制
@@ -77,27 +77,27 @@ public class PhoneCodeLoginService {
         SendSmsResponseBody result = smsService.sendLoginCode(phone, code);
 
         // 发送后记录
-        LoginSmsTrace inserted = LoginSmsTrace.builder()
-            .phone(phone)
-            .code(code)
-            .checkTicket(checkTicket)
-            .ip(ip)
-            .preSendTime(preSendTime)
-            .resCode(result.getCode())
-            .resMessage(result.getMessage())
-            .resBizId(result.getBizId())
-            .requestId(result.getRequestId())
-            .postSendTime(LocalDateTime.now())
-            .build();
+        PhoneCode inserted = PhoneCode.builder()
+                .phone(phone)
+                .code(code)
+                .checkTicket(checkTicket)
+                .ip(ip)
+                .preSendTime(preSendTime)
+                .resCode(result.getCode())
+                .resMessage(result.getMessage())
+                .resBizId(result.getBizId())
+                .requestId(result.getRequestId())
+                .postSendTime(LocalDateTime.now())
+                .build();
 
         if (result.getCode().equals("OK")) {
             // 处理短信发送成功情况
-            loginSmsTraceMapper.insertSelective(inserted);
+            phoneCodeMapper.insertSelective(inserted);
             log.info("[SMS] 短信验证码发送成功, phone={}, code={}", phone, code);
-            return loginSmsTraceMapper.selectOneById(inserted.getId());
+            return phoneCodeMapper.selectOneById(inserted.getId());
         } else {
             // 处理短信发送失败情况
-            loginSmsTraceMapper.insertSelective(inserted);
+            phoneCodeMapper.insertSelective(inserted);
             log.error("[SMS] 短信验证码发送失败, phone={}, code={}, response={}", phone, code, result);
             // 短信未发送，抛出异常
             throw new SmsSentFailureException();
@@ -135,22 +135,22 @@ public class PhoneCodeLoginService {
      */
     private void checkSendingLimit(String phone, String ip) {
         QueryWrapper queryWrapper = QueryWrapper.create()
-            .select(LOGIN_SMS_TRACE.ALL_COLUMNS)
-            .from(LOGIN_SMS_TRACE)
-            .orderBy(LOGIN_SMS_TRACE.POST_SEND_TIME.desc())
-            .where(LOGIN_SMS_TRACE.PHONE.eq(phone).or(LOGIN_SMS_TRACE.IP.eq(ip)));
+                .select(PHONE_CODE.ALL_COLUMNS)
+                .from(PHONE_CODE)
+                .orderBy(PHONE_CODE.POST_SEND_TIME.desc())
+                .where(PHONE_CODE.PHONE.eq(phone).or(PHONE_CODE.IP.eq(ip)));
 
         // 限制每分钟 1 条
-        QueryWrapper query1 = queryWrapper.clone().where(LOGIN_SMS_TRACE.POST_SEND_TIME.gt(LocalDateTime.now().minusMinutes(1L)));
-        List<LoginSmsTrace> list1 = loginSmsTraceMapper.selectListByQuery(query1);
+        QueryWrapper query1 = queryWrapper.clone().where(PHONE_CODE.POST_SEND_TIME.gt(LocalDateTime.now().minusMinutes(1L)));
+        List<PhoneCode> list1 = phoneCodeMapper.selectListByQuery(query1);
         if (!list1.isEmpty()) {
             Duration between = Duration.between(list1.get(0).getPostSendTime(), LocalDateTime.now());
             throw new SmsRateLimitExceededException(Duration.ofMinutes(1L).toSeconds() - between.toSeconds());
         }
 
         // 限制每小时 5 条
-        QueryWrapper query2 = queryWrapper.clone().where(LOGIN_SMS_TRACE.POST_SEND_TIME.gt(LocalDateTime.now().minusHours(1L)));
-        List<LoginSmsTrace> list2 = loginSmsTraceMapper.selectListByQuery(query2);
+        QueryWrapper query2 = queryWrapper.clone().where(PHONE_CODE.POST_SEND_TIME.gt(LocalDateTime.now().minusHours(1L)));
+        List<PhoneCode> list2 = phoneCodeMapper.selectListByQuery(query2);
         if (list1.size() > 5) {
             Duration between = Duration.between(list2.get(0).getPostSendTime(), LocalDateTime.now());
             throw new SmsRateLimitExceededException(Duration.ofHours(1L).toSeconds() - between.toSeconds());
@@ -167,61 +167,71 @@ public class PhoneCodeLoginService {
      * @since 2.3.0
      */
     public IdentityCertificate loginBySmsCode(String checkTicket, String code, String ip) {
-        LoginSmsTrace loginSmsTrack = loginSmsTraceMapper.selectOneByCondition(LOGIN_SMS_TRACE.CHECK_TICKET.eq(checkTicket));
+        PhoneCode entity = phoneCodeMapper.selectOneByCondition(PHONE_CODE.CHECK_TICKET.eq(checkTicket));
 
         // 短信验证码不存在
-        if (loginSmsTrack == null) {
+        if (entity == null) {
             throw new SmsCheckTicketNotExistsException();
         }
 
+        // 已经登录成功成功过了，就不允许再次使用
+        if (entity.getSucceedTime() != null) {
+            throw new PhoneCodeAlreadyUsedException();
+        }
+
         // 短信验证码已过期
-        if (loginSmsTrack.getPostSendTime().plusMinutes(5L).isBefore(LocalDateTime.now())) {
+        if (entity.getPostSendTime().plusMinutes(5L).isBefore(LocalDateTime.now())) {
             throw new PhoneCodeExpiredException();
         }
 
+        // 尝试次数超过5次
+        if (entity.getAttemptCounter() >= 5) {
+            throw new PhoneCodeAttemptExceededException();
+        }
+
         LocalDateTime now = LocalDateTime.now();
-        LoginSmsTrace updated = UpdateEntity.of(LoginSmsTrace.class, loginSmsTrack.getId());
-        if (loginSmsTrack.getFirstAttemptTime() == null) {
+        PhoneCode updated = UpdateEntity.of(PhoneCode.class, entity.getId());
+        if (entity.getFirstAttemptTime() == null) {
             updated.setFirstAttemptTime(now);
         }
         updated.setLastAttemptTime(now);
-        UpdateWrapper<LoginSmsTrace> wrapper = UpdateWrapper.of(updated);
-        wrapper.set(LOGIN_SMS_TRACE.ATTEMPT_COUNTER, LOGIN_SMS_TRACE.ATTEMPT_COUNTER.add(1));
+        UpdateWrapper<PhoneCode> wrapper = UpdateWrapper.of(updated);
+        wrapper.set(PHONE_CODE.ATTEMPT_COUNTER, PHONE_CODE.ATTEMPT_COUNTER.add(1));
 
-        if (!Objects.equals(loginSmsTrack.getCode(), code)) {
-            loginSmsTraceMapper.update(updated);
+        if (!Objects.equals(entity.getCode(), code)) {
+            phoneCodeMapper.update(updated);
             throw new PhoneCodeNotMatchException();
         }
 
         // 虽然验证码匹配上了，再增加一重保障，要求“获取验证码”操作和“输入验证码”操作的设备是同一个，目前仅验证 IP 地址相同
-        if (!Objects.equals(loginSmsTrack.getIp(), ip)) {
-            loginSmsTraceMapper.update(updated);
+        if (!Objects.equals(entity.getIp(), ip)) {
+            phoneCodeMapper.update(updated);
             throw new NotSameIpException();
         }
 
         // 全部校验通过，登录成功情况
-        PhoneAccount userAccountPhone = phoneAccountService.getOrCreatePhoneAccount(loginSmsTrack.getPhone());
+        PhoneAccount phoneAccount = phoneAccountService.getOrCreatePhoneAccount(entity.getPhone());
 
         // 生成鉴权凭据
-        IdentityCertificate identityCertificate = identityCertificateService.create(userAccountPhone.getUserId());
+        IdentityCertificate identityCertificate = identityCertificateService.create(phoneAccount.getUserId());
 
         // 记录到日志
         PhoneCodeLoginLog insertedLog = PhoneCodeLoginLog.builder()
-            .phone(loginSmsTrack.getPhone())
-            .phoneAccountId(userAccountPhone.getId())
-            .userId(userAccountPhone.getUserId())
-            .token(identityCertificate.getToken())
-            .ip(loginSmsTrack.getIp())
-            .loginTime(LocalDateTime.now())
-            .code(loginSmsTrack.getCode())
-            .build();
+                .phone(entity.getPhone())
+                .phoneAccountId(phoneAccount.getId())
+                .userId(phoneAccount.getUserId())
+                .token(identityCertificate.getToken())
+                .ip(entity.getIp())
+                .loginTime(LocalDateTime.now())
+                .code(entity.getCode())
+                .build();
         phoneCodeLoginLogMapper.insertSelective(insertedLog);
 
         // 剩余信息记录到追踪表
         updated.setSucceedTime(now);
         updated.setPhoneCodeLoginLogId(insertedLog.getId());
-        updated.setPhoneAccountId(userAccountPhone.getId());
-        loginSmsTraceMapper.update(updated);
+        updated.setPhoneAccountId(phoneAccount.getId());
+        phoneCodeMapper.update(updated);
 
         // 发布手机号使用短信验证码登录事件
         applicationEventPublisher.publishEvent(new LoginByPhoneCodeEvent(insertedLog));

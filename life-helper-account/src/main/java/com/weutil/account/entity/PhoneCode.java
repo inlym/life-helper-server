@@ -3,7 +3,6 @@ package com.weutil.account.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import com.weutil.account.model.PhoneCodeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +11,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 登录短信验证码生命周期追踪表
+ * （用于登录的）短信验证码生命周期管理实体
  *
  * <h2>主要用途
- * <p>记录使用手机号（短信验证码）的方式进行登录的过程中，各个时间节点情况。
+ * <p>记录（用于登录的）短信验证码的生命周期情况。
  *
  * <h2>追踪起点
  * <p>用户在前台点击“获取验证码”（不管短信是否正确发出）。
@@ -24,12 +23,12 @@ import java.time.LocalDateTime;
  * @date 2024/7/22
  * @since 3.0.0
  **/
-@Table("login_sms_trace")
+@Table("login_phone_code")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginSmsTrace {
+public class PhoneCode {
     // ============================ 通用字段 ============================
 
     /** 主键 ID */
@@ -42,7 +41,7 @@ public class LoginSmsTrace {
     /** 更新时间 */
     private LocalDateTime updateTime;
 
-    // 字段说明：因为是“追踪表”，因此此处无“逻辑删除标志”字段
+    // 字段说明：因为是“追踪表”，不存在删除操作，因此此处无“逻辑删除标志”字段
 
     // ============================ 业务字段 ============================
 
@@ -84,9 +83,6 @@ public class LoginSmsTrace {
     private String requestId;
 
     // ---------- 短信发出后，得到相应后处理的字段 ----------
-
-    /** 短信验证码的状态 */
-    private PhoneCodeStatus status;
 
     /** 收到响应的时间 */
     private LocalDateTime postSendTime;

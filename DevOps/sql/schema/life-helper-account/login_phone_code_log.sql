@@ -1,15 +1,14 @@
 -- --------------------------------------------------------
 -- 手机号（短信验证码）登录日志表
--- 对应实体: [com.weutil.account.login.phone.entity.PhoneSmsLoginLog]
+-- 对应实体: [com.weutil.account.entity.PhoneCodeLoginLog]
 -- --------------------------------------------------------
 
-create table `login_phone_sms_log`
+create table `login_phone_code_log`
 (
     /* 下方是通用字段 */
     `id`               bigint unsigned not null auto_increment comment '主键 ID',
     `create_time`      datetime        not null default current_timestamp comment '创建时间',
     `update_time`      datetime        not null default current_timestamp on update current_timestamp comment '更新时间',
-    `delete_time`      datetime                 default null comment '删除时间（逻辑删除标志）',
 
     /* 下方为业务字段 */
     `phone`            char(11)        not null default '' comment '手机号',

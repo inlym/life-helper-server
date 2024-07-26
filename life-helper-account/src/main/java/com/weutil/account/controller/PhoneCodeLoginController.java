@@ -1,6 +1,6 @@
 package com.weutil.account.controller;
 
-import com.weutil.account.entity.LoginSmsTrace;
+import com.weutil.account.entity.PhoneCode;
 import com.weutil.account.model.CheckTicketVO;
 import com.weutil.account.model.PhoneCodeLoginDTO;
 import com.weutil.account.model.SendingSmsDTO;
@@ -37,7 +37,7 @@ public class PhoneCodeLoginController {
     @PostMapping("/sms/login")
     public CheckTicketVO sendSms(@ClientIp String ip, @Valid @RequestBody SendingSmsDTO dto) {
         String phone = dto.getPhone();
-        LoginSmsTrace result = phoneCodeLoginService.sendSms(phone, ip);
+        PhoneCode result = phoneCodeLoginService.sendSms(phone, ip);
 
         return CheckTicketVO.builder().checkTicket(result.getCheckTicket()).build();
     }

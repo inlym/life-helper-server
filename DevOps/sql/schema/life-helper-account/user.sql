@@ -14,8 +14,8 @@ create table `user`
     `nick_name`       varchar(20)     not null default '' comment '昵称',
     `avatar_path`     varchar(100)    not null default '' comment '头像路径',
     `register_time`   datetime        not null comment '注册时间',
-    `login_counter`   bigint unsigned not null comment '登录次数',
-    `last_login_time` datetime        not null comment '最近一次登录时间',
+    `login_counter`   bigint unsigned not null default 0 comment '登录次数',
+    `last_login_time` datetime                 default null comment '最近一次登录时间',
     `last_login_ip`   char(15)        not null default '' comment '最近一次登录的 IP 地址',
 
     primary key (`id`)

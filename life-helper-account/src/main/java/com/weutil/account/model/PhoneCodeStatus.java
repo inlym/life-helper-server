@@ -10,6 +10,7 @@ import lombok.Getter;
  * @date 2024/7/26
  * @since 3.0.0
  **/
+@Deprecated
 @Getter
 public enum PhoneCodeStatus {
     /** 未发送 */

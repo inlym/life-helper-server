@@ -13,12 +13,11 @@ create table `account_phone`
 
     /* 下方为业务字段 */
     `user_id`         bigint unsigned not null comment '对应的用户 ID',
-    `login_counter`   bigint unsigned not null comment '登录次数',
-    `last_login_time` datetime        not null comment '最近一次登录时间',
+    `login_counter`   bigint unsigned not null default 0 comment '登录次数',
+    `last_login_time` datetime                 default null comment '最近一次登录时间',
     `last_login_ip`   char(15)        not null default '' comment '最近一次登录的 IP 地址',
     `phone`           char(11)        not null default '' comment '手机号（仅支持国内手机号）',
 
     primary key (`id`)
 ) engine = InnoDB
-  default character set = `utf8mb4`
-    comment ='用户手机号账户表';
+  default character set = `utf8mb4` comment ='用户手机号账户关联表';
