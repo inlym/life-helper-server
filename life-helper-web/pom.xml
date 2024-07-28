@@ -40,6 +40,11 @@
             <artifactId>life-helper-account</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-reminder</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
