@@ -1,0 +1,15 @@
+meta {
+  name: 更新
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/reminder/projects/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {"name":"待办项目888","colorCode":2,"favorite":false}
+}

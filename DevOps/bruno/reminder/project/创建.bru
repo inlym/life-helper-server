@@ -1,0 +1,15 @@
+meta {
+  name: 创建
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/reminder/projects
+  body: json
+  auth: none
+}
+
+body:json {
+  {"name":"待办项目111","colorCode":1,"favorite":true}
+}
