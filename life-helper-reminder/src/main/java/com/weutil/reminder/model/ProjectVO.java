@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
  * 待办清单项目视图对象
  *
@@ -24,9 +22,6 @@ import java.time.LocalDateTime;
 public class ProjectVO {
     /** 项目 ID */
     private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
 
     /** 项目名称 */
     private String name;

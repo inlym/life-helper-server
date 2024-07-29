@@ -1,14 +1,18 @@
 package com.weutil.reminder.service;
 
 import com.mybatisflex.core.query.QueryCondition;
+import com.mybatisflex.core.util.UpdateEntity;
 import com.weutil.reminder.entity.Project;
 import com.weutil.reminder.exception.ProjectNotEmptyWhenDeletedException;
 import com.weutil.reminder.exception.ProjectNotFoundException;
 import com.weutil.reminder.mapper.ProjectMapper;
+import com.weutil.reminder.model.Color;
+import com.weutil.reminder.model.ProjectDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.weutil.reminder.entity.table.ProjectTableDef.PROJECT;
@@ -78,15 +82,35 @@ public class ProjectService {
     }
 
     /**
-     * 更新项目
+     * 修改项目信息
      *
-     * @param entity 实体数据
+     * @param userId    用户 ID
+     * @param projectId 项目 ID
+     * @param dto       请求数据
      *
      * @date 2024/7/29
      * @since 3.0.0
      */
-    public void update(Project entity) {
-        projectMapper.update(entity);
+    public void update(long userId, long projectId, ProjectDTO dto) {
+        // 先查找确认存在，才有下一步操作
+        Project project = findById(userId, projectId);
+
+        Project updated = UpdateEntity.of(Project.class, projectId);
+        if (dto.getName() != null) {
+            updated.setName(dto.getName());
+        }
+        if (dto.getColorCode() != null) {
+            updated.setColor(Color.fromCode(dto.getColorCode()));
+        }
+        if (dto.getFavorite() != null) {
+            if (dto.getFavorite() && project.getFavoriteTime() == null) {
+                updated.setFavoriteTime(LocalDateTime.now());
+            } else if (!dto.getFavorite() && project.getFavoriteTime() != null) {
+                updated.setFavoriteTime(null);
+            }
+        }
+
+        projectMapper.update(updated);
     }
 
     /**
