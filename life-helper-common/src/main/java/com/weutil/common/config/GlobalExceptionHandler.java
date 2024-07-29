@@ -1,6 +1,5 @@
 package com.weutil.common.config;
 
-import com.weutil.common.exception.ResourceAccessDeniedException;
 import com.weutil.common.exception.ResourceNotFoundException;
 import com.weutil.common.exception.UnauthorizedAccessException;
 import com.weutil.common.model.ErrorResponse;
@@ -108,7 +107,7 @@ public class GlobalExceptionHandler {
      * @since 3.0.0
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler({ResourceNotFoundException.class, ResourceAccessDeniedException.class})
+    @ExceptionHandler({ResourceNotFoundException.class})
     public ErrorResponse handleUnauthorizedResourceAccessException() {
         return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
     }
