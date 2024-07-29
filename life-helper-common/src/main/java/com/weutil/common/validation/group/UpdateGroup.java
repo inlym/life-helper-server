@@ -10,4 +10,4 @@ package com.weutil.common.validation.group;
  * @date 2024/7/15
  * @since 3.0.0
  **/
-public class UpdateGroup {}
+public interface UpdateGroup {}
