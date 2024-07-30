@@ -6,24 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 待办清单项目视图对象
+ * 待办任务标签视图对象
  *
  * <h2>说明
  * <p>用于输出给客户端展示使用。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/7/29
+ * @date 2024/7/30
  * @since 3.0.0
  **/
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectVO {
-    /** 项目 ID */
+public class TagVO {
+    /** 标签 ID */
     private Long id;
 
-    /** 项目名称 */
+    /** 标签名称 */
     private String name;
 
     /** 标记颜色（枚举值） */

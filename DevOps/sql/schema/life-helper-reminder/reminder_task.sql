@@ -13,7 +13,7 @@ create table `reminder_task`
 
     /* 下方为业务字段 */
     `user_id`       bigint unsigned not null comment '所属用户 ID',
-    `project_id`    bigint unsigned not null comment '所属项目 ID',
+    `project_id`    bigint unsigned not null default 0 comment '所属项目 ID',
     `name`          varchar(30)     not null default '' comment '任务名称',
     `content`       varchar(1000)   not null default '' comment '任务描述内容文本',
     `complete_time` datetime                 default null comment '任务完成时间',

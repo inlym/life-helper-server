@@ -1,9 +1,6 @@
 package com.weutil.reminder.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.mybatisflex.annotation.*;
 import com.weutil.reminder.model.TaskPriority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * 待办任务
@@ -48,7 +46,12 @@ public class Task {
     /** 所属用户 ID */
     private Long userId;
 
-    /** 所属项目 ID */
+    /**
+     * 所属项目 ID
+     *
+     * <h3>说明
+     * <p>该值为 {@code 0} 则表示不归属于任何项目。
+     */
     private Long projectId;
 
     /** 任务名称 */
@@ -68,4 +71,10 @@ public class Task {
 
     /** 截止时间 */
     private LocalTime dueTime;
+
+    // ============================ 关联字段 ============================
+
+    /** 关联的任务标签关联记录 */
+    @RelationOneToMany(selfField = "id", targetField = "taskId")
+    private List<LinkTaskTag> tags;
 }

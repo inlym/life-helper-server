@@ -32,9 +32,9 @@ public class SharedCountingService {
     private final TagMapper tagMapper;
 
     /**
-     * 计算指定项目未完成的任务数
+     * 计算指定项目的未完成任务数
      *
-     * @param projectId 待办项目 ID
+     * @param projectId 项目 ID
      *
      * @date 2024/7/29
      * @since 3.0.0

@@ -10,6 +10,7 @@ import com.weutil.reminder.model.Color;
 import com.weutil.reminder.model.ProjectDTO;
 import com.weutil.reminder.model.ProjectVO;
 import com.weutil.reminder.service.ProjectService;
+import com.weutil.reminder.service.SharedConvertingService;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
+    private final SharedConvertingService sharedConvertingService;
 
     /**
      * 新增项目
@@ -48,24 +50,7 @@ public class ProjectController {
         }
 
         projectService.create(inserted);
-        return convert(projectService.findById(userId, inserted.getId()));
-    }
-
-    /**
-     * 将实体对象转化为视图对象
-     *
-     * @param entity 实体对象
-     *
-     * @date 2024/7/28
-     * @since 3.0.0
-     */
-    private ProjectVO convert(Project entity) {
-        return ProjectVO.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .color(entity.getColor())
-                .uncompletedTaskCount(entity.getUncompletedTaskCount())
-                .build();
+        return sharedConvertingService.convertProject(projectService.findById(userId, inserted.getId()));
     }
 
     /**
@@ -100,7 +85,7 @@ public class ProjectController {
     public ProjectVO update(@UserId long userId, @Positive @PathVariable("id") long projectId, @Validated(UpdateGroup.class) @RequestBody ProjectDTO dto) {
         projectService.update(userId, projectId, dto);
 
-        return convert(projectService.findById(userId, projectId));
+        return sharedConvertingService.convertProject(projectService.findById(userId, projectId));
     }
 
     /**
@@ -115,7 +100,7 @@ public class ProjectController {
     @GetMapping("/reminder/projects/{id}")
     @UserPermission
     public ProjectVO findOne(@UserId long userId, @Positive @PathVariable("id") long projectId) {
-        return convert(projectService.findById(userId, projectId));
+        return sharedConvertingService.convertProject(projectService.findById(userId, projectId));
     }
 
     /**
@@ -129,7 +114,7 @@ public class ProjectController {
     @GetMapping("/reminder/projects")
     @UserPermission
     public SingleListResponse<ProjectVO> list(@UserId long userId) {
-        List<ProjectVO> list = projectService.list(userId).stream().map(this::convert).toList();
+        List<ProjectVO> list = projectService.list(userId).stream().map(sharedConvertingService::convertProject).toList();
         return new SingleListResponse<>(list);
     }
 }

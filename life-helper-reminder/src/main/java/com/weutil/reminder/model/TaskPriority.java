@@ -1,5 +1,6 @@
 package com.weutil.reminder.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.mybatisflex.annotation.EnumValue;
 import lombok.Getter;
 
@@ -25,9 +26,19 @@ public enum TaskPriority {
     HIGH(3);
 
     @EnumValue
+    @JsonValue
     private final int code;
 
     TaskPriority(int code) {
         this.code = code;
+    }
+
+    public static TaskPriority fromCode(int code) {
+        for (TaskPriority item : TaskPriority.values()) {
+            if (item.getCode() == code) {
+                return item;
+            }
+        }
+        throw new IllegalArgumentException("无效的 code 值：" + code);
     }
 }
