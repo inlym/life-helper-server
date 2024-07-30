@@ -74,7 +74,7 @@ public class ProjectService {
         Project result = projectMapper.selectOneByCondition(condition);
 
         if (result == null) {
-            log.trace("[Reminder] 未找到项目, userId={}, projectId={}", userId, projectId);
+            log.trace("[Reminder] project not found, userId={}, projectId={}", userId, projectId);
             throw new ProjectNotFoundException();
         }
 

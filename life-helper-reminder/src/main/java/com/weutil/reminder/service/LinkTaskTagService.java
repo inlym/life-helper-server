@@ -5,8 +5,6 @@ import com.weutil.reminder.entity.LinkTaskTag;
 import com.weutil.reminder.entity.Tag;
 import com.weutil.reminder.entity.Task;
 import com.weutil.reminder.mapper.LinkTaskTagMapper;
-import com.weutil.reminder.mapper.TagMapper;
-import com.weutil.reminder.mapper.TaskMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,8 +31,8 @@ import static com.weutil.reminder.entity.table.LinkTaskTagTableDef.LINK_TASK_TAG
 @RequiredArgsConstructor
 public class LinkTaskTagService {
     private final LinkTaskTagMapper linkTaskTagMapper;
-    private final TaskMapper taskMapper;
-    private final TagMapper tagMapper;
+    private final TaskService taskService;
+    private final TagService tagService;
 
     /**
      * 给任务添加一个标签
@@ -47,10 +45,16 @@ public class LinkTaskTagService {
      * @since 3.0.0
      */
     public LinkTaskTag append(long userId, long taskId, long tagId) {
+        // 先检查是否存在，若已存在则不进行任何操作
         LinkTaskTag result = findOne(taskId, tagId);
         if (result != null) {
             return result;
         }
+
+        // 创建前检查“任务”和“标签”的所属权是否归属当前用户
+        verifyOwnership(userId, taskId, tagId);
+
+        // 创建关联关系
         LinkTaskTag inserted = LinkTaskTag.builder().userId(userId).taskId(taskId).tagId(tagId).build();
         linkTaskTagMapper.insertSelective(inserted);
 
@@ -74,9 +78,21 @@ public class LinkTaskTagService {
         return linkTaskTagMapper.selectOneByCondition(condition);
     }
 
+    /**
+     * 校验“任务”和“标签”的所属权
+     *
+     * @param userId 用户 ID
+     * @param taskId 任务 ID
+     * @param tagId  标签 ID
+     *
+     * @date 2024/7/31
+     * @since 3.0.0
+     */
     private void verifyOwnership(long userId, long taskId, long tagId) {
-        Task task = taskMapper.selectOneById(taskId);
-        Tag tag = tagMapper.selectOneById(tagId);
+        Task task = taskService.findById(userId, taskId);
+        Tag tag = tagService.findById(userId, tagId);
+
+        log.trace("[Reminder] task and tag verification passed, taskId={}, tagId={}", task.getId(), tag.getId());
     }
 
     /**

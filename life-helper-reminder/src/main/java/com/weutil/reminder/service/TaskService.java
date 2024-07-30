@@ -78,7 +78,7 @@ public class TaskService {
         Task result = taskMapper.selectOneByCondition(condition);
 
         if (result == null) {
-            log.trace("[Reminder] 未找到任务, userId={}, taskId={}", userId, taskId);
+            log.trace("[Reminder] task not found, userId={}, taskId={}", userId, taskId);
             throw new TaskNotFoundException();
         }
 
