@@ -14,13 +14,10 @@ import java.util.List;
 import static com.weutil.reminder.entity.table.LinkTaskTagTableDef.LINK_TASK_TAG;
 
 /**
- * 任务标签管理服务
+ * “任务-标签”关联组管理服务
  *
  * <h2>说明
- * <p>专门处理“添加标签”和“移除标签”事项。
- *
- * <h2>备注
- * <p>目前的“用户 ID”字段仅记录，未用于逻辑判断。
+ * <p>专门处理给指定任务进行“添加标签”和“移除标签”操作事项。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/7/30
@@ -35,7 +32,7 @@ public class LinkTaskTagService {
     private final TagService tagService;
 
     /**
-     * 给任务添加一个标签
+     * 给任务添加一个标签（即建立“关联组”关系）
      *
      * @param userId 用户 ID
      * @param taskId 任务 ID
@@ -96,16 +93,17 @@ public class LinkTaskTagService {
     }
 
     /**
-     * 移除任务的标签
+     * 删除“任务-标签”关联组
      *
-     * @param taskId 任务 ID
-     * @param tagId  标签 ID
+     * @param userId        用户 ID
+     * @param linkTaskTagId “任务-标签”关联组主键 ID
      *
-     * @date 2024/7/30
+     * @date 2024/7/31
      * @since 3.0.0
      */
-    public void remove(long taskId, long tagId) {
-        LinkTaskTag result = findOne(taskId, tagId);
+    public void delete(long userId, long linkTaskTagId) {
+        QueryCondition condition = LINK_TASK_TAG.ID.eq(linkTaskTagId).and(LINK_TASK_TAG.USER_ID.eq(userId));
+        LinkTaskTag result = linkTaskTagMapper.selectOneByCondition(condition);
         if (result != null) {
             linkTaskTagMapper.deleteById(result.getId());
         }

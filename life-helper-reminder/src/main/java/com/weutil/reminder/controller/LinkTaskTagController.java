@@ -6,6 +6,7 @@ import com.weutil.reminder.entity.LinkTaskTag;
 import com.weutil.reminder.model.LinkTaskTagVO;
 import com.weutil.reminder.service.LinkTaskTagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,18 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LinkTaskTagController {
     private final LinkTaskTagService linkTaskTagService;
-
-    /**
-     * 将实体对象转化为视图对象
-     *
-     * @param entity 实体对象
-     *
-     * @date 2024/7/30
-     * @since 3.0.0
-     */
-    private LinkTaskTagVO convert(LinkTaskTag entity) {
-        return LinkTaskTagVO.builder().id(entity.getId()).createTime(entity.getCreateTime()).tagId(entity.getTagId()).build();
-    }
 
     /**
      * 给任务添加一个标签
@@ -53,5 +42,19 @@ public class LinkTaskTagController {
         return linkTaskTagService.append(userId, taskId, tagId);
     }
 
-//    @DeleteMapping("/reminder/link-task-tag/{id}")
+    /**
+     * 移除一个任务标签组
+     *
+     * @param userId        用户 ID
+     * @param linkTaskTagId 关联组 ID
+     *
+     * @date 2024/7/31
+     * @since 3.0.0
+     */
+    @DeleteMapping("/reminder/link-task-tag/{id}")
+    @UserPermission
+    public LinkTaskTagVO remove(@UserId long userId, @PathVariable("id") long linkTaskTagId) {
+        linkTaskTagService.delete(userId, linkTaskTagId);
+        return LinkTaskTagVO.builder().id(linkTaskTagId).build();
+    }
 }
