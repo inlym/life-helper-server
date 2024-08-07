@@ -27,8 +27,11 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain() throws Exception {
         // 备注：实际上可以使用 {@code .and()} 来连接各个语句，但笔者觉得使用 {@code http} 看起来更优雅。
 
+        // 关闭 form 表单认证
         http.formLogin(AbstractHttpConfigurer::disable);
+        // 关闭 basic 方式认证
         http.httpBasic(AbstractHttpConfigurer::disable);
+        // 关闭 CSRF 防护
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(registry -> registry.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
