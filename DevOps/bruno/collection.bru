@@ -1,11 +1,5 @@
 headers {
-  x-forwarded-for: {{client_ip}},{{client_ip}}
   x-weutil-access-token: {{token}}
-}
-
-script:pre-request {
-  const { v4: uuidv4 } = require('uuid');
-  req.setHeader("x-ca-request-id", uuidv4());
 }
 
 docs {
