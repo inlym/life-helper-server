@@ -27,7 +27,7 @@ $ npm install -g pm2
 配置）目录下，然后进入目录运行以下命令：
 
 ```shell
-$ pm2 start pm2.json
+$ pm2 start pm2-dev.json
 ```
 
 由于已配置自动监听目录文件变化，后续迭代上线时，只需要替换 `lifehelper.jar` 文件，项目将自动重启更新。

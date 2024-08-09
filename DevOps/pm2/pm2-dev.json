@@ -1,0 +1,12 @@
+{
+    "name": "life-helper-server",
+    "script": "java",
+    "args": [
+        "-jar",
+        "-Dspring.profiles.active=dev",
+        "life-helper-server.jar"
+    ],
+    "cwd": "/home/inlym/life-helper-server",
+    "watch": false,
+    "ignore_watch": "logs"
+}
