@@ -1,0 +1,19 @@
+# ========================== 文件说明 ==========================
+# 当前文件仅用于演示对应配置文件的格式，请将 xxxxxxxxxxxx 替换为实际的值，并去掉文件名的 `-demo` 部分
+
+# ======================== 以下是配置内容 ========================
+
+# 阿里云资源配置
+aliyun:
+    # 阿里云 OSS 配置
+    oss:
+        # 存储空间名称
+        bucket-name: xxxxxxxxxxxx
+        # 访问端口
+        endpoint: xxxxxxxxxxxx
+        # 绑定的自定义域名
+        custom-domain: xxxxxxxxxxxx
+        # AccessKey ID
+        access-key-id: xxxxxxxxxxxx
+        # AccessKey Secret
+        access-key-secret: xxxxxxxxxxxx

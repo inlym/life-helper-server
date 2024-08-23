@@ -32,7 +32,12 @@ build/
 ### VS Code ###
 .vscode/
 
-### 配置文件 ###
+### Bruno ###
+/DevOps/bruno/environments/加密开发环境.bru
+
+### application-{name}.yml ###
 /life-helper-web/src/main/resources/application-dev.yml
 /life-helper-web/src/main/resources/application-prod.yml
-/DevOps/bruno/environments/加密开发环境.bru
+/life-helper-aliyun/life-helper-aliyun-sms/src/main/resources/application-sms.yml
+/life-helper-aliyun/life-helper-aliyun-oss/src/main/resources/application-oss.yml
+/life-helper-external/life-helper-wemap/src/main/resources/application-wemap.yml

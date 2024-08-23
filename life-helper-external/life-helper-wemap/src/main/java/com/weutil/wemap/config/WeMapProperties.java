@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @since 3.0.0
  **/
 @Component
-@ConfigurationProperties(prefix = "weutil.wemap")
+@ConfigurationProperties(prefix = "wemap")
 @Data
 public class WeMapProperties {
     /** 开发者密钥 */

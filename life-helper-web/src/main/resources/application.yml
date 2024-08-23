@@ -1,7 +1,10 @@
 spring:
+
     profiles:
         # 启用的环境，目前包含 dev 和 prod
         active: dev
+        # 各个环境通用的外部资源配置，文件名格式 `application-{name}.yml` (备注: 非资源类配置直接写在当前文件)
+        include: sms,oss,wemap
 
     main:
         # 关闭启动 Banner
