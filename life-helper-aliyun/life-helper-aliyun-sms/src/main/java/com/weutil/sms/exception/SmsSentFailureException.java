@@ -1,4 +1,4 @@
-package com.weutil.account.exception;
+package com.weutil.sms.exception;
 
 /**
  * 短信发送失败异常

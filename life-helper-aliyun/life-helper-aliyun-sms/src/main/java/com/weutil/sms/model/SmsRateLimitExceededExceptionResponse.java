@@ -1,4 +1,4 @@
-package com.weutil.account.model;
+package com.weutil.sms.model;
 
 import com.weutil.common.model.ErrorResponse;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.weutil.account.exception;
+package com.weutil.sms.exception;
 
 /**
  * 非同IP异常

@@ -1,12 +1,12 @@
 package com.weutil.account.controller;
 
-import com.weutil.account.entity.PhoneCode;
 import com.weutil.account.model.CheckTicketVO;
 import com.weutil.account.model.PhoneCodeLoginDTO;
 import com.weutil.account.model.SendingSmsDTO;
 import com.weutil.account.service.PhoneCodeLoginService;
 import com.weutil.common.annotation.ClientIp;
 import com.weutil.common.model.IdentityCertificate;
+import com.weutil.sms.entity.PhoneCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

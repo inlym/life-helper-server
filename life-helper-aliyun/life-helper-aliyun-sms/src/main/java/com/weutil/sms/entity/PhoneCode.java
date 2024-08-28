@@ -1,4 +1,4 @@
-package com.weutil.account.entity;
+package com.weutil.sms.entity;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -11,19 +11,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * （用于登录的）短信验证码生命周期管理实体
+ * 手机短信验证码
  *
- * <h2>主要用途
- * <p>记录（用于登录的）短信验证码的生命周期情况。
- *
- * <h2>追踪起点
- * <p>用户在前台点击“获取验证码”（不管短信是否正确发出）。
+ * <h2>说明
+ * <p>主要用于生命周期（发送、验证）管理。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/7/22
+ * @date 2024/8/28
  * @since 3.0.0
  **/
-@Table("login_phone_code")
+@Table("phone_code")
 @Data
 @Builder
 @NoArgsConstructor
@@ -98,12 +95,4 @@ public class PhoneCode {
 
     /** 匹配成功时间 */
     private LocalDateTime succeedTime;
-
-    // ---------- 关联 ID ----------
-
-    /** 登录成功后记录关联的手机号验证码登录日志表 ID */
-    private Long phoneCodeLoginLogId;
-
-    /** 登录成功后记录关联的用户手机号账户表 ID */
-    private Long phoneAccountId;
 }

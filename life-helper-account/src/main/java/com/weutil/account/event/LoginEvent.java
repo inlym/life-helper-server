@@ -1,8 +1,7 @@
 package com.weutil.account.event;
 
-import com.weutil.account.model.LoginLog;
+import com.weutil.account.entity.LoginHistory;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
 import java.time.LocalDateTime;
@@ -18,18 +17,21 @@ import java.time.LocalDateTime;
  * @since 3.0.0
  **/
 @Getter
-@Setter
-public class LoginEvent extends ApplicationEvent implements LoginLog {
+public class LoginEvent extends ApplicationEvent {
     /** 对应的用户 ID */
-    private Long userId;
+    private final Long userId;
 
     /** 客户端 IP 地址 */
-    private String ip;
+    private final String ip;
 
     /** 登录时间 */
-    private LocalDateTime loginTime;
+    private final LocalDateTime loginTime;
 
-    public LoginEvent(Object object) {
-        super(object);
+    public LoginEvent(LoginHistory source) {
+        super(source);
+
+        this.userId = source.getUserId();
+        this.ip = source.getIp();
+        this.loginTime = source.getLoginTime();
     }
 }

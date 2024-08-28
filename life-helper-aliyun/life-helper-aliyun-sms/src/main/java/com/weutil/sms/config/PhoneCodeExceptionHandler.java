@@ -1,8 +1,8 @@
-package com.weutil.account.config;
+package com.weutil.sms.config;
 
-import com.weutil.account.exception.*;
-import com.weutil.account.model.SmsRateLimitExceededExceptionResponse;
 import com.weutil.common.model.ErrorResponse;
+import com.weutil.sms.exception.*;
+import com.weutil.sms.model.SmsRateLimitExceededExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -11,16 +11,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * 账户模块异常捕获器
+ * 短信验证码模块异常捕获器
+ *
+ * <h2>说明
+ * <p>说明文本内容
  *
  * @author <a href="https://www.inlym.com">inlym</a>
- * @date 2024/7/27
+ * @date 2024/8/28
  * @since 3.0.0
  **/
 @RestControllerAdvice
 @Slf4j
-@Order(11)
-public class AccountExceptionHandler {
+@Order(50)
+public class PhoneCodeExceptionHandler {
 
     // ============================ 短信发送环节错误 ============================
 
