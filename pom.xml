@@ -15,11 +15,9 @@
         <module>life-helper-aliyun</module>
         <module>life-helper-external</module>
         <module>life-helper-account</module>
-        <module>life-helper-identity</module>
         <module>life-helper-reminder</module>
         <module>life-helper-system</module>
         <module>life-helper-web</module>
-
     </modules>
 
     <parent>
@@ -199,13 +197,30 @@
                 <artifactId>life-helper-user</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
+            <!-- 手机号账户模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-account-phone</artifactId>
+                <version>${life-helper.version}</version>
+            </dependency>
             <!-- 登录模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-login</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
-
+            <!-- 登录公共模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-login-common</artifactId>
+                <version>${life-helper.version}</version>
+            </dependency>
+            <!-- 手机短信验证码登录模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-login-phone-code</artifactId>
+                <version>${life-helper.version}</version>
+            </dependency>
 
             <!-- 待办任务模块 -->
             <dependency>

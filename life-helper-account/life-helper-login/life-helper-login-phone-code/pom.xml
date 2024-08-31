@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.weutil</groupId>
+        <artifactId>life-helper-login</artifactId>
+        <version>3.0.0</version>
+    </parent>
+
+    <artifactId>life-helper-login-phone-code</artifactId>
+
+    <name>life-helper-login-phone-code</name>
+    <description>手机短信验证码登录模块</description>
+    <dependencies>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-account-phone</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-login-common</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
