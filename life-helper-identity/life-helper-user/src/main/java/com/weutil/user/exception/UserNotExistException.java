@@ -1,4 +1,4 @@
-package com.weutil.account.exception;
+package com.weutil.user.exception;
 
 /**
  * 用户不存在异常
