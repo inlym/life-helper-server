@@ -34,7 +34,7 @@ public class BaseUserInfoController {
     @GetMapping("/user-info/base")
     @UserPermission
     public BaseUserInfoVO get(@UserId long userId) {
-        return userService.get(userId);
+        return userService.getBaseUserInfo(userId);
     }
 
     /**
@@ -49,7 +49,7 @@ public class BaseUserInfoController {
     @PutMapping("/user-info/base")
     @UserPermission
     public BaseUserInfoVO update(@UserId long userId, @RequestBody BaseUserInfoDTO dto) {
-        userService.update(userId, dto);
-        return userService.get(userId);
+        userService.updateBaseUserInfo(userId, dto);
+        return userService.getBaseUserInfo(userId);
     }
 }

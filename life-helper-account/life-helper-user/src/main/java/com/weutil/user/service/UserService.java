@@ -5,6 +5,7 @@ import com.weutil.oss.model.OssDir;
 import com.weutil.oss.service.OssService;
 import com.weutil.user.entity.User;
 import com.weutil.user.event.UserCreatedEvent;
+import com.weutil.user.exception.UserNotExistException;
 import com.weutil.user.mapper.UserMapper;
 import com.weutil.user.model.BaseUserInfoDTO;
 import com.weutil.user.model.BaseUserInfoVO;
@@ -54,9 +55,25 @@ public class UserService {
      * @date 2024/6/9
      * @since 2.3.0
      */
-    public BaseUserInfoVO get(long userId) {
-        User user = userMapper.selectOneById(userId);
+    public BaseUserInfoVO getBaseUserInfo(long userId) {
+        User user = getOrThrowByUserId(userId);
         return BaseUserInfoVO.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
+    }
+
+    /**
+     * 通过用户 ID 获取用户信息
+     *
+     * @param userId 用户 ID
+     *
+     * @date 2024/09/01
+     * @since 3.0.0
+     */
+    private User getOrThrowByUserId(long userId) {
+        User user = userMapper.selectOneById(userId);
+        if (user != null) {
+            return user;
+        }
+        throw new UserNotExistException();
     }
 
     /**
@@ -68,7 +85,7 @@ public class UserService {
      * @date 2024/6/9
      * @since 2.3.0
      */
-    public void update(long userId, BaseUserInfoDTO dto) {
+    public void updateBaseUserInfo(long userId, BaseUserInfoDTO dto) {
         User updated = User.builder().id(userId).build();
 
         // 处理昵称
