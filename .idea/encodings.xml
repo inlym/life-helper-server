@@ -13,6 +13,15 @@
     <file url="file://$PROJECT_DIR$/life-helper-external/life-helper-wemap/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-external/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-external/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-account-phone/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-login/life-helper-login-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-login/life-helper-login-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-login/life-helper-login-phone-code/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-login/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-login/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/life-helper-user/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/life-helper-identity/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-location/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-reminder/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/life-helper-system/src/main/java" charset="UTF-8" />

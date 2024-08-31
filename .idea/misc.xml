@@ -5,6 +5,11 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/life-helper-identity/life-helper-user/pom.xml" />
+        <option value="$PROJECT_DIR$/life-helper-identity/life-helper-login/pom.xml" />
+        <option value="$PROJECT_DIR$/life-helper-identity/life-helper-account-phone/pom.xml" />
+        <option value="$PROJECT_DIR$/life-helper-identity/life-helper-login/life-helper-login-common/pom.xml" />
+        <option value="$PROJECT_DIR$/life-helper-identity/life-helper-login/life-helper-login-phone-code/pom.xml" />
       </list>
     </option>
   </component>

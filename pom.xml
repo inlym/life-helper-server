@@ -15,6 +15,7 @@
         <module>life-helper-aliyun</module>
         <module>life-helper-external</module>
         <module>life-helper-account</module>
+        <module>life-helper-identity</module>
         <module>life-helper-reminder</module>
         <module>life-helper-system</module>
         <module>life-helper-web</module>
@@ -24,7 +25,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.1</version>
+        <version>3.3.3</version>
         <relativePath/>
     </parent>
 
@@ -185,12 +186,27 @@
                 <artifactId>life-helper-wemap</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
+
             <!-- 用户账户模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-account</artifactId>
                 <version>${life-helper.version}</version>
             </dependency>
+            <!-- 用户模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-user</artifactId>
+                <version>${life-helper.version}</version>
+            </dependency>
+            <!-- 登录模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-login</artifactId>
+                <version>${life-helper.version}</version>
+            </dependency>
+
+
             <!-- 待办任务模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>

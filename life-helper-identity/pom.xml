@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.weutil</groupId>
+        <artifactId>life-helper-server</artifactId>
+        <version>3.0.0</version>
+    </parent>
+
+    <modules>
+        <module>life-helper-user</module>
+        <module>life-helper-login</module>
+        <module>life-helper-account-phone</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <artifactId>life-helper-identity</artifactId>
+
+    <name>life-helper-identity</name>
+    <description>用户账户模块</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-common</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -35,9 +35,19 @@
             <artifactId>life-helper-aliyun-sms</artifactId>
         </dependency>
 
+<!--         <dependency> -->
+<!--             <groupId>com.weutil</groupId> -->
+<!--             <artifactId>life-helper-account</artifactId> -->
+<!--         </dependency> -->
+
         <dependency>
             <groupId>com.weutil</groupId>
-            <artifactId>life-helper-account</artifactId>
+            <artifactId>life-helper-user</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-login</artifactId>
         </dependency>
 
         <dependency>

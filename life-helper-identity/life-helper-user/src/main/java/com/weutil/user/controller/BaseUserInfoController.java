@@ -1,10 +1,10 @@
-package com.weutil.account.controller;
+package com.weutil.user.controller;
 
-import com.weutil.account.model.BaseUserInfoDTO;
-import com.weutil.account.model.BaseUserInfoVO;
-import com.weutil.account.service.BaseUserInfoService;
 import com.weutil.common.annotation.UserId;
 import com.weutil.common.annotation.UserPermission;
+import com.weutil.user.model.BaseUserInfoDTO;
+import com.weutil.user.model.BaseUserInfoVO;
+import com.weutil.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class BaseUserInfoController {
-    private final BaseUserInfoService baseUserInfoService;
+    private final UserService userService;
 
     /**
      * 获取用户基础信息
@@ -34,7 +34,7 @@ public class BaseUserInfoController {
     @GetMapping("/user-info/base")
     @UserPermission
     public BaseUserInfoVO get(@UserId long userId) {
-        return baseUserInfoService.get(userId);
+        return userService.get(userId);
     }
 
     /**
@@ -49,7 +49,7 @@ public class BaseUserInfoController {
     @PutMapping("/user-info/base")
     @UserPermission
     public BaseUserInfoVO update(@UserId long userId, @RequestBody BaseUserInfoDTO dto) {
-        baseUserInfoService.update(userId, dto);
-        return baseUserInfoService.get(userId);
+        userService.update(userId, dto);
+        return userService.get(userId);
     }
 }
