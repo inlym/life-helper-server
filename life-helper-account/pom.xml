@@ -28,7 +28,7 @@
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-common</artifactId>
         </dependency>
-        
+
     </dependencies>
 
 </project>
