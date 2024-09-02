@@ -23,6 +23,6 @@ public class SmsExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(SmsCommonException.class)
     public ErrorResponse handleSmsCommonException(SmsCommonException e) {
-        return new ErrorResponse(10, "短信发送失败，请稍后再试！");
+        return new ErrorResponse(11002, "短信发送失败，请稍后再试！");
     }
 }
