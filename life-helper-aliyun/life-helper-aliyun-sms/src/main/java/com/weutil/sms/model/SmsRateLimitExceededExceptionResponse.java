@@ -4,7 +4,7 @@ import com.weutil.common.model.ErrorResponse;
 import lombok.Getter;
 
 /**
- * 类名 * 发生“短信发送速率超出限制异常”时的响应数据称
+ * 短信发送速率超出限制异常响应数据
  *
  * <h2>说明
  * <p>说明文本内容
