@@ -1,0 +1,41 @@
+# 本地开发环境使用
+
+version: "3.9"
+
+services:
+    mysql:
+        image: mysql
+        environment:
+            # 设置 root 用户密码
+            MYSQL_ROOT_PASSWORD: "123456"
+            # 创建一个初始数据库
+            MYSQL_DATABASE: "lifehelper_db_dev"
+        networks:
+            - backend
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+    redis:
+        image: redis
+        environment:
+            TZ: Asia/Shanghai
+
+        networks:
+            - backend
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./data/redis/:/data/
+
+
+networks:
+    backend:
+        driver: bridge
+
+volumes:
+    mysql-data:
+        driver: local
+    redis-data:
+        driver: local
