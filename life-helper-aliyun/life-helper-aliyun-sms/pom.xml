@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-aliyun-sms</artifactId>
 
-    <name>life-helper-aliyun-sms</name>
+    <name>${project.artifactId}</name>
     <description>封装阿里云短信（SMS）服务</description>
 
     <dependencies>

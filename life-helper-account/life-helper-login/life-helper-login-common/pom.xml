@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-login-common</artifactId>
 
-    <name>life-helper-login-common</name>
+    <name>${project.artifactId}</name>
     <description>登录通用模块</description>
 
 </project>

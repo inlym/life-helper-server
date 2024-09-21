@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-reminder</artifactId>
 
-    <name>life-helper-reminder</name>
+    <name>${project.artifactId}</name>
     <description>待办任务模块</description>
 
     <dependencies>

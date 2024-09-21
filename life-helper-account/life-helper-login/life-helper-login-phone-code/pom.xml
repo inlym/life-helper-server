@@ -11,8 +11,9 @@
 
     <artifactId>life-helper-login-phone-code</artifactId>
 
-    <name>life-helper-login-phone-code</name>
+    <name>${project.artifactId}</name>
     <description>手机短信验证码登录模块</description>
+    
     <dependencies>
         <dependency>
             <groupId>com.weutil</groupId>

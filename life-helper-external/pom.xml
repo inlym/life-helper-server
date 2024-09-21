@@ -17,7 +17,7 @@
 
     <artifactId>life-helper-external</artifactId>
 
-    <name>life-helper-external</name>
+    <name>${project.artifactId}</name>
     <description>调用外部 API 服务</description>
 
     <dependencies>

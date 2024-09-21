@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-account-phone</artifactId>
 
-    <name>life-helper-account-phone</name>
+    <name>${project.artifactId}</name>
     <description>手机号账户模块</description>
 
     <dependencies>

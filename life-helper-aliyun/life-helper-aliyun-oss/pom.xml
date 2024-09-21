@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-aliyun-oss</artifactId>
 
-    <name>life-helper-aliyun-oss</name>
+    <name>${project.artifactId}</name>
     <description>封装阿里云对象存储（OSS）服务</description>
 
     <dependencies>

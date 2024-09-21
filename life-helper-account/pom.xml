@@ -16,11 +16,10 @@
         <module>life-helper-login</module>
     </modules>
 
+    <artifactId>life-helper-account</artifactId>
     <packaging>pom</packaging>
 
-    <artifactId>life-helper-account</artifactId>
-
-    <name>life-helper-account</name>
+    <name>${project.artifactId}</name>
     <description>用户账户模块</description>
 
     <dependencies>

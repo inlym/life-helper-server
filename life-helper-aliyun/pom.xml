@@ -18,7 +18,7 @@
 
     <artifactId>life-helper-aliyun</artifactId>
 
-    <name>life-helper-aliyun</name>
+    <name>${project.artifactId}</name>
     <description>封装阿里云服务</description>
 
     <dependencies>

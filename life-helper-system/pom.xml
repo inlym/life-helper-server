@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-system</artifactId>
 
-    <name>life-helper-system</name>
+    <name>${project.artifactId}</name>
     <description>系统调试服务</description>
 
     <dependencies>

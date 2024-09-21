@@ -18,7 +18,7 @@
 
     <artifactId>life-helper-login</artifactId>
 
-    <name>life-helper-login</name>
+    <name>${project.artifactId}</name>
     <description>登录模块</description>
 
 </project>

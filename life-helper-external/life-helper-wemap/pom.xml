@@ -11,7 +11,7 @@
 
     <artifactId>life-helper-wemap</artifactId>
 
-    <name>life-helper-wemap</name>
+    <name>${project.artifactId}</name>
     <description>腾讯位置服务</description>
 
 </project>
