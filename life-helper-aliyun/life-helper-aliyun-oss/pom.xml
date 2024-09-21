@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.weutil</groupId>
         <artifactId>life-helper-aliyun</artifactId>
-        <version>3.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>life-helper-aliyun-oss</artifactId>

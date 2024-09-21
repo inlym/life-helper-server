@@ -6,7 +6,7 @@
 
     <groupId>com.weutil</groupId>
     <artifactId>life-helper-server</artifactId>
-    <version>3.0.0</version>
+    <version>${revision}</version>
 
     <packaging>pom</packaging>
 
@@ -20,6 +20,10 @@
         <module>life-helper-web</module>
     </modules>
 
+    <name>${project.artifactId}</name>
+    <description>小鸣助手（WeUtil）服务端项目</description>
+    <url>https://github.com/inlym/life-helper-server</url>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -28,11 +32,16 @@
     </parent>
 
     <properties>
+        <!-- 项目版本号 -->
+        <revision>3.0.0</revision>
+
+        <!-- Maven 相关配置 -->
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+
         <skipTests>true</skipTests>
 
         <!-- 第三方依赖版本号 -->
@@ -41,9 +50,7 @@
         <aliyun-oss.version>3.8.0</aliyun-oss.version>
         <aliyun-sms.version>3.0.0</aliyun-sms.version>
         <mybatis-flex.version>1.9.4</mybatis-flex.version>
-
-        <!-- 内部模块版本号 -->
-        <life-helper.version>3.0.0</life-helper.version>
+        <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
 
     </properties>
 
@@ -157,76 +164,76 @@
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-common</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 系统调试模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-system</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- 阿里云 OSS 依赖模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-aliyun-oss</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 阿里云短信依赖模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-aliyun-sms</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 腾讯位置服务封装模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-wemap</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- 用户账户模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-account</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 用户模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-user</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 手机号账户模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-account-phone</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 登录模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-login</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 登录公共模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-login-common</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!-- 手机短信验证码登录模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-login-phone-code</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- 待办任务模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-reminder</artifactId>
-                <version>${life-helper.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- === 外部依赖 === -->
@@ -260,6 +267,37 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!-- 统一 revision 版本管理 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <!-- 使用阿里云的镜像源提升依赖下载速度 -->
     <repositories>
