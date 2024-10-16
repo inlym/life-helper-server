@@ -5,28 +5,20 @@
 
     <parent>
         <groupId>com.weutil</groupId>
-        <artifactId>life-helper-server</artifactId>
+        <artifactId>life-helper-aliyun</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <modules>
-        <module>life-helper-aliyun-oss</module>
-        <module>life-helper-aliyun-sms</module>
-        <module>life-helper-aliyun-captcha</module>
-
-    </modules>
-
-    <packaging>pom</packaging>
-
-    <artifactId>life-helper-aliyun</artifactId>
+    <artifactId>life-helper-aliyun-captcha</artifactId>
 
     <name>${project.artifactId}</name>
-    <description>封装阿里云服务</description>
+    <description>封装阿里云验证码服务</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.weutil</groupId>
-            <artifactId>life-helper-common</artifactId>
+            <groupId>com.aliyun</groupId>
+            <artifactId>captcha20230305</artifactId>
+            <version>1.1.2</version>
         </dependency>
 
     </dependencies>

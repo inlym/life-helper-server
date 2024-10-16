@@ -185,6 +185,12 @@
                 <artifactId>life-helper-aliyun-sms</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- 阿里云短信依赖模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-aliyun-captcha</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- 腾讯位置服务封装模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>

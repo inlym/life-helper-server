@@ -21,3 +21,36 @@ spring:
         username: xxxxxxxxxxxx
         password: xxxxxxxxxxxx
         driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 日志
+logging:
+    # 日志等级
+    level:
+        com.weutil: trace
+
+# 阿里云资源配置
+aliyun:
+    # OSS 配置
+    oss:
+        # 存储空间名称
+        bucket-name: xxxxxxxxxxxx
+        # 访问端口
+        endpoint: "oss-cn-hangzhou.aliyuncs.com"
+        # 绑定的自定义域名
+        custom-domain: xxxxxxxxxxxx
+        # AccessKey ID
+        access-key-id: xxxxxxxxxxxx
+        # AccessKey Secret
+        access-key-secret: xxxxxxxxxxxx
+
+    # 短信服务
+    sms:
+        access-key-id: xxxxxxxxxxxx
+        access-key-secret: xxxxxxxxxxxx
+        sign-name: xxxxxxxxxxxx
+
+    # 验证码服务
+    captcha:
+        access-key-id: xxxxxxxxxxxx
+        access-key-secret: xxxxxxxxxxxx
+        scene-id: xxxxxxxxxxxx
