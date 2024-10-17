@@ -9,23 +9,24 @@
         <version>${revision}</version>
     </parent>
 
-    <modules>
-        <module>life-helper-user</module>
-        <module>life-helper-account-phone</module>
-
-        <module>life-helper-login</module>
-    </modules>
-
     <artifactId>life-helper-account</artifactId>
-    <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>用户账户模块</description>
+    <description>账户模块</description>
 
     <dependencies>
         <dependency>
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-oss</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-sms</artifactId>
         </dependency>
 
     </dependencies>

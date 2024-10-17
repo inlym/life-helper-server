@@ -185,7 +185,7 @@
                 <artifactId>life-helper-aliyun-sms</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <!-- 阿里云短信依赖模块 -->
+            <!-- 阿里云验证码依赖模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-aliyun-captcha</artifactId>
@@ -202,36 +202,6 @@
             <dependency>
                 <groupId>com.weutil</groupId>
                 <artifactId>life-helper-account</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!-- 用户模块 -->
-            <dependency>
-                <groupId>com.weutil</groupId>
-                <artifactId>life-helper-user</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!-- 手机号账户模块 -->
-            <dependency>
-                <groupId>com.weutil</groupId>
-                <artifactId>life-helper-account-phone</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!-- 登录模块 -->
-            <dependency>
-                <groupId>com.weutil</groupId>
-                <artifactId>life-helper-login</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!-- 登录公共模块 -->
-            <dependency>
-                <groupId>com.weutil</groupId>
-                <artifactId>life-helper-login-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!-- 手机短信验证码登录模块 -->
-            <dependency>
-                <groupId>com.weutil</groupId>
-                <artifactId>life-helper-login-phone-code</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

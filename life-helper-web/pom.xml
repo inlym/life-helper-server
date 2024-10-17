@@ -36,28 +36,9 @@
             <artifactId>life-helper-aliyun-sms</artifactId>
         </dependency>
 
-        <!-- ============ [life-helper-account] ============ -->
-
         <dependency>
             <groupId>com.weutil</groupId>
-            <artifactId>life-helper-user</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.weutil</groupId>
-            <artifactId>life-helper-account-phone</artifactId>
-        </dependency>
-
-        <!-- ============ [life-helper-login] ============ -->
-
-        <dependency>
-            <groupId>com.weutil</groupId>
-            <artifactId>life-helper-login-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.weutil</groupId>
-            <artifactId>life-helper-login-phone-code</artifactId>
+            <artifactId>life-helper-account</artifactId>
         </dependency>
 
         <dependency>
@@ -70,7 +51,7 @@
     <build>
         <!-- 设置构建的 jar 包名 -->
         <finalName>${project.artifactId}</finalName>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
