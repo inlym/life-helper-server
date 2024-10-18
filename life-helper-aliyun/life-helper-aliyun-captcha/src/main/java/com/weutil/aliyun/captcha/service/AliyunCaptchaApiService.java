@@ -37,7 +37,6 @@ public class AliyunCaptchaApiService {
      */
     @SneakyThrows
     public VerifyIntelligentCaptchaResponse verifyCaptcha(String captchaVerifyParam) {
-
         VerifyIntelligentCaptchaRequest request = new VerifyIntelligentCaptchaRequest();
         request.setCaptchaVerifyParam(captchaVerifyParam);
         request.setSceneId(properties.getSceneId());

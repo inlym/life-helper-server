@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * 阿里云验证码服务
  *
  * <h2>说明
- * <p>对 API 做进一步封装，用于内部调用
+ * <p>对 API 做进一步封装，用于内部调用。
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/10/16
