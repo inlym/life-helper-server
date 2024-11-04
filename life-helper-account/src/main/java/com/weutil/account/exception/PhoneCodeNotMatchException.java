@@ -1,4 +1,4 @@
-package com.weutil.sms.exception;
+package com.weutil.account.exception;
 
 /**
  * 手机号和验证码不匹配异常

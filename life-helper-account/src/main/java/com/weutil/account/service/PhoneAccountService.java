@@ -25,7 +25,7 @@ public class PhoneAccountService {
     /**
      * 通过手机号获取关联表账户
      *
-     * @param phone 手机号
+     * @param phone 手机号，示例值：{@code 13111111111}
      *
      * @date 2024/7/24
      * @since 3.0.0
@@ -40,7 +40,7 @@ public class PhoneAccountService {
         }
 
         // 未找到则说明：该手机号从未注册过，需要先注册一个新用户，再返回
-        long userId = userService.createUser();
+        long userId = userService.createUser().getId();
         PhoneAccount inserted = PhoneAccount.builder().userId(userId).phone(phone).build();
         phoneAccountMapper.insertSelective(inserted);
         return phoneAccountMapper.selectOneById(inserted.getId());

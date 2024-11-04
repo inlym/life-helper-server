@@ -1,17 +1,17 @@
 package com.weutil.account.controller;
 
-import com.weutil.account.model.CheckTicketVO;
 import com.weutil.account.model.PhoneCodeLoginDTO;
 import com.weutil.account.model.SendingSmsDTO;
 import com.weutil.account.service.PhoneCodeLoginService;
 import com.weutil.common.annotation.ClientIp;
 import com.weutil.common.model.IdentityCertificate;
-import com.weutil.sms.entity.PhoneCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * 手机短信验证码登录控制器
@@ -35,11 +35,11 @@ public class PhoneCodeLoginController {
      * @since 2.3.0
      */
     @PostMapping("/sms/login")
-    public CheckTicketVO sendSms(@ClientIp String ip, @Valid @RequestBody SendingSmsDTO dto) {
+    public Map<String, String> sendSms(@ClientIp String ip, @Valid @RequestBody SendingSmsDTO dto) {
         String phone = dto.getPhone();
-        PhoneCode result = phoneCodeLoginService.sendSms(phone, ip);
+        phoneCodeLoginService.sendSms(phone, ip);
 
-        return CheckTicketVO.builder().checkTicket(result.getCheckTicket()).build();
+        return Map.of("phone", phone);
     }
 
     /**
@@ -53,9 +53,9 @@ public class PhoneCodeLoginController {
      */
     @PostMapping("/login/sms")
     public IdentityCertificate loginBySmsCode(@ClientIp String ip, @Valid @RequestBody PhoneCodeLoginDTO dto) {
-        String checkTicket = dto.getCheckTicket();
+        String phone = dto.getPhone();
         String code = dto.getCode();
 
-        return phoneCodeLoginService.loginBySmsCode(checkTicket, code, ip);
+        return phoneCodeLoginService.loginByPhoneCode(phone, code, ip);
     }
 }

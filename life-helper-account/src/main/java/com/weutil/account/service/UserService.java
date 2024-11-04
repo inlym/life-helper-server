@@ -37,14 +37,17 @@ public class UserService {
      * @return 新创建用户的 ID
      * @since 2.3.0
      */
-    public long createUser() {
+    public User createUser() {
         User user = User.builder().nickName("用户_" + RandomStringUtil.generate(6)).avatarPath(DEFAULT_AVATAR_PATH).build();
         userMapper.insertSelective(user);
 
-        // 发布用户创建事件
-        applicationEventPublisher.publishEvent(new UserCreatedEvent(userMapper.selectOneById(user.getId())));
+        User newUser = userMapper.selectOneById(user.getId());
+        log.info("[Create User] 创建新用户, 用户ID={}, 昵称={}", newUser.getId(), newUser.getNickName());
 
-        return user.getId();
+        // 发布用户创建事件
+        applicationEventPublisher.publishEvent(new UserCreatedEvent(newUser));
+
+        return newUser;
     }
 
     /**

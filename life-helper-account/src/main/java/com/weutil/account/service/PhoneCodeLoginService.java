@@ -7,11 +7,8 @@ import com.weutil.account.model.LoginChannel;
 import com.weutil.account.model.LoginType;
 import com.weutil.common.model.IdentityCertificate;
 import com.weutil.common.service.IdentityCertificateService;
-import com.weutil.sms.entity.PhoneCode;
-import com.weutil.sms.service.PhoneCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,34 +30,33 @@ public class PhoneCodeLoginService {
     private final PhoneAccountService phoneAccountService;
     private final IdentityCertificateService identityCertificateService;
     private final LoginLogMapper loginHistoryMapper;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final PhoneCodeService phoneCodeService;
 
     /**
      * 发送短信验证码
      *
-     * @param phone 手机号
-     * @param ip    客户端 IP 地址
+     * @param phone 手机号，示例值：{@code 13111111111}
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
      *
      * @date 2024/6/13
      * @since 2.3.0
      */
-    public PhoneCode sendSms(String phone, String ip) {
+    public String sendSms(String phone, String ip) {
         return phoneCodeService.send(phone, ip);
     }
 
     /**
      * 通过短信验证码登录
      *
-     * @param checkTicket 校验码
-     * @param code        短信验证码
+     * @param phone 手机号，示例值：{@code 13111111111}
+     * @param code  6位纯数字格式的验证码，示例值：{@code 123456}
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
      *
      * @date 2024/06/23
      * @since 2.3.0
      */
-    public IdentityCertificate loginBySmsCode(String checkTicket, String code, String ip) {
-        // 以下校验通过才返回手机号，校验失败会直接抛出错误
-        String phone = phoneCodeService.verify(checkTicket, code, ip);
+    public IdentityCertificate loginByPhoneCode(String phone, String code, String ip) {
+        phoneCodeService.verifyOrThrow(phone, code, ip);
 
         // 全部校验通过，登录成功
         PhoneAccount phoneAccount = phoneAccountService.getOrCreatePhoneAccount(phone);

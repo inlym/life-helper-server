@@ -12,7 +12,7 @@
     <artifactId>life-helper-account</artifactId>
 
     <name>${project.artifactId}</name>
-    <description>账户模块</description>
+    <description>用户账户模块</description>
 
     <dependencies>
         <dependency>

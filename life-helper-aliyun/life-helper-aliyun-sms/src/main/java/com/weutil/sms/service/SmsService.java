@@ -39,7 +39,7 @@ public class SmsService {
      *
      * @param phone 手机号，示例值：{@code 13111111111}
      * @param code  6位纯数字格式的验证码，示例值：{@code 123456}
-     * @param ip    客户端 IP 地址
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
      *
      * @date 2024/11/4
      * @since 3.0.0
@@ -106,7 +106,7 @@ public class SmsService {
      * <p>1. 每小时：5条
      *
      * @param phone 手机号，示例值：{@code 13111111111}
-     * @param ip    客户端 IP 地址
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
      *
      * @date 2024/6/23
      * @since 2.3.0

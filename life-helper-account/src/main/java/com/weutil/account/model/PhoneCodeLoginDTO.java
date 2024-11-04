@@ -12,9 +12,9 @@ import lombok.Data;
  **/
 @Data
 public class PhoneCodeLoginDTO {
-    /** 用于关联短信验证码的“校验码” */
+    /** 手机号 */
     @NotEmpty
-    private String checkTicket;
+    private String phone;
 
     /** 短信验证码 */
     @NotEmpty

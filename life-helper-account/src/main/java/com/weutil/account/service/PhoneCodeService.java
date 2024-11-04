@@ -1,14 +1,16 @@
 package com.weutil.account.service;
 
-import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
+import com.weutil.account.exception.NotSameIpException;
+import com.weutil.account.exception.PhoneCodeAttemptExceededException;
+import com.weutil.account.exception.PhoneCodeNotMatchException;
 import com.weutil.common.util.RandomStringUtil;
-import com.weutil.sms.exception.InvalidPhoneNumberException;
-import com.weutil.sms.exception.SmsSentFailureException;
 import com.weutil.sms.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 /**
  * 手机号验证码服务
@@ -28,92 +30,102 @@ public class PhoneCodeService {
     private final SmsService smsService;
 
     /**
-     * 生成 Redis 键名
-     *
-     * @param phone 手机号
-     * @param code  短信验证码
-     *
-     * @date 2024/10/18
-     * @since 3.0.0
-     */
-    private String generateRedisKey(String phone, String code) {
-        return "auth:phone-code:" + phone + ":" + code;
-    }
-
-    /**
      * 发送短信验证码
      *
      * <h3>说明
      * <p>记录客户端 IP 地址的用途是：要求2个环节的 IP 地址一致，防止伪造请求攻击。
      *
-     * @param phone 手机号
-     * @param ip    客户端 IP 地址
+     * @param phone 手机号，示例值：{@code 13111111111}
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
      *
      * @date 2024/10/18
      * @since 2.3.0
      */
     public String send(String phone, String ip) {
-        // ==================== 发送前的检查 ====================
-
-        // 检查手机号格式是否正确
-        checkPhoneFormat(phone);
-
-        // ==================== 发送环节 ====================
-
         // 短信验证码（6位纯数字）
         String code = RandomStringUtil.generateNumericString(6);
 
         // 正式发送短信
-        SendSmsResponseBody result = smsService.sendLoginCode(phone, code);
+        smsService.sendPhoneCode(phone, code, ip);
 
-        if (result.getCode().equals("OK")) {
-            // 处理短信发送成功情况
-            log.info("[SMS] 短信验证码发送成功, phone={}, code={}", phone, code);
+        // 记录在 Redis，用于后续校验使用
+        stringRedisTemplate.opsForValue().set(getPhoneCodeKey(phone, code), ip, Duration.ofMinutes(5L));
 
-            // TODO: redis 存储
+        return code;
+    }
 
-            return code;
-        } else {
-            // 处理短信发送失败情况
-            log.error("[SMS] 短信验证码发送失败, phone={}, code={}, response={}", phone, code, result);
-            // 短信未发送，抛出异常
-            throw new SmsSentFailureException();
+    /**
+     * 生成 Redis 键名
+     *
+     * @param phone 手机号，示例值：{@code 13111111111}
+     * @param code  6位纯数字格式的验证码，示例值：{@code 123456}
+     *
+     * @date 2024/11/04
+     * @since 3.0.0
+     */
+    private String getPhoneCodeKey(String phone, String code) {
+        return "auth:phone-code:" + phone + ":" + code;
+    }
+
+    /**
+     * 对手机号和验证码进行校验（若校验不通过则直接报错）
+     *
+     * @param phone 手机号，示例值：{@code 13111111111}
+     * @param code  6位纯数字格式的验证码，示例值：{@code 123456}
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
+     *
+     * @date 2024/11/04
+     * @since 3.0.0
+     */
+    public void verifyOrThrow(String phone, String code, String ip) {
+        checkAttemptCounter(phone, ip);
+
+        String result = stringRedisTemplate.opsForValue().get(getPhoneCodeKey(phone, code));
+        if (result == null) {
+            throw new PhoneCodeNotMatchException();
+        }
+
+        // 此处此处，说明验证码 code 输入正确
+        if (!result.equals(ip)) {
+            throw new NotSameIpException();
         }
     }
 
     /**
-     * 检查手机号格式是否正确
+     * 检查尝试次数是否超出限制
      *
-     * @param phone 手机号
+     * @param phone 手机号，示例值：{@code 13111111111}
+     * @param ip    客户端 IP 地址，示例值：{@code 114.114.114.114}
      *
-     * @date 2024/6/24
-     * @since 2.3.0
+     * @date 2024/11/04
+     * @since 3.0.0
      */
-    private void checkPhoneFormat(String phone) {
-        String regex = "^1\\d{10}$";
-        if (!phone.matches(regex)) {
-            throw new InvalidPhoneNumberException();
+    private void checkAttemptCounter(String phone, String ip) {
+        // 本期内只限定5分钟内的，后续再补充：1小时、1天
+
+        String key1 = "auth:phone-code:attempt-5m:" + phone;
+        String key2 = "auth:phone-code:attempt-5m:" + ip;
+
+        String s1 = stringRedisTemplate.opsForValue().get(key1);
+        if (s1 != null) {
+            long counter1 = Long.parseLong(s1);
+            if (counter1 >= 10) {
+                throw new PhoneCodeAttemptExceededException();
+            }
         }
-    }
 
-    /**
-     * 对手机号和验证码进行校验
-     *
-     * @param phone 手机号
-     * @param code  短信验证码
-     * @param ip    客户端 IP 地址
-     *
-     * @return 是否验证通过
-     * @date 2024/10/18
-     * @since 3.3.0
-     */
-    public boolean verify(String phone, String code, String ip) {
-        // 检查手机号（phone）是否被列入了黑名单
-        // TODO
+        String s2 = stringRedisTemplate.opsForValue().get(key2);
+        if (s2 != null) {
+            long counter2 = Long.parseLong(s2);
+            if (counter2 >= 10) {
+                throw new PhoneCodeAttemptExceededException();
+            }
+        }
 
-        // 检查 IP 地址是否被列入了黑名单
-        // TODO
-        
-        return false;
+        // 增加尝试次数计数
+        stringRedisTemplate.opsForValue().increment(key1);
+        stringRedisTemplate.expire(key1, Duration.ofMinutes(5L));
+        stringRedisTemplate.opsForValue().increment(key2);
+        stringRedisTemplate.expire(key2, Duration.ofMinutes(5L));
     }
 }
