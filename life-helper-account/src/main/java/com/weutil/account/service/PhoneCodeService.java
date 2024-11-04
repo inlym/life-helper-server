@@ -77,10 +77,11 @@ public class PhoneCodeService {
      * @date 2024/11/04
      * @since 3.0.0
      */
-    public void verifyOrThrow(String phone, String code, String ip) {
+    public void verifyOnceOrThrow(String phone, String code, String ip) {
         checkAttemptCounter(phone, ip);
 
-        String result = stringRedisTemplate.opsForValue().get(getPhoneCodeKey(phone, code));
+        String key = getPhoneCodeKey(phone, code);
+        String result = stringRedisTemplate.opsForValue().get(key);
         if (result == null) {
             throw new PhoneCodeNotMatchException();
         }
@@ -89,6 +90,9 @@ public class PhoneCodeService {
         if (!result.equals(ip)) {
             throw new NotSameIpException();
         }
+
+        // 校验通过后，删除对应键（即保证只能校验使用1次）
+        stringRedisTemplate.delete(key);
     }
 
     /**

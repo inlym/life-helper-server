@@ -15,8 +15,4 @@ public class SendingSmsDTO {
     /** 手机号 */
     @NotEmpty
     private String phone;
-
-    /** 由验证码脚本回调的验证参数 */
-//    @NotEmpty
-    private String captchaVerifyParam;
 }

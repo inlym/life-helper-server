@@ -56,7 +56,7 @@ public class PhoneCodeLoginService {
      * @since 2.3.0
      */
     public IdentityCertificate loginByPhoneCode(String phone, String code, String ip) {
-        phoneCodeService.verifyOrThrow(phone, code, ip);
+        phoneCodeService.verifyOnceOrThrow(phone, code, ip);
 
         // 全部校验通过，登录成功
         PhoneAccount phoneAccount = phoneAccountService.getOrCreatePhoneAccount(phone);
