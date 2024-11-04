@@ -1,6 +1,8 @@
--- --------------------------------------------------------
+-- ----------------------------------------------------------------------------------------------------------------
 -- 短信发送日志
--- --------------------------------------------------------
+-- 对应实体: [com.weutil.sms.entity.SmsLog]
+-- 创建时间: 2024/11/04
+-- ----------------------------------------------------------------------------------------------------------------
 
 create table `sms_log`
 (
@@ -13,12 +15,12 @@ create table `sms_log`
     `phone`          char(11)        not null default '' comment '手机号',
     `code`           char(6)         not null default '' comment '短信验证码',
     `ip`             char(15)        not null default '' comment '客户端 IP 地址',
-    `pre_send_time`  datetime                 default null comment '短信发送时间（发送前）',
+    `pre_send_time`  datetime        not null comment '短信发送时间（发送前）',
     `res_code`       varchar(50)     not null default '' comment '请求状态码',
     `res_message`    varchar(200)    not null default '' comment '状态码的描述',
     `res_biz_id`     varchar(50)     not null default '' comment '发送回执 ID',
     `request_id`     varchar(50)     not null default '' comment '请求 ID',
-    `post_send_time` datetime                 default null comment '收到响应的时间',
+    `post_send_time` datetime        not null comment '收到响应的时间',
 
     primary key (`id`)
 ) engine = InnoDB
