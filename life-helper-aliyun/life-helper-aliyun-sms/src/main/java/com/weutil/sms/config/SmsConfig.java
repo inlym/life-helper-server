@@ -23,7 +23,7 @@ public class SmsConfig {
 
     @Bean
     public SmsClient smsClient() {
-        com.aliyun.teaopenapi.models.Config config = new Config()
+        Config config = new Config()
             .setAccessKeyId(properties.getAccessKeyId())
             .setAccessKeySecret(properties.getAccessKeySecret())
             .setEndpoint("dysmsapi.aliyuncs.com");
