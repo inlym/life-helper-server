@@ -46,6 +46,7 @@
 
         <!-- 第三方依赖版本号 -->
         <hutool.version>5.8.16</hutool.version>
+        <java-jwt.version>4.4.0</java-jwt.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
         <aliyun-oss.version>3.8.0</aliyun-oss.version>
         <aliyun-sms.version>3.0.0</aliyun-sms.version>
@@ -191,6 +192,12 @@
                 <artifactId>life-helper-aliyun-captcha</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- 阿里云API网关依赖模块 -->
+            <dependency>
+                <groupId>com.weutil</groupId>
+                <artifactId>life-helper-aliyun-apigw</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- 腾讯位置服务封装模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
@@ -221,7 +228,14 @@
                 <version>${hutool.version}</version>
             </dependency>
 
-            <!--Mysql数据库驱动-->
+            <!-- JWT 工具 -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+
+            <!--Mysql 数据库驱动-->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.weutil</groupId>
+        <artifactId>life-helper-aliyun</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>life-helper-aliyun-apigw</artifactId>
+
+    <name>${project.artifactId}</name>
+    <description>封装阿里云 API 网关服务</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

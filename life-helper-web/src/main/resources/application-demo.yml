@@ -54,3 +54,8 @@ aliyun:
         access-key-id: xxxxxxxxxxxx
         access-key-secret: xxxxxxxxxxxx
         scene-id: xxxxxxxxxxxx
+
+    # API 网关
+    apigw:
+        kid: xxxxxxxxxxxx
+        private-key: xxxxxxxxxxxx
