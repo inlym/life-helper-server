@@ -6,9 +6,6 @@ import lombok.Getter;
 /**
  * 短信发送速率超出限制异常响应数据
  *
- * <h2>说明
- * <p>说明文本内容
- *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/7/22
  * @since 3.0.0

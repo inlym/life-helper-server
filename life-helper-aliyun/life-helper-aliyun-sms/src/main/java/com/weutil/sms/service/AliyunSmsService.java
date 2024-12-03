@@ -5,7 +5,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.sms.entity.SmsLog;
 import com.weutil.sms.exception.InvalidPhoneNumberException;
 import com.weutil.sms.exception.SmsRateLimitExceededException;
-import com.weutil.sms.exception.SmsSentFailureException;
 import com.weutil.sms.mapper.SmsLogMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,8 @@ import static com.weutil.sms.entity.table.SmsLogTableDef.SMS_LOG;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SmsService {
-    private final SmsApiService smsApiService;
+public class AliyunSmsService {
+    private final AliyunSmsApiService aliyunSmsApiService;
     private final SmsLogMapper smsLogMapper;
 
     /**
@@ -54,7 +53,7 @@ public class SmsService {
         LocalDateTime preSendTime = LocalDateTime.now();
 
         // 正式发送短信
-        SendSmsResponseBody result = smsApiService.sendPhoneCode(phone, code);
+        SendSmsResponseBody result = aliyunSmsApiService.sendPhoneCode(phone, code);
 
         // 发送后记录
         SmsLog inserted = SmsLog.builder()
@@ -70,16 +69,7 @@ public class SmsService {
             .build();
         smsLogMapper.insertSelective(inserted);
 
-        if (result.getCode().equals("OK")) {
-            // 处理短信发送成功情况
-            log.info("[SMS] 验证码短信发送成功, phone={}, code={}", phone, code);
-            return smsLogMapper.selectOneById(inserted.getId());
-        } else {
-            // 处理短信发送失败情况
-            log.error("[SMS] 验证码短信发送失败, phone={}, code={}, response={}", phone, code, result);
-            // 短信未发送，抛出异常
-            throw new SmsSentFailureException();
-        }
+        return smsLogMapper.selectOneById(inserted.getId());
     }
 
     /**

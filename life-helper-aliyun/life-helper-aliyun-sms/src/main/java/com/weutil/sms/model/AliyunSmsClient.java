@@ -9,8 +9,8 @@ import com.aliyun.teaopenapi.models.Config;
  * @date 2024/7/16
  * @since 3.0.0
  **/
-public class SmsClient extends com.aliyun.dysmsapi20170525.Client {
-    public SmsClient(Config config) throws Exception {
+public class AliyunSmsClient extends com.aliyun.dysmsapi20170525.Client {
+    public AliyunSmsClient(Config config) throws Exception {
         super(config);
     }
 }

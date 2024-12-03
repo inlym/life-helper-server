@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "aliyun.sms")
 @Data
-public class SmsProperties {
+public class AliyunSmsProperties {
     /** 访问密钥 ID */
     private String accessKeyId;
 

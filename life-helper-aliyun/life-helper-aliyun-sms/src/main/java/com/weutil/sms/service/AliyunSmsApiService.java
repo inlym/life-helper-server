@@ -2,9 +2,10 @@ package com.weutil.sms.service;
 
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
-import com.weutil.sms.config.SmsProperties;
-import com.weutil.sms.exception.SmsCommonException;
-import com.weutil.sms.model.SmsClient;
+import com.weutil.sms.config.AliyunSmsProperties;
+import com.weutil.sms.exception.CreatingSmsClientFailedException;
+import com.weutil.sms.exception.SmsSentFailureException;
+import com.weutil.sms.model.AliyunSmsClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,12 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SmsApiService {
+public class AliyunSmsApiService {
     /** 响应数据表达成功的 code 值 */
     private static final String SUCCESS_CODE = "OK";
-    private final SmsProperties properties;
-    private final SmsClient smsClient;
+
+    private final AliyunSmsProperties properties;
+    private final AliyunSmsClient aliyunSmsClient;
 
     /**
      * 发送登录用途的短信验证码
@@ -47,19 +49,21 @@ public class SmsApiService {
             .setTemplateParam("{\"code\":\"" + code + "\"}");
 
         try {
-            SendSmsResponseBody result = smsClient.sendSms(sendSmsRequest).getBody();
+            SendSmsResponseBody result = aliyunSmsClient.sendSms(sendSmsRequest).getBody();
             if (Objects.equals(result.getCode(), SUCCESS_CODE)) {
                 log.info("[SendSms] 短信发送成功, phone={}, code={}, BizId={}", phone, code, result.getBizId());
                 return result;
             } else {
                 log.error("[SendSms] 短信发送失败，phone={}, code={},error_code={}, message={}", phone, code, result.getCode(), result.getMessage());
-                throw new SmsCommonException();
+                throw new SmsSentFailureException();
             }
-        } catch (SmsCommonException e) {
-            throw new SmsCommonException();
+        } catch (CreatingSmsClientFailedException e) {
+            // 创建客户端异常，原样抛出，由全局异常捕获器处理
+            throw new CreatingSmsClientFailedException();
         } catch (Exception e) {
+            // 其他异常，统一处理成“发送失败”
             log.error("[SendSms] 短信发送失败，错误消息：{}", e.getMessage());
-            throw new SmsCommonException();
+            throw new SmsSentFailureException();
         }
     }
 }

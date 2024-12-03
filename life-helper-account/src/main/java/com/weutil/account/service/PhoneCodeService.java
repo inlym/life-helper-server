@@ -4,7 +4,7 @@ import com.weutil.account.exception.NotSameIpException;
 import com.weutil.account.exception.PhoneCodeAttemptExceededException;
 import com.weutil.account.exception.PhoneCodeNotMatchException;
 import com.weutil.common.util.RandomStringUtil;
-import com.weutil.sms.service.SmsService;
+import com.weutil.sms.service.AliyunSmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -27,7 +27,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class PhoneCodeService {
     private final StringRedisTemplate stringRedisTemplate;
-    private final SmsService smsService;
+    private final AliyunSmsService aliyunSmsService;
 
     /**
      * 发送短信验证码
@@ -46,7 +46,7 @@ public class PhoneCodeService {
         String code = RandomStringUtil.generateNumericString(6);
 
         // 正式发送短信
-        smsService.sendPhoneCode(phone, code, ip);
+        aliyunSmsService.sendPhoneCode(phone, code, ip);
 
         // 记录在 Redis，用于后续校验使用
         stringRedisTemplate.opsForValue().set(getPhoneCodeKey(phone, code), ip, Duration.ofMinutes(5L));
