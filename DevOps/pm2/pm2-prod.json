@@ -3,10 +3,9 @@
     "script": "java",
     "args": [
         "-jar",
-        "-Dspring.profiles.active=dev",
+        "-Dspring.profiles.active=prod",
         "life-helper-web.jar"
     ],
     "cwd": "/app",
-    "watch": true,
-    "ignore_watch": "logs"
+    "watch": false
 }
