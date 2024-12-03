@@ -4,18 +4,17 @@ import com.weutil.common.annotation.ClientIp;
 import com.weutil.common.annotation.UserId;
 import com.weutil.common.annotation.UserPermission;
 import com.weutil.common.model.CustomRequestContext;
+import com.weutil.system.startup.LaunchTimeSavingRunner;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.core.SpringVersion;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class DebugController {
     private final Environment environment;
+    private final StringRedisTemplate stringRedisTemplate;
 
     /**
      * 查看请求详情
@@ -81,6 +81,31 @@ public class DebugController {
         } catch (InterruptedException e) {
             log.debug(e.getMessage());
         }
+    }
+
+    /**
+     * 查看项目启动信息
+     *
+     * @date 2024/12/3
+     * @since 3.0.0
+     */
+    @GetMapping("/debug/launch")
+    public Map<String, Object> getLaunchInfo() {
+        Map<String, Object> map = new HashMap<>();
+        String str = stringRedisTemplate.opsForValue().get(LaunchTimeSavingRunner.REDIS_KEY);
+
+        if (str != null) {
+            LocalDateTime launchTime = LocalDateTime.parse(str);
+            Duration duration = Duration.between(launchTime, LocalDateTime.now());
+
+            map.put("launchTime", launchTime);
+
+            // 启动后的持续时长
+            String text = duration.toDaysPart() + "天-" + duration.toHoursPart() + "小时-" + duration.toMinutesPart() + "分钟-" + duration.toSecondsPart() + "秒";
+            map.put("duration", text);
+        }
+
+        return map;
     }
 
     /**
