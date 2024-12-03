@@ -4,6 +4,7 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.weutil.account.model.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +52,9 @@ public class User {
 
     /** 头像路径 */
     private String avatarPath;
+
+    /** 性别 */
+    private Gender gender;
 
     /** 注册时间 */
     @Column(onInsertValue = "now()")

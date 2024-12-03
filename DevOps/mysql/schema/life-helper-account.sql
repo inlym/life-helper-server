@@ -13,6 +13,7 @@ create table `user`
     /* 下方为业务字段 */
     `nick_name`     varchar(20)     not null default '' comment '昵称',
     `avatar_path`   varchar(100)    not null default '' comment '头像路径',
+    `gender`        int             not null default 0 comment '性别（枚举值）',
     `register_time` datetime        not null comment '注册时间',
 
     primary key (`id`)

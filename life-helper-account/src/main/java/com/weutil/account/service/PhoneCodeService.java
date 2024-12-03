@@ -86,7 +86,7 @@ public class PhoneCodeService {
             throw new PhoneCodeNotMatchException();
         }
 
-        // 此处此处，说明验证码 code 输入正确
+        // 进入此处，说明验证码 code 输入正确
         if (!result.equals(ip)) {
             throw new NotSameIpException();
         }

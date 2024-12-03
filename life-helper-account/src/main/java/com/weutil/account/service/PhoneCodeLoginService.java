@@ -41,8 +41,8 @@ public class PhoneCodeLoginService {
      * @date 2024/6/13
      * @since 2.3.0
      */
-    public String sendSms(String phone, String ip) {
-        return phoneCodeService.send(phone, ip);
+    public void sendSms(String phone, String ip) {
+        phoneCodeService.send(phone, ip);
     }
 
     /**
