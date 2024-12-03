@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/10/16
+ * @see <a href="https://help.aliyun.com/zh/captcha/captcha2-0/user-guide/server-integration">服务端接入</a>
  * @since 3.0.0
  **/
 @Service

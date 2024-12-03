@@ -32,7 +32,16 @@ public class AliyunCaptchaService {
      */
     public boolean verifyCaptcha(String captchaVerifyParam) {
         VerifyIntelligentCaptchaResponse response = aliyunCaptchaApiService.verifyCaptcha(captchaVerifyParam);
+        if (!response.getBody().getSuccess() || !"Success".equalsIgnoreCase(response.getBody().getCode())) {
+            log.debug("验证码校验失败，响应结果：{}", response.getBody());
+            return false;
+        }
 
-        return response.getBody().getResult().getVerifyResult();
+        if (!response.getBody().getResult().verifyResult) {
+            log.debug("验证码校验失败，原因码：{}", response.getBody().getResult().verifyCode);
+            return false;
+        }
+
+        return true;
     }
 }
