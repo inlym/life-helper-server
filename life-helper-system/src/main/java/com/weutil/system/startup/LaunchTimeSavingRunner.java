@@ -1,12 +1,10 @@
 package com.weutil.system.startup;
 
+import com.weutil.system.service.LaunchTimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 /**
  * 项目启动时间记录任务
@@ -22,14 +20,10 @@ import java.time.LocalDateTime;
 @Slf4j
 @RequiredArgsConstructor
 public class LaunchTimeSavingRunner implements CommandLineRunner {
-    public static final String REDIS_KEY = "system:launch-time";
-
-    private final StringRedisTemplate stringRedisTemplate;
+    private final LaunchTimeService launchTimeService;
 
     @Override
     public void run(String... args) {
-        LocalDateTime now = LocalDateTime.now();
-        log.debug("[启动时任务] 项目启动时间: {}", now);
-        stringRedisTemplate.opsForValue().set(REDIS_KEY, now.toString());
+        launchTimeService.recordOnStartUp();
     }
 }

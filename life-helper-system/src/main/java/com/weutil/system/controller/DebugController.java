@@ -4,17 +4,15 @@ import com.weutil.common.annotation.ClientIp;
 import com.weutil.common.annotation.UserId;
 import com.weutil.common.annotation.UserPermission;
 import com.weutil.common.model.CustomRequestContext;
-import com.weutil.system.startup.LaunchTimeSavingRunner;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringBootVersion;
-import org.springframework.core.SpringVersion;
-import org.springframework.core.env.Environment;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,9 +33,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RequiredArgsConstructor
 public class DebugController {
-    private final Environment environment;
-    private final StringRedisTemplate stringRedisTemplate;
-
     /**
      * 查看请求详情
      *
@@ -84,31 +79,6 @@ public class DebugController {
     }
 
     /**
-     * 查看项目启动信息
-     *
-     * @date 2024/12/3
-     * @since 3.0.0
-     */
-    @GetMapping("/debug/launch")
-    public Map<String, Object> getLaunchInfo() {
-        Map<String, Object> map = new HashMap<>();
-        String str = stringRedisTemplate.opsForValue().get(LaunchTimeSavingRunner.REDIS_KEY);
-
-        if (str != null) {
-            LocalDateTime launchTime = LocalDateTime.parse(str);
-            Duration duration = Duration.between(launchTime, LocalDateTime.now());
-
-            map.put("launchTime", launchTime);
-
-            // 启动后的持续时长
-            String text = duration.toDaysPart() + "天-" + duration.toHoursPart() + "小时-" + duration.toMinutesPart() + "分钟-" + duration.toSecondsPart() + "秒";
-            map.put("duration", text);
-        }
-
-        return map;
-    }
-
-    /**
      * 原样返回请求数据
      *
      * @param body 请求数据
@@ -147,21 +117,6 @@ public class DebugController {
     }
 
     /**
-     * 查看 Spring 配置文件的参数
-     *
-     * @since 1.9.4
-     */
-    @GetMapping("/debug/env")
-    public Map<String, Object> getProfile() {
-        Map<String, Object> map = new HashMap<>(16);
-        map.put("spring.profiles.active", environment.getProperty("spring.profiles.active"));
-        map.put("server.port", environment.getProperty("server.port"));
-        map.put("logging.level.com.inlym.lifehelper", environment.getProperty("logging.level.com.inlym.lifehelper"));
-
-        return map;
-    }
-
-    /**
      * 查看用户 ID
      *
      * <h2>说明
@@ -191,20 +146,5 @@ public class DebugController {
         log.debug("context={}", context);
 
         return context;
-    }
-
-    /**
-     * 查看框架版本号
-     *
-     * @date 2023/5/22
-     * @since 2.0.0
-     */
-    @GetMapping("/debug/version")
-    public Map<String, String> getVersion() {
-        Map<String, String> map = new HashMap<>();
-        map.put("SpringVersion", SpringVersion.getVersion());
-        map.put("SpringBootVersion", SpringBootVersion.getVersion());
-
-        return map;
     }
 }
