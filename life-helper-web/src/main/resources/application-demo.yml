@@ -54,3 +54,8 @@ aliyun:
         access-key-id: xxxxxxxxxxxx
         access-key-secret: xxxxxxxxxxxx
         scene-id: xxxxxxxxxxxx
+
+# 腾讯位置服务
+wemap:
+    # 开发者密钥
+    key: xxxxxxxxxxxx
