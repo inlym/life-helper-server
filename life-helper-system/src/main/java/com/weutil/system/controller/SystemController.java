@@ -45,13 +45,19 @@ public class SystemController {
      */
     @GetMapping("/debug/system/server")
     public ServerInfo getServerInfo() {
+        // 项目启动时间及运行时长
         LocalDateTime launchTime = launchTimeService.getLaunchTime();
         LocalDateTime now = LocalDateTime.now();
         long duration = Duration.between(launchTime, now).toSeconds();
 
+        // 各个中间件延迟时间
         Map<String, Long> delay = new HashMap<>();
         delay.put("mysql", delayTimeService.calcMysqlDelayTime());
         delay.put("redis", delayTimeService.calcRedisDelayTime());
+
+        // CI 部署相关参数
+        String commitId = System.getenv("CI_COMMIT_SHA");
+        String commitRefName = System.getenv("CI_COMMIT_REF_NAME");
 
         ServerInfo info = ServerInfo.builder()
             .now(now)
@@ -62,6 +68,8 @@ public class SystemController {
             .springBootVersion(SpringBootVersion.getVersion())
             .timeZone(ZoneId.systemDefault().getId())
             .delay(delay)
+            .commitId(commitId)
+            .commitRefName(commitRefName)
             .build();
 
         // 此处使用 `try...catch` 原因说明

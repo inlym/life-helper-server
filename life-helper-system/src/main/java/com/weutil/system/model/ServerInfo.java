@@ -47,6 +47,12 @@ public class ServerInfo {
     /** 时区 */
     private String timeZone;
 
+    /** 本次部署代码的 commit ID（SHA-1） */
+    private String commitId;
+
+    /** 本次部署代码的 commit 的分支名或标签名 */
+    private String commitRefName;
+
     /** 各中间件延迟时间（单位：毫秒） */
     private Map<String, Long> delay;
 }
