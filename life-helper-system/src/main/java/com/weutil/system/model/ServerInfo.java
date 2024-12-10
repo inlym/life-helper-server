@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * 服务器信息
@@ -45,4 +46,7 @@ public class ServerInfo {
 
     /** 时区 */
     private String timeZone;
+
+    /** 各中间件延迟时间（单位：毫秒） */
+    private Map<String, Long> delay;
 }
