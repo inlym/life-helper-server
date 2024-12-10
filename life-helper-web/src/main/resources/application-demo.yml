@@ -59,3 +59,12 @@ aliyun:
 wemap:
     # 开发者密钥
     key: xxxxxxxxxxxx
+
+# 流水线环境变量
+# https://help.aliyun.com/zh/yunxiao/user-guide/environment-variables
+pipeline:
+    # 以下变量将在阿里云云效流水线部署时替换为实际值，不需要手工处理
+    # https://help.aliyun.com/zh/yunxiao/user-guide/environment-variables#b106db50a15jy
+    build-number: ${BUILD_NUMBER}
+    commit-sha: ${CI_COMMIT_SHA}
+    commit-ref-name: ${CI_COMMIT_REF_NAME}
