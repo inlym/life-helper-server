@@ -53,6 +53,9 @@ public class ServerInfo {
     /** 本次部署代码的 commit 的分支名或标签名 */
     private String commitRefName;
 
+    /** 本次部署的编号 */
+    private String buildNumber;
+
     /** 各中间件延迟时间（单位：毫秒） */
     private Map<String, Long> delay;
 }

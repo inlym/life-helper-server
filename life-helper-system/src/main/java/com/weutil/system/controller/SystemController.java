@@ -58,6 +58,7 @@ public class SystemController {
         // CI 部署相关参数
         String commitId = System.getenv("CI_COMMIT_SHA");
         String commitRefName = System.getenv("CI_COMMIT_REF_NAME");
+        String buildNumber = System.getenv("BUILD_NUMBER");
 
         ServerInfo info = ServerInfo.builder()
             .now(now)
@@ -70,6 +71,7 @@ public class SystemController {
             .delay(delay)
             .commitId(commitId)
             .commitRefName(commitRefName)
+            .buildNumber(buildNumber)
             .build();
 
         // 此处使用 `try...catch` 原因说明
