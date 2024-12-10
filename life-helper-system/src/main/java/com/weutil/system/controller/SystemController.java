@@ -1,5 +1,6 @@
 package com.weutil.system.controller;
 
+import com.weutil.system.config.PipelineProperties;
 import com.weutil.system.model.ServerInfo;
 import com.weutil.system.service.DelayTimeService;
 import com.weutil.system.service.LaunchTimeService;
@@ -36,6 +37,7 @@ public class SystemController {
     private final Environment environment;
     private final LaunchTimeService launchTimeService;
     private final DelayTimeService delayTimeService;
+    private final PipelineProperties pipelineProperties;
 
     /**
      * 查看系统服务器运行信息
@@ -55,11 +57,6 @@ public class SystemController {
         delay.put("mysql", delayTimeService.calcMysqlDelayTime());
         delay.put("redis", delayTimeService.calcRedisDelayTime());
 
-        // CI 部署相关参数
-        String commitId = System.getenv("CI_COMMIT_SHA");
-        String commitRefName = System.getenv("CI_COMMIT_REF_NAME");
-        String buildNumber = System.getenv("BUILD_NUMBER");
-
         ServerInfo info = ServerInfo.builder()
             .now(now)
             .launchTime(launchTime)
@@ -69,9 +66,9 @@ public class SystemController {
             .springBootVersion(SpringBootVersion.getVersion())
             .timeZone(ZoneId.systemDefault().getId())
             .delay(delay)
-            .commitId(commitId)
-            .commitRefName(commitRefName)
-            .buildNumber(buildNumber)
+            .commitId(pipelineProperties.getCommitSha())
+            .commitRefName(pipelineProperties.getCommitRefName())
+            .buildNumber(pipelineProperties.getBuildNumber())
             .build();
 
         // 此处使用 `try...catch` 原因说明
