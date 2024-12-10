@@ -7,6 +7,5 @@
         "life-helper-web.jar"
     ],
     "cwd": "/app",
-    "watch": true,
-    "ignore_watch": "logs"
+    "watch": false
 }
