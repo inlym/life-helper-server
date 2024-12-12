@@ -192,12 +192,7 @@
                 <artifactId>life-helper-aliyun-captcha</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <!-- 阿里云API网关依赖模块 -->
-            <dependency>
-                <groupId>com.weutil</groupId>
-                <artifactId>life-helper-aliyun-apigw</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+         
             <!-- 腾讯位置服务封装模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
