@@ -3,7 +3,6 @@ package com.weutil.system.controller;
 import com.weutil.common.annotation.ClientIp;
 import com.weutil.common.annotation.UserId;
 import com.weutil.common.annotation.UserPermission;
-import com.weutil.common.model.CustomRequestContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -131,20 +130,5 @@ public class DebugController {
     @UserPermission
     public Map<String, Object> getUserId(@UserId long userId) {
         return Map.of("userId", userId);
-    }
-
-    /**
-     * 查看自定义请求上下文
-     *
-     * @param request 请求
-     *
-     * @since 1.9.5
-     */
-    @GetMapping("/debug/ctx")
-    public CustomRequestContext getCustomRequestContext(HttpServletRequest request) {
-        CustomRequestContext context = (CustomRequestContext) request.getAttribute(CustomRequestContext.NAME);
-        log.debug("context={}", context);
-
-        return context;
     }
 }

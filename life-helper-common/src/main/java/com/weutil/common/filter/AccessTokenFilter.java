@@ -34,7 +34,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     private final AccessTokenService accessTokenService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         // 指定请求头为空则不进行任何处理
         return request.getHeader(HEADER_NAME) == null;
     }
@@ -43,6 +43,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String token = request.getHeader(HEADER_NAME);
         if (token != null) {
+            request.setAttribute("ACCESS_TOKEN", token);
             AccessTokenDetail detail = accessTokenService.parse(token);
             if (detail != null) {
                 SimpleAuthentication authentication = new SimpleAuthentication(detail.getUserId());
