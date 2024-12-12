@@ -25,15 +25,6 @@ public abstract class CustomHttpHeader {
     public static final String CLIENT_IP = "x-forwarded-for";
 
     /**
-     * 客户端类型
-     *
-     * <h2>说明
-     * <p>1. `miniprogram` -> 小程序
-     * <p>2. `web` -> 网页
-     */
-    public static final String CLIENT_TYPE = "x-weutil-client-type";
-
-    /**
      * 客户端信息
      *
      * <h2>说明

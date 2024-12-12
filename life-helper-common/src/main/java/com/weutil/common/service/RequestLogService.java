@@ -2,6 +2,7 @@ package com.weutil.common.service;
 
 import com.weutil.common.entity.RequestLog;
 import com.weutil.common.mapper.RequestLogMapper;
+import com.weutil.common.model.ClientType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,26 @@ public class RequestLogService {
         }
 
         return requestLog;
+    }
+
+    /**
+     * 解析客户端类型
+     *
+     * @param type 类型文本
+     *
+     * @date 2024/12/12
+     * @since 3.0.0
+     */
+    public ClientType parseClientType(String type) {
+        if ("web".equalsIgnoreCase(type)) {
+            return ClientType.WEB;
+        }
+
+        if ("miniprogram".equalsIgnoreCase(type)) {
+            return ClientType.MINI_PROGRAM;
+        }
+
+        return ClientType.UNKNOWN;
     }
 
     /**

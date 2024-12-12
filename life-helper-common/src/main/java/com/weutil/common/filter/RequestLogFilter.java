@@ -47,6 +47,10 @@ public class RequestLogFilter extends OncePerRequestFilter {
         requestLog.setClientIp((String) request.getAttribute(CustomRequestAttribute.CLIENT_IP));
         requestLog.setAccessToken((String) request.getAttribute(CustomRequestAttribute.ACCESS_TOKEN));
         requestLog.setUserId((Long) request.getAttribute(CustomRequestAttribute.USER_ID));
+        requestLog.setClientType(requestLogService.parseClientType((String) request.getAttribute(CustomRequestAttribute.CLIENT_TYPE)));
+        requestLog.setClientId((String) request.getAttribute(CustomRequestAttribute.CLIENT_ID));
+        requestLog.setClientVersion((String) request.getAttribute(CustomRequestAttribute.CLIENT_VERSION));
+
         requestLog.setStatus(response.getStatus());
 
         requestLogService.recordAsync(requestLog);

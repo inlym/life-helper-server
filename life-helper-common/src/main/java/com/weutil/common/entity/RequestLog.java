@@ -3,6 +3,7 @@ package com.weutil.common.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.weutil.common.model.ClientType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -93,4 +94,13 @@ public class RequestLog {
      * <p>务必在鉴权通过后再存入。
      */
     private Long userId;
+
+    /** 客户端类型 */
+    private ClientType clientType;
+
+    /** 客户端 ID */
+    private String clientId;
+
+    /** 客户端版本号 */
+    private String clientVersion;
 }
