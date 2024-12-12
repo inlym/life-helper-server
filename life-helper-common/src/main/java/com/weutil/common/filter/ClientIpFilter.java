@@ -1,6 +1,7 @@
 package com.weutil.common.filter;
 
 import com.weutil.common.model.CustomHttpHeader;
+import com.weutil.common.model.CustomRequestAttribute;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,7 +60,7 @@ public class ClientIpFilter extends OncePerRequestFilter {
             String[] ips = ipString.split(",");
             String clientIp = ips[ips.length - 2].trim();
 
-            request.setAttribute("CLIENT_IP", clientIp);
+            request.setAttribute(CustomRequestAttribute.CLIENT_IP, clientIp);
         }
 
         chain.doFilter(request, response);

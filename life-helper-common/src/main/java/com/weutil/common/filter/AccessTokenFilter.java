@@ -2,6 +2,7 @@ package com.weutil.common.filter;
 
 import com.weutil.common.model.AccessTokenDetail;
 import com.weutil.common.model.CustomHttpHeader;
+import com.weutil.common.model.CustomRequestAttribute;
 import com.weutil.common.model.SimpleAuthentication;
 import com.weutil.common.service.AccessTokenService;
 import jakarta.servlet.FilterChain;
@@ -16,10 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * 类名称
- *
- * <h2>说明
- * <p>说明文本内容
+ * 访问凭据过滤器
  *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/7/14
@@ -43,13 +41,13 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String token = request.getHeader(HEADER_NAME);
         if (token != null) {
-            request.setAttribute("ACCESS_TOKEN", token);
+            request.setAttribute(CustomRequestAttribute.ACCESS_TOKEN, token);
             AccessTokenDetail detail = accessTokenService.parse(token);
             if (detail != null) {
                 SimpleAuthentication authentication = new SimpleAuthentication(detail.getUserId());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                request.setAttribute("USER_ID", detail.getUserId());
+                request.setAttribute(CustomRequestAttribute.USER_ID, detail.getUserId());
             }
         }
 

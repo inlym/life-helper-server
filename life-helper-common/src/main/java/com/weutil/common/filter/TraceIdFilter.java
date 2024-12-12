@@ -1,6 +1,7 @@
 package com.weutil.common.filter;
 
 import com.weutil.common.model.CustomHttpHeader;
+import com.weutil.common.model.CustomRequestAttribute;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +33,7 @@ public class TraceIdFilter extends OncePerRequestFilter {
     private static final String HEADER_NAME = CustomHttpHeader.REQUEST_ID;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         // 指定请求头为空则不进行任何处理
         return request.getHeader(HEADER_NAME) == null;
     }
@@ -40,7 +41,7 @@ public class TraceIdFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String traceId = request.getHeader(HEADER_NAME);
-        request.setAttribute("TRACE_ID", traceId);
+        request.setAttribute(CustomRequestAttribute.TRACE_ID, traceId);
 
         chain.doFilter(request, response);
     }
