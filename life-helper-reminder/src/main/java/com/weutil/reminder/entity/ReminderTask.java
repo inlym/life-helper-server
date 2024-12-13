@@ -56,4 +56,7 @@ public class ReminderTask {
 
     /** 任务完成时间 */
     private LocalDateTime completeTime;
+
+    /** 截止时间 */
+    private LocalDateTime dueTime;
 }

@@ -41,9 +41,8 @@ create table `reminder_task`
     `name`          varchar(30)     not null default '' comment '任务名称',
     `content`       varchar(1000)   not null default '' comment '任务描述内容文本',
     `complete_time` datetime                 default null comment '任务完成时间',
-#     `priority`      tinyint         not null default 0 comment '任务优先级（枚举值）',
-#     `due_date`      date                     default null comment '截止日期',
-#     `due_time`      time                     default null comment '截止时间',
+    `due_time`      datetime                 default null comment '截止时间',
+    #     `priority`      tinyint         not null default 0 comment '任务优先级（枚举值）',
 
     primary key (`id`)
 ) engine = InnoDB

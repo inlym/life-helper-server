@@ -2,6 +2,7 @@ package com.weutil.reminder.model;
 
 import com.weutil.common.validation.group.CreateGroup;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -17,6 +18,7 @@ import lombok.Data;
 @Data
 public class SavingReminderProjectDTO {
     /** 项目名称 */
-    @NotEmpty(message = "项目名称不能为空！", groups = {CreateGroup.class})
+    @NotEmpty(message = "项目名称不能为空", groups = {CreateGroup.class})
+    @Size(max = 20, message = "项目名称最多20个字")
     private String name;
 }
