@@ -2,6 +2,7 @@ package com.weutil.aliyun.captcha.config;
 
 import com.aliyun.teaopenapi.models.Config;
 import com.weutil.aliyun.captcha.model.AliyunCaptchaClient;
+import com.weutil.common.exception.ServerSideTemporaryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,7 @@ public class AliyunCaptchaConfig {
             return new AliyunCaptchaClient(config);
         } catch (Exception e) {
             log.error("阿里云验证码服务客户端创建错误，错误消息：{}", e.getMessage());
-            throw new RuntimeException();
+            throw new ServerSideTemporaryException();
         }
     }
 }

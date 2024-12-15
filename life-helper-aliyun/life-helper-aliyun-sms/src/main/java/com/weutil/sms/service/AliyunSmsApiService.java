@@ -3,7 +3,6 @@ package com.weutil.sms.service;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
 import com.weutil.sms.config.AliyunSmsProperties;
-import com.weutil.sms.exception.CreatingSmsClientFailedException;
 import com.weutil.sms.exception.SmsSentFailureException;
 import com.weutil.sms.model.AliyunSmsClient;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +56,6 @@ public class AliyunSmsApiService {
                 log.error("[SendSms] 短信发送失败，phone={}, code={},error_code={}, message={}", phone, code, result.getCode(), result.getMessage());
                 throw new SmsSentFailureException();
             }
-        } catch (CreatingSmsClientFailedException e) {
-            // 创建客户端异常，原样抛出，由全局异常捕获器处理
-            throw new CreatingSmsClientFailedException();
         } catch (Exception e) {
             // 其他异常，统一处理成“发送失败”
             log.error("[SendSms] 短信发送失败，错误消息：{}", e.getMessage());

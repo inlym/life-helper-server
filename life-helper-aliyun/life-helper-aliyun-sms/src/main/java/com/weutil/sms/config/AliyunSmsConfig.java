@@ -1,7 +1,7 @@
 package com.weutil.sms.config;
 
 import com.aliyun.teaopenapi.models.Config;
-import com.weutil.sms.exception.CreatingSmsClientFailedException;
+import com.weutil.common.exception.ServerSideTemporaryException;
 import com.weutil.sms.model.AliyunSmsClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class AliyunSmsConfig {
             return new AliyunSmsClient(config);
         } catch (Exception e) {
             log.error("阿里云短信客户端创建错误，错误消息：{}", e.getMessage());
-            throw new CreatingSmsClientFailedException();
+            throw new ServerSideTemporaryException();
         }
     }
 }

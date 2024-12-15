@@ -5,6 +5,7 @@ import com.weutil.account.exception.PhoneCodeAttemptExceededException;
 import com.weutil.account.exception.PhoneCodeNotMatchException;
 import com.weutil.common.model.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,16 +15,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * 短信验证码模块异常捕获器
  *
- * <h2>说明
- * <p>说明文本内容
- *
  * @author <a href="https://www.inlym.com">inlym</a>
  * @date 2024/8/28
  * @since 3.0.0
  **/
 @RestControllerAdvice
 @Slf4j
-@Order(50)
+@Order(Ordered.HIGHEST_PRECEDENCE + 1000)
 public class PhoneCodeLoginExceptionHandler {
 
     /**

@@ -1,6 +1,7 @@
 package com.weutil.aliyun.captcha.service;
 
 import com.aliyun.captcha20230305.models.VerifyIntelligentCaptchaResponse;
+import com.weutil.aliyun.captcha.exception.AliyunCaptchaVerifiedFailureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,24 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AliyunCaptchaService {
     private final AliyunCaptchaApiService aliyunCaptchaApiService;
+
+    /**
+     * 检验验证码参数（校验通过或直接抛出异常）
+     *
+     * <h3>说明
+     * <p>处理成抛出错误而不是直接返回布尔值的原因是：能够中断流程，否则一系列判断很麻烦。
+     *
+     * @param captchaVerifyParam 由验证码脚本回调的验证参数
+     *
+     * @date 2024/12/15
+     * @since 3.0.0
+     */
+    public void verifyOrThrow(String captchaVerifyParam) {
+        boolean result = verifyCaptcha(captchaVerifyParam);
+        if (!result) {
+            throw new AliyunCaptchaVerifiedFailureException();
+        }
+    }
 
     /**
      * 校验验证码参数

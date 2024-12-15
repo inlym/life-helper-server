@@ -1,12 +1,12 @@
 package com.weutil.common.config;
 
 import com.weutil.common.exception.ResourceNotFoundException;
+import com.weutil.common.exception.ServerSideTemporaryException;
 import com.weutil.common.exception.UnauthorizedAccessException;
 import com.weutil.common.model.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -33,7 +33,6 @@ import java.util.List;
  **/
 @RestControllerAdvice
 @Slf4j
-@Order(1000)
 public class GlobalExceptionHandler {
     /**
      * 请求参数，必填项未传值
@@ -110,6 +109,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ResourceNotFoundException.class})
     public ErrorResponse handleUnauthorizedResourceAccessException() {
         return new ErrorResponse(4, "当前资源已失效，请稍后再试！");
+    }
+
+    /**
+     * 服务器临时性异常
+     *
+     * @date 2024/12/15
+     * @since 3.0.0
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ServerSideTemporaryException.class)
+    public ErrorResponse handleServerSideUnforeseenException() {
+        return new ErrorResponse(1, "网络异常，请稍后再试！");
     }
 
     /**
