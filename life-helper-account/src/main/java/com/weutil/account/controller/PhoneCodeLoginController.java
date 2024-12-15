@@ -3,6 +3,7 @@ package com.weutil.account.controller;
 import com.weutil.account.model.PhoneCodeLoginDTO;
 import com.weutil.account.model.SendingSmsDTO;
 import com.weutil.account.service.PhoneCodeLoginService;
+import com.weutil.aliyun.captcha.service.AliyunCaptchaService;
 import com.weutil.common.annotation.ClientIp;
 import com.weutil.common.model.IdentityCertificate;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PhoneCodeLoginController {
     private final PhoneCodeLoginService phoneCodeLoginService;
+    private final AliyunCaptchaService aliyunCaptchaService;
 
     /**
      * 发送登录使用的短信验证码
@@ -37,6 +39,9 @@ public class PhoneCodeLoginController {
     @PostMapping("/sms/login")
     public Map<String, String> sendSms(@ClientIp String ip, @Valid @RequestBody SendingSmsDTO dto) {
         String phone = dto.getPhone();
+        String captchaVerifyParam = dto.getCaptchaVerifyParam();
+
+        aliyunCaptchaService.verifyOrThrow(captchaVerifyParam);
         phoneCodeLoginService.sendSms(phone, ip);
 
         return Map.of("phone", phone);

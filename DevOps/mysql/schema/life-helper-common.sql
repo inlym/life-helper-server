@@ -16,7 +16,7 @@ create table `request_log`
     `path`           varchar(100)    not null default '' comment '请求路径',
     `querystring`    varchar(300)    not null default '' comment '请求参数',
     `status`         int             not null default 0 comment '响应状态码',
-    `request_body`   varchar(1000)   not null default '' comment '请求数据',
+    `request_body`   text            not null default '' comment '请求数据',
 
     `start_time`     datetime        not null comment '请求开始时间',
     `end_time`       datetime        not null comment '请求结束时间',

@@ -28,6 +28,10 @@
             <groupId>com.weutil</groupId>
             <artifactId>life-helper-aliyun-sms</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.weutil</groupId>
+            <artifactId>life-helper-aliyun-captcha</artifactId>
+        </dependency>
 
     </dependencies>
 
