@@ -24,4 +24,12 @@ public class BaseUserInfoVO {
     /** 头像的完整 URL 地址 */
     @OssResource
     private String avatarUrl;
+
+    /**
+     * 账户 ID
+     *
+     * <h3>字段说明
+     * <p>客户端展示名称为 UID
+     */
+    private Long accountId;
 }

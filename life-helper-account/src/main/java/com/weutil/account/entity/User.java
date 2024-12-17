@@ -53,6 +53,15 @@ public class User {
     /** 头像路径 */
     private String avatarPath;
 
+    /**
+     * 账户 ID
+     *
+     * <h3>字段说明
+     * <p>（1）用于展示用途，客户端展示名称为 UID
+     * <p>（2）该字段添加“唯一索引”
+     */
+    private Long accountId;
+
     /** 性别 */
     private Gender gender;
 

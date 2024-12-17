@@ -1,5 +1,6 @@
 package com.weutil.account.service;
 
+import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.account.entity.User;
 import com.weutil.account.event.UserCreatedEvent;
 import com.weutil.account.exception.UserNotExistException;
@@ -14,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import static com.weutil.account.entity.table.UserTableDef.USER;
+
 /**
  * 用户账户服务
  *
@@ -25,6 +28,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
+    /** 初始的账户 ID */
+    private static final long INITIAL_ACCOUNT_ID = 10000000;
+
     /** 默认头像存储路径 */
     private static final String DEFAULT_AVATAR_PATH = "avatar/default.jpg";
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -38,16 +44,39 @@ public class UserService {
      * @since 2.3.0
      */
     public User createUser() {
-        User user = User.builder().nickName("用户_" + RandomStringUtil.generate(6)).avatarPath(DEFAULT_AVATAR_PATH).build();
+        User user = User.builder()
+            .nickName("用户_" + RandomStringUtil.generate(6))
+            .avatarPath(DEFAULT_AVATAR_PATH)
+            .accountId(generateAvailableAccountId())
+            .build();
         userMapper.insertSelective(user);
 
         User newUser = userMapper.selectOneById(user.getId());
-        log.info("[Create User] 创建新用户, 用户ID={}, 昵称={}", newUser.getId(), newUser.getNickName());
+        log.info("[Create User] 创建新用户, 用户ID={}, 昵称={}, uid={}", newUser.getId(), newUser.getNickName(), newUser.getAccountId());
 
         // 发布用户创建事件
         applicationEventPublisher.publishEvent(new UserCreatedEvent(newUser));
 
         return newUser;
+    }
+
+    /**
+     * 生成一个新的账户 ID
+     *
+     * @date 2024/12/17
+     * @since 3.0.0
+     */
+    private long generateAvailableAccountId() {
+        QueryWrapper queryWrapper = QueryWrapper.create().select(USER.ACCOUNT_ID).orderBy(USER.ID, false);
+        User user = userMapper.selectOneByQuery(queryWrapper);
+        if (user == null || user.getAccountId() == null || user.getAccountId() == 0) {
+            return INITIAL_ACCOUNT_ID;
+        }
+
+        long max = user.getAccountId();
+        long increment = (long) Math.ceil(Math.random() * 10000) + 100;
+
+        return max + increment;
     }
 
     /**
@@ -60,7 +89,7 @@ public class UserService {
      */
     public BaseUserInfoVO getBaseUserInfo(long userId) {
         User user = getOrThrowByUserId(userId);
-        return BaseUserInfoVO.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).build();
+        return BaseUserInfoVO.builder().nickName(user.getNickName()).avatarUrl(user.getAvatarPath()).accountId(user.getAccountId()).build();
     }
 
     /**

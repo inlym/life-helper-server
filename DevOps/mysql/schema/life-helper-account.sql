@@ -13,10 +13,12 @@ create table `user`
     /* 下方为业务字段 */
     `nick_name`     varchar(20)     not null default '' comment '昵称',
     `avatar_path`   varchar(100)    not null default '' comment '头像路径',
+    `account_id`    bigint unsigned not null default 0 comment '账户 ID',
     `gender`        int             not null default 0 comment '性别（枚举值）',
     `register_time` datetime        not null comment '注册时间',
 
-    primary key (`id`)
+    primary key (`id`),
+    unique key `uk_account_id` (`account_id`)
 ) engine = InnoDB
   default character set = `utf8mb4` comment ='用户账户表';
 
