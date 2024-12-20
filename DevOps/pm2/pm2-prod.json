@@ -7,5 +7,7 @@
         "life-helper-web.jar"
     ],
     "cwd": "/app",
-    "watch": false
+    "watch": false,
+    "out_file": "/app/logs/life-helper-server-prod.log",
+    "error_file": "/app/logs/life-helper-server-prod-error.log"
 }
