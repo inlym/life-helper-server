@@ -1,5 +1,7 @@
 package com.weutil.common.exception;
 
+import lombok.Getter;
+
 /**
  * 资源未找到异常
  *
@@ -14,4 +16,16 @@ package com.weutil.common.exception;
  * @date 2024/7/14
  * @since 3.0.0
  **/
-public class ResourceNotFoundException extends RuntimeException {}
+@Getter
+public class ResourceNotFoundException extends RuntimeException {
+    /** 主键 ID */
+    private final Long pkId;
+
+    /** 用户 ID */
+    private final Long userId;
+
+    public ResourceNotFoundException(long pkId, long userId) {
+        this.pkId = pkId;
+        this.userId = userId;
+    }
+}
