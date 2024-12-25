@@ -1,12 +1,12 @@
 package com.weutil.sms.entity;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.weutil.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -23,25 +23,11 @@ import java.time.LocalDateTime;
  **/
 @Table("sms_log")
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SmsLog {
-    // ============================ 通用字段 ============================
-
-    /** 主键 ID */
-    @Id(keyType = KeyType.Auto)
-    private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    // 字段说明：因为是“日志表”，不存在删除操作，因此此处无“逻辑删除标志”字段
-
-    // ============================ 业务字段 ============================
+public class SmsLog extends BaseEntity {
 
     /** 手机号 */
     private String phone;

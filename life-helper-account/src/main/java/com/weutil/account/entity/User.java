@@ -1,14 +1,14 @@
 package com.weutil.account.entity;
 
 import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.weutil.account.model.Gender;
+import com.weutil.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -27,26 +27,11 @@ import java.time.LocalDateTime;
  **/
 @Table("user")
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    // ============================ 通用字段 ============================
-
-    /** 主键 ID，即业务含义上的“用户 ID” */
-    @Id(keyType = KeyType.Auto)
-    private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    // 字段备注：无逻辑删除字段
-
-    // ============================ 业务字段 ============================
-
+public class User extends BaseEntity {
     /** 昵称 */
     private String nickName;
 

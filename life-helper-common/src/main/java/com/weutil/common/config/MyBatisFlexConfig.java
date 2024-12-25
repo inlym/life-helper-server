@@ -1,5 +1,7 @@
 package com.weutil.common.config;
 
+import com.mybatisflex.annotation.InsertListener;
+import com.mybatisflex.annotation.UpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.audit.AuditMessage;
@@ -7,7 +9,9 @@ import com.mybatisflex.core.audit.MessageCollector;
 import com.mybatisflex.core.logicdelete.LogicDeleteProcessor;
 import com.mybatisflex.core.logicdelete.impl.DateTimeLogicDeleteProcessor;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
+import com.weutil.common.entity.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -52,6 +56,10 @@ public class MyBatisFlexConfig implements MyBatisFlexCustomizer {
 
         // 关闭控制台打印标志
         config.setPrintBanner(false);
+
+        ClientIpListener clientIpListener = new ClientIpListener();
+        config.registerInsertListener(clientIpListener, BaseEntity.class);
+        config.registerUpdateListener(clientIpListener, BaseEntity.class);
     }
 
     @Slf4j
@@ -59,6 +67,24 @@ public class MyBatisFlexConfig implements MyBatisFlexCustomizer {
         @Override
         public void collect(AuditMessage message) {
             log.info("{} <<< {}ms", message.getFullSql(), message.getElapsedTime());
+        }
+    }
+
+    static class ClientIpListener implements InsertListener, UpdateListener {
+        @Override
+        public void onInsert(Object o) {
+            String clientIp = MDC.get("CLIENT_IP");
+            if (clientIp != null && o instanceof BaseEntity) {
+                ((BaseEntity) o).setCreateClientIp(clientIp);
+            }
+        }
+
+        @Override
+        public void onUpdate(Object o) {
+            String clientIp = MDC.get("CLIENT_IP");
+            if (clientIp != null && o instanceof BaseEntity) {
+                ((BaseEntity) o).setUpdateClientIp(clientIp);
+            }
         }
     }
 }

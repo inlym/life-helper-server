@@ -1,13 +1,12 @@
 package com.weutil.common.entity;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.weutil.common.model.ClientType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -20,25 +19,11 @@ import java.time.LocalDateTime;
  **/
 @Table("request_log")
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestLog {
-    // ============================ 通用字段 ============================
-
-    /** 主键 ID */
-    @Id(keyType = KeyType.Auto)
-    private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    // 字段说明：因为是“日志表”，因此此处无“逻辑删除标志”字段
-
-    // ============================ 业务字段 ============================
+public class RequestLog extends BaseUserRelatedEntity {
 
     // ---------- 原始数据字段 ----------
 
@@ -86,14 +71,6 @@ public class RequestLog {
 
     /** 访问凭证 */
     private String accessToken;
-
-    /**
-     * 用户 ID
-     *
-     * <h2>说明
-     * <p>务必在鉴权通过后再存入。
-     */
-    private Long userId;
 
     /** 客户端类型 */
     private ClientType clientType;

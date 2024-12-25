@@ -1,0 +1,17 @@
+meta {
+  name: 修改用户基础信息
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/user-info/base
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nickName": "会飞的猪"
+  }
+}

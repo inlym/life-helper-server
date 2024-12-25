@@ -1,10 +1,13 @@
 package com.weutil.reminder.entity;
 
-import com.mybatisflex.annotation.*;
+import com.mybatisflex.annotation.RelationManyToOne;
+import com.mybatisflex.annotation.Table;
+import com.weutil.common.entity.BaseUserRelatedEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -17,30 +20,11 @@ import java.time.LocalDateTime;
  **/
 @Table("reminder_task")
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReminderTask {
-    // ============================ 通用字段 ============================
-
-    /** 主键 ID */
-    @Id(keyType = KeyType.Auto)
-    private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    /** 删除时间（逻辑删除标志） */
-    @Column(isLogicDelete = true)
-    private LocalDateTime deleteTime;
-
-    // ============================ 业务字段 ============================
-
-    /** 所属用户 ID */
-    private Long userId;
+public class ReminderTask extends BaseUserRelatedEntity {
 
     /** 所属项目 ID */
     private Long projectId;

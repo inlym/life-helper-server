@@ -1,15 +1,12 @@
 package com.weutil.reminder.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.weutil.common.entity.BaseUserRelatedEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.experimental.SuperBuilder;
 
 /**
  * 待办项目实体
@@ -20,31 +17,11 @@ import java.time.LocalDateTime;
  **/
 @Table("reminder_project")
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReminderProject {
-    // ============================ 通用字段 ============================
-
-    /** 主键 ID */
-    @Id(keyType = KeyType.Auto)
-    private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    /** 删除时间（逻辑删除标志） */
-    @Column(isLogicDelete = true)
-    private LocalDateTime deleteTime;
-
-    // ============================ 业务字段 ============================
-
-    /** 所属用户 ID */
-    private Long userId;
-
+public class ReminderProject extends BaseUserRelatedEntity {
     /** 项目名称 */
     private String name;
 

@@ -1,14 +1,14 @@
 package com.weutil.account.entity;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.weutil.account.model.LoginChannel;
 import com.weutil.account.model.LoginType;
+import com.weutil.common.entity.BaseUserRelatedEntity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -24,25 +24,11 @@ import java.time.LocalDateTime;
  **/
 @Table("login_log")
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginLog {
-    // ============================ 通用字段 ============================
-
-    /** 主键 ID */
-    @Id(keyType = KeyType.Auto)
-    private Long id;
-
-    /** 创建时间 */
-    private LocalDateTime createTime;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    // 字段说明：因为是“日志表”，因此此处无“逻辑删除标志”字段
-
-    // ============================ 业务字段 ============================
+public class LoginLog extends BaseUserRelatedEntity {
 
     // ---------- 各种登录方式通用项 ----------
 
@@ -51,9 +37,6 @@ public class LoginLog {
 
     /** 登录渠道 */
     private LoginChannel channel;
-
-    /** 对应的用户 ID */
-    private Long userId;
 
     /** 发放的鉴权令牌 */
     private String token;
