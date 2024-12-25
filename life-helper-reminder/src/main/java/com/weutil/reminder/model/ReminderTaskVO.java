@@ -36,4 +36,9 @@ public class ReminderTaskVO {
 
     /** 截止时间 */
     private LocalDateTime dueTime;
+
+    // ============================ 关联字段数据 ============================
+
+    /** 所属的项目名称 */
+    private String projectName;
 }

@@ -1,14 +1,24 @@
 package com.weutil.reminder.service;
 
+import com.mybatisflex.core.query.QueryCondition;
+import com.mybatisflex.core.util.UpdateEntity;
 import com.weutil.reminder.entity.ReminderTask;
 import com.weutil.reminder.event.ReminderTaskCreatedEvent;
+import com.weutil.reminder.event.ReminderTaskMovedEvent;
+import com.weutil.reminder.exception.ReminderProjectNotFoundException;
 import com.weutil.reminder.exception.ReminderTaskNotFoundException;
 import com.weutil.reminder.mapper.ReminderProjectMapper;
 import com.weutil.reminder.mapper.ReminderTaskMapper;
+import com.weutil.reminder.model.ReminderTaskOperation;
+import com.weutil.reminder.model.UpdateReminderTaskDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+import static com.weutil.reminder.entity.table.ReminderProjectTableDef.REMINDER_PROJECT;
 
 /**
  * 待办任务服务
@@ -36,6 +46,9 @@ public class ReminderTaskService {
      * @since 3.0.0
      */
     public ReminderTask create(long userId, long projectId, String name) {
+        // 检查待办项目所属权
+        checkProjectOwnership(userId, projectId);
+
         ReminderTask inserted = ReminderTask.builder().userId(userId).projectId(projectId).name(name).build();
         reminderTaskMapper.insertSelective(inserted);
 
@@ -45,6 +58,28 @@ public class ReminderTaskService {
         applicationEventPublisher.publishEvent(new ReminderTaskCreatedEvent(entity));
 
         return entity;
+    }
+
+    /**
+     * 检查待办项目所属权
+     *
+     * <h3>开发备注
+     * <p>此处实际上可以直接调用 {@link ReminderProjectService} 的 {@code getOrThrowById} 方法, 为避免出现循环依赖，此处单独写一个。
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     *
+     * @date 2024/12/25
+     * @since 3.0.0
+     */
+    private void checkProjectOwnership(long userId, long projectId) {
+        // [projectId=0] 情况，无需检查
+        if (projectId > 0) {
+            QueryCondition condition = REMINDER_PROJECT.USER_ID.eq(userId).and(REMINDER_PROJECT.ID.eq(projectId));
+            if (reminderProjectMapper.selectCountByCondition(condition) != 1) {
+                throw new ReminderProjectNotFoundException(projectId, userId);
+            }
+        }
     }
 
     /**
@@ -63,5 +98,90 @@ public class ReminderTaskService {
         }
 
         throw new ReminderTaskNotFoundException(taskId, userId);
+    }
+
+    /**
+     * 根据请求数据更新实体
+     *
+     * @param userId 用户 ID
+     * @param taskId 待办任务 ID
+     * @param dto    请求数据
+     *
+     * @date 2024/12/25
+     * @since 3.0.0
+     */
+    public ReminderTask updateWithDTO(long userId, long taskId, UpdateReminderTaskDTO dto) {
+        ReminderTask entity = getOrThrowById(userId, taskId);
+        ReminderTask updated = ReminderTask.builder().id(taskId).build();
+
+        if (dto.getName() != null && !dto.getName().equals(entity.getName())) {
+            updated.setName(dto.getName());
+        }
+        if (dto.getProjectId() != null && !dto.getProjectId().equals(entity.getProjectId())) {
+            updated.setProjectId(dto.getProjectId());
+        }
+        if (dto.getContent() != null && !dto.getContent().equals(entity.getContent())) {
+            updated.setContent(dto.getContent());
+        }
+        if (dto.getDueTime() != null && !dto.getDueTime().equals(entity.getDueTime())) {
+            updated.setDueTime(dto.getDueTime());
+        }
+
+        reminderTaskMapper.update(updated);
+        ReminderTask newEntity = getOrThrowById(userId, taskId);
+
+        // 附加发布事件
+        if (updated.getProjectId() != null) {
+            applicationEventPublisher.publishEvent(new ReminderTaskMovedEvent(newEntity, entity.getProjectId(), newEntity.getProjectId()));
+        }
+
+        return newEntity;
+    }
+
+    /**
+     * 对待办任务进行特定操作
+     *
+     * @param userId    用户 ID
+     * @param taskId    待办任务 ID
+     * @param operation 操作方式
+     *
+     * @date 2024/12/25
+     * @since 3.0.0
+     */
+    public ReminderTask updateWithOperation(long userId, long taskId, ReminderTaskOperation operation) {
+        ReminderTask entity = getOrThrowById(userId, taskId);
+        ReminderTask updated = UpdateEntity.of(ReminderTask.class, taskId);
+
+        if (operation == ReminderTaskOperation.COMPLETE && entity.getCompleteTime() == null) {
+            updated.setCompleteTime(LocalDateTime.now());
+        } else if (operation == ReminderTaskOperation.CANCEL_COMPLETE && entity.getCompleteTime() != null) {
+            updated.setCompleteTime(null);
+        } else if (operation == ReminderTaskOperation.CLEAR_DUE_TIME && entity.getDueTime() != null) {
+            updated.setDueTime(null);
+        }
+
+        reminderTaskMapper.update(updated);
+        ReminderTask newEntity = getOrThrowById(userId, taskId);
+
+        // 附加发布事件
+        // TODO
+
+        return newEntity;
+    }
+
+    /**
+     * 删除一条待办任务
+     *
+     * @param userId 用户 ID
+     * @param taskId 待办任务 ID
+     *
+     * @date 2024/12/25
+     * @since 3.0.0
+     */
+    public void delete(long userId, long taskId) {
+        ReminderTask entity = getOrThrowById(userId, taskId);
+        checkProjectOwnership(userId, entity.getProjectId());
+
+        reminderTaskMapper.deleteById(taskId);
     }
 }

@@ -60,13 +60,19 @@ public class ReminderTaskController {
      * @since 3.0.0
      */
     private ReminderTaskVO convert(ReminderTask entity) {
-        return ReminderTaskVO.builder()
+        ReminderTaskVO vo = ReminderTaskVO.builder()
             .id(entity.getId())
             .projectId(entity.getProjectId())
             .name(entity.getName())
             .content(entity.getContent())
             .dueTime(entity.getDueTime())
             .build();
+
+        if (entity.getProject() != null) {
+            vo.setProjectName(entity.getProject().getName());
+        }
+
+        return vo;
     }
 
     /**

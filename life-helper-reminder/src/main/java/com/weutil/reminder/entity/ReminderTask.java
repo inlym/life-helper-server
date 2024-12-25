@@ -1,9 +1,6 @@
 package com.weutil.reminder.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.mybatisflex.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -59,4 +56,9 @@ public class ReminderTask {
 
     /** 截止时间 */
     private LocalDateTime dueTime;
+
+    // ============================ 关联字段 ============================
+
+    @RelationManyToOne(selfField = "projectId")
+    private ReminderProject project;
 }

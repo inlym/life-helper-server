@@ -1,6 +1,7 @@
 package com.weutil.reminder.service;
 
 import com.mybatisflex.core.query.QueryCondition;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.reminder.entity.ReminderTask;
 import com.weutil.reminder.mapper.ReminderTaskMapper;
 import com.weutil.reminder.model.ReminderFilterTaskCount;
@@ -74,7 +75,7 @@ public class ReminderFilterService {
     public List<ReminderTask> listByAllUncompletedFilter(long userId) {
         QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull());
 
-        return reminderTaskMapper.selectListByCondition(condition);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
@@ -88,7 +89,7 @@ public class ReminderFilterService {
     public List<ReminderTask> listByAllCompletedFilter(long userId) {
         QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNotNull());
 
-        return reminderTaskMapper.selectListByCondition(condition);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
@@ -104,7 +105,7 @@ public class ReminderFilterService {
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
         QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.DUE_TIME.between(start, end));
 
-        return reminderTaskMapper.selectListByCondition(condition);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
@@ -118,7 +119,7 @@ public class ReminderFilterService {
     public List<ReminderTask> listByExpiredFilter(long userId) {
         QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()));
 
-        return reminderTaskMapper.selectListByCondition(condition);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
@@ -132,7 +133,7 @@ public class ReminderFilterService {
     public List<ReminderTask> listByUndatedFilter(long userId) {
         QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.DUE_TIME.isNull());
 
-        return reminderTaskMapper.selectListByCondition(condition);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
@@ -146,7 +147,7 @@ public class ReminderFilterService {
     public List<ReminderTask> listByUnspecifiedFilter(long userId) {
         QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.PROJECT_ID.eq(0L));
 
-        return reminderTaskMapper.selectListByCondition(condition);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
