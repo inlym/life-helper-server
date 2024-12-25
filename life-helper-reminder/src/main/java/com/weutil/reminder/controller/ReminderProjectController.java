@@ -6,7 +6,7 @@ import com.weutil.common.model.SingleListResponse;
 import com.weutil.common.validation.group.CreateGroup;
 import com.weutil.reminder.entity.ReminderProject;
 import com.weutil.reminder.model.ReminderProjectVO;
-import com.weutil.reminder.model.SavingReminderProjectDTO;
+import com.weutil.reminder.model.SaveReminderProjectDTO;
 import com.weutil.reminder.service.ReminderProjectService;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class ReminderProjectController {
      */
     @PostMapping("/reminder/projects")
     @UserPermission
-    public ReminderProjectVO create(@UserId long userId, @Validated(CreateGroup.class) @RequestBody SavingReminderProjectDTO dto) {
+    public ReminderProjectVO create(@UserId long userId, @Validated(CreateGroup.class) @RequestBody SaveReminderProjectDTO dto) {
         String name = dto.getName();
         ReminderProject entity = reminderProjectService.create(userId, name);
 

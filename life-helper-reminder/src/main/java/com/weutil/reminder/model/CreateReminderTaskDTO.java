@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 /**
  * 创建待办任务操作的请求数据
  *
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
  * @since 3.0.0
  **/
 @Data
-public class CreatingReminderTaskDTO {
+public class CreateReminderTaskDTO {
     /** 任务名称 */
     @NotEmpty(message = "项目名称不能为空！")
     private String name;
@@ -32,7 +30,4 @@ public class CreatingReminderTaskDTO {
     @Min(value = 0, message = "你选择的项目不存在，请刷新后重试！")
     @NotNull
     private Long projectId;
-
-    /** 截止时间 */
-    private LocalDateTime dueTime;
 }

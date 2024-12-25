@@ -16,7 +16,7 @@ import lombok.Data;
  * @since 3.0.0
  **/
 @Data
-public class SavingReminderProjectDTO {
+public class SaveReminderProjectDTO {
     /** 项目名称 */
     @NotEmpty(message = "项目名称不能为空", groups = {CreateGroup.class})
     @Size(max = 20, message = "项目名称最多20个字")
