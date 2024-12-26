@@ -62,6 +62,38 @@ public class ReminderProjectController {
     }
 
     /**
+     * 删除一个指定的待办项目
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     *
+     * @date 2024/12/13
+     * @since 3.0.0
+     */
+    @DeleteMapping("/reminder/projects/{id}")
+    @UserPermission
+    public ReminderProjectVO delete(@UserId long userId, @Min(1) @PathVariable("id") long projectId) {
+        reminderProjectService.delete(userId, projectId);
+        return ReminderProjectVO.builder().id(projectId).build();
+    }
+
+    /**
+     * 修改待办项目信息
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     * @param dto       请求数据
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    @PutMapping("/reminder/projects/{id}")
+    @UserPermission
+    public ReminderProjectVO update(@UserId long userId, @Min(1) @PathVariable("id") long projectId, @RequestBody SaveReminderProjectDTO dto) {
+        return convert(reminderProjectService.updateWithDTO(userId, projectId, dto));
+    }
+
+    /**
      * 获取待办项目列表
      *
      * @param userId 用户 ID
@@ -74,21 +106,5 @@ public class ReminderProjectController {
     public SingleListResponse<ReminderProjectVO> list(@UserId long userId) {
         List<ReminderProjectVO> items = reminderProjectService.list(userId).stream().map(this::convert).toList();
         return new SingleListResponse<>(items);
-    }
-
-    /**
-     * 删除一个指定的待办项目
-     *
-     * @param userId    用户 ID
-     * @param projectId 待办项目 ID
-     *
-     * @date 2024/12/13
-     * @since 3.0.0
-     */
-    @DeleteMapping("/reminder/projects/{project_id}")
-    @UserPermission
-    public ReminderProjectVO delete(@UserId long userId, @Min(1) @PathVariable("project_id") long projectId) {
-        reminderProjectService.delete(userId, projectId);
-        return ReminderProjectVO.builder().id(projectId).build();
     }
 }

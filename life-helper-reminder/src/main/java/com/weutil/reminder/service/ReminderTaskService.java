@@ -90,8 +90,26 @@ public class ReminderTaskService {
      * @date 2024/12/24
      * @since 3.0.0
      */
-    private ReminderTask getOrThrowById(long userId, long taskId) {
+    public ReminderTask getOrThrowById(long userId, long taskId) {
         ReminderTask entity = reminderTaskMapper.selectOneById(taskId);
+        if (entity != null && entity.getUserId() == userId) {
+            return entity;
+        }
+
+        throw new ReminderTaskNotFoundException(taskId, userId);
+    }
+
+    /**
+     * 根据 ID 获取实体对象（包含关联数据），如果未找到（包含不所属于对应用户）则抛出异常
+     *
+     * @param userId 用户 ID
+     * @param taskId 待办任务 ID
+     *
+     * @date 2024/12/24
+     * @since 3.0.0
+     */
+    public ReminderTask getWithRelationsOrThrowById(long userId, long taskId) {
+        ReminderTask entity = reminderTaskMapper.selectOneWithRelationsById(taskId);
         if (entity != null && entity.getUserId() == userId) {
             return entity;
         }

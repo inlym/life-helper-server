@@ -4,12 +4,10 @@ import com.weutil.common.annotation.UserId;
 import com.weutil.common.annotation.UserPermission;
 import com.weutil.common.model.SingleListResponse;
 import com.weutil.reminder.entity.ReminderTask;
-import com.weutil.reminder.model.CreateReminderTaskDTO;
-import com.weutil.reminder.model.ReminderFilterTaskCount;
-import com.weutil.reminder.model.ReminderTaskVO;
-import com.weutil.reminder.model.TaskFilter;
+import com.weutil.reminder.model.*;
 import com.weutil.reminder.service.ReminderFilterService;
 import com.weutil.reminder.service.ReminderTaskService;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +71,54 @@ public class ReminderTaskController {
         }
 
         return vo;
+    }
+
+    /**
+     * 删除一条待办任务
+     *
+     * @param userId 用户 ID
+     * @param taskId 待办任务 ID
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    @DeleteMapping("/reminder/tasks/{id}")
+    @UserPermission
+    public ReminderTaskVO delete(@UserId long userId, @Min(1) @PathVariable("id") long taskId) {
+        reminderTaskService.delete(userId, taskId);
+        return ReminderTaskVO.builder().id(taskId).build();
+    }
+
+    /**
+     * 更新一条待办任务
+     *
+     * @param userId 用户 ID
+     * @param taskId 待办任务 ID
+     * @param dto    请求数据
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    @PutMapping("/reminder/tasks/{id}")
+    @UserPermission
+    public ReminderTaskVO update(@UserId long userId, @Min(1) @PathVariable("id") long taskId, @RequestBody UpdateReminderTaskDTO dto) {
+        reminderTaskService.updateWithDTO(userId, taskId, dto);
+        return convert(reminderTaskService.getOrThrowById(userId, taskId));
+    }
+
+    /**
+     * 查看一条待办任务的详情
+     *
+     * @param userId 用户 ID
+     * @param taskId 待办任务 ID
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    @GetMapping("/reminder/tasks/{id}")
+    @UserPermission
+    public ReminderTaskVO findById(@UserId long userId, @Min(1) @PathVariable("id") long taskId) {
+        return convert(reminderTaskService.getWithRelationsOrThrowById(userId, taskId));
     }
 
     /**
