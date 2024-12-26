@@ -3,11 +3,13 @@ package com.weutil.reminder.service;
 import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.reminder.entity.ReminderProject;
-import com.weutil.reminder.event.ReminderTaskCreatedEvent;
+import com.weutil.reminder.event.ReminderTaskEvent;
+import com.weutil.reminder.event.ReminderTaskMovedEvent;
 import com.weutil.reminder.exception.ReminderProjectNotAllowedToDeleteException;
 import com.weutil.reminder.exception.ReminderProjectNotFoundException;
 import com.weutil.reminder.mapper.ReminderProjectMapper;
 import com.weutil.reminder.mapper.ReminderTaskMapper;
+import com.weutil.reminder.model.SaveReminderProjectDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -106,7 +108,7 @@ public class ReminderProjectService {
     }
 
     /**
-     * 监听待办任务创建事件
+     * 监听待办任务事件
      *
      * <h4>备注
      * <p>此处需同步处理，避免异步处理时间差问题（前端提交成功后，会立刻更新项目列表）。
@@ -116,15 +118,31 @@ public class ReminderProjectService {
      * @date 2024/12/24
      * @since 3.0.0
      */
-    @EventListener(ReminderTaskCreatedEvent.class)
-    public void handleReminderTaskCreatedEvent(ReminderTaskCreatedEvent event) {
+    @EventListener(ReminderTaskEvent.class)
+    public void handleReminderTaskCreatedEvent(ReminderTaskEvent event) {
         Long projectId = event.getTask().getProjectId();
         if (projectId != null && projectId > 0) {
             // 处理策略：不是直接 +1，而是重新算一遍再赋值
-            long count = calcUncompletedTaskCount(projectId);
-            ReminderProject updated = ReminderProject.builder().id(projectId).uncompletedTaskCount(count).build();
-            reminderProjectMapper.update(updated);
+            updateUncompletedTasks(projectId);
         }
+
+        if (event instanceof ReminderTaskMovedEvent) {
+            updateUncompletedTasks(((ReminderTaskMovedEvent) event).getTargetProjectId());
+        }
+    }
+
+    /**
+     * 更新指定项目的未完成任务数
+     *
+     * @param projectId 项目 ID
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    private void updateUncompletedTasks(long projectId) {
+        long count = countUncompletedTasks(projectId);
+        ReminderProject updated = ReminderProject.builder().id(projectId).uncompletedTaskCount(count).build();
+        reminderProjectMapper.update(updated);
     }
 
     /**
@@ -135,8 +153,31 @@ public class ReminderProjectService {
      * @date 2024/12/24
      * @since 3.0.0
      */
-    public long calcUncompletedTaskCount(long projectId) {
+    private long countUncompletedTasks(long projectId) {
         QueryCondition condition = REMINDER_TASK.PROJECT_ID.eq(projectId).and(REMINDER_TASK.COMPLETE_TIME.isNull());
         return reminderTaskMapper.selectCountByCondition(condition);
+    }
+
+    /**
+     * 根据请求数据进行更新
+     *
+     * @param userId    用户 ID
+     * @param projectId 项目 ID
+     * @param dto       请求数据
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    public ReminderProject updateWithDTO(long userId, long projectId, SaveReminderProjectDTO dto) {
+        ReminderProject entity = getOrThrowById(userId, projectId);
+        ReminderProject updated = ReminderProject.builder().id(projectId).build();
+
+        if (dto.getName() != null && !dto.getName().equals(entity.getName())) {
+            updated.setName(dto.getName());
+        }
+
+        reminderProjectMapper.update(updated);
+
+        return getOrThrowById(userId, projectId);
     }
 }

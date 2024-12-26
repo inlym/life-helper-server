@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{base_url}}/debug?name=mark&age=19&sleep=200
+  url: {{base_url}}/debug?name=mark&age=19&sleep=200&rand=3
   body: json
   auth: none
 }
@@ -14,6 +14,7 @@ params:query {
   name: mark
   age: 19
   sleep: 200
+  rand: 3
 }
 
 body:json {

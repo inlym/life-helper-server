@@ -12,7 +12,7 @@ public enum ReminderTaskOperation {
     COMPLETE,
 
     /** 把待办任务标记为“未完成” */
-    CANCEL_COMPLETE,
+    UNCOMPLETE,
 
     /** 清空待办任务标的截止时间 */
     CLEAR_DUE_TIME,

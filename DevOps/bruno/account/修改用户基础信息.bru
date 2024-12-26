@@ -5,13 +5,17 @@ meta {
 }
 
 put {
-  url: {{base_url}}/user-info/base
+  url: {{base_url}}/user-info/base?rand=3
   body: json
   auth: none
 }
 
+params:query {
+  rand: 3
+}
+
 body:json {
   {
-    "nickName": "会飞的猪"
+    "nickName": "会飞的猪12"
   }
 }

@@ -42,4 +42,7 @@ public class UpdateReminderTaskDTO {
 
     /** 截止时间 */
     private LocalDateTime dueTime;
+
+    /** 特定操作 */
+    private ReminderTaskOperation operation;
 }
