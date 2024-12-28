@@ -20,5 +20,4 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE + 1050)
-public class ReminderExceptionHandler {
-}
+public class ReminderExceptionHandler {}

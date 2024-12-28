@@ -5,8 +5,8 @@ import com.weutil.common.annotation.UserPermission;
 import com.weutil.common.model.SingleListResponse;
 import com.weutil.reminder.entity.ReminderTask;
 import com.weutil.reminder.model.CreateReminderTaskDTO;
+import com.weutil.reminder.model.ReminderTaskFilter;
 import com.weutil.reminder.model.ReminderTaskVO;
-import com.weutil.reminder.model.TaskFilter;
 import com.weutil.reminder.model.UpdateReminderTaskDTO;
 import com.weutil.reminder.service.ReminderFilterService;
 import com.weutil.reminder.service.ReminderTaskService;
@@ -135,8 +135,8 @@ public class ReminderTaskController {
      */
     @GetMapping(value = "/reminder/tasks", params = "filter")
     @UserPermission
-    public SingleListResponse<ReminderTaskVO> getListByFilter(@UserId long userId, @RequestParam("filter") TaskFilter filter) {
-        List<ReminderTask> list = reminderFilterService.listByFilter(userId, filter);
+    public SingleListResponse<ReminderTaskVO> getListByFilter(@UserId long userId, @RequestParam("filter") ReminderTaskFilter filter) {
+        List<ReminderTask> list = reminderFilterService.getTaskListByFilter(userId, filter);
 
         return new SingleListResponse<>(list.stream().map(this::convert).toList());
     }

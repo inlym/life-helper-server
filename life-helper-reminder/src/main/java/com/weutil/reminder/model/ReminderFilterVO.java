@@ -21,8 +21,8 @@ public class ReminderFilterVO {
     private String name;
 
     /** 类型 */
-    private TaskFilter type;
+    private ReminderTaskFilter type;
 
     /** 计数（除“已完成”过滤器外，其余均为未完成任务数） */
-    private Long count;
+    private Long num;
 }

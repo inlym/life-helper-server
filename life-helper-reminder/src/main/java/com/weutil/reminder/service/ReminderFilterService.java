@@ -2,11 +2,11 @@ package com.weutil.reminder.service;
 
 import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.weutil.common.exception.UnpredictableException;
 import com.weutil.reminder.entity.ReminderTask;
 import com.weutil.reminder.mapper.ReminderTaskMapper;
-import com.weutil.reminder.model.ReminderFilterTaskCount;
 import com.weutil.reminder.model.ReminderFilterVO;
-import com.weutil.reminder.model.TaskFilter;
+import com.weutil.reminder.model.ReminderTaskFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,133 +45,48 @@ public class ReminderFilterService {
      * @date 2024/12/25
      * @since 3.0.0
      */
-    public List<ReminderTask> listByFilter(long userId, TaskFilter filter) {
-        if (filter == TaskFilter.ALL_UNCOMPLETED) {
-            return listByAllUncompletedFilter(userId);
+    public List<ReminderTask> getTaskListByFilter(long userId, ReminderTaskFilter filter) {
+        QueryCondition condition = generateCondition(userId, filter);
+        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
+    }
+
+    /**
+     * 根据过滤器名称构建查询条件
+     *
+     * <h3>说明
+     * <p>除“已完成”、“未完成”外，其余均不附加“未完成”条件。
+     *
+     * @param userId 用户 ID
+     * @param filter 过滤器
+     *
+     * @date 2024/12/28
+     * @since 3.0.0
+     */
+    private QueryCondition generateCondition(long userId, ReminderTaskFilter filter) {
+        QueryCondition base = REMINDER_TASK.USER_ID.eq(userId);
+
+        if (filter == ReminderTaskFilter.ALL_UNCOMPLETED) {
+            return base.and(REMINDER_TASK.COMPLETE_TIME.isNull());
         }
-        if (filter == TaskFilter.ALL_COMPLETED) {
-            return listByAllCompletedFilter(userId);
+        if (filter == ReminderTaskFilter.ALL_COMPLETED) {
+            return base.and(REMINDER_TASK.COMPLETE_TIME.isNotNull());
         }
-        if (filter == TaskFilter.TODAY) {
-            return listByTodayFilter(userId);
+        if (filter == ReminderTaskFilter.TODAY) {
+            LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+            LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+            return base.and(REMINDER_TASK.DUE_TIME.between(start, end));
         }
-        if (filter == TaskFilter.EXPIRED) {
-            return listByExpiredFilter(userId);
+        if (filter == ReminderTaskFilter.EXPIRED) {
+            return base.and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()));
         }
-        if (filter == TaskFilter.UNDATED) {
-            return listByUndatedFilter(userId);
+        if (filter == ReminderTaskFilter.UNDATED) {
+            return base.and(REMINDER_TASK.DUE_TIME.isNull());
+        }
+        if (filter == ReminderTaskFilter.UNSPECIFIED) {
+            return base.and(REMINDER_TASK.PROJECT_ID.eq(0L));
         }
 
-        return new ArrayList<>();
-    }
-
-    /**
-     * 以过滤器“所有待办（未完成）”为条件，获取任务列表
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public List<ReminderTask> listByAllUncompletedFilter(long userId) {
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull());
-
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
-    }
-
-    /**
-     * 以过滤器“已完成”为条件，获取任务列表
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public List<ReminderTask> listByAllCompletedFilter(long userId) {
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNotNull());
-
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
-    }
-
-    /**
-     * 以过滤器“今天”为条件，获取任务列表
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public List<ReminderTask> listByTodayFilter(long userId) {
-        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.DUE_TIME.between(start, end));
-
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
-    }
-
-    /**
-     * 以过滤器“已过期”为条件，获取任务列表
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public List<ReminderTask> listByExpiredFilter(long userId) {
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()));
-
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
-    }
-
-    /**
-     * 以过滤器“无期限”为条件，获取任务列表
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public List<ReminderTask> listByUndatedFilter(long userId) {
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.DUE_TIME.isNull());
-
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
-    }
-
-    /**
-     * 以过滤器“未分类”为条件，获取任务列表
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public List<ReminderTask> listByUnspecifiedFilter(long userId) {
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.PROJECT_ID.eq(0L));
-
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
-    }
-
-    /**
-     * 计算各过滤器的（未完成）任务数
-     *
-     * @param userId 用户 ID
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    public ReminderFilterTaskCount count(long userId) {
-        return ReminderFilterTaskCount.builder()
-            .allCompleted(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNotNull())))
-            .expired(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
-                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()))))
-            .undated(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
-                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.DUE_TIME.isNull())))
-            .unspecified(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
-                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.PROJECT_ID.eq(0L))))
-            .build();
+        throw new UnpredictableException("ReminderTaskFilter 出现了未处理的枚举值");
     }
 
     /**
@@ -184,40 +99,29 @@ public class ReminderFilterService {
      */
     public List<ReminderFilterVO> listFilters(long userId) {
         List<ReminderFilterVO> filters = new ArrayList<>();
-
-        filters.add(ReminderFilterVO.builder()
-            .name("所有待办")
-            .type(TaskFilter.ALL_UNCOMPLETED)
-            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull())))
-            .build());
-        filters.add(ReminderFilterVO.builder()
-            .name("今天")
-            .type(TaskFilter.TODAY)
-            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.DUE_TIME.between(LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX)))))
-            .build());
-        filters.add(ReminderFilterVO.builder()
-            .name("已过期")
-            .type(TaskFilter.EXPIRED)
-            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
-                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()))))
-            .build());
-        filters.add(ReminderFilterVO.builder()
-            .name("无期限")
-            .type(TaskFilter.UNDATED)
-            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
-                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.PROJECT_ID.eq(0L))))
-            .build());
-        filters.add(ReminderFilterVO.builder()
-            .name("未分类")
-            .type(TaskFilter.UNSPECIFIED)
-            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
-                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.PROJECT_ID.eq(0L))))
-            .build());
+        filters.add(generateReminderFilterVO(userId, ReminderTaskFilter.ALL_UNCOMPLETED));
+        filters.add(generateReminderFilterVO(userId, ReminderTaskFilter.TODAY));
+        filters.add(generateReminderFilterVO(userId, ReminderTaskFilter.EXPIRED));
+        filters.add(generateReminderFilterVO(userId, ReminderTaskFilter.UNDATED));
+        filters.add(generateReminderFilterVO(userId, ReminderTaskFilter.UNSPECIFIED));
+        filters.add(generateReminderFilterVO(userId, ReminderTaskFilter.ALL_COMPLETED));
 
         return filters;
+    }
+
+    /**
+     * 生成过滤器视图对象
+     *
+     * @param userId 用户 ID
+     * @param filter 过滤器
+     *
+     * @date 2024/12/28
+     * @since 3.0.0
+     */
+    private ReminderFilterVO generateReminderFilterVO(long userId, ReminderTaskFilter filter) {
+        QueryCondition condition1 = generateCondition(userId, filter);
+        QueryCondition condition2 = (filter == ReminderTaskFilter.ALL_COMPLETED || filter == ReminderTaskFilter.ALL_UNCOMPLETED) ? condition1 :
+            condition1.and(REMINDER_TASK.COMPLETE_TIME.isNull());
+        return ReminderFilterVO.builder().name(filter.getName()).type(filter).num(reminderTaskMapper.selectCountByCondition(condition2)).build();
     }
 }
