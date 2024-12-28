@@ -5,6 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.reminder.entity.ReminderTask;
 import com.weutil.reminder.mapper.ReminderTaskMapper;
 import com.weutil.reminder.model.ReminderFilterTaskCount;
+import com.weutil.reminder.model.ReminderFilterVO;
 import com.weutil.reminder.model.TaskFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -160,10 +161,7 @@ public class ReminderFilterService {
      */
     public ReminderFilterTaskCount count(long userId) {
         return ReminderFilterTaskCount.builder()
-            .allUncompleted(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull())))
             .allCompleted(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNotNull())))
-            .today(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull())
-                .and(REMINDER_TASK.DUE_TIME.between(LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX)))))
             .expired(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
                 .and(REMINDER_TASK.COMPLETE_TIME.isNull())
                 .and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()))))
@@ -174,5 +172,52 @@ public class ReminderFilterService {
                 .and(REMINDER_TASK.COMPLETE_TIME.isNull())
                 .and(REMINDER_TASK.PROJECT_ID.eq(0L))))
             .build();
+    }
+
+    /**
+     * 列出所有过滤器
+     *
+     * @param userId 用户 ID
+     *
+     * @date 2024/12/27
+     * @since 3.0.0
+     */
+    public List<ReminderFilterVO> listFilters(long userId) {
+        List<ReminderFilterVO> filters = new ArrayList<>();
+
+        filters.add(ReminderFilterVO.builder()
+            .name("所有待办")
+            .type(TaskFilter.ALL_UNCOMPLETED)
+            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull())))
+            .build());
+        filters.add(ReminderFilterVO.builder()
+            .name("今天")
+            .type(TaskFilter.TODAY)
+            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.COMPLETE_TIME.isNull())
+                .and(REMINDER_TASK.DUE_TIME.between(LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX)))))
+            .build());
+        filters.add(ReminderFilterVO.builder()
+            .name("已过期")
+            .type(TaskFilter.EXPIRED)
+            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
+                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
+                .and(REMINDER_TASK.DUE_TIME.le(LocalDateTime.now()))))
+            .build());
+        filters.add(ReminderFilterVO.builder()
+            .name("无期限")
+            .type(TaskFilter.UNDATED)
+            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
+                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
+                .and(REMINDER_TASK.PROJECT_ID.eq(0L))))
+            .build());
+        filters.add(ReminderFilterVO.builder()
+            .name("未分类")
+            .type(TaskFilter.UNSPECIFIED)
+            .count(reminderTaskMapper.selectCountByCondition(REMINDER_TASK.USER_ID.eq(userId)
+                .and(REMINDER_TASK.COMPLETE_TIME.isNull())
+                .and(REMINDER_TASK.PROJECT_ID.eq(0L))))
+            .build());
+
+        return filters;
     }
 }

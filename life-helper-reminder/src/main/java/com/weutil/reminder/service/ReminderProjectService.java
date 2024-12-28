@@ -5,7 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.reminder.entity.ReminderProject;
 import com.weutil.reminder.event.ReminderTaskEvent;
 import com.weutil.reminder.event.ReminderTaskMovedEvent;
-import com.weutil.reminder.exception.ReminderProjectNotAllowedToDeleteException;
+import com.weutil.reminder.exception.ReminderProjectFailedToDeleteException;
 import com.weutil.reminder.exception.ReminderProjectNotFoundException;
 import com.weutil.reminder.mapper.ReminderProjectMapper;
 import com.weutil.reminder.mapper.ReminderTaskMapper;
@@ -100,8 +100,12 @@ public class ReminderProjectService {
         // 下方逐个检查不允许删除的条件，并抛出异常
         // 本期内仅以下1个条件（2024.12.13）
         if (entity.getUncompletedTaskCount() > 0) {
-            throw new ReminderProjectNotAllowedToDeleteException("请先将当前项目下的未完成任务删除或移动至其他项目后，再操作删除");
+            throw new ReminderProjectFailedToDeleteException("请先将当前项目下的未完成任务删除或移动至其他项目后，再操作删除");
         }
+
+        // 同时将已完成的全部自动删除（用户侧操作前需告知）
+        QueryCondition condition1 = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.PROJECT_ID.eq(projectId)).and(REMINDER_TASK.COMPLETE_TIME.isNotNull());
+        reminderTaskMapper.deleteByCondition(condition1);
 
         // 完成所有检查，进行“删除”操作
         reminderProjectMapper.deleteById(entity.getId());

@@ -16,8 +16,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.weutil.reminder.entity.table.ReminderProjectTableDef.REMINDER_PROJECT;
+import static com.weutil.reminder.entity.table.ReminderTaskTableDef.REMINDER_TASK;
 
 /**
  * 待办任务服务
@@ -115,6 +117,22 @@ public class ReminderTaskService {
         }
 
         throw new ReminderTaskNotFoundException(taskId, userId);
+    }
+
+    /**
+     * 根据项目 ID 获取任务列表
+     *
+     * @param userId    用户 ID
+     * @param projectId 项目 ID
+     *
+     * @date 2024/12/27
+     * @since 3.0.0
+     */
+    public List<ReminderTask> listByProjectId(long userId, long projectId) {
+        checkProjectOwnership(userId, projectId);
+
+        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.PROJECT_ID.eq(projectId));
+        return reminderTaskMapper.selectListByCondition(condition);
     }
 
     /**

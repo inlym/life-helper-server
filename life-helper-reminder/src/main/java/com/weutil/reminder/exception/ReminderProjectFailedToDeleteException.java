@@ -13,8 +13,8 @@ package com.weutil.reminder.exception;
  * @date 2024/12/13
  * @since 3.0.0
  **/
-public class ReminderProjectNotAllowedToDeleteException extends RuntimeException {
-    public ReminderProjectNotAllowedToDeleteException(String message) {
+public class ReminderProjectFailedToDeleteException extends RuntimeException {
+    public ReminderProjectFailedToDeleteException(String message) {
         super(message);
     }
 }

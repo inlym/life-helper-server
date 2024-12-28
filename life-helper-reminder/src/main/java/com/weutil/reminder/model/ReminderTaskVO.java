@@ -34,6 +34,9 @@ public class ReminderTaskVO {
     /** 任务描述内容文本 */
     private String content;
 
+    /** 任务完成时间 */
+    private LocalDateTime completeTime;
+
     /** 截止时间 */
     private LocalDateTime dueTime;
 
