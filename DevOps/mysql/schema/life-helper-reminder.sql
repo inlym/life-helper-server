@@ -51,7 +51,10 @@ create table `reminder_task`
     `name`             varchar(30)     not null default '' comment '任务名称',
     `content`          varchar(1000)   not null default '' comment '任务描述内容文本',
     `complete_time`    datetime                 default null comment '任务完成时间',
-    `due_time`         datetime                 default null comment '截止时间',
+    `due_date_time`    datetime                 default null comment '截止期限（日期+时间）',
+    `due_date`         date                     default null comment '截止期限的日期部分（年月日）',
+    `due_time`         time                     default null comment '截止期限的时间部分（时分秒）',
+
     #     `priority`      tinyint         not null default 0 comment '任务优先级（枚举值）',
 
     primary key (`id`)

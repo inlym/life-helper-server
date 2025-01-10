@@ -1,0 +1,11 @@
+meta {
+  name: 查看未完成任务数
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/reminder/filters/all/count-uncompleted
+  body: none
+  auth: none
+}

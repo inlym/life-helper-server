@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * 待办任务视图对象
@@ -37,8 +39,11 @@ public class ReminderTaskVO {
     /** 任务完成时间 */
     private LocalDateTime completeTime;
 
-    /** 截止时间 */
-    private LocalDateTime dueTime;
+    /** 截止期限的日期部分（年月日） */
+    private LocalDate dueDate;
+
+    /** 截止期限的时间部分（时分秒） */
+    private LocalTime dueTime;
 
     // ============================ 关联字段数据 ============================
 

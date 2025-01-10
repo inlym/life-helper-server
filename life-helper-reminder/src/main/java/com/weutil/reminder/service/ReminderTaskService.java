@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.weutil.reminder.entity.table.ReminderProjectTableDef.REMINDER_PROJECT;
@@ -154,11 +155,11 @@ public class ReminderTaskService {
                 complete(entity);
             } else if (operation == ReminderTaskOperation.UNCOMPLETE) {
                 uncomplete(entity);
-            } else if (operation == ReminderTaskOperation.CLEAR_DUE_TIME) {
-                clearDueTime(entity);
+            } else if (operation == ReminderTaskOperation.CLEAR_DUE_DATETIME) {
+                clearDueDateTime(entity);
             }
         } else {
-            ReminderTask updated = ReminderTask.builder().id(taskId).build();
+            ReminderTask updated = UpdateEntity.of(ReminderTask.class, entity.getId());
 
             if (dto.getName() != null && !dto.getName().equals(entity.getName())) {
                 updated.setName(dto.getName());
@@ -169,8 +170,15 @@ public class ReminderTaskService {
             if (dto.getContent() != null && !dto.getContent().equals(entity.getContent())) {
                 updated.setContent(dto.getContent());
             }
-            if (dto.getDueTime() != null && !dto.getDueTime().equals(entity.getDueTime())) {
+            if (dto.getDueDate() != null && dto.getDueTime() != null) {
+                updated.setDueDate(dto.getDueDate());
                 updated.setDueTime(dto.getDueTime());
+                updated.setDueDateTime(LocalDateTime.of(dto.getDueDate(), dto.getDueTime()));
+            }
+            if (dto.getDueDate() != null && dto.getDueTime() == null) {
+                updated.setDueDate(dto.getDueDate());
+                updated.setDueTime(null);
+                updated.setDueDateTime(LocalDateTime.of(dto.getDueDate(), LocalTime.MAX));
             }
 
             reminderTaskMapper.update(updated);
@@ -188,8 +196,8 @@ public class ReminderTaskService {
     public void complete(ReminderTask entity) {
         if (entity.getCompleteTime() == null) {
             ReminderTask updated = ReminderTask.builder().id(entity.getId()).completeTime(LocalDateTime.now()).build();
-            reminderTaskMapper.update(updated);
 
+            reminderTaskMapper.update(updated);
             applicationEventPublisher.publishEvent(new ReminderTaskCompletedEvent(entity));
         }
     }
@@ -206,24 +214,27 @@ public class ReminderTaskService {
         if (entity.getCompleteTime() != null) {
             ReminderTask updated = UpdateEntity.of(ReminderTask.class, entity.getId());
             updated.setCompleteTime(null);
-            reminderTaskMapper.update(updated);
 
+            reminderTaskMapper.update(updated);
             applicationEventPublisher.publishEvent(new ReminderTaskUncompletedEvent(entity));
         }
     }
 
     /**
-     * 清除截止时间
+     * 清除截止期限
      *
      * @param entity 从数据库查询的实体
      *
-     * @date 2024/12/26
+     * @date 2025/01/09
      * @since 3.0.0
      */
-    public void clearDueTime(ReminderTask entity) {
-        if (entity.getDueTime() != null) {
+    public void clearDueDateTime(ReminderTask entity) {
+        if (entity.getDueDateTime() != null) {
             ReminderTask updated = UpdateEntity.of(ReminderTask.class, entity.getId());
+            updated.setDueDateTime(null);
+            updated.setDueDate(null);
             updated.setDueTime(null);
+
             reminderTaskMapper.update(updated);
         }
     }

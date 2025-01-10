@@ -7,7 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * 更新待办任务的请求数据
@@ -40,8 +41,11 @@ public class UpdateReminderTaskDTO {
     /** 任务描述内容文本 */
     private String content;
 
-    /** 截止时间 */
-    private LocalDateTime dueTime;
+    /** 截止期限的日期部分（年月日） */
+    private LocalDate dueDate;
+
+    /** 截止期限的时间部分（时分秒） */
+    private LocalTime dueTime;
 
     /** 特定操作 */
     private ReminderTaskOperation operation;
