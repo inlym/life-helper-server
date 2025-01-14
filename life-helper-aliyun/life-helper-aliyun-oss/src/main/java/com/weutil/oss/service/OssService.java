@@ -57,7 +57,31 @@ public class OssService {
         String targetKey = targetDir.getDirname() + "/" + RandomStringUtil.generate(12) + "." + extension;
 
         CopyObjectRequest request = new CopyObjectRequest(bucketName, sourceKey, bucketName, targetKey);
-        CopyObjectResult result = ossClient.copyObject(request);
+        ossClient.copyObject(request);
+
+        return targetKey;
+    }
+
+    /**
+     * 将 OSS 内部图片转储为 WebP 格式
+     *
+     * @param sourceKey 源地址
+     * @param targetDir 目标目录
+     *
+     * @return 复制后的完整文件地址，示例值 {@code avatar/r7OPIjuso1rR.png}
+     * @date 2025/01/15
+     * @see <a href="https://help.aliyun.com/zh/oss/user-guide/convert-image-formats-2">格式转换</a>
+     * @since 3.0.0
+     */
+    public String dumpAsWebpInternal(String sourceKey, OssDir targetDir) {
+        String bucketName = ossProperties.getBucketName();
+        String format = "image/format,webp";
+        String targetKey = targetDir.getDirname() + "/" + RandomStringUtil.generate(12) + ".webp";
+
+        GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, sourceKey);
+        getObjectRequest.setProcess(format);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, targetKey, ossClient.getObject(getObjectRequest).getObjectContent());
+        ossClient.putObject(putObjectRequest);
 
         return targetKey;
     }

@@ -128,7 +128,7 @@ public class UserService {
         // 处理头像
         if (dto.getAvatarKey() != null) {
             // 将图片资源复制到“头像”专用目录下
-            String newAvatarKey = ossService.copyInternal(dto.getAvatarKey(), OssDir.AVATAR);
+            String newAvatarKey = ossService.dumpAsWebpInternal(dto.getAvatarKey(), OssDir.AVATAR);
             updated.setAvatarPath(newAvatarKey);
         }
 
