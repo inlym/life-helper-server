@@ -3,8 +3,6 @@ package com.weutil.reminder.service;
 import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.reminder.entity.ReminderProject;
-import com.weutil.reminder.event.ReminderTaskEvent;
-import com.weutil.reminder.event.ReminderTaskMovedEvent;
 import com.weutil.reminder.exception.ReminderProjectFailedToDeleteException;
 import com.weutil.reminder.exception.ReminderProjectNotFoundException;
 import com.weutil.reminder.mapper.ReminderProjectMapper;
@@ -12,7 +10,6 @@ import com.weutil.reminder.mapper.ReminderTaskMapper;
 import com.weutil.reminder.model.SaveReminderProjectDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -99,7 +96,7 @@ public class ReminderProjectService {
 
         // 下方逐个检查不允许删除的条件，并抛出异常
         // 本期内仅以下1个条件（2024.12.13）
-        if (entity.getUncompletedTaskCount() > 0) {
+        if (countUncompletedTasks(projectId) > 0) {
             throw new ReminderProjectFailedToDeleteException("请先将当前项目下的未完成任务删除或移动至其他项目后，再操作删除");
         }
 
@@ -112,44 +109,6 @@ public class ReminderProjectService {
     }
 
     /**
-     * 监听待办任务事件
-     *
-     * <h4>备注
-     * <p>此处需同步处理，避免异步处理时间差问题（前端提交成功后，会立刻更新项目列表）。
-     *
-     * @param event 待办任务创建事件
-     *
-     * @date 2024/12/24
-     * @since 3.0.0
-     */
-    @EventListener(ReminderTaskEvent.class)
-    public void handleReminderTaskCreatedEvent(ReminderTaskEvent event) {
-        Long projectId = event.getTask().getProjectId();
-        if (projectId != null && projectId > 0) {
-            // 处理策略：不是直接 +1，而是重新算一遍再赋值
-            updateUncompletedTasks(projectId);
-        }
-
-        if (event instanceof ReminderTaskMovedEvent) {
-            updateUncompletedTasks(((ReminderTaskMovedEvent) event).getTargetProjectId());
-        }
-    }
-
-    /**
-     * 更新指定项目的未完成任务数
-     *
-     * @param projectId 项目 ID
-     *
-     * @date 2024/12/26
-     * @since 3.0.0
-     */
-    private void updateUncompletedTasks(long projectId) {
-        long count = countUncompletedTasks(projectId);
-        ReminderProject updated = ReminderProject.builder().id(projectId).uncompletedTaskCount(count).build();
-        reminderProjectMapper.update(updated);
-    }
-
-    /**
      * 计算指定项目的未完成任务数
      *
      * @param projectId 项目 ID
@@ -157,7 +116,7 @@ public class ReminderProjectService {
      * @date 2024/12/24
      * @since 3.0.0
      */
-    private long countUncompletedTasks(long projectId) {
+    public long countUncompletedTasks(long projectId) {
         QueryCondition condition = REMINDER_TASK.PROJECT_ID.eq(projectId).and(REMINDER_TASK.COMPLETE_TIME.isNull());
         return reminderTaskMapper.selectCountByCondition(condition);
     }

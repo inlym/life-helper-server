@@ -24,7 +24,4 @@ import lombok.experimental.SuperBuilder;
 public class ReminderProject extends BaseUserRelatedEntity {
     /** 项目名称 */
     private String name;
-
-    /** 未完成的任务数 */
-    private Long uncompletedTaskCount;
 }

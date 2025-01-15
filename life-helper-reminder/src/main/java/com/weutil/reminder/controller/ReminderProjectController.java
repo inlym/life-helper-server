@@ -58,7 +58,11 @@ public class ReminderProjectController {
      * @since 3.0.0
      */
     private ReminderProjectVO convert(ReminderProject entity) {
-        return ReminderProjectVO.builder().id(entity.getId()).name(entity.getName()).uncompletedTaskCount(entity.getUncompletedTaskCount()).build();
+        return ReminderProjectVO.builder()
+            .id(entity.getId())
+            .name(entity.getName())
+            .uncompletedTaskCount(reminderProjectService.countUncompletedTasks(entity.getId()))
+            .build();
     }
 
     /**

@@ -229,7 +229,7 @@ public class ReminderTaskService {
      * @since 3.0.0
      */
     public void clearDueDateTime(ReminderTask entity) {
-        if (entity.getDueDateTime() != null) {
+        if (entity.getDueDateTime() != null || entity.getDueDate() != null || entity.getDueTime() != null) {
             ReminderTask updated = UpdateEntity.of(ReminderTask.class, entity.getId());
             updated.setDueDateTime(null);
             updated.setDueDate(null);
