@@ -53,8 +53,7 @@ create table `reminder_task`
     `due_date_time`    datetime                 default null comment '截止期限（日期+时间）',
     `due_date`         date                     default null comment '截止期限的日期部分（年月日）',
     `due_time`         time                     default null comment '截止期限的时间部分（时分秒）',
-
-    #     `priority`      tinyint         not null default 0 comment '任务优先级（枚举值）',
+    `priority`         tinyint         not null default 0 comment '任务优先级（枚举值）',
 
     primary key (`id`)
 ) engine = InnoDB

@@ -45,6 +45,9 @@ public class ReminderTaskVO {
     /** 截止期限的时间部分（时分秒） */
     private LocalTime dueTime;
 
+    /** 优先级 */
+    private Priority priority;
+
     // ============================ 关联字段数据 ============================
 
     /** 所属的项目名称 */

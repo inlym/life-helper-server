@@ -47,6 +47,9 @@ public class UpdateReminderTaskDTO {
     /** 截止期限的时间部分（时分秒） */
     private LocalTime dueTime;
 
+    /** 优先级 */
+    private Priority priority;
+
     /** 特定操作 */
     private ReminderTaskOperation operation;
 }

@@ -180,6 +180,9 @@ public class ReminderTaskService {
                 updated.setDueTime(null);
                 updated.setDueDateTime(LocalDateTime.of(dto.getDueDate(), LocalTime.MAX));
             }
+            if (dto.getPriority() != null) {
+                updated.setPriority(dto.getPriority());
+            }
 
             reminderTaskMapper.update(updated);
         }

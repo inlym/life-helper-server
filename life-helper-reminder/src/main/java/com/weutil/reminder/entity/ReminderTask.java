@@ -3,6 +3,7 @@ package com.weutil.reminder.entity;
 import com.mybatisflex.annotation.RelationManyToOne;
 import com.mybatisflex.annotation.Table;
 import com.weutil.common.entity.BaseUserRelatedEntity;
+import com.weutil.reminder.model.Priority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,6 +57,9 @@ public class ReminderTask extends BaseUserRelatedEntity {
 
     /** 截止期限的时间部分（时分秒） */
     private LocalTime dueTime;
+
+    /** 优先级 */
+    private Priority priority;
 
     // ============================ 关联字段 ============================
 

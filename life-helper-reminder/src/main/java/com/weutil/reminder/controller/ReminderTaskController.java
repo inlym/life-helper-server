@@ -69,6 +69,7 @@ public class ReminderTaskController {
             .completeTime(entity.getCompleteTime())
             .dueDate(entity.getDueDate())
             .dueTime(entity.getDueTime())
+            .priority(entity.getPriority())
             .build();
 
         if (entity.getProject() != null) {
