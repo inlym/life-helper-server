@@ -6,8 +6,8 @@ import com.weutil.todolist.entity.TodolistTask;
 import com.weutil.todolist.event.*;
 import com.weutil.todolist.exception.TodolistProjectNotFoundException;
 import com.weutil.todolist.exception.TodolistTaskNotFoundException;
-import com.weutil.todolist.mapper.ReminderProjectMapper;
-import com.weutil.todolist.mapper.ReminderTaskMapper;
+import com.weutil.todolist.mapper.TodolistProjectMapper;
+import com.weutil.todolist.mapper.TodolistTaskMapper;
 import com.weutil.todolist.model.TodolistTaskOperation;
 import com.weutil.todolist.model.UpdateTodolistTaskDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static com.weutil.todolist.entity.table.ReminderProjectTableDef.REMINDER_PROJECT;
-import static com.weutil.todolist.entity.table.ReminderTaskTableDef.REMINDER_TASK;
+import static com.weutil.todolist.entity.table.TodolistProjectTableDef.TODOLIST_PROJECT;
+import static com.weutil.todolist.entity.table.TodolistTaskTableDef.TODOLIST_TASK;
 
 /**
  * 待办任务服务
@@ -33,8 +33,8 @@ import static com.weutil.todolist.entity.table.ReminderTaskTableDef.REMINDER_TAS
 @Slf4j
 @RequiredArgsConstructor
 public class TodolistTaskService {
-    private final ReminderProjectMapper reminderProjectMapper;
-    private final ReminderTaskMapper reminderTaskMapper;
+    private final TodolistProjectMapper todolistProjectMapper;
+    private final TodolistTaskMapper todolistTaskMapper;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     /**
@@ -52,7 +52,7 @@ public class TodolistTaskService {
         checkProjectOwnership(userId, projectId);
 
         TodolistTask inserted = TodolistTask.builder().userId(userId).projectId(projectId).name(name).build();
-        reminderTaskMapper.insertSelective(inserted);
+        todolistTaskMapper.insertSelective(inserted);
 
         TodolistTask entity = getOrThrowById(userId, inserted.getId());
 
@@ -77,8 +77,8 @@ public class TodolistTaskService {
     private void checkProjectOwnership(long userId, long projectId) {
         // [projectId=0] 情况，无需检查
         if (projectId > 0) {
-            QueryCondition condition = REMINDER_PROJECT.USER_ID.eq(userId).and(REMINDER_PROJECT.ID.eq(projectId));
-            if (reminderProjectMapper.selectCountByCondition(condition) != 1) {
+            QueryCondition condition = TODOLIST_PROJECT.USER_ID.eq(userId).and(TODOLIST_PROJECT.ID.eq(projectId));
+            if (todolistProjectMapper.selectCountByCondition(condition) != 1) {
                 throw new TodolistProjectNotFoundException(projectId, userId);
             }
         }
@@ -94,7 +94,7 @@ public class TodolistTaskService {
      * @since 3.0.0
      */
     public TodolistTask getOrThrowById(long userId, long taskId) {
-        TodolistTask entity = reminderTaskMapper.selectOneById(taskId);
+        TodolistTask entity = todolistTaskMapper.selectOneById(taskId);
         if (entity != null && entity.getUserId() == userId) {
             return entity;
         }
@@ -112,7 +112,7 @@ public class TodolistTaskService {
      * @since 3.0.0
      */
     public TodolistTask getWithRelationsOrThrowById(long userId, long taskId) {
-        TodolistTask entity = reminderTaskMapper.selectOneWithRelationsById(taskId);
+        TodolistTask entity = todolistTaskMapper.selectOneWithRelationsById(taskId);
         if (entity != null && entity.getUserId() == userId) {
             return entity;
         }
@@ -132,8 +132,8 @@ public class TodolistTaskService {
     public List<TodolistTask> listByProjectId(long userId, long projectId) {
         checkProjectOwnership(userId, projectId);
 
-        QueryCondition condition = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.PROJECT_ID.eq(projectId));
-        return reminderTaskMapper.selectListByCondition(condition);
+        QueryCondition condition = TODOLIST_TASK.USER_ID.eq(userId).and(TODOLIST_TASK.PROJECT_ID.eq(projectId));
+        return todolistTaskMapper.selectListByCondition(condition);
     }
 
     /**
@@ -184,7 +184,7 @@ public class TodolistTaskService {
                 updated.setPriority(dto.getPriority());
             }
 
-            reminderTaskMapper.update(updated);
+            todolistTaskMapper.update(updated);
         }
     }
 
@@ -200,7 +200,7 @@ public class TodolistTaskService {
         if (entity.getCompleteTime() == null) {
             TodolistTask updated = TodolistTask.builder().id(entity.getId()).completeTime(LocalDateTime.now()).build();
 
-            reminderTaskMapper.update(updated);
+            todolistTaskMapper.update(updated);
             applicationEventPublisher.publishEvent(new TodolistTaskCompletedEvent(entity));
         }
     }
@@ -218,7 +218,7 @@ public class TodolistTaskService {
             TodolistTask updated = UpdateEntity.of(TodolistTask.class, entity.getId());
             updated.setCompleteTime(null);
 
-            reminderTaskMapper.update(updated);
+            todolistTaskMapper.update(updated);
             applicationEventPublisher.publishEvent(new TodolistTaskUncompletedEvent(entity));
         }
     }
@@ -238,7 +238,7 @@ public class TodolistTaskService {
             updated.setDueDate(null);
             updated.setDueTime(null);
 
-            reminderTaskMapper.update(updated);
+            todolistTaskMapper.update(updated);
         }
     }
 
@@ -256,7 +256,7 @@ public class TodolistTaskService {
 
         if (!entity.getProjectId().equals(targetProjectId)) {
             TodolistTask updated = TodolistTask.builder().id(entity.getId()).projectId(targetProjectId).build();
-            reminderTaskMapper.update(updated);
+            todolistTaskMapper.update(updated);
 
             applicationEventPublisher.publishEvent(new TodolistTaskMovedEvent(entity, entity.getProjectId(), targetProjectId));
         }
@@ -273,7 +273,7 @@ public class TodolistTaskService {
      */
     public void delete(long userId, long taskId) {
         TodolistTask entity = getOrThrowById(userId, taskId);
-        reminderTaskMapper.deleteById(entity.getId());
+        todolistTaskMapper.deleteById(entity.getId());
 
         applicationEventPublisher.publishEvent(new TodolistTaskDeletedEvent(entity));
     }

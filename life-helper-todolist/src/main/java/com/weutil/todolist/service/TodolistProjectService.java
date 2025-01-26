@@ -5,17 +5,17 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.todolist.entity.TodolistProject;
 import com.weutil.todolist.exception.TodolistProjectFailedToDeleteException;
 import com.weutil.todolist.exception.TodolistProjectNotFoundException;
-import com.weutil.todolist.mapper.ReminderProjectMapper;
-import com.weutil.todolist.mapper.ReminderTaskMapper;
-import com.weutil.todolist.model.SaveTodolistProjectDTO;
+import com.weutil.todolist.mapper.TodolistProjectMapper;
+import com.weutil.todolist.mapper.TodolistTaskMapper;
+import com.weutil.todolist.model.EditProjectDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.weutil.todolist.entity.table.ReminderProjectTableDef.REMINDER_PROJECT;
-import static com.weutil.todolist.entity.table.ReminderTaskTableDef.REMINDER_TASK;
+import static com.weutil.todolist.entity.table.TodolistProjectTableDef.TODOLIST_PROJECT;
+import static com.weutil.todolist.entity.table.TodolistTaskTableDef.TODOLIST_TASK;
 
 /**
  * 待办项目服务
@@ -28,8 +28,8 @@ import static com.weutil.todolist.entity.table.ReminderTaskTableDef.REMINDER_TAS
 @Slf4j
 @RequiredArgsConstructor
 public class TodolistProjectService {
-    private final ReminderProjectMapper reminderProjectMapper;
-    private final ReminderTaskMapper reminderTaskMapper;
+    private final TodolistProjectMapper todolistProjectMapper;
+    private final TodolistTaskMapper todolistTaskMapper;
 
     /**
      * 创建待办项目
@@ -43,7 +43,7 @@ public class TodolistProjectService {
      */
     public TodolistProject create(long userId, String name) {
         TodolistProject entity = TodolistProject.builder().userId(userId).name(name).build();
-        reminderProjectMapper.insertSelective(entity);
+        todolistProjectMapper.insertSelective(entity);
 
         return getOrThrowById(userId, entity.getId());
     }
@@ -59,7 +59,7 @@ public class TodolistProjectService {
      * @since 3.0.0
      */
     private TodolistProject getOrThrowById(long userId, long projectId) {
-        TodolistProject entity = reminderProjectMapper.selectOneById(projectId);
+        TodolistProject entity = todolistProjectMapper.selectOneById(projectId);
         if (entity != null && entity.getUserId() == userId) {
             return entity;
         }
@@ -76,10 +76,10 @@ public class TodolistProjectService {
      * @since 3.0.0
      */
     public List<TodolistProject> list(long userId) {
-        QueryCondition condition = REMINDER_PROJECT.USER_ID.eq(userId);
-        QueryWrapper queryWrapper = QueryWrapper.create().where(condition).orderBy(REMINDER_PROJECT.ID, false);
+        QueryCondition condition = TODOLIST_PROJECT.USER_ID.eq(userId);
+        QueryWrapper queryWrapper = QueryWrapper.create().where(condition).orderBy(TODOLIST_PROJECT.ID, false);
 
-        return reminderProjectMapper.selectListByQuery(queryWrapper);
+        return todolistProjectMapper.selectListByQuery(queryWrapper);
     }
 
     /**
@@ -101,11 +101,11 @@ public class TodolistProjectService {
         }
 
         // 同时将已完成的全部自动删除（用户侧操作前需告知）
-        QueryCondition condition1 = REMINDER_TASK.USER_ID.eq(userId).and(REMINDER_TASK.PROJECT_ID.eq(projectId)).and(REMINDER_TASK.COMPLETE_TIME.isNotNull());
-        reminderTaskMapper.deleteByCondition(condition1);
+        QueryCondition condition1 = TODOLIST_TASK.USER_ID.eq(userId).and(TODOLIST_TASK.PROJECT_ID.eq(projectId)).and(TODOLIST_TASK.COMPLETE_TIME.isNotNull());
+        todolistTaskMapper.deleteByCondition(condition1);
 
         // 完成所有检查，进行“删除”操作
-        reminderProjectMapper.deleteById(entity.getId());
+        todolistProjectMapper.deleteById(entity.getId());
     }
 
     /**
@@ -117,8 +117,8 @@ public class TodolistProjectService {
      * @since 3.0.0
      */
     public long countUncompletedTasks(long projectId) {
-        QueryCondition condition = REMINDER_TASK.PROJECT_ID.eq(projectId).and(REMINDER_TASK.COMPLETE_TIME.isNull());
-        return reminderTaskMapper.selectCountByCondition(condition);
+        QueryCondition condition = TODOLIST_TASK.PROJECT_ID.eq(projectId).and(TODOLIST_TASK.COMPLETE_TIME.isNull());
+        return todolistTaskMapper.selectCountByCondition(condition);
     }
 
     /**
@@ -131,7 +131,7 @@ public class TodolistProjectService {
      * @date 2024/12/26
      * @since 3.0.0
      */
-    public TodolistProject updateWithDTO(long userId, long projectId, SaveTodolistProjectDTO dto) {
+    public TodolistProject updateWithDTO(long userId, long projectId, EditProjectDTO dto) {
         TodolistProject entity = getOrThrowById(userId, projectId);
         TodolistProject updated = TodolistProject.builder().id(projectId).build();
 
@@ -139,7 +139,7 @@ public class TodolistProjectService {
             updated.setName(dto.getName());
         }
 
-        reminderProjectMapper.update(updated);
+        todolistProjectMapper.update(updated);
 
         return getOrThrowById(userId, projectId);
     }

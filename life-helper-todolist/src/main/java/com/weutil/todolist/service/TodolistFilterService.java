@@ -4,7 +4,7 @@ import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.weutil.common.exception.UnpredictableException;
 import com.weutil.todolist.entity.TodolistTask;
-import com.weutil.todolist.mapper.ReminderTaskMapper;
+import com.weutil.todolist.mapper.TodolistTaskMapper;
 import com.weutil.todolist.model.TodolistFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static com.weutil.todolist.entity.table.ReminderTaskTableDef.REMINDER_TASK;
+import static com.weutil.todolist.entity.table.TodolistTaskTableDef.TODOLIST_TASK;
 
 /**
  * 待办任务过滤器服务
@@ -32,7 +32,7 @@ import static com.weutil.todolist.entity.table.ReminderTaskTableDef.REMINDER_TAS
 @Slf4j
 @RequiredArgsConstructor
 public class TodolistFilterService {
-    private final ReminderTaskMapper reminderTaskMapper;
+    private final TodolistTaskMapper todolistTaskMapper;
 
     /**
      * 根据过滤器名称获取任务列表
@@ -45,7 +45,7 @@ public class TodolistFilterService {
      */
     public List<TodolistTask> getTaskListByFilter(long userId, TodolistFilter filter) {
         QueryCondition condition = generateCondition(userId, filter);
-        return reminderTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
+        return todolistTaskMapper.selectListWithRelationsByQuery(QueryWrapper.create().where(condition));
     }
 
     /**
@@ -58,32 +58,32 @@ public class TodolistFilterService {
      * @since 3.0.0
      */
     private QueryCondition generateCondition(long userId, TodolistFilter filter) {
-        QueryCondition base = REMINDER_TASK.USER_ID.eq(userId);
+        QueryCondition base = TODOLIST_TASK.USER_ID.eq(userId);
 
         if (filter == TodolistFilter.ALL) {
             return base;
         }
         if (filter == TodolistFilter.INBOX) {
-            return base.and(REMINDER_TASK.PROJECT_ID.eq(0L));
+            return base.and(TODOLIST_TASK.PROJECT_ID.eq(0L));
         }
         if (filter == TodolistFilter.TODAY) {
             LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
             LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
-            return base.and(REMINDER_TASK.DUE_DATE_TIME.between(start, end));
+            return base.and(TODOLIST_TASK.DUE_DATE_TIME.between(start, end));
         }
         if (filter == TodolistFilter.NEXT_SEVEN_DAYS) {
             LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
             LocalDateTime end = LocalDateTime.of(LocalDate.now().plusDays(6L), LocalTime.MAX);
-            return base.and(REMINDER_TASK.DUE_DATE_TIME.between(start, end));
+            return base.and(TODOLIST_TASK.DUE_DATE_TIME.between(start, end));
         }
         if (filter == TodolistFilter.OVERDUE) {
-            return base.and(REMINDER_TASK.DUE_DATE_TIME.le(LocalDateTime.now()));
+            return base.and(TODOLIST_TASK.DUE_DATE_TIME.le(LocalDateTime.now()));
         }
         if (filter == TodolistFilter.NO_DATE) {
-            return base.and(REMINDER_TASK.DUE_DATE_TIME.isNull());
+            return base.and(TODOLIST_TASK.DUE_DATE_TIME.isNull());
         }
         if (filter == TodolistFilter.COMPLETED) {
-            return base.and(REMINDER_TASK.COMPLETE_TIME.isNotNull());
+            return base.and(TODOLIST_TASK.COMPLETE_TIME.isNotNull());
         }
 
         throw new UnpredictableException("ReminderFilter 出现了未处理的枚举值");
@@ -99,7 +99,7 @@ public class TodolistFilterService {
      * @since 3.0.0
      */
     public long countUncompletedTasks(long userId, TodolistFilter filter) {
-        QueryCondition condition = generateCondition(userId, filter).and(REMINDER_TASK.COMPLETE_TIME.isNull());
-        return reminderTaskMapper.selectCountByCondition(condition);
+        QueryCondition condition = generateCondition(userId, filter).and(TODOLIST_TASK.COMPLETE_TIME.isNull());
+        return todolistTaskMapper.selectCountByCondition(condition);
     }
 }
