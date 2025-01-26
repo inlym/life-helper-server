@@ -24,4 +24,15 @@ import lombok.experimental.SuperBuilder;
 public class TodolistProject extends BaseUserRelatedEntity {
     /** 项目名称 */
     private String name;
+
+    /**
+     * emoji 图标
+     *
+     * <h3>说明
+     * <p>单字符。
+     */
+    private String emoji;
+
+    /** 颜色 hex 值（不包含 # 前缀） */
+    private String color;
 }

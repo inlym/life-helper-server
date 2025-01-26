@@ -26,6 +26,12 @@ public class TodolistProjectVO {
     /** 项目名称 */
     private String name;
 
+    /** emoji 图标 */
+    private String emoji;
+
+    /** 颜色 hex 值（不包含 # 前缀） */
+    private String color;
+
     /** 未完成的任务数 */
     private Long uncompletedTaskCount;
 }

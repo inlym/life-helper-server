@@ -7,7 +7,7 @@ import com.weutil.todolist.exception.TodolistProjectFailedToDeleteException;
 import com.weutil.todolist.exception.TodolistProjectNotFoundException;
 import com.weutil.todolist.mapper.TodolistProjectMapper;
 import com.weutil.todolist.mapper.TodolistTaskMapper;
-import com.weutil.todolist.model.EditProjectDTO;
+import com.weutil.todolist.model.TodolistProjectDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +30,23 @@ import static com.weutil.todolist.entity.table.TodolistTaskTableDef.TODOLIST_TAS
 public class TodolistProjectService {
     private final TodolistProjectMapper todolistProjectMapper;
     private final TodolistTaskMapper todolistTaskMapper;
+
+    /**
+     * 使用请求数据创建待办项目
+     *
+     * @param userId 用户 ID
+     * @param dto    请求数据
+     *
+     * @return 新创建实体的主键 ID
+     * @date 2025/01/26
+     * @since 3.0.0
+     */
+    public long createWithDTO(long userId, TodolistProjectDTO dto) {
+        TodolistProject inserted = TodolistProject.builder().userId(userId).name(dto.getName()).emoji(dto.getEmoji()).color(dto.getColor()).build();
+        todolistProjectMapper.insertSelective(inserted);
+
+        return inserted.getId();
+    }
 
     /**
      * 创建待办项目
@@ -58,7 +75,7 @@ public class TodolistProjectService {
      * @date 2024/12/13
      * @since 3.0.0
      */
-    private TodolistProject getOrThrowById(long userId, long projectId) {
+    public TodolistProject getOrThrowById(long userId, long projectId) {
         TodolistProject entity = todolistProjectMapper.selectOneById(projectId);
         if (entity != null && entity.getUserId() == userId) {
             return entity;
@@ -131,16 +148,20 @@ public class TodolistProjectService {
      * @date 2024/12/26
      * @since 3.0.0
      */
-    public TodolistProject updateWithDTO(long userId, long projectId, EditProjectDTO dto) {
+    public void updateWithDTO(long userId, long projectId, TodolistProjectDTO dto) {
         TodolistProject entity = getOrThrowById(userId, projectId);
         TodolistProject updated = TodolistProject.builder().id(projectId).build();
 
         if (dto.getName() != null && !dto.getName().equals(entity.getName())) {
             updated.setName(dto.getName());
         }
+        if (dto.getEmoji() != null && !dto.getEmoji().equals(entity.getEmoji())) {
+            updated.setEmoji(dto.getEmoji());
+        }
+        if (dto.getColor() != null && !dto.getColor().equals(entity.getColor())) {
+            updated.setColor(dto.getColor());
+        }
 
         todolistProjectMapper.update(updated);
-
-        return getOrThrowById(userId, projectId);
     }
 }

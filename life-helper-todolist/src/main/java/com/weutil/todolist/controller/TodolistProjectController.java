@@ -5,7 +5,7 @@ import com.weutil.common.annotation.UserPermission;
 import com.weutil.common.model.SingleListResponse;
 import com.weutil.common.validation.group.CreateGroup;
 import com.weutil.todolist.entity.TodolistProject;
-import com.weutil.todolist.model.EditProjectDTO;
+import com.weutil.todolist.model.TodolistProjectDTO;
 import com.weutil.todolist.model.TodolistProjectVO;
 import com.weutil.todolist.service.TodolistProjectService;
 import jakarta.validation.constraints.Min;
@@ -41,11 +41,9 @@ public class TodolistProjectController {
      */
     @PostMapping("/todolist/projects")
     @UserPermission
-    public TodolistProjectVO create(@UserId long userId, @Validated(CreateGroup.class) @RequestBody EditProjectDTO dto) {
-        String name = dto.getName();
-        TodolistProject entity = todolistProjectService.create(userId, name);
-
-        return convert(entity);
+    public TodolistProjectVO create(@UserId long userId, @Validated(CreateGroup.class) @RequestBody TodolistProjectDTO dto) {
+        long projectId = todolistProjectService.createWithDTO(userId, dto);
+        return convert(todolistProjectService.getOrThrowById(userId, projectId));
     }
 
     /**
@@ -61,6 +59,8 @@ public class TodolistProjectController {
         return TodolistProjectVO.builder()
             .id(entity.getId())
             .name(entity.getName())
+            .emoji(entity.getEmoji())
+            .color(entity.getColor())
             .uncompletedTaskCount(todolistProjectService.countUncompletedTasks(entity.getId()))
             .build();
     }
@@ -93,8 +93,9 @@ public class TodolistProjectController {
      */
     @PutMapping("/todolist/projects/{id}")
     @UserPermission
-    public TodolistProjectVO update(@UserId long userId, @Min(1) @PathVariable("id") long projectId, @RequestBody EditProjectDTO dto) {
-        return convert(todolistProjectService.updateWithDTO(userId, projectId, dto));
+    public TodolistProjectVO update(@UserId long userId, @Min(1) @PathVariable("id") long projectId, @RequestBody TodolistProjectDTO dto) {
+        todolistProjectService.updateWithDTO(userId, projectId, dto);
+        return convert(todolistProjectService.getOrThrowById(userId, projectId));
     }
 
     /**
