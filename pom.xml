@@ -15,7 +15,7 @@
         <module>life-helper-aliyun</module>
         <module>life-helper-external</module>
         <module>life-helper-account</module>
-        <module>life-helper-reminder</module>
+        <module>life-helper-todolist</module>
         <module>life-helper-system</module>
         <module>life-helper-web</module>
     </modules>
@@ -192,7 +192,7 @@
                 <artifactId>life-helper-aliyun-captcha</artifactId>
                 <version>${project.version}</version>
             </dependency>
-         
+
             <!-- 腾讯位置服务封装模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
@@ -210,7 +210,7 @@
             <!-- 待办任务模块 -->
             <dependency>
                 <groupId>com.weutil</groupId>
-                <artifactId>life-helper-reminder</artifactId>
+                <artifactId>life-helper-todolist</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
