@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 /**
  * 待办项目实体
  *
@@ -33,6 +35,19 @@ public class TodolistProject extends BaseUserRelatedEntity {
      */
     private String emoji;
 
-    /** 颜色 hex 值（不包含 # 前缀） */
+    /**
+     * 颜色名称
+     *
+     * <h3>说明
+     * <p>服务端只存储颜色名称，颜色的呈现均由前端处理。
+     */
     private String color;
+
+    /**
+     * 收藏时间
+     *
+     * <h3>说明
+     * <p>前端只处理“是否收藏”操作。
+     */
+    private LocalDateTime favoriteTime;
 }

@@ -28,8 +28,12 @@ public class TodolistProjectDTO {
      * <h3>说明
      * <p>单字符。
      */
+    @Size(max = 1, message = "你最多只能选择1个emoji图标")
     private String emoji;
 
-    /** 颜色 hex 值（不包含 # 前缀） */
+    /** 颜色名称 */
     private String color;
+
+    /** 是否收藏 */
+    private Boolean favorite;
 }

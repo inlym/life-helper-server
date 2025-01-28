@@ -2,6 +2,7 @@ package com.weutil.todolist.service;
 
 import com.mybatisflex.core.query.QueryCondition;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.core.util.UpdateEntity;
 import com.weutil.todolist.entity.TodolistProject;
 import com.weutil.todolist.exception.TodolistProjectFailedToDeleteException;
 import com.weutil.todolist.exception.TodolistProjectNotFoundException;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.weutil.todolist.entity.table.TodolistProjectTableDef.TODOLIST_PROJECT;
@@ -42,46 +44,18 @@ public class TodolistProjectService {
      * @since 3.0.0
      */
     public long createWithDTO(long userId, TodolistProjectDTO dto) {
-        TodolistProject inserted = TodolistProject.builder().userId(userId).name(dto.getName()).emoji(dto.getEmoji()).color(dto.getColor()).build();
+        TodolistProject inserted = TodolistProject.builder()
+            .userId(userId)
+            .name(dto.getName())
+            .emoji(dto.getEmoji())
+            .color(dto.getColor())
+            .build();
+        if (dto.getFavorite() != null && dto.getFavorite()) {
+            inserted.setFavoriteTime(LocalDateTime.now());
+        }
         todolistProjectMapper.insertSelective(inserted);
 
         return inserted.getId();
-    }
-
-    /**
-     * 创建待办项目
-     *
-     * @param userId 用户 ID
-     * @param name   项目名称
-     *
-     * @return 插入后重新查询获取的待办项目实体对象
-     * @date 2024/12/12
-     * @since 3.0.0
-     */
-    public TodolistProject create(long userId, String name) {
-        TodolistProject entity = TodolistProject.builder().userId(userId).name(name).build();
-        todolistProjectMapper.insertSelective(entity);
-
-        return getOrThrowById(userId, entity.getId());
-    }
-
-    /**
-     * 根据 ID 获取实体对象，如果未找到（包含不所属于对应用户）则抛出异常
-     *
-     * @param userId    用户 ID
-     * @param projectId 待办项目 ID
-     *
-     * @return 待办项目实体对象
-     * @date 2024/12/13
-     * @since 3.0.0
-     */
-    public TodolistProject getOrThrowById(long userId, long projectId) {
-        TodolistProject entity = todolistProjectMapper.selectOneById(projectId);
-        if (entity != null && entity.getUserId() == userId) {
-            return entity;
-        }
-
-        throw new TodolistProjectNotFoundException(projectId, userId);
     }
 
     /**
@@ -118,11 +92,32 @@ public class TodolistProjectService {
         }
 
         // 同时将已完成的全部自动删除（用户侧操作前需告知）
-        QueryCondition condition1 = TODOLIST_TASK.USER_ID.eq(userId).and(TODOLIST_TASK.PROJECT_ID.eq(projectId)).and(TODOLIST_TASK.COMPLETE_TIME.isNotNull());
+        QueryCondition condition1 = TODOLIST_TASK.USER_ID.eq(userId)
+            .and(TODOLIST_TASK.PROJECT_ID.eq(projectId))
+            .and(TODOLIST_TASK.COMPLETE_TIME.isNotNull());
         todolistTaskMapper.deleteByCondition(condition1);
 
         // 完成所有检查，进行“删除”操作
         todolistProjectMapper.deleteById(entity.getId());
+    }
+
+    /**
+     * 根据 ID 获取实体对象，如果未找到（包含不所属于对应用户）则抛出异常
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     *
+     * @return 待办项目实体对象
+     * @date 2024/12/13
+     * @since 3.0.0
+     */
+    public TodolistProject getOrThrowById(long userId, long projectId) {
+        TodolistProject entity = todolistProjectMapper.selectOneById(projectId);
+        if (entity != null && entity.getUserId() == userId) {
+            return entity;
+        }
+
+        throw new TodolistProjectNotFoundException(projectId, userId);
     }
 
     /**
@@ -150,7 +145,7 @@ public class TodolistProjectService {
      */
     public void updateWithDTO(long userId, long projectId, TodolistProjectDTO dto) {
         TodolistProject entity = getOrThrowById(userId, projectId);
-        TodolistProject updated = TodolistProject.builder().id(projectId).build();
+        TodolistProject updated = UpdateEntity.of(TodolistProject.class, projectId);
 
         if (dto.getName() != null && !dto.getName().equals(entity.getName())) {
             updated.setName(dto.getName());
@@ -160,6 +155,13 @@ public class TodolistProjectService {
         }
         if (dto.getColor() != null && !dto.getColor().equals(entity.getColor())) {
             updated.setColor(dto.getColor());
+        }
+        if (dto.getFavorite() != null) {
+            if (dto.getFavorite() && entity.getFavoriteTime() == null) {
+                updated.setFavoriteTime(LocalDateTime.now());
+            } else if (!dto.getFavorite() && entity.getFavoriteTime() != null) {
+                updated.setFavoriteTime(null);
+            }
         }
 
         todolistProjectMapper.update(updated);

@@ -61,7 +61,7 @@ public class TodolistProjectController {
             .name(entity.getName())
             .emoji(entity.getEmoji())
             .color(entity.getColor())
-            .uncompletedTaskCount(todolistProjectService.countUncompletedTasks(entity.getId()))
+            .favorite(entity.getFavoriteTime() != null)
             .build();
     }
 
@@ -111,5 +111,20 @@ public class TodolistProjectController {
     public SingleListResponse<TodolistProjectVO> list(@UserId long userId) {
         List<TodolistProjectVO> items = todolistProjectService.list(userId).stream().map(this::convert).toList();
         return new SingleListResponse<>(items);
+    }
+
+    /**
+     * 查看待办项目信息
+     *
+     * @param userId    用户 ID
+     * @param projectId 待办项目 ID
+     *
+     * @date 2024/12/26
+     * @since 3.0.0
+     */
+    @GetMapping("/todolist/projects/{id}")
+    @UserPermission
+    public TodolistProjectVO getOne(@UserId long userId, @Min(1) @PathVariable("id") long projectId) {
+        return convert(todolistProjectService.getOrThrowById(userId, projectId));
     }
 }

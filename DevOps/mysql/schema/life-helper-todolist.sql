@@ -21,7 +21,8 @@ create table `todolist_project`
     /* 下方为业务字段 */
     `name`             varchar(30)     not null default '' comment '项目名称',
     `emoji`            char(1)         not null default '' comment 'emoji 图标',
-    `color`            varchar(6)      not null default '' comment '颜色（hex值）',
+    `color`            varchar(20)     not null default '' comment '颜色名称',
+    `favorite_time`    datetime                 default null comment '收藏时间',
 
     primary key (`id`)
 ) engine = InnoDB
