@@ -43,7 +43,7 @@
 
         <dependency>
             <groupId>com.weutil</groupId>
-            <artifactId>life-helper-todolist</artifactId>
+            <artifactId>life-helper-todo</artifactId>
         </dependency>
 
     </dependencies>
